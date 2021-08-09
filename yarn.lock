@@ -2474,6 +2474,19 @@
   resolved "https://registry.yarnpkg.com/@josephg/resolvable/-/resolvable-1.0.1.tgz#69bc4db754d79e1a2f17a650d3466e038d94a5eb"
   integrity sha512-CtzORUwWTTOTqfVtHaKRJ0I1kNQd1bpn3sUh8I3nJDVY+5/M/Oe1DnEWzPQvqq/xPIIkzzzIP7mfCoAjFRvDhg==
 
+"@kaco/uikit@^0.46.1":
+  version "0.46.1"
+  resolved "https://registry.npmjs.org/@kaco/uikit/-/uikit-0.46.1.tgz#a452513fc61a642bc1a9b15ee4c688503664ddac"
+  integrity sha512-gAxAcryZTgBItbUcnSZzGKHeWc7ls4jQVdh/Jh0dMiwXNG4VA6RaKNN0vDMa57vTV8wZ84iXVU+ImP73NbHGsg==
+  dependencies:
+    "@popperjs/core" "^2.9.2"
+    "@types/lodash" "^4.14.168"
+    "@types/styled-system" "^5.1.10"
+    lodash "^4.17.20"
+    react-popper "^2.2.5"
+    react-transition-group "^4.4.1"
+    styled-system "^5.1.5"
+
 "@ledgerhq/devices@^5.51.1":
   version "5.51.1"
   resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-5.51.1.tgz#d741a4a5d8f17c2f9d282fd27147e6fe1999edb7"
@@ -2602,19 +2615,6 @@
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
-
-"@pancakeswap/uikit@^0.46.0":
-  version "0.46.0"
-  resolved "https://registry.yarnpkg.com/@pancakeswap/uikit/-/uikit-0.46.0.tgz#f5c804ebf3199704ee33b8be1f79a60179daf3f5"
-  integrity sha512-p67xEgdKUp0D8APD71IV1g8XaUc4ZygNpMjuaz9Li+flW4hYD7FsxBG30gT8jOxa6umJeHaNDMP25CoKE59rkA==
-  dependencies:
-    "@popperjs/core" "^2.9.2"
-    "@types/lodash" "^4.14.168"
-    "@types/styled-system" "^5.1.10"
-    lodash "^4.17.20"
-    react-popper "^2.2.5"
-    react-transition-group "^4.4.1"
-    styled-system "^5.1.5"
 
 "@pmmmwh/react-refresh-webpack-plugin@0.4.3":
   version "0.4.3"
