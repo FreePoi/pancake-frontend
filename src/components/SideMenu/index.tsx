@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { usePriceCakeBusd } from 'state/farms/hooks'
 import LogoPng from './imgs/logo.png'
 import CollapseSvg from './imgs/collapse.svg'
 import FarmSvg from './imgs/icon_Farm_D.svg'
@@ -152,6 +153,7 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
 
 const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
   const [collapsed, setCollapsed] = useState(false)
+  const cakePriceUsd = usePriceCakeBusd()
 
   return (
     <Wrapper className={className} collapsed={collapsed}>
@@ -178,7 +180,7 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
         <div className="account-info">
           <div className="balance">
             <img src={collapsed ? Logo2DefaultSvg : Logo2Svg} alt="" />
-            {!collapsed && <span>$120.98</span>}
+            {!collapsed && <span>${cakePriceUsd.isNaN() ? '0' : cakePriceUsd.toFixed(2)}</span>}
           </div>
         </div>
       </div>

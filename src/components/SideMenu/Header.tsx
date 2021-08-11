@@ -1,9 +1,10 @@
 import React, { FC, useState } from 'react'
 import styled from 'styled-components'
+import { useWeb3React } from '@web3-react/core'
 import TwitterSvg from './imgs/twitter.svg'
 import FacebookSvg from './imgs/facebook.svg'
 import ThemeWhiteSvg from './imgs/theme-white.svg'
-import UserIconSvg from './imgs/user-icon.svg'
+import ConnectWalletButton from '../ConnectWalletButton'
 
 export enum ThemeChoice {
   Dark,
@@ -14,6 +15,8 @@ const Header: FC<{ className?: string; onThemeChange: (theme: ThemeChoice) => vo
   className,
   onThemeChange,
 }) => {
+  const { account } = useWeb3React()
+
   return (
     <div className={className}>
       <div className="left">
@@ -28,10 +31,14 @@ const Header: FC<{ className?: string; onThemeChange: (theme: ThemeChoice) => vo
         <div className="theme-choice">
           <img src={ThemeWhiteSvg} alt="" />
         </div>
-        <div className="account">
-          <span>0x19...0918CF</span>
-          <img src={ThemeWhiteSvg} alt="" />
-        </div>
+        {account ? (
+          <div className="account">
+            <span>{account}</span>
+            <img src={ThemeWhiteSvg} alt="" />
+          </div>
+        ) : (
+          <ConnectWalletButton scale="sm" />
+        )}
       </div>
     </div>
   )
