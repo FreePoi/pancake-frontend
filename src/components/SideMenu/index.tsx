@@ -17,6 +17,7 @@ import TradeSvg from './imgs/icon_trade_D.svg'
 import TradeNSvg from './imgs/icon_trade_N.svg'
 import Logo2Svg from './imgs/logo2_primary.svg'
 import Logo2DefaultSvg from './imgs/logo2_default.svg'
+import Header from './Header'
 
 const menuItems: {
   text: string
@@ -58,9 +59,13 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
   > .body-container {
     transition: 0.15s padding;
     background: #1f252a;
+    > .content {
+      position: relative;
+    }
   }
 
   > .side {
+    z-index: 10;
     display: flex;
     flex-direction: column;
     transition: 0.15s width;
@@ -178,10 +183,13 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
         </div>
       </div>
       <div className="body-container" style={{ paddingLeft: collapsed ? '64px' : '200px' }}>
-        <div className="content">{children}</div>
+        <div className="content">
+          <Header onThemeChange={() => {}} />
+          {children}
+        </div>
       </div>
     </Wrapper>
   )
 }
 
-export default styled(SideMenu)``
+export default SideMenu
