@@ -33,7 +33,7 @@ const menuItems: {
   {
     text: 'Trade',
     imgs: [TradeSvg, TradeNSvg],
-    link: '/trade',
+    link: '/swap',
   },
   {
     text: 'Mint',
@@ -43,7 +43,7 @@ const menuItems: {
   {
     text: 'Farm',
     imgs: [FarmSvg, FarmNSvg],
-    link: '/farm',
+    link: '/farms',
   },
   {
     text: 'Pools',
@@ -57,7 +57,11 @@ const menuItems: {
   },
 ]
 const Wrapper = styled.div<{ collapsed: boolean }>`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   > .body-container {
+    flex: 1;
     transition: 0.15s padding;
     background: #1f252a;
     > .content {

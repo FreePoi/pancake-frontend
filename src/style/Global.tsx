@@ -11,12 +11,21 @@ const GlobalStyle = createGlobalStyle`
   * {
     font-family: 'Kanit', sans-serif;
   }
+  html {
+    height: 100%;
+  }
   body {
+    height: 100%;
     background-color: ${({ theme }) => theme.colors.background};
 
     img {
       height: auto;
       max-width: 100%;
+    }
+    #root {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
     }
   }
 `

@@ -58,7 +58,7 @@ const App: React.FC = () => {
   usePollBlockNumber()
   useEagerConnect()
   useFetchProfile()
-  usePollCoreFarmData()
+  // usePollCoreFarmData()
 
   return (
     <Router history={history}>

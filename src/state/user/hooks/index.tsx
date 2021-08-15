@@ -177,7 +177,7 @@ export function usePairAdder(): (pair: Pair) => void {
  * @param tokenB the other token
  */
 export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
-  return new Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 18, 'Cake-LP', 'Pancake LPs')
+  return new Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 18, 'Kaco-LP', 'Kaco LPs')
 }
 
 /**
@@ -189,6 +189,14 @@ export function useTrackedTokenPairs(): [Token, Token][] {
 
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
+  // console.log(
+  //   'useAllTokens',
+  //   tokens,
+  //   PINNED_PAIRS[chainId],
+  //   'pinnedPairs',
+  //   pinnedPairs,
+  //   BASES_TO_TRACK_LIQUIDITY_FOR[chainId],
+  // )
 
   // pairs for every token against every base
   const generatedPairs: [Token, Token][] = useMemo(

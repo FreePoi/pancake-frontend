@@ -12,7 +12,6 @@ const StyledPage = styled.div`
   padding: 16px;
   padding-bottom: 0;
   min-height: calc(100vh - 64px);
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
 
   ${({ theme }) => theme.mediaQueries.xs} {
     background-size: auto;
@@ -24,7 +23,7 @@ const StyledPage = styled.div`
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    padding-top: 32px;
+    padding-top: 64px;
     min-height: calc(100vh - 64px);
   }
 `

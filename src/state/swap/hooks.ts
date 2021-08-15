@@ -135,9 +135,23 @@ export function useDerivedSwapInfo(): {
 
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
+  // console.log(
+  //   'typed value',
+  //   typedValue,
+  //   isExactIn,
+  //   inputCurrency,
+  //   outputCurrency,
+  //   'parsedAmount',
+  //   parsedAmount?.toFixed(),
+  // )
 
   const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
   const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
+  // console.log(
+  //   'bestTradeExactOut',
+  //   bestTradeExactOut?.inputAmount.toFixed(),
+  //   bestTradeExactOut?.executionPrice.toFixed(),
+  // )
 
   const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
 
@@ -231,6 +245,7 @@ function validatedRecipient(recipient: any): string | null {
 export function queryParametersToSwapState(parsedQs: ParsedQs): SwapState {
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency)
   let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency)
+  // console.log('input', parsedQs.inputCurrency, inputCurrency, outputCurrency)
   if (inputCurrency === outputCurrency) {
     if (typeof parsedQs.outputCurrency === 'string') {
       inputCurrency = ''
@@ -269,6 +284,7 @@ export function useDefaultsFromURLSearch():
     if (!chainId) return
     const parsed = queryParametersToSwapState(parsedQs)
 
+    // console.log('init', parsed[Field.INPUT].currencyId, parsed[Field.OUTPUT].currencyId, parsed.independentField)
     dispatch(
       replaceSwapState({
         typedValue: parsed.typedValue,
