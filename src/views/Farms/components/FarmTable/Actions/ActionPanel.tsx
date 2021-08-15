@@ -60,7 +60,7 @@ const Container = styled.div<{ expanded }>`
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
-    padding: 16px 32px;
+    padding: 29px 39px;
   }
 `;
 
@@ -114,6 +114,9 @@ const ActionContainer = styled.div`
 
 const InfoContainer = styled.div`
   min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 `;
 
 const ValueContainer = styled.div`
@@ -159,16 +162,11 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
         {isActive && (
           <StakeContainer>
             <StyledLinkExternal href={`/add/${liquidityUrlPathParts}`}>
-              {t('Get %symbol%', { symbol: lpLabel })}
+              {t('Addd Liquidity', { symbol: lpLabel })}
             </StyledLinkExternal>
           </StakeContainer>
         )}
-        <StyledLinkExternal href={bsc}>{t('View Contract')}</StyledLinkExternal>
         <StyledLinkExternal href={info}>{t('See Pair Info')}</StyledLinkExternal>
-        <TagsContainer>
-          {farm.isCommunity ? <CommunityTag /> : <CoreTag />}
-          {dual ? <DualTag /> : null}
-        </TagsContainer>
       </InfoContainer>
       <ValueContainer>
         <ValueWrapper>
@@ -184,7 +182,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
           <Liquidity {...liquidity} />
         </ValueWrapper>
       </ValueContainer>
-      <ActionContainer>
+      <ActionContainer style={{ justifyContent: 'space-between' }}>
         <HarvestAction {...farm} userDataReady={userDataReady} />
         <StakedAction {...farm} userDataReady={userDataReady} />
       </ActionContainer>

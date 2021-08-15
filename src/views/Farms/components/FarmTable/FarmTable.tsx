@@ -56,7 +56,7 @@ const FarmTable: React.FC<ITableProps> = (props) => {
 
   const { rows } = useTable(columns, data, { sortable: true, sortColumn: 'farm' });
 
-  // console.log('rows', rows)
+  console.log('rows', rows);
 
   return (
     <Container>

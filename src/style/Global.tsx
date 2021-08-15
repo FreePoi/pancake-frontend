@@ -17,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     height: 100%;
     background-color: ${({ theme }) => theme.colors.background};
+    font-family: Microsoft YaHei;
 
     img {
       height: auto;

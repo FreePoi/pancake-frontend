@@ -120,16 +120,13 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
       return (
         <ActionContainer>
           <ActionTitles>
-            <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
-              {lpSymbol}
-            </Text>
-            <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-              {t('Staked')}
-            </Text>
-          </ActionTitles>
-          <ActionContent>
             <div>
-              <Heading>{displayBalance()}</Heading>
+              <span style={{ color: 'white' }}>{lpSymbol}</span>
+              <span>{t('Staked')}</span>
+            </div>
+
+            <div className="balance">
+              {displayBalance()}
               {stakedBalance.gt(0) && lpPrice.gt(0) && (
                 <Balance
                   fontSize="12px"
@@ -141,6 +138,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
                 />
               )}
             </div>
+          </ActionTitles>
+          <ActionContent>
             <IconButtonWrapper>
               <IconButton variant="secondary" onClick={onPresentWithdraw} mr="6px">
                 <MinusIcon color="primary" width="14px" />
@@ -184,32 +183,18 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
 
   if (!userDataReady) {
     return (
-      <ActionContainer>
-        <ActionTitles>
-          <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-            {t('Start Farming')}
-          </Text>
-        </ActionTitles>
-        <ActionContent>
-          <Skeleton width={180} marginBottom={28} marginTop={14} />
-        </ActionContent>
-      </ActionContainer>
+      <ActionContent>
+        <Skeleton width={180} marginBottom={28} marginTop={14} />
+      </ActionContent>
     );
   }
 
   return (
-    <ActionContainer>
-      <ActionTitles>
-        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {t('Enable Farm')}
-        </Text>
-      </ActionTitles>
-      <ActionContent>
-        <Button width="100%" disabled={requestedApproval} onClick={handleApprove} variant="secondary">
-          {t('Enable')}
-        </Button>
-      </ActionContent>
-    </ActionContainer>
+    <ActionContent>
+      <Button width="232px" disabled={requestedApproval} onClick={handleApprove} variant="secondary">
+        {t('Enable')}
+      </Button>
+    </ActionContent>
   );
 };
 

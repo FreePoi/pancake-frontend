@@ -29,7 +29,7 @@ const farms: FarmConfig[] = [
     pid: 2,
     lpSymbol: 'BUSD-BNB LP',
     lpAddresses: {
-      97: '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee',
+      97: '0x756f158A2C02246Bf00bbdB051729804F2efd9c7',
       56: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
     },
     token: tokens.busd,

@@ -132,16 +132,16 @@ const Farms: React.FC = () => {
       }
     };
 
-    // console.log(
-    //   'stakedOnlyFarms',
-    //   stakedOnlyFarms,
-    //   'stakedArchivedFarms',
-    //   stakedArchivedFarms,
-    //   'activeFarms',
-    //   activeFarms,
-    //   'inactiveFarms',
-    //   inactiveFarms,
-    // );
+    console.log(
+      'stakedOnlyFarms',
+      stakedOnlyFarms,
+      'stakedArchivedFarms',
+      stakedArchivedFarms,
+      'activeFarms',
+      activeFarms,
+      'inactiveFarms',
+      inactiveFarms,
+    );
     if (isActive) {
       chosenFarms = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms);
     }

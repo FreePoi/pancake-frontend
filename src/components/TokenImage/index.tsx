@@ -20,6 +20,12 @@ const getImageUrlFromToken = (token: Token) => {
 };
 
 export const TokenPairImage: React.FC<TokenPairImageProps> = ({ primaryToken, secondaryToken, ...props }) => {
+  // console.log(
+  //   'getImageUrlFromToken(primaryToken)',
+  //   primaryToken,
+  //   getImageUrlFromToken(primaryToken),
+  //   getImageUrlFromToken(secondaryToken),
+  // );
   return (
     <UIKitTokenPairImage
       primarySrc={getImageUrlFromToken(primaryToken)}

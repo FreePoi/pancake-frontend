@@ -1,12 +1,18 @@
 import styled from 'styled-components';
 
 export const ActionContainer = styled.div`
-  padding: 16px;
+  padding: 4px;
+  padding-left: 20px;
   border: 2px solid ${({ theme }) => theme.colors.input};
   border-radius: 16px;
   flex-grow: 1;
   flex-basis: 0;
   margin-bottom: 16px;
+  background: #122124;
+  border: 2px solid #1f373b;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-left: 12px;
@@ -24,11 +30,32 @@ export const ActionContainer = styled.div`
 `;
 
 export const ActionTitles = styled.div`
-  display: flex;
+  > div:first-child {
+    font-size: 12px;
+    line-height: 20px;
+    margin-bottom: 6px;
+    > span:first-child {
+      color: #1bd3d5;
+      margin-right: 6px;
+    }
+    > span:last-child {
+      color: #9da6a6;
+    }
+  }
+  > .balance {
+    font-weight: bold;
+    color: #1bd3d5;
+  }
 `;
 
 export const ActionContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  > button {
+    height: 48px;
+    background: #1f373b;
+    border-radius: 12px;
+  }
 `;

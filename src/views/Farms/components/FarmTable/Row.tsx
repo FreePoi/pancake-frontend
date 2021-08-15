@@ -52,7 +52,8 @@ const CellInner = styled.div`
 
 const StyledTr = styled.tr`
   cursor: pointer;
-  border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  /* border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder}; */
+  border-bottom: 1px solid #122124;
 `;
 
 const EarnedMobileCell = styled.td`
@@ -90,6 +91,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
   const columnNames = tableSchema.map((column) => column.name);
 
   const handleRenderRow = () => {
+    console.log('props', props);
     if (!isXs) {
       return (
         <StyledTr onClick={toggleActionPanel}>
@@ -148,7 +150,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
           </tr>
           <tr>
             <EarnedMobileCell>
-              <CellLayout label={t('Earned')}>
+              <CellLayout label={t('Rewards')}>
                 <Earned {...props.earned} userDataReady={userDataReady} />
               </CellLayout>
             </EarnedMobileCell>

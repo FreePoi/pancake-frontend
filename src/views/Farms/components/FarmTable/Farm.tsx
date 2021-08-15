@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useFarmUser } from 'state/farms/hooks';
-import { useTranslation } from 'contexts/Localization';
-import { Text } from '@kaco/uikit';
-import { getBalanceNumber } from 'utils/formatBalance';
+// import { useFarmUser } from 'state/farms/hooks';
+// import { useTranslation } from 'contexts/Localization';
+// import { Text } from '@kaco/uikit';
+// import { getBalanceNumber } from 'utils/formatBalance';
 import { Token } from 'config/constants/types';
 import { TokenPairImage } from 'components/TokenImage';
 
@@ -22,6 +22,21 @@ const Container = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     padding-left: 32px;
   }
+
+  > div {
+    > .label {
+      font-size: 16px;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      color: #ffffff;
+    }
+    > .ratio {
+      margin-top: 11px;
+      font-size: 14px;
+      font-family: Microsoft YaHei;
+      color: #9da6a6;
+    }
+  }
 `;
 
 const TokenWrapper = styled.div`
@@ -34,21 +49,21 @@ const TokenWrapper = styled.div`
 `;
 
 const Farm: React.FunctionComponent<FarmProps> = ({ token, quoteToken, label, pid }) => {
-  const { stakedBalance } = useFarmUser(pid);
-  const { t } = useTranslation();
-  const rawStakedBalance = getBalanceNumber(stakedBalance);
+  // const { stakedBalance } = useFarmUser(pid);
+  // const { t } = useTranslation();
+  // const rawStakedBalance = getBalanceNumber(stakedBalance);
 
-  const handleRenderFarming = (): JSX.Element => {
-    if (rawStakedBalance) {
-      return (
-        <Text color="secondary" fontSize="12px" bold textTransform="uppercase">
-          {t('Farming')}
-        </Text>
-      );
-    }
+  // const handleRenderFarming = (): JSX.Element => {
+  //   if (rawStakedBalance) {
+  //     return (
+  //       <Text color="secondary" fontSize="12px" bold textTransform="uppercase">
+  //         {t('Farming')}
+  //       </Text>
+  //     );
+  //   }
 
-    return null;
-  };
+  //   return null;
+  // };
 
   return (
     <Container>
@@ -56,8 +71,11 @@ const Farm: React.FunctionComponent<FarmProps> = ({ token, quoteToken, label, pi
         <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={40} height={40} />
       </TokenWrapper>
       <div>
-        {handleRenderFarming()}
-        <Text bold>{label}</Text>
+        <div className="label">{label}</div>
+        <div className="ratio">
+          <span>50%</span>
+          <span>50%</span>
+        </div>
       </div>
     </Container>
   );
