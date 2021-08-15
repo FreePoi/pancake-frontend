@@ -1,16 +1,16 @@
-import { useGetCurrentRoundBlockNumber, useGetIntervalBlocks } from 'state/predictions/hooks'
-import useBlockCountdown from 'hooks/useGetBlockCountdown'
+import { useGetCurrentRoundBlockNumber, useGetIntervalBlocks } from 'state/predictions/hooks';
+import useBlockCountdown from 'hooks/useGetBlockCountdown';
 
 /**
  * Returns a countdown in seconds of a given block
  */
 const useRoundCountdown = (intervalsToAdd = 1) => {
-  const interval = useGetIntervalBlocks()
-  const currentRoundBlockNum = useGetCurrentRoundBlockNumber()
-  const blocksToAdd = intervalsToAdd * interval
-  const seconds = useBlockCountdown(currentRoundBlockNum + blocksToAdd)
+  const interval = useGetIntervalBlocks();
+  const currentRoundBlockNum = useGetCurrentRoundBlockNumber();
+  const blocksToAdd = intervalsToAdd * interval;
+  const seconds = useBlockCountdown(currentRoundBlockNum + blocksToAdd);
 
-  return seconds
-}
+  return seconds;
+};
 
-export default useRoundCountdown
+export default useRoundCountdown;

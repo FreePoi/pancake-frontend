@@ -1,29 +1,29 @@
-import React, { FC, useState } from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { usePriceCakeBusd } from 'state/farms/hooks'
-import LogoPng from './imgs/logo.png'
-import CollapseSvg from './imgs/collapse.svg'
-import FarmSvg from './imgs/icon_Farm_D.svg'
-import FarmNSvg from './imgs/icon_Farm_N.svg'
-import HomeSvg from './imgs/icon_home_D.svg'
-import HomeNSvg from './imgs/icon_home_N.svg'
-import InfoSvg from './imgs/icon_Info_D.svg'
-import InfoNSvg from './imgs/icon_Info_N.svg'
-import MintSvg from './imgs/icon_Mint_D.svg'
-import MintNSvg from './imgs/icon_Mint_N.svg'
-import PoolsSvg from './imgs/icon_Pools_D.svg'
-import PoolsNSvg from './imgs/icon_Pools_N.svg'
-import TradeSvg from './imgs/icon_trade_D.svg'
-import TradeNSvg from './imgs/icon_trade_N.svg'
-import Logo2Svg from './imgs/logo2_primary.svg'
-import Logo2DefaultSvg from './imgs/logo2_default.svg'
-import Header from './Header'
+import React, { FC, useState } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { usePriceCakeBusd } from 'state/farms/hooks';
+import LogoPng from './imgs/logo.png';
+import CollapseSvg from './imgs/collapse.svg';
+import FarmSvg from './imgs/icon_Farm_D.svg';
+import FarmNSvg from './imgs/icon_Farm_N.svg';
+import HomeSvg from './imgs/icon_home_D.svg';
+import HomeNSvg from './imgs/icon_home_N.svg';
+import InfoSvg from './imgs/icon_Info_D.svg';
+import InfoNSvg from './imgs/icon_Info_N.svg';
+import MintSvg from './imgs/icon_Mint_D.svg';
+import MintNSvg from './imgs/icon_Mint_N.svg';
+import PoolsSvg from './imgs/icon_Pools_D.svg';
+import PoolsNSvg from './imgs/icon_Pools_N.svg';
+import TradeSvg from './imgs/icon_trade_D.svg';
+import TradeNSvg from './imgs/icon_trade_N.svg';
+import Logo2Svg from './imgs/logo2_primary.svg';
+import Logo2DefaultSvg from './imgs/logo2_default.svg';
+import Header from './Header';
 
 const menuItems: {
-  text: string
-  imgs: any[]
-  link: string
+  text: string;
+  imgs: any[];
+  link: string;
 }[] = [
   {
     text: 'Home',
@@ -55,7 +55,7 @@ const menuItems: {
     imgs: [InfoSvg, InfoNSvg],
     link: '/info',
   },
-]
+];
 const Wrapper = styled.div<{ collapsed: boolean }>`
   flex: 1;
   display: flex;
@@ -153,11 +153,11 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
       }
     }
   }
-`
+`;
 
 const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
-  const [collapsed, setCollapsed] = useState(false)
-  const cakePriceUsd = usePriceCakeBusd()
+  const [collapsed, setCollapsed] = useState(false);
+  const cakePriceUsd = usePriceCakeBusd();
 
   return (
     <Wrapper className={className} collapsed={collapsed}>
@@ -195,7 +195,7 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
         </div>
       </div>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default SideMenu
+export default SideMenu;

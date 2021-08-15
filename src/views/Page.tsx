@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Flex } from '@kaco/uikit'
-import Footer from 'components/Menu/Footer'
-import SubNav from 'components/Menu/SubNav'
+import React from 'react';
+import styled from 'styled-components';
+import { Flex } from '@kaco/uikit';
+import Footer from 'components/Menu/Footer';
+import SubNav from 'components/Menu/SubNav';
 
 const StyledPage = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ const StyledPage = styled.div`
     padding-top: 64px;
     min-height: calc(100vh - 64px);
   }
-`
+`;
 
 const Page: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, ...props }) => {
   return (
@@ -36,7 +36,7 @@ const Page: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, ...pro
       <Flex flexGrow={1} />
       <Footer />
     </StyledPage>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

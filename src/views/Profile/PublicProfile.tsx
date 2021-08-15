@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
+import React from 'react';
+import styled from 'styled-components';
+import { useWeb3React } from '@web3-react/core';
 import {
   Card,
   CardBody,
@@ -15,18 +15,18 @@ import {
   BlockIcon,
   VisibilityOn,
   VisibilityOff,
-} from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { useProfile } from 'state/profile/hooks'
-import usePersistState from 'hooks/usePersistState'
-import { getBscScanLink } from 'utils'
-import Menu from './components/Menu'
-import CardHeader from './components/CardHeader'
-import Collectibles from './components/Collectibles'
-import WalletNotConnected from './components/WalletNotConnected'
-import StatBox from './components/StatBox'
-import EditProfileAvatar from './components/EditProfileAvatar'
-import AchievementsList from './components/AchievementsList'
+} from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { useProfile } from 'state/profile/hooks';
+import usePersistState from 'hooks/usePersistState';
+import { getBscScanLink } from 'utils';
+import Menu from './components/Menu';
+import CardHeader from './components/CardHeader';
+import Collectibles from './components/Collectibles';
+import WalletNotConnected from './components/WalletNotConnected';
+import StatBox from './components/StatBox';
+import EditProfileAvatar from './components/EditProfileAvatar';
+import AchievementsList from './components/AchievementsList';
 
 const Content = styled.div`
   flex: 1;
@@ -35,7 +35,7 @@ const Content = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 0 16px;
   }
-`
+`;
 
 const Username = styled(Heading)`
   font-size: 16px;
@@ -46,13 +46,13 @@ const Username = styled(Heading)`
     font-size: 40px;
     line-height: 44px;
   }
-`
+`;
 
 const Status = styled.div`
   position: absolute;
   right: 24px;
   top: 24px;
-`
+`;
 
 const ResponsiveText = styled(Text)`
   font-size: 12px;
@@ -60,7 +60,7 @@ const ResponsiveText = styled(Text)`
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 16px;
   }
-`
+`;
 
 const AddressLink = styled(Link)`
   display: inline-block;
@@ -75,31 +75,31 @@ const AddressLink = styled(Link)`
     font-size: 16px;
     width: auto;
   }
-`
+`;
 
 const Section = styled.div`
   margin-bottom: 40px;
-`
+`;
 
 const PublicProfile = () => {
-  const { account } = useWeb3React()
-  const { profile } = useProfile()
+  const { account } = useWeb3React();
+  const { profile } = useProfile();
   const [usernameVisibilityToggled, setUsernameVisibility] = usePersistState(false, {
     localStorageKey: 'username_visibility_toggled',
-  })
-  const { t } = useTranslation()
+  });
+  const { t } = useTranslation();
 
   if (!account) {
-    return <WalletNotConnected />
+    return <WalletNotConnected />;
   }
 
   const toggleUsernameVisibility = () => {
-    setUsernameVisibility(!usernameVisibilityToggled)
-  }
+    setUsernameVisibility(!usernameVisibilityToggled);
+  };
 
-  const { username, team, isActive, points } = profile
+  const { username, team, isActive, points } = profile;
 
-  const Icon = usernameVisibilityToggled ? VisibilityOff : VisibilityOn
+  const Icon = usernameVisibilityToggled ? VisibilityOff : VisibilityOn;
 
   return (
     <>
@@ -148,7 +148,7 @@ const PublicProfile = () => {
         </Card>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default PublicProfile
+export default PublicProfile;

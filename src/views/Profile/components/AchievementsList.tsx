@@ -1,9 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Flex, Heading } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { useAchievements } from 'state/achievements/hooks'
-import AchievementCard from './AchievementCard'
+import React from 'react';
+import styled from 'styled-components';
+import { Flex, Heading } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { useAchievements } from 'state/achievements/hooks';
+import AchievementCard from './AchievementCard';
 
 const Grid = styled.div`
   display: grid;
@@ -13,11 +13,11 @@ const Grid = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     grid-template-columns: repeat(2, 1fr);
   }
-`
+`;
 
 const AchievementsList = () => {
-  const { t } = useTranslation()
-  const achievements = useAchievements()
+  const { t } = useTranslation();
+  const achievements = useAchievements();
 
   return (
     <>
@@ -34,7 +34,7 @@ const AchievementsList = () => {
         </Flex>
       )}
     </>
-  )
-}
+  );
+};
 
-export default AchievementsList
+export default AchievementsList;

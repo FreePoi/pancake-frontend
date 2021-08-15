@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { Text, Button, Input, Flex, Box } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { useUserSlippageTolerance, useUserTransactionTTL } from 'state/user/hooks'
-import QuestionHelper from '../../QuestionHelper'
+import React, { useState } from 'react';
+import { Text, Button, Input, Flex, Box } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { useUserSlippageTolerance, useUserTransactionTTL } from 'state/user/hooks';
+import QuestionHelper from '../../QuestionHelper';
 
 enum SlippageError {
   InvalidInput = 'InvalidInput',
@@ -15,60 +15,60 @@ enum DeadlineError {
 }
 
 const SlippageTabs = () => {
-  const [userSlippageTolerance, setUserslippageTolerance] = useUserSlippageTolerance()
-  const [ttl, setTtl] = useUserTransactionTTL()
-  const [slippageInput, setSlippageInput] = useState('')
-  const [deadlineInput, setDeadlineInput] = useState('')
+  const [userSlippageTolerance, setUserslippageTolerance] = useUserSlippageTolerance();
+  const [ttl, setTtl] = useUserTransactionTTL();
+  const [slippageInput, setSlippageInput] = useState('');
+  const [deadlineInput, setDeadlineInput] = useState('');
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const slippageInputIsValid =
-    slippageInput === '' || (userSlippageTolerance / 100).toFixed(2) === Number.parseFloat(slippageInput).toFixed(2)
-  const deadlineInputIsValid = deadlineInput === '' || (ttl / 60).toString() === deadlineInput
+    slippageInput === '' || (userSlippageTolerance / 100).toFixed(2) === Number.parseFloat(slippageInput).toFixed(2);
+  const deadlineInputIsValid = deadlineInput === '' || (ttl / 60).toString() === deadlineInput;
 
-  let slippageError: SlippageError | undefined
+  let slippageError: SlippageError | undefined;
   if (slippageInput !== '' && !slippageInputIsValid) {
-    slippageError = SlippageError.InvalidInput
+    slippageError = SlippageError.InvalidInput;
   } else if (slippageInputIsValid && userSlippageTolerance < 50) {
-    slippageError = SlippageError.RiskyLow
+    slippageError = SlippageError.RiskyLow;
   } else if (slippageInputIsValid && userSlippageTolerance > 500) {
-    slippageError = SlippageError.RiskyHigh
+    slippageError = SlippageError.RiskyHigh;
   } else {
-    slippageError = undefined
+    slippageError = undefined;
   }
 
-  let deadlineError: DeadlineError | undefined
+  let deadlineError: DeadlineError | undefined;
   if (deadlineInput !== '' && !deadlineInputIsValid) {
-    deadlineError = DeadlineError.InvalidInput
+    deadlineError = DeadlineError.InvalidInput;
   } else {
-    deadlineError = undefined
+    deadlineError = undefined;
   }
 
   const parseCustomSlippage = (value: string) => {
-    setSlippageInput(value)
+    setSlippageInput(value);
 
     try {
-      const valueAsIntFromRoundedFloat = Number.parseInt((Number.parseFloat(value) * 100).toString())
+      const valueAsIntFromRoundedFloat = Number.parseInt((Number.parseFloat(value) * 100).toString());
       if (!Number.isNaN(valueAsIntFromRoundedFloat) && valueAsIntFromRoundedFloat < 5000) {
-        setUserslippageTolerance(valueAsIntFromRoundedFloat)
+        setUserslippageTolerance(valueAsIntFromRoundedFloat);
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   const parseCustomDeadline = (value: string) => {
-    setDeadlineInput(value)
+    setDeadlineInput(value);
 
     try {
-      const valueAsInt: number = Number.parseInt(value) * 60
+      const valueAsInt: number = Number.parseInt(value) * 60;
       if (!Number.isNaN(valueAsInt) && valueAsInt > 0) {
-        setTtl(valueAsInt)
+        setTtl(valueAsInt);
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   return (
     <Flex flexDirection="column">
@@ -88,8 +88,8 @@ const SlippageTabs = () => {
             mr="4px"
             scale="sm"
             onClick={() => {
-              setSlippageInput('')
-              setUserslippageTolerance(10)
+              setSlippageInput('');
+              setUserslippageTolerance(10);
             }}
             variant={userSlippageTolerance === 10 ? 'primary' : 'tertiary'}
           >
@@ -100,8 +100,8 @@ const SlippageTabs = () => {
             mr="4px"
             scale="sm"
             onClick={() => {
-              setSlippageInput('')
-              setUserslippageTolerance(50)
+              setSlippageInput('');
+              setUserslippageTolerance(50);
             }}
             variant={userSlippageTolerance === 50 ? 'primary' : 'tertiary'}
           >
@@ -112,8 +112,8 @@ const SlippageTabs = () => {
             mt="4px"
             scale="sm"
             onClick={() => {
-              setSlippageInput('')
-              setUserslippageTolerance(100)
+              setSlippageInput('');
+              setUserslippageTolerance(100);
             }}
             variant={userSlippageTolerance === 100 ? 'primary' : 'tertiary'}
           >
@@ -126,7 +126,7 @@ const SlippageTabs = () => {
                 placeholder={(userSlippageTolerance / 100).toFixed(2)}
                 value={slippageInput}
                 onBlur={() => {
-                  parseCustomSlippage((userSlippageTolerance / 100).toFixed(2))
+                  parseCustomSlippage((userSlippageTolerance / 100).toFixed(2));
                 }}
                 onChange={(e) => parseCustomSlippage(e.target.value)}
                 isWarning={!slippageInputIsValid}
@@ -162,7 +162,7 @@ const SlippageTabs = () => {
               scale="sm"
               color={deadlineError ? 'red' : undefined}
               onBlur={() => {
-                parseCustomDeadline((ttl / 60).toString())
+                parseCustomDeadline((ttl / 60).toString());
               }}
               placeholder={(ttl / 60).toString()}
               value={deadlineInput}
@@ -172,7 +172,7 @@ const SlippageTabs = () => {
         </Flex>
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
-export default SlippageTabs
+export default SlippageTabs;

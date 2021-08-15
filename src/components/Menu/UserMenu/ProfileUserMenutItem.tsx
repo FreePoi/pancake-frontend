@@ -1,12 +1,12 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { Flex, Skeleton, UserMenuItem } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { Flex, Skeleton, UserMenuItem } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
 
 interface ProfileUserMenuItemProps {
-  isLoading: boolean
-  hasProfile: boolean
+  isLoading: boolean;
+  hasProfile: boolean;
 }
 
 const Dot = styled.div`
@@ -14,17 +14,17 @@ const Dot = styled.div`
   border-radius: 50%;
   height: 8px;
   width: 8px;
-`
+`;
 
 const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, hasProfile }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   if (isLoading) {
     return (
       <UserMenuItem>
         <Skeleton height="24px" width="35%" />
       </UserMenuItem>
-    )
+    );
   }
 
   if (!hasProfile) {
@@ -35,14 +35,14 @@ const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, ha
           <Dot />
         </Flex>
       </UserMenuItem>
-    )
+    );
   }
 
   return (
     <UserMenuItem as={Link} to="/profile">
       {t('Your Profile')}
     </UserMenuItem>
-  )
-}
+  );
+};
 
-export default ProfileUserMenuItem
+export default ProfileUserMenuItem;

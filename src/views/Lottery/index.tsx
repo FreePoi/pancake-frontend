@@ -1,44 +1,44 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { Box, Flex, Heading, Skeleton } from '@kaco/uikit'
-import { LotteryStatus } from 'config/constants/types'
-import PageSection from 'components/PageSection'
-import { useTranslation } from 'contexts/Localization'
-import useTheme from 'hooks/useTheme'
-import { useFetchLottery, useLottery } from 'state/lottery/hooks'
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Box, Flex, Heading, Skeleton } from '@kaco/uikit';
+import { LotteryStatus } from 'config/constants/types';
+import PageSection from 'components/PageSection';
+import { useTranslation } from 'contexts/Localization';
+import useTheme from 'hooks/useTheme';
+import { useFetchLottery, useLottery } from 'state/lottery/hooks';
 import {
   TITLE_BG,
   GET_TICKETS_BG,
   FINISHED_ROUNDS_BG,
   FINISHED_ROUNDS_BG_DARK,
   CHECK_PRIZES_BG,
-} from './pageSectionStyles'
-import useGetNextLotteryEvent from './hooks/useGetNextLotteryEvent'
-import useStatusTransitions from './hooks/useStatusTransitions'
-import Hero from './components/Hero'
-import NextDrawCard from './components/NextDrawCard'
-import Countdown from './components/Countdown'
-import HistoryTabMenu from './components/HistoryTabMenu'
-import YourHistoryCard from './components/YourHistoryCard'
-import AllHistoryCard from './components/AllHistoryCard'
-import CheckPrizesSection from './components/CheckPrizesSection'
-import HowToPlay from './components/HowToPlay'
+} from './pageSectionStyles';
+import useGetNextLotteryEvent from './hooks/useGetNextLotteryEvent';
+import useStatusTransitions from './hooks/useStatusTransitions';
+import Hero from './components/Hero';
+import NextDrawCard from './components/NextDrawCard';
+import Countdown from './components/Countdown';
+import HistoryTabMenu from './components/HistoryTabMenu';
+import YourHistoryCard from './components/YourHistoryCard';
+import AllHistoryCard from './components/AllHistoryCard';
+import CheckPrizesSection from './components/CheckPrizesSection';
+import HowToPlay from './components/HowToPlay';
 
 const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
-`
+`;
 
 const Lottery = () => {
-  useFetchLottery()
-  useStatusTransitions()
-  const { t } = useTranslation()
-  const { isDark, theme } = useTheme()
+  useFetchLottery();
+  useStatusTransitions();
+  const { t } = useTranslation();
+  const { isDark, theme } = useTheme();
   const {
     currentRound: { status, endTime },
-  } = useLottery()
-  const [historyTabMenuIndex, setHistoryTabMenuIndex] = useState(0)
-  const endTimeAsInt = parseInt(endTime, 10)
-  const { nextEventTime, postCountdownText, preCountdownText } = useGetNextLotteryEvent(endTimeAsInt, status)
+  } = useLottery();
+  const [historyTabMenuIndex, setHistoryTabMenuIndex] = useState(0);
+  const endTimeAsInt = parseInt(endTime, 10);
+  const { nextEventTime, postCountdownText, preCountdownText } = useGetNextLotteryEvent(endTimeAsInt, status);
 
   return (
     <LotteryPage>
@@ -104,7 +104,7 @@ const Lottery = () => {
         <HowToPlay />
       </PageSection>
     </LotteryPage>
-  )
-}
+  );
+};
 
-export default Lottery
+export default Lottery;

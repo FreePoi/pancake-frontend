@@ -1,49 +1,49 @@
-import React, { useContext, useState } from 'react'
-import styled from 'styled-components'
-import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from '@kaco/uikit'
-import { useWeb3React } from '@web3-react/core'
-import { Link as RouterLink } from 'react-router-dom'
-import { getAddressByType } from 'utils/collectibles'
-import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import { getErc721Contract } from 'utils/contractHelpers'
-import { useTranslation } from 'contexts/Localization'
-import { useGetCollectibles } from 'state/collectibles/hooks'
-import useToast from 'hooks/useToast'
-import SelectionCard from '../components/SelectionCard'
-import NextStepButton from '../components/NextStepButton'
-import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
+import React, { useContext, useState } from 'react';
+import styled from 'styled-components';
+import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from '@kaco/uikit';
+import { useWeb3React } from '@web3-react/core';
+import { Link as RouterLink } from 'react-router-dom';
+import { getAddressByType } from 'utils/collectibles';
+import { getPancakeProfileAddress } from 'utils/addressHelpers';
+import { getErc721Contract } from 'utils/contractHelpers';
+import { useTranslation } from 'contexts/Localization';
+import { useGetCollectibles } from 'state/collectibles/hooks';
+import useToast from 'hooks/useToast';
+import SelectionCard from '../components/SelectionCard';
+import NextStepButton from '../components/NextStepButton';
+import { ProfileCreationContext } from './contexts/ProfileCreationProvider';
 
 const Link = styled(RouterLink)`
   color: ${({ theme }) => theme.colors.primary};
-`
+`;
 
 const NftWrapper = styled.div`
   margin-bottom: 24px;
-`
+`;
 
 const ProfilePicture: React.FC = () => {
-  const { library } = useWeb3React()
-  const [isApproved, setIsApproved] = useState(false)
-  const [isApproving, setIsApproving] = useState(false)
-  const { selectedNft, actions } = useContext(ProfileCreationContext)
+  const { library } = useWeb3React();
+  const [isApproved, setIsApproved] = useState(false);
+  const [isApproving, setIsApproving] = useState(false);
+  const { selectedNft, actions } = useContext(ProfileCreationContext);
 
-  const { t } = useTranslation()
-  const { isLoading, nftsInWallet, tokenIds } = useGetCollectibles()
-  const { toastError } = useToast()
+  const { t } = useTranslation();
+  const { isLoading, nftsInWallet, tokenIds } = useGetCollectibles();
+  const { toastError } = useToast();
 
   const handleApprove = async () => {
-    const contract = getErc721Contract(selectedNft.nftAddress, library.getSigner())
-    const tx = await contract.approve(getPancakeProfileAddress(), selectedNft.tokenId)
-    setIsApproving(true)
-    const receipt = await tx.wait()
+    const contract = getErc721Contract(selectedNft.nftAddress, library.getSigner());
+    const tx = await contract.approve(getPancakeProfileAddress(), selectedNft.tokenId);
+    setIsApproving(true);
+    const receipt = await tx.wait();
     if (receipt.status) {
-      setIsApproving(false)
-      setIsApproved(true)
+      setIsApproving(false);
+      setIsApproved(true);
     } else {
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      setIsApproving(false)
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'));
+      setIsApproving(false);
     }
-  }
+  };
 
   if (!isLoading && nftsInWallet.length === 0) {
     return (
@@ -60,7 +60,7 @@ const ProfilePicture: React.FC = () => {
           )}
         </Text>
       </>
-    )
+    );
   }
 
   return (
@@ -90,8 +90,8 @@ const ProfilePicture: React.FC = () => {
               <Skeleton height="80px" mb="16px" />
             ) : (
               nftsInWallet.map((walletNft) => {
-                const [firstTokenId] = tokenIds[walletNft.identifier]
-                const address = getAddressByType(walletNft.type)
+                const [firstTokenId] = tokenIds[walletNft.identifier];
+                const address = getAddressByType(walletNft.type);
 
                 return (
                   <SelectionCard
@@ -104,7 +104,7 @@ const ProfilePicture: React.FC = () => {
                   >
                     <Text bold>{walletNft.name}</Text>
                   </SelectionCard>
-                )
+                );
               })
             )}
           </NftWrapper>
@@ -131,7 +131,7 @@ const ProfilePicture: React.FC = () => {
         {t('Next Step')}
       </NextStepButton>
     </>
-  )
-}
+  );
+};
 
-export default ProfilePicture
+export default ProfilePicture;

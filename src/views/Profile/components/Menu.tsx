@@ -1,14 +1,14 @@
-import { useTranslation } from 'contexts/Localization'
-import React from 'react'
-import { Link as RouterLink } from 'react-router-dom'
-import { ChevronLeftIcon, Flex, Text, ButtonMenu, ButtonMenuItem } from '@kaco/uikit'
+import { useTranslation } from 'contexts/Localization';
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import { ChevronLeftIcon, Flex, Text, ButtonMenu, ButtonMenuItem } from '@kaco/uikit';
 
 interface MenuProps {
-  activeIndex?: number
+  activeIndex?: number;
 }
 
 const Menu: React.FC<MenuProps> = ({ activeIndex = 0 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <>
@@ -32,7 +32,7 @@ const Menu: React.FC<MenuProps> = ({ activeIndex = 0 }) => {
         </ButtonMenu>
       </Flex>
     </>
-  )
-}
+  );
+};
 
-export default Menu
+export default Menu;

@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import { format } from 'date-fns'
-import styled from 'styled-components'
+import React, { useState } from 'react';
+import { format } from 'date-fns';
+import styled from 'styled-components';
 import {
   Text,
   Flex,
@@ -13,13 +13,13 @@ import {
   BunnyPlaceholderIcon,
   Spinner,
   useMatchBreakpoints,
-} from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import useAuctionHistory from '../hooks/useAuctionHistory'
-import AuctionLeaderboardTable from './AuctionLeaderboard/AuctionLeaderboardTable'
+} from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import useAuctionHistory from '../hooks/useAuctionHistory';
+import AuctionLeaderboardTable from './AuctionLeaderboard/AuctionLeaderboardTable';
 
 interface AuctionHistoryProps {
-  mostRecentClosedAuctionId: number
+  mostRecentClosedAuctionId: number;
 }
 
 const StyledIconButton = styled(IconButton)`
@@ -36,22 +36,22 @@ const StyledIconButton = styled(IconButton)`
       }
     }
   }
-`
+`;
 
 const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuctionId }) => {
   const [historyAuctionId, setHistoryAuctionId] = useState(
     mostRecentClosedAuctionId ? mostRecentClosedAuctionId.toString() : '0',
-  )
-  const historyAuctionIdAsInt = parseInt(historyAuctionId, 10)
+  );
+  const historyAuctionIdAsInt = parseInt(historyAuctionId, 10);
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const { isXs, isSm, isMd, isLg, isXl } = useMatchBreakpoints()
+  const { isXs, isSm, isMd, isLg, isXl } = useMatchBreakpoints();
 
-  const auctionHistory = useAuctionHistory(historyAuctionIdAsInt)
+  const auctionHistory = useAuctionHistory(historyAuctionIdAsInt);
   const selectedAuction = Object.values(auctionHistory).find(
     (auctionData) => auctionData.auction.id === historyAuctionIdAsInt,
-  )
+  );
 
   let auctionTable = selectedAuction ? (
     <AuctionLeaderboardTable bidders={selectedAuction.bidders} noBidsText="No bids were placed in this auction" />
@@ -59,7 +59,7 @@ const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuction
     <Flex justifyContent="center" alignItems="center" p="24px" height="250px">
       <Spinner />
     </Flex>
-  )
+  );
 
   if (Number.isNaN(historyAuctionIdAsInt)) {
     auctionTable = (
@@ -67,37 +67,37 @@ const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuction
         <Text mb="8px">{t('Please specify auction ID')}</Text>
         <BunnyPlaceholderIcon height="64px" width="64px" />
       </Flex>
-    )
+    );
   }
 
-  const endDate = selectedAuction ? format(selectedAuction.auction.endDate, 'MMM. dd yyyy, hh:mm aa') : null
+  const endDate = selectedAuction ? format(selectedAuction.auction.endDate, 'MMM. dd yyyy, hh:mm aa') : null;
 
   const handleHistoryAuctionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
-    } = event
+    } = event;
     if (value) {
-      let newAuctionId = value
+      let newAuctionId = value;
       if (parseInt(value, 10) <= 0) {
-        newAuctionId = ''
+        newAuctionId = '';
       }
       if (parseInt(value, 10) >= mostRecentClosedAuctionId) {
-        newAuctionId = mostRecentClosedAuctionId.toString()
+        newAuctionId = mostRecentClosedAuctionId.toString();
       }
-      setHistoryAuctionId(newAuctionId)
+      setHistoryAuctionId(newAuctionId);
     } else {
-      setHistoryAuctionId('')
+      setHistoryAuctionId('');
     }
-  }
+  };
 
   const handleArrowPress = (auctionId: number) => {
     if (auctionId) {
-      setHistoryAuctionId(auctionId.toString())
+      setHistoryAuctionId(auctionId.toString());
     } else {
       // auctionId is NaN when the input is empty, the only button press that will trigger this func is 'forward one'
-      setHistoryAuctionId('1')
+      setHistoryAuctionId('1');
     }
-  }
+  };
 
   return (
     <Box py="24px">
@@ -161,7 +161,7 @@ const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuction
         </Flex>
       )}
     </Box>
-  )
-}
+  );
+};
 
-export default AuctionHistory
+export default AuctionHistory;

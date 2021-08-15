@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
-import { Box } from '@kaco/uikit'
-import { DefaultTheme, useTheme } from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import React, { useEffect } from 'react';
+import { Box } from '@kaco/uikit';
+import { DefaultTheme, useTheme } from 'styled-components';
+import { useTranslation } from 'contexts/Localization';
 
 /**
  * When the script tag is injected the TradingView object is not immediately
@@ -12,11 +12,11 @@ const tradingViewListener = async () =>
     Object.defineProperty(window, 'TradingView', {
       configurable: true,
       set(value) {
-        this.tv = value
-        resolve(value)
+        this.tv = value;
+        resolve(value);
       },
     }),
-  )
+  );
 
 const initializeTradingView = (TradingViewObj: any, theme: DefaultTheme, localeCode: string) => {
   /* eslint-disable new-cap */
@@ -35,30 +35,30 @@ const initializeTradingView = (TradingViewObj: any, theme: DefaultTheme, localeC
     enable_publishing: false,
     allow_symbol_change: true,
     container_id: 'tradingview_b239c',
-  })
-}
+  });
+};
 
 const TradingView = () => {
-  const { currentLanguage } = useTranslation()
-  const theme = useTheme()
+  const { currentLanguage } = useTranslation();
+  const theme = useTheme();
 
   useEffect(() => {
     // @ts-ignore
     if (window.TradingView) {
       // @ts-ignore
-      initializeTradingView(window.TradingView, theme, currentLanguage.code)
+      initializeTradingView(window.TradingView, theme, currentLanguage.code);
     } else {
       tradingViewListener().then((tv) => {
-        initializeTradingView(tv, theme, currentLanguage.code)
-      })
+        initializeTradingView(tv, theme, currentLanguage.code);
+      });
     }
-  }, [theme, currentLanguage])
+  }, [theme, currentLanguage]);
 
   return (
     <Box overflow="hidden" className="tradingview_container">
       <div id="tradingview_b239c" />
     </Box>
-  )
-}
+  );
+};
 
-export default TradingView
+export default TradingView;

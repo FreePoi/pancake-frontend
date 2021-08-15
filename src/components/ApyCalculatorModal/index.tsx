@@ -1,21 +1,21 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Modal, Text, LinkExternal, Flex, Box } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { tokenEarnedPerThousandDollarsCompounding, getRoi } from 'utils/compoundApyHelpers'
+import React from 'react';
+import styled from 'styled-components';
+import { Modal, Text, LinkExternal, Flex, Box } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { tokenEarnedPerThousandDollarsCompounding, getRoi } from 'utils/compoundApyHelpers';
 
 interface ApyCalculatorModalProps {
-  onDismiss?: () => void
-  tokenPrice: number
-  apr: number
-  displayApr?: string
-  linkLabel: string
-  linkHref: string
-  earningTokenSymbol?: string
-  roundingDecimals?: number
-  compoundFrequency?: number
-  performanceFee?: number
-  isFarm?: boolean
+  onDismiss?: () => void;
+  tokenPrice: number;
+  apr: number;
+  displayApr?: string;
+  linkLabel: string;
+  linkHref: string;
+  earningTokenSymbol?: string;
+  roundingDecimals?: number;
+  compoundFrequency?: number;
+  performanceFee?: number;
+  isFarm?: boolean;
 }
 
 const Grid = styled.div`
@@ -23,13 +23,13 @@ const Grid = styled.div`
   grid-template-columns: repeat(3, auto);
   grid-template-rows: repeat(4, auto);
   margin-bottom: 12px;
-`
+`;
 
-const GridItem = styled.div``
+const GridItem = styled.div``;
 
 const GridHeaderItem = styled.div`
   max-width: 180px;
-`
+`;
 
 const BulletList = styled.ul`
   list-style-type: none;
@@ -50,7 +50,7 @@ const BulletList = styled.ul`
     font-size: 12px;
     color: ${({ theme }) => theme.colors.textSubtle};
   }
-`
+`;
 
 const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   onDismiss,
@@ -65,8 +65,8 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   performanceFee = 0,
   isFarm = false,
 }) => {
-  const { t } = useTranslation()
-  const oneThousandDollarsWorthOfToken = 1000 / tokenPrice
+  const { t } = useTranslation();
+  const oneThousandDollarsWorthOfToken = 1000 / tokenPrice;
 
   const tokenEarnedPerThousand1D = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays: 1,
@@ -75,7 +75,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
     roundingDecimals,
     compoundFrequency,
     performanceFee,
-  })
+  });
   const tokenEarnedPerThousand7D = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays: 7,
     farmApr: apr,
@@ -83,7 +83,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
     roundingDecimals,
     compoundFrequency,
     performanceFee,
-  })
+  });
   const tokenEarnedPerThousand30D = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays: 30,
     farmApr: apr,
@@ -91,7 +91,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
     roundingDecimals,
     compoundFrequency,
     performanceFee,
-  })
+  });
   const tokenEarnedPerThousand365D = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays: 365,
     farmApr: apr,
@@ -99,7 +99,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
     roundingDecimals,
     compoundFrequency,
     performanceFee,
-  })
+  });
 
   return (
     <Modal title={t('ROI')} onDismiss={onDismiss}>
@@ -250,7 +250,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         <LinkExternal href={linkHref}>{linkLabel}</LinkExternal>
       </Flex>
     </Modal>
-  )
-}
+  );
+};
 
-export default ApyCalculatorModal
+export default ApyCalculatorModal;

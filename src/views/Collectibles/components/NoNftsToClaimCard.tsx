@@ -1,11 +1,11 @@
-import React from 'react'
-import { Heading, Text } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import SecondaryCard from './SecondaryCard'
-import CardContent from './CardContent'
+import React from 'react';
+import { Heading, Text } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import SecondaryCard from './SecondaryCard';
+import CardContent from './CardContent';
 
 const NoNftsToClaimCard = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <SecondaryCard>
@@ -14,7 +14,7 @@ const NoNftsToClaimCard = () => {
         <Text>{t('You have no NFTs to claim at this time, but you can still see the NFTs in this series below.')}</Text>
       </CardContent>
     </SecondaryCard>
-  )
-}
+  );
+};
 
-export default NoNftsToClaimCard
+export default NoNftsToClaimCard;

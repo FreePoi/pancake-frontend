@@ -1,64 +1,64 @@
 export interface UserResponse {
-  id: string
-  address: string
-  block: string
-  totalBets: string
-  totalBNB: string
-  bets?: BetResponse[]
+  id: string;
+  address: string;
+  block: string;
+  totalBets: string;
+  totalBNB: string;
+  bets?: BetResponse[];
 }
 
 export interface BetResponse {
-  id: string
-  hash: string
-  amount: string
-  position: string
-  claimed: boolean
-  claimedHash: string
-  user?: UserResponse
-  round?: RoundResponse
+  id: string;
+  hash: string;
+  amount: string;
+  position: string;
+  claimed: boolean;
+  claimedHash: string;
+  user?: UserResponse;
+  round?: RoundResponse;
 }
 
 export interface HistoricalBetResponse {
-  id: string
-  hash: string
-  amount: string
-  position: string
-  claimed: boolean
-  user?: UserResponse
+  id: string;
+  hash: string;
+  amount: string;
+  position: string;
+  claimed: boolean;
+  user?: UserResponse;
   round: {
-    id: string
-    epoch: string
-  }
+    id: string;
+    epoch: string;
+  };
 }
 
 export interface RoundResponse {
-  id: string
-  epoch: string
-  failed: boolean
-  startBlock: string
-  startAt: string
-  lockAt: string
-  lockBlock: string
-  lockPrice: string
-  endBlock: string
-  closePrice: string
-  totalBets: string
-  totalAmount: string
-  bearBets: string
-  bullBets: string
-  bearAmount: string
-  bullAmount: string
-  position: string
-  bets: BetResponse[]
+  id: string;
+  epoch: string;
+  failed: boolean;
+  startBlock: string;
+  startAt: string;
+  lockAt: string;
+  lockBlock: string;
+  lockPrice: string;
+  endBlock: string;
+  closePrice: string;
+  totalBets: string;
+  totalAmount: string;
+  bearBets: string;
+  bullBets: string;
+  bearAmount: string;
+  bullAmount: string;
+  position: string;
+  bets: BetResponse[];
 }
 
 export interface TotalWonMarketResponse {
-  totalBNB: string
-  totalBNBTreasury: string
+  totalBNB: string;
+  totalBNBTreasury: string;
 }
 
 export interface TotalWonRoundResponse {
-  totalAmount: string
+  totalAmount: string;
 }
 
 /**
@@ -83,7 +83,7 @@ export const getRoundBaseFields = () => `
   bearBets
   bearAmount
   position
-`
+`;
 
 export const getBetBaseFields = () => `
   id
@@ -92,7 +92,7 @@ export const getBetBaseFields = () => `
   position
   claimed
   claimedHash
-`
+`;
 
 export const getUserBaseFields = () => `
   id
@@ -100,4 +100,4 @@ export const getUserBaseFields = () => `
   block
   totalBets
   totalBNB
-`
+`;

@@ -1,11 +1,11 @@
-import React from 'react'
-import { Heading, Text } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import SecondaryCard from './SecondaryCard'
-import CardContent from './CardContent'
+import React from 'react';
+import { Heading, Text } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import SecondaryCard from './SecondaryCard';
+import CardContent from './CardContent';
 
 const PleaseWaitCard = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <SecondaryCard>
@@ -14,7 +14,7 @@ const PleaseWaitCard = () => {
         <Text>{t('The claiming period hasn’t started yet. Check back soon.')}</Text>
       </CardContent>
     </SecondaryCard>
-  )
-}
+  );
+};
 
-export default PleaseWaitCard
+export default PleaseWaitCard;

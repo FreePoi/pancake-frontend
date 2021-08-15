@@ -1,5 +1,5 @@
-import React from 'react'
-import { Svg, SvgProps } from '@kaco/uikit'
+import React from 'react';
+import { Svg, SvgProps } from '@kaco/uikit';
 
 const Prizes: React.FC<SvgProps> = (props) => {
   return (
@@ -181,7 +181,7 @@ const Prizes: React.FC<SvgProps> = (props) => {
         fill="#EB8C00"
       />
     </Svg>
-  )
-}
+  );
+};
 
-export default Prizes
+export default Prizes;

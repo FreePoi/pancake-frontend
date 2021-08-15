@@ -1,4 +1,4 @@
-import { Campaign } from './types'
+import { Campaign } from './types';
 
 /**
  * id: The campaign id (required)
@@ -180,16 +180,16 @@ const campaigns: Campaign[] = [
     description: 'Played a round of Prediction before round 12,120',
     badge: 'clairvoyant.svg',
   },
-]
+];
 
 /**
  * Transform the campaign config into a map. Keeps the config the same
  * as the others and allows easy access to a campaign by id
  */
-export const campaignMap = new Map<string, Campaign>()
+export const campaignMap = new Map<string, Campaign>();
 
 campaigns.forEach((campaign) => {
-  campaignMap.set(campaign.id, campaign)
-})
+  campaignMap.set(campaign.id, campaign);
+});
 
-export default campaigns
+export default campaigns;

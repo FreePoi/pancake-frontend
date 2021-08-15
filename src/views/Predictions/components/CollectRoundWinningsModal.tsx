@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   ModalContainer,
   ModalBody,
@@ -15,26 +15,26 @@ import {
   Box,
   LinkExternal,
   ModalCloseButton,
-} from '@kaco/uikit'
-import { useWeb3React } from '@web3-react/core'
-import { getBscScanLink } from 'utils'
-import { useAppDispatch } from 'state'
-import { usePriceBnbBusd } from 'state/farms/hooks'
-import { fetchClaimableStatuses } from 'state/predictions'
-import { useTranslation } from 'contexts/Localization'
-import useToast from 'hooks/useToast'
-import { usePredictionsContract } from 'hooks/useContract'
+} from '@kaco/uikit';
+import { useWeb3React } from '@web3-react/core';
+import { getBscScanLink } from 'utils';
+import { useAppDispatch } from 'state';
+import { usePriceBnbBusd } from 'state/farms/hooks';
+import { fetchClaimableStatuses } from 'state/predictions';
+import { useTranslation } from 'contexts/Localization';
+import useToast from 'hooks/useToast';
+import { usePredictionsContract } from 'hooks/useContract';
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
-  payout: string
-  betAmount: string
-  epoch: number
-  onSuccess?: () => Promise<void>
+  payout: string;
+  betAmount: string;
+  epoch: number;
+  onSuccess?: () => Promise<void>;
 }
 
 const Modal = styled(ModalContainer)`
   overflow: visible;
-`
+`;
 
 const BunnyDecoration = styled.div`
   position: absolute;
@@ -42,7 +42,7 @@ const BunnyDecoration = styled.div`
   left: 0px;
   text-align: center;
   width: 100%;
-`
+`;
 
 const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   payout,
@@ -51,31 +51,31 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   onDismiss,
   onSuccess,
 }) => {
-  const [isPendingTx, setIsPendingTx] = useState(false)
-  const { account } = useWeb3React()
-  const { t } = useTranslation()
-  const { toastSuccess, toastError } = useToast()
-  const predictionsContract = usePredictionsContract()
-  const bnbBusdPrice = usePriceBnbBusd()
-  const dispatch = useAppDispatch()
+  const [isPendingTx, setIsPendingTx] = useState(false);
+  const { account } = useWeb3React();
+  const { t } = useTranslation();
+  const { toastSuccess, toastError } = useToast();
+  const predictionsContract = usePredictionsContract();
+  const bnbBusdPrice = usePriceBnbBusd();
+  const dispatch = useAppDispatch();
 
   // Convert payout to number for compatibility
-  const payoutAsFloat = parseFloat(payout)
-  const betAmountAsFloat = parseFloat(betAmount)
+  const payoutAsFloat = parseFloat(payout);
+  const betAmountAsFloat = parseFloat(betAmount);
 
   const handleClick = async () => {
     try {
-      const tx = await predictionsContract.claim(epoch)
-      setIsPendingTx(true)
-      const receipt = await tx.wait()
+      const tx = await predictionsContract.claim(epoch);
+      setIsPendingTx(true);
+      const receipt = await tx.wait();
 
       if (onSuccess) {
-        await onSuccess()
+        await onSuccess();
       }
 
-      await dispatch(fetchClaimableStatuses({ account, epochs: [epoch] }))
-      onDismiss()
-      setIsPendingTx(false)
+      await dispatch(fetchClaimableStatuses({ account, epochs: [epoch] }));
+      onDismiss();
+      setIsPendingTx(false);
       toastSuccess(
         t('Winnings collected!'),
         <Box>
@@ -88,13 +88,13 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
             </LinkExternal>
           )}
         </Box>,
-      )
+      );
     } catch {
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'));
     } finally {
-      setIsPendingTx(false)
+      setIsPendingTx(false);
     }
-  }
+  };
 
   return (
     <Modal minWidth="288px" position="relative" mt="124px">
@@ -138,7 +138,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
         </Button>
       </ModalBody>
     </Modal>
-  )
-}
+  );
+};
 
-export default CollectRoundWinningsModal
+export default CollectRoundWinningsModal;

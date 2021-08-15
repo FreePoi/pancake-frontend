@@ -1,20 +1,20 @@
-import React from 'react'
-import { Text, Flex, Box, Skeleton } from '@kaco/uikit'
-import { PublicIfoData } from 'views/Ifos/types'
-import { useTranslation } from 'contexts/Localization'
-import { Ifo, PoolIds } from 'config/constants/types'
-import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
-import { SkeletonCardDetails } from './Skeletons'
+import React from 'react';
+import { Text, Flex, Box, Skeleton } from '@kaco/uikit';
+import { PublicIfoData } from 'views/Ifos/types';
+import { useTranslation } from 'contexts/Localization';
+import { Ifo, PoolIds } from 'config/constants/types';
+import { getBalanceNumber, formatNumber } from 'utils/formatBalance';
+import { SkeletonCardDetails } from './Skeletons';
 
 export interface IfoCardDetailsProps {
-  poolId: PoolIds
-  ifo: Ifo
-  publicIfoData: PublicIfoData
+  poolId: PoolIds;
+  ifo: Ifo;
+  publicIfoData: PublicIfoData;
 }
 
 export interface FooterEntryProps {
-  label: string
-  value: string | number
+  label: string;
+  value: string | number;
 }
 
 const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
@@ -31,25 +31,25 @@ const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
         <Skeleton height={21} width={80} />
       )}
     </Flex>
-  )
-}
+  );
+};
 
 const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoData }) => {
-  const { t } = useTranslation()
-  const { status, currencyPriceInUSD } = publicIfoData
-  const poolCharacteristic = publicIfoData[poolId]
+  const { t } = useTranslation();
+  const { status, currencyPriceInUSD } = publicIfoData;
+  const poolCharacteristic = publicIfoData[poolId];
 
   /* Format start */
-  const maxLpTokens = getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)
-  const taxRate = `${poolCharacteristic.taxRate}%`
+  const maxLpTokens = getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals);
+  const taxRate = `${poolCharacteristic.taxRate}%`;
 
   const totalCommittedPercent = poolCharacteristic.totalAmountPool
     .div(poolCharacteristic.raisingAmountPool)
     .times(100)
-    .toFixed(2)
-  const totalLPCommitted = getBalanceNumber(poolCharacteristic.totalAmountPool, ifo.currency.decimals)
-  const totalLPCommittedInUSD = currencyPriceInUSD.times(totalLPCommitted)
-  const totalCommitted = `~$${formatNumber(totalLPCommittedInUSD.toNumber(), 0, 0)} (${totalCommittedPercent}%)`
+    .toFixed(2);
+  const totalLPCommitted = getBalanceNumber(poolCharacteristic.totalAmountPool, ifo.currency.decimals);
+  const totalLPCommittedInUSD = currencyPriceInUSD.times(totalLPCommitted);
+  const totalCommitted = `~$${formatNumber(totalLPCommittedInUSD.toNumber(), 0, 0)} (${totalCommittedPercent}%)`;
 
   /* Format end */
 
@@ -65,7 +65,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
             value={`$${ifo.tokenOfferingPrice}`}
           />
         </>
-      )
+      );
     }
     if (status === 'live') {
       return (
@@ -74,7 +74,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
           {poolId === PoolIds.poolUnlimited && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
         </>
-      )
+      );
     }
     if (status === 'finished') {
       return (
@@ -89,12 +89,12 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
             value={`$${ifo.tokenOfferingPrice ? ifo.tokenOfferingPrice : '?'}`}
           />
         </>
-      )
+      );
     }
-    return <SkeletonCardDetails />
-  }
+    return <SkeletonCardDetails />;
+  };
 
-  return <Box paddingTop="24px">{renderBasedOnIfoStatus()}</Box>
-}
+  return <Box paddingTop="24px">{renderBasedOnIfoStatus()}</Box>;
+};
 
-export default IfoCardDetails
+export default IfoCardDetails;

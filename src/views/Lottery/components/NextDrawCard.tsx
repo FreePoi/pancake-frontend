@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   Card,
   CardHeader,
@@ -13,18 +13,18 @@ import {
   Box,
   CardFooter,
   ExpandableLabel,
-} from '@kaco/uikit'
-import { useWeb3React } from '@web3-react/core'
-import { LotteryStatus } from 'config/constants/types'
-import { useTranslation } from 'contexts/Localization'
-import { usePriceCakeBusd } from 'state/farms/hooks'
-import { useLottery } from 'state/lottery/hooks'
-import { getBalanceNumber } from 'utils/formatBalance'
-import Balance from 'components/Balance'
-import ViewTicketsModal from './ViewTicketsModal'
-import BuyTicketsButton from './BuyTicketsButton'
-import { dateTimeOptions } from '../helpers'
-import RewardBrackets from './RewardBrackets'
+} from '@kaco/uikit';
+import { useWeb3React } from '@web3-react/core';
+import { LotteryStatus } from 'config/constants/types';
+import { useTranslation } from 'contexts/Localization';
+import { usePriceCakeBusd } from 'state/farms/hooks';
+import { useLottery } from 'state/lottery/hooks';
+import { getBalanceNumber } from 'utils/formatBalance';
+import Balance from 'components/Balance';
+import ViewTicketsModal from './ViewTicketsModal';
+import BuyTicketsButton from './BuyTicketsButton';
+import { dateTimeOptions } from '../helpers';
+import RewardBrackets from './RewardBrackets';
 
 const Grid = styled.div`
   display: grid;
@@ -34,7 +34,7 @@ const Grid = styled.div`
     grid-column-gap: 32px;
     grid-template-columns: auto 1fr;
   }
-`
+`;
 
 const StyledCard = styled(Card)`
   width: 100%;
@@ -46,29 +46,29 @@ const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.md} {
     width: 756px;
   }
-`
+`;
 
 const NextDrawWrapper = styled.div`
   background: ${({ theme }) => theme.colors.background};
   padding: 24px;
-`
+`;
 
 const NextDrawCard = () => {
-  const { t } = useTranslation()
-  const { account } = useWeb3React()
-  const { currentLotteryId, isTransitioning, currentRound } = useLottery()
-  const { endTime, amountCollectedInCake, userTickets, status } = currentRound
+  const { t } = useTranslation();
+  const { account } = useWeb3React();
+  const { currentLotteryId, isTransitioning, currentRound } = useLottery();
+  const { endTime, amountCollectedInCake, userTickets, status } = currentRound;
 
-  const [onPresentViewTicketsModal] = useModal(<ViewTicketsModal roundId={currentLotteryId} roundStatus={status} />)
-  const [isExpanded, setIsExpanded] = useState(false)
-  const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
+  const [onPresentViewTicketsModal] = useModal(<ViewTicketsModal roundId={currentLotteryId} roundStatus={status} />);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning;
 
-  const cakePriceBusd = usePriceCakeBusd()
-  const prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
-  const endTimeMs = parseInt(endTime, 10) * 1000
-  const endDate = new Date(endTimeMs)
-  const isLotteryOpen = status === LotteryStatus.OPEN
-  const userTicketCount = userTickets?.tickets?.length || 0
+  const cakePriceBusd = usePriceCakeBusd();
+  const prizeInBusd = amountCollectedInCake.times(cakePriceBusd);
+  const endTimeMs = parseInt(endTime, 10) * 1000;
+  const endDate = new Date(endTimeMs);
+  const isLotteryOpen = status === LotteryStatus.OPEN;
+  const userTicketCount = userTickets?.tickets?.length || 0;
 
   const getPrizeBalances = () => {
     if (status === LotteryStatus.CLOSE || status === LotteryStatus.CLAIMABLE) {
@@ -76,7 +76,7 @@ const NextDrawCard = () => {
         <Heading scale="xl" color="secondary" textAlign={['center', null, null, 'left']}>
           {t('Calculating')}...
         </Heading>
-      )
+      );
     }
     return (
       <>
@@ -107,25 +107,25 @@ const NextDrawCard = () => {
           />
         )}
       </>
-    )
-  }
+    );
+  };
 
   const getNextDrawId = () => {
     if (status === LotteryStatus.OPEN) {
-      return `${currentLotteryId} |`
+      return `${currentLotteryId} |`;
     }
     if (status === LotteryStatus.PENDING) {
-      return ''
+      return '';
     }
-    return parseInt(currentLotteryId, 10) + 1
-  }
+    return parseInt(currentLotteryId, 10) + 1;
+  };
 
   const getNextDrawDateTime = () => {
     if (status === LotteryStatus.OPEN) {
-      return `${t('Draw')}: ${endDate.toLocaleString(undefined, dateTimeOptions)}`
+      return `${t('Draw')}: ${endDate.toLocaleString(undefined, dateTimeOptions)}`;
     }
-    return ''
-  }
+    return '';
+  };
 
   return (
     <StyledCard>
@@ -207,7 +207,7 @@ const NextDrawCard = () => {
         )}
       </CardFooter>
     </StyledCard>
-  )
-}
+  );
+};
 
-export default NextDrawCard
+export default NextDrawCard;

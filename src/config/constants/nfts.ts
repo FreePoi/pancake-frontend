@@ -1,6 +1,6 @@
-import { Nft, NftSource, NftType } from './types'
+import { Nft, NftSource, NftType } from './types';
 
-export const IPFS_GATEWAY = 'https://cloudflare-ipfs.com'
+export const IPFS_GATEWAY = 'https://cloudflare-ipfs.com';
 
 export const nftSources: NftSource = {
   [NftType.PANCAKE]: {
@@ -17,7 +17,7 @@ export const nftSources: NftSource = {
     },
     identifierKey: 'image',
   },
-}
+};
 
 /**
  * NOTE: https://cloudflare-ipfs.com does not support video streaming so for the video URLS we need to use
@@ -341,6 +341,6 @@ const Nfts: Nft[] = [
     type: NftType.PANCAKE,
     variationId: 4,
   },
-]
+];
 
-export default Nfts
+export default Nfts;

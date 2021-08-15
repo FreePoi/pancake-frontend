@@ -1,7 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Flex } from '@kaco/uikit'
-import { SectionProps } from '../../types'
+import React from 'react';
+import styled from 'styled-components';
+import { Flex } from '@kaco/uikit';
+import { SectionProps } from '../../types';
 
 const BackgroundColorWrapper = styled(Flex)<SectionProps>`
   min-height: calc(100vh - 64px);
@@ -12,19 +12,19 @@ const BackgroundColorWrapper = styled(Flex)<SectionProps>`
   width: 100%;
   background: ${({ backgroundStyle }) => backgroundStyle};
   margin: auto;
-`
+`;
 
 const ChildrenWrapper = styled(Flex)`
   align-items: center;
   justify-content: center;
-`
+`;
 
 const Section: React.FC<SectionProps> = ({ children, backgroundStyle = '#faf9fa' }) => {
   return (
     <BackgroundColorWrapper backgroundStyle={backgroundStyle}>
       <ChildrenWrapper>{children}</ChildrenWrapper>
     </BackgroundColorWrapper>
-  )
-}
+  );
+};
 
-export default Section
+export default Section;

@@ -1,30 +1,30 @@
-import React, { useState } from 'react'
-import { Token, Currency } from '@pancakeswap/sdk'
-import { Button, Text, ErrorIcon, Flex, Message, Checkbox, Link, Tag, Grid } from '@kaco/uikit'
-import { AutoColumn } from 'components/Layout/Column'
-import { useAddUserToken } from 'state/user/hooks'
-import { getBscScanLink } from 'utils'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useCombinedInactiveList } from 'state/lists/hooks'
-import { ListLogo } from 'components/Logo'
-import { useTranslation } from 'contexts/Localization'
+import React, { useState } from 'react';
+import { Token, Currency } from '@kaco/sdk';
+import { Button, Text, ErrorIcon, Flex, Message, Checkbox, Link, Tag, Grid } from '@kaco/uikit';
+import { AutoColumn } from 'components/Layout/Column';
+import { useAddUserToken } from 'state/user/hooks';
+import { getBscScanLink } from 'utils';
+import useActiveWeb3React from 'hooks/useActiveWeb3React';
+import { useCombinedInactiveList } from 'state/lists/hooks';
+import { ListLogo } from 'components/Logo';
+import { useTranslation } from 'contexts/Localization';
 
 interface ImportProps {
-  tokens: Token[]
-  handleCurrencySelect?: (currency: Currency) => void
+  tokens: Token[];
+  handleCurrencySelect?: (currency: Currency) => void;
 }
 
 function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React();
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const [confirmed, setConfirmed] = useState(false)
+  const [confirmed, setConfirmed] = useState(false);
 
-  const addToken = useAddUserToken()
+  const addToken = useAddUserToken();
 
   // use for showing import source on inactive tokens
-  const inactiveTokenList = useCombinedInactiveList()
+  const inactiveTokenList = useCombinedInactiveList();
 
   return (
     <AutoColumn gap="lg">
@@ -40,10 +40,10 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
       </Message>
 
       {tokens.map((token) => {
-        const list = chainId && inactiveTokenList?.[chainId]?.[token.address]?.list
+        const list = chainId && inactiveTokenList?.[chainId]?.[token.address]?.list;
         const address = token.address
           ? `${token.address.substring(0, 6)}...${token.address.substring(token.address.length - 4)}`
-          : null
+          : null;
         return (
           <Grid key={token.address} gridTemplateRows="1fr 1fr 1fr" gridGap="4px">
             {list !== undefined ? (
@@ -73,7 +73,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
               </Flex>
             )}
           </Grid>
-        )
+        );
       })}
 
       <Flex justifyContent="space-between" alignItems="center">
@@ -93,9 +93,9 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           variant="danger"
           disabled={!confirmed}
           onClick={() => {
-            tokens.map((token) => addToken(token))
+            tokens.map((token) => addToken(token));
             if (handleCurrencySelect) {
-              handleCurrencySelect(tokens[0])
+              handleCurrencySelect(tokens[0]);
             }
           }}
           className=".token-dismiss-button"
@@ -104,7 +104,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
         </Button>
       </Flex>
     </AutoColumn>
-  )
+  );
 }
 
-export default ImportToken
+export default ImportToken;

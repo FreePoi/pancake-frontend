@@ -1,10 +1,10 @@
-import React from 'react'
-import { Heading, Text, Flex, ChevronRightIcon } from '@kaco/uikit'
-import { Link } from 'react-router-dom'
-import { useTranslation } from 'contexts/Localization'
-import { useGetCollectibles } from 'state/collectibles/hooks'
-import styled from 'styled-components'
-import CollectibleCard from './CollectibleCard'
+import React from 'react';
+import { Heading, Text, Flex, ChevronRightIcon } from '@kaco/uikit';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'contexts/Localization';
+import { useGetCollectibles } from 'state/collectibles/hooks';
+import styled from 'styled-components';
+import CollectibleCard from './CollectibleCard';
 
 const CollectibleList = styled.div`
   display: grid;
@@ -25,11 +25,11 @@ const CollectibleList = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     grid-template-columns: repeat(5, 1fr);
   }
-`
+`;
 
 const Collectibles = () => {
-  const { t } = useTranslation()
-  const { nftsInWallet } = useGetCollectibles()
+  const { t } = useTranslation();
+  const { nftsInWallet } = useGetCollectibles();
 
   return (
     <>
@@ -61,7 +61,7 @@ const Collectibles = () => {
         <ChevronRightIcon />
       </Flex>
     </>
-  )
-}
+  );
+};
 
-export default Collectibles
+export default Collectibles;

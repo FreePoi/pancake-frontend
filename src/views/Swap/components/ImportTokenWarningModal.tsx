@@ -1,11 +1,11 @@
-import React from 'react'
-import { Token } from '@pancakeswap/sdk'
-import { Modal, InjectedModalProps } from '@kaco/uikit'
-import ImportToken from 'components/SearchModal/ImportToken'
+import React from 'react';
+import { Token } from '@kaco/sdk';
+import { Modal, InjectedModalProps } from '@kaco/uikit';
+import ImportToken from 'components/SearchModal/ImportToken';
 
 interface Props extends InjectedModalProps {
-  tokens: Token[]
-  onCancel: () => void
+  tokens: Token[];
+  onCancel: () => void;
 }
 
 const ImportTokenWarningModal: React.FC<Props> = ({ tokens, onDismiss, onCancel }) => {
@@ -14,15 +14,15 @@ const ImportTokenWarningModal: React.FC<Props> = ({ tokens, onDismiss, onCancel 
       title="Import Token"
       onDismiss={() => {
         if (onDismiss) {
-          onDismiss()
+          onDismiss();
         }
-        onCancel()
+        onCancel();
       }}
       style={{ maxWidth: '420px' }}
     >
       <ImportToken tokens={tokens} handleCurrencySelect={onDismiss} />
     </Modal>
-  )
-}
+  );
+};
 
-export default ImportTokenWarningModal
+export default ImportTokenWarningModal;

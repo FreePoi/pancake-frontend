@@ -1,27 +1,27 @@
-import React, { useEffect, useRef } from 'react'
-import { useCountUp } from 'react-countup'
-import { Card, CardBody, Flex, PlayCircleOutlineIcon, Skeleton, Text, TooltipText, useTooltip } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { NodeRound, NodeLedger, BetPosition } from 'state/types'
-import { BLOCK_PADDING } from 'state/predictions'
-import { formatBigNumberToFixed } from 'utils/formatBalance'
-import { useGetLastOraclePrice } from 'state/predictions/hooks'
-import { useBlock } from 'state/block/hooks'
-import BlockProgress from 'components/BlockProgress'
-import { formatUsdv2, getPriceDifference } from '../../helpers'
-import PositionTag from '../PositionTag'
-import { RoundResultBox, LockPriceRow, PrizePoolRow } from '../RoundResult'
-import MultiplierArrow from './MultiplierArrow'
-import CardHeader from './CardHeader'
-import CalculatingCard from './CalculatingCard'
+import React, { useEffect, useRef } from 'react';
+import { useCountUp } from 'react-countup';
+import { Card, CardBody, Flex, PlayCircleOutlineIcon, Skeleton, Text, TooltipText, useTooltip } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { NodeRound, NodeLedger, BetPosition } from 'state/types';
+import { BLOCK_PADDING } from 'state/predictions';
+import { formatBigNumberToFixed } from 'utils/formatBalance';
+import { useGetLastOraclePrice } from 'state/predictions/hooks';
+import { useBlock } from 'state/block/hooks';
+import BlockProgress from 'components/BlockProgress';
+import { formatUsdv2, getPriceDifference } from '../../helpers';
+import PositionTag from '../PositionTag';
+import { RoundResultBox, LockPriceRow, PrizePoolRow } from '../RoundResult';
+import MultiplierArrow from './MultiplierArrow';
+import CardHeader from './CardHeader';
+import CalculatingCard from './CalculatingCard';
 
 interface LiveRoundCardProps {
-  round: NodeRound
-  betAmount?: NodeLedger['amount']
-  hasEnteredUp: boolean
-  hasEnteredDown: boolean
-  bullMultiplier: string
-  bearMultiplier: string
+  round: NodeRound;
+  betAmount?: NodeLedger['amount'];
+  hasEnteredUp: boolean;
+  hasEnteredDown: boolean;
+  bullMultiplier: string;
+  bearMultiplier: string;
 }
 
 const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
@@ -32,36 +32,36 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   bullMultiplier,
   bearMultiplier,
 }) => {
-  const { t } = useTranslation()
-  const { lockPrice, lockBlock, endBlock, totalAmount } = round
-  const { currentBlock } = useBlock()
-  const price = useGetLastOraclePrice()
+  const { t } = useTranslation();
+  const { lockPrice, lockBlock, endBlock, totalAmount } = round;
+  const { currentBlock } = useBlock();
+  const price = useGetLastOraclePrice();
 
-  const isBull = lockPrice && price.gt(lockPrice)
-  const priceColor = isBull ? 'success' : 'failure'
-  const estimatedEndBlockPlusPadding = endBlock + BLOCK_PADDING
+  const isBull = lockPrice && price.gt(lockPrice);
+  const priceColor = isBull ? 'success' : 'failure';
+  const estimatedEndBlockPlusPadding = endBlock + BLOCK_PADDING;
 
-  const priceDifference = getPriceDifference(price, lockPrice)
-  const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
+  const priceDifference = getPriceDifference(price, lockPrice);
+  const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8));
 
   const { countUp, update } = useCountUp({
     start: 0,
     end: priceAsNumber,
     duration: 1,
     decimals: 3,
-  })
+  });
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Last price from Chainlink Oracle'), {
     placement: 'bottom',
-  })
+  });
 
-  const updateRef = useRef(update)
+  const updateRef = useRef(update);
 
   useEffect(() => {
-    updateRef.current(priceAsNumber)
-  }, [priceAsNumber, updateRef])
+    updateRef.current(priceAsNumber);
+  }, [priceAsNumber, updateRef]);
 
   if (currentBlock > estimatedEndBlockPlusPadding) {
-    return <CalculatingCard round={round} />
+    return <CalculatingCard round={round} />;
   }
 
   return (
@@ -108,7 +108,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
       </CardBody>
       {tooltipVisible && tooltip}
     </Card>
-  )
-}
+  );
+};
 
-export default LiveRoundCard
+export default LiveRoundCard;

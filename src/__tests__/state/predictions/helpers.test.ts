@@ -3,7 +3,7 @@ import {
   numberOrNull,
   transformBetResponse,
   transformTotalWonResponse,
-} from 'state/predictions/helpers'
+} from 'state/predictions/helpers';
 
 describe('numberOrNull', () => {
   it.each([
@@ -12,9 +12,9 @@ describe('numberOrNull', () => {
     [null, null],
     ['test', null],
   ])('return %s correctly as number, null, or NaN', (value, expected) => {
-    expect(numberOrNull(value)).toEqual(expected)
-  })
-})
+    expect(numberOrNull(value)).toEqual(expected);
+  });
+});
 
 describe('makeFutureRoundResponse', () => {
   it('returns a correctly transformed future round response', () => {
@@ -31,9 +31,9 @@ describe('makeFutureRoundResponse', () => {
       rewardBaseCalAmount: { hex: '0x00', type: 'BigNumber' },
       rewardAmount: { hex: '0x00', type: 'BigNumber' },
       oracleCalled: false,
-    })
-  })
-})
+    });
+  });
+});
 
 describe('transformBetResponse', () => {
   const userResponse = {
@@ -42,7 +42,7 @@ describe('transformBetResponse', () => {
     block: '500',
     totalBets: '20',
     totalBNB: '43',
-  }
+  };
 
   it('returns a correctly transformed betresponse without round', () => {
     const betResponseWithoutRound = {
@@ -52,7 +52,7 @@ describe('transformBetResponse', () => {
       position: 'Bull',
       claimed: false,
       user: userResponse,
-    }
+    };
 
     expect(transformBetResponse(betResponseWithoutRound)).toEqual({
       id: 'id',
@@ -67,8 +67,8 @@ describe('transformBetResponse', () => {
         totalBets: 20,
         totalBNB: 43,
       },
-    })
-  })
+    });
+  });
 
   it('returns a correctly transformed betresponse with round', () => {
     const betResponseWithRound = {
@@ -98,7 +98,7 @@ describe('transformBetResponse', () => {
         position: null,
         bets: [],
       },
-    }
+    };
 
     expect(transformBetResponse(betResponseWithRound)).toEqual({
       id: 'id',
@@ -133,17 +133,17 @@ describe('transformBetResponse', () => {
         totalBets: 20,
         totalBNB: 43,
       },
-    })
-  })
-})
+    });
+  });
+});
 
 describe('transformTotalWonResponse', () => {
   it('returns a correctly transformed total won response', () => {
     const totalWonMarketResponse = {
       totalBNB: '200',
       totalBNBTreasury: '100',
-    }
-    const roundResponse = [{ totalAmount: '5' }, { totalAmount: '2' }]
-    expect(transformTotalWonResponse(totalWonMarketResponse, roundResponse)).toEqual(93)
-  })
-})
+    };
+    const roundResponse = [{ totalAmount: '5' }, { totalAmount: '2' }];
+    expect(transformTotalWonResponse(totalWonMarketResponse, roundResponse)).toEqual(93);
+  });
+});

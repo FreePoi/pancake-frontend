@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import { ListViewIcon, CardViewIcon, IconButton } from '@kaco/uikit'
+import React from 'react';
+import styled from 'styled-components';
+import { ListViewIcon, CardViewIcon, IconButton } from '@kaco/uikit';
 
 export enum ViewMode {
   'TABLE' = 'TABLE',
@@ -8,8 +8,8 @@ export enum ViewMode {
 }
 
 interface ToggleViewProps {
-  viewMode: ViewMode
-  onToggle: (mode: ViewMode) => void
+  viewMode: ViewMode;
+  onToggle: (mode: ViewMode) => void;
 }
 
 const Container = styled.div`
@@ -20,14 +20,14 @@ const Container = styled.div`
     margin-left: 0;
     margin-right: 16px;
   }
-`
+`;
 
 const ToggleView: React.FunctionComponent<ToggleViewProps> = ({ viewMode, onToggle }) => {
   const handleToggle = (mode: ViewMode) => {
     if (viewMode !== mode) {
-      onToggle(mode)
+      onToggle(mode);
     }
-  }
+  };
 
   return (
     <Container>
@@ -38,7 +38,7 @@ const ToggleView: React.FunctionComponent<ToggleViewProps> = ({ viewMode, onTogg
         <ListViewIcon color={viewMode === ViewMode.TABLE ? 'primary' : 'textDisabled'} />
       </IconButton>
     </Container>
-  )
-}
+  );
+};
 
-export default ToggleView
+export default ToggleView;

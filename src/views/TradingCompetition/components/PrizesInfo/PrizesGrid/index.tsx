@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   BlockIcon,
   Box,
@@ -15,16 +15,16 @@ import {
   Text,
   TeamPlayerIcon,
   TrophyGoldIcon,
-} from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import easterPrizes, { Tiers, Rank } from 'config/constants/trading-competition/easter'
-import { Td, BoldTd, StyledPrizeTable } from '../../StyledPrizeTable'
+} from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import easterPrizes, { Tiers, Rank } from 'config/constants/trading-competition/easter';
+import { Td, BoldTd, StyledPrizeTable } from '../../StyledPrizeTable';
 
-const COLOR_GOLD = '#FFBF33'
-const COLOR_SILVER = '#C1C1C1'
-const COLOR_BRONZE = '#E79559'
-const COLOR_PURPLE = '#A57CFD'
-const COLOR_TEAL = '#4CD2DD'
+const COLOR_GOLD = '#FFBF33';
+const COLOR_SILVER = '#C1C1C1';
+const COLOR_BRONZE = '#E79559';
+const COLOR_PURPLE = '#A57CFD';
+const COLOR_TEAL = '#4CD2DD';
 
 const tierStyleMap = {
   [Tiers.GOLD]: {
@@ -69,26 +69,26 @@ const tierStyleMap = {
     },
     color: COLOR_TEAL,
   },
-}
+};
 
 const getTotalAchievementPoints = (achievements: Rank['achievements']) => {
   return Object.values(achievements).reduce((accum, achievement) => {
-    return achievement ? accum + achievement : accum
-  }, 0)
-}
+    return achievement ? accum + achievement : accum;
+  }, 0);
+};
 
 const PrizesGrid = () => {
-  const [tab, setTab] = useState(0)
-  const { t } = useTranslation()
-  const rows = easterPrizes[tab + 1]
+  const [tab, setTab] = useState(0);
+  const { t } = useTranslation();
+  const rows = easterPrizes[tab + 1];
 
-  const handleItemClick = (index: number) => setTab(index)
+  const handleItemClick = (index: number) => setTab(index);
 
   return (
     <Box pt="24px">
       <TabMenu activeIndex={tab} onItemClick={handleItemClick}>
         {Object.keys(easterPrizes).map((team) => {
-          return <Tab key={team}>{t('#%team% Team', { team })}</Tab>
+          return <Tab key={team}>{t('#%team% Team', { team })}</Tab>;
         })}
       </TabMenu>
       <Box minWidth="288px" overflowX="auto" maxWidth="100%">
@@ -104,8 +104,8 @@ const PrizesGrid = () => {
           </thead>
           <tbody>
             {rows.map((row) => {
-              const { icon: Icon, label, color } = tierStyleMap[row.tier]
-              const { champion, teamPlayer } = row.achievements
+              const { icon: Icon, label, color } = tierStyleMap[row.tier];
+              const { champion, teamPlayer } = row.achievements;
 
               return (
                 <tr key={row.rank}>
@@ -137,13 +137,13 @@ const PrizesGrid = () => {
                   </Td>
                   <Td>{row.hasNft ? <CheckmarkCircleIcon color="success" /> : <BlockIcon color="textDisabled" />}</Td>
                 </tr>
-              )
+              );
             })}
           </tbody>
         </StyledPrizeTable>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default PrizesGrid
+export default PrizesGrid;

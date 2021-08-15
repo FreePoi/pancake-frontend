@@ -1,14 +1,14 @@
-import React from 'react'
-import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
-import { Flex, Skeleton, Heading, Box, Text } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { LotteryRound } from 'state/types'
-import { usePriceCakeBusd } from 'state/farms/hooks'
-import { useGetLotteryGraphDataById } from 'state/lottery/hooks'
-import { formatNumber, getBalanceNumber } from 'utils/formatBalance'
-import Balance from 'components/Balance'
-import RewardBrackets from '../RewardBrackets'
+import React from 'react';
+import styled from 'styled-components';
+import BigNumber from 'bignumber.js';
+import { Flex, Skeleton, Heading, Box, Text } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { LotteryRound } from 'state/types';
+import { usePriceCakeBusd } from 'state/farms/hooks';
+import { useGetLotteryGraphDataById } from 'state/lottery/hooks';
+import { formatNumber, getBalanceNumber } from 'utils/formatBalance';
+import Balance from 'components/Balance';
+import RewardBrackets from '../RewardBrackets';
 
 const NextDrawWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.background};
@@ -18,20 +18,20 @@ const NextDrawWrapper = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
   }
-`
+`;
 
 const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: string }> = ({
   lotteryData,
   lotteryId,
 }) => {
-  const { t } = useTranslation()
-  const lotteryGraphData = useGetLotteryGraphDataById(lotteryId)
-  const cakePriceBusd = usePriceCakeBusd()
+  const { t } = useTranslation();
+  const lotteryGraphData = useGetLotteryGraphDataById(lotteryId);
+  const cakePriceBusd = usePriceCakeBusd();
 
-  let prizeInBusd = new BigNumber(NaN)
+  let prizeInBusd = new BigNumber(NaN);
   if (lotteryData) {
-    const { amountCollectedInCake } = lotteryData
-    prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
+    const { amountCollectedInCake } = lotteryData;
+    prizeInBusd = amountCollectedInCake.times(cakePriceBusd);
   }
 
   const getPrizeBalances = () => {
@@ -56,8 +56,8 @@ const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: 
           />
         )}
       </>
-    )
-  }
+    );
+  };
 
   return (
     <NextDrawWrapper>
@@ -81,7 +81,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: 
       </Flex>
       <RewardBrackets lotteryData={lotteryData} isHistoricRound />
     </NextDrawWrapper>
-  )
-}
+  );
+};
 
-export default PreviousRoundCardFooter
+export default PreviousRoundCardFooter;

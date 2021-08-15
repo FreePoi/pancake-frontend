@@ -1,34 +1,34 @@
-import React, { useState, useCallback } from 'react'
-import styled from 'styled-components'
-import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton, Text, Heading } from '@kaco/uikit'
-import { useLocation } from 'react-router-dom'
-import { BigNumber } from 'bignumber.js'
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import Balance from 'components/Balance'
-import { useWeb3React } from '@web3-react/core'
-import { useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
-import { fetchFarmUserDataAsync } from 'state/farms'
-import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
-import { useTranslation } from 'contexts/Localization'
-import { useERC20 } from 'hooks/useContract'
-import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import { useAppDispatch } from 'state'
-import { getAddress } from 'utils/addressHelpers'
-import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { getBalanceAmount, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
-import DepositModal from '../../DepositModal'
-import WithdrawModal from '../../WithdrawModal'
-import useStakeFarms from '../../../hooks/useStakeFarms'
-import useApproveFarm from '../../../hooks/useApproveFarm'
-import { ActionContainer, ActionTitles, ActionContent } from './styles'
+import React, { useState, useCallback } from 'react';
+import styled from 'styled-components';
+import { Button, useModal, IconButton, AddIcon, MinusIcon, Skeleton, Text, Heading } from '@kaco/uikit';
+import { useLocation } from 'react-router-dom';
+import { BigNumber } from 'bignumber.js';
+import ConnectWalletButton from 'components/ConnectWalletButton';
+import Balance from 'components/Balance';
+import { useWeb3React } from '@web3-react/core';
+import { useFarmUser, useLpTokenPrice } from 'state/farms/hooks';
+import { fetchFarmUserDataAsync } from 'state/farms';
+import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard';
+import { useTranslation } from 'contexts/Localization';
+import { useERC20 } from 'hooks/useContract';
+import { BASE_ADD_LIQUIDITY_URL } from 'config';
+import { useAppDispatch } from 'state';
+import { getAddress } from 'utils/addressHelpers';
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts';
+import { getBalanceAmount, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance';
+import useUnstakeFarms from '../../../hooks/useUnstakeFarms';
+import DepositModal from '../../DepositModal';
+import WithdrawModal from '../../WithdrawModal';
+import useStakeFarms from '../../../hooks/useStakeFarms';
+import useApproveFarm from '../../../hooks/useApproveFarm';
+import { ActionContainer, ActionTitles, ActionContent } from './styles';
 
 const IconButtonWrapper = styled.div`
   display: flex;
-`
+`;
 
 interface StackedActionProps extends FarmWithStakedValue {
-  userDataReady: boolean
+  userDataReady: boolean;
 }
 
 const Staked: React.FunctionComponent<StackedActionProps> = ({
@@ -39,66 +39,66 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   token,
   userDataReady,
 }) => {
-  const { t } = useTranslation()
-  const { account } = useWeb3React()
-  const [requestedApproval, setRequestedApproval] = useState(false)
-  const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)
-  const { onStake } = useStakeFarms(pid)
-  const { onUnstake } = useUnstakeFarms(pid)
-  const location = useLocation()
-  const lpPrice = useLpTokenPrice(lpSymbol)
+  const { t } = useTranslation();
+  const { account } = useWeb3React();
+  const [requestedApproval, setRequestedApproval] = useState(false);
+  const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid);
+  const { onStake } = useStakeFarms(pid);
+  const { onUnstake } = useUnstakeFarms(pid);
+  const location = useLocation();
+  const lpPrice = useLpTokenPrice(lpSymbol);
 
-  const isApproved = account && allowance && allowance.isGreaterThan(0)
+  const isApproved = account && allowance && allowance.isGreaterThan(0);
 
-  const lpAddress = getAddress(lpAddresses)
+  const lpAddress = getAddress(lpAddresses);
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
-  })
-  const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
+  });
+  const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`;
 
   const handleStake = async (amount: string) => {
-    await onStake(amount)
-    dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
-  }
+    await onStake(amount);
+    dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }));
+  };
 
   const handleUnstake = async (amount: string) => {
-    await onUnstake(amount)
-    dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
-  }
+    await onUnstake(amount);
+    dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }));
+  };
 
   const displayBalance = useCallback(() => {
-    const stakedBalanceBigNumber = getBalanceAmount(stakedBalance)
+    const stakedBalanceBigNumber = getBalanceAmount(stakedBalance);
     if (stakedBalanceBigNumber.gt(0) && stakedBalanceBigNumber.lt(0.0000001)) {
-      return stakedBalanceBigNumber.toFixed(10, BigNumber.ROUND_DOWN)
+      return stakedBalanceBigNumber.toFixed(10, BigNumber.ROUND_DOWN);
     }
     if (stakedBalanceBigNumber.gt(0) && stakedBalanceBigNumber.lt(0.0001)) {
-      return getFullDisplayBalance(stakedBalance).toLocaleString()
+      return getFullDisplayBalance(stakedBalance).toLocaleString();
     }
-    return stakedBalanceBigNumber.toFixed(3, BigNumber.ROUND_DOWN)
-  }, [stakedBalance])
+    return stakedBalanceBigNumber.toFixed(3, BigNumber.ROUND_DOWN);
+  }, [stakedBalance]);
 
   const [onPresentDeposit] = useModal(
     <DepositModal max={tokenBalance} onConfirm={handleStake} tokenName={lpSymbol} addLiquidityUrl={addLiquidityUrl} />,
-  )
+  );
   const [onPresentWithdraw] = useModal(
     <WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} />,
-  )
-  const lpContract = useERC20(lpAddress)
-  const dispatch = useAppDispatch()
-  const { onApprove } = useApproveFarm(lpContract)
+  );
+  const lpContract = useERC20(lpAddress);
+  const dispatch = useAppDispatch();
+  const { onApprove } = useApproveFarm(lpContract);
 
   const handleApprove = useCallback(async () => {
     try {
-      setRequestedApproval(true)
-      await onApprove()
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      setRequestedApproval(true);
+      await onApprove();
+      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }));
 
-      setRequestedApproval(false)
+      setRequestedApproval(false);
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
-  }, [onApprove, dispatch, account, pid])
+  }, [onApprove, dispatch, account, pid]);
 
   if (!account) {
     return (
@@ -112,7 +112,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
           <ConnectWalletButton width="100%" />
         </ActionContent>
       </ActionContainer>
-    )
+    );
   }
 
   if (isApproved) {
@@ -155,7 +155,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
             </IconButtonWrapper>
           </ActionContent>
         </ActionContainer>
-      )
+      );
     }
 
     return (
@@ -179,7 +179,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
           </Button>
         </ActionContent>
       </ActionContainer>
-    )
+    );
   }
 
   if (!userDataReady) {
@@ -194,7 +194,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
           <Skeleton width={180} marginBottom={28} marginTop={14} />
         </ActionContent>
       </ActionContainer>
-    )
+    );
   }
 
   return (
@@ -210,7 +210,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
         </Button>
       </ActionContent>
     </ActionContainer>
-  )
-}
+  );
+};
 
-export default Staked
+export default Staked;

@@ -1,7 +1,7 @@
-import { request, gql } from 'graphql-request'
-import { GRAPH_API_LOTTERY } from 'config/constants/endpoints'
-import { LotteryRoundGraphEntity, LotteryResponse } from 'state/types'
-import { getRoundIdsArray, fetchMultipleLotteries } from './helpers'
+import { request, gql } from 'graphql-request';
+import { GRAPH_API_LOTTERY } from 'config/constants/endpoints';
+import { LotteryRoundGraphEntity, LotteryResponse } from 'state/types';
+import { getRoundIdsArray, fetchMultipleLotteries } from './helpers';
 
 const applyNodeDataToLotteriesGraphResponse = (
   nodeData: LotteryResponse[],
@@ -20,13 +20,13 @@ const applyNodeDataToLotteriesGraphResponse = (
         totalTickets: '',
         totalUsers: '',
         winningTickets: '',
-      }
-    })
+      };
+    });
   }
 
   //   Else if there is a graph response - merge with node data where node data is more reliable
   const mergedResponse = graphResponse.map((graphRound, index) => {
-    const nodeRound = nodeData[index]
+    const nodeRound = nodeData[index];
     // if there is node data for this index, overwrite graph data. Otherwise - return graph data.
     if (nodeRound) {
       // if isLoading === true, there has been a node error - return graphRound
@@ -41,14 +41,14 @@ const applyNodeDataToLotteriesGraphResponse = (
           totalTickets: graphRound.totalTickets,
           totalUsers: graphRound.totalUsers,
           winningTickets: graphRound.winningTickets,
-        }
+        };
       }
-      return graphRound
+      return graphRound;
     }
-    return graphRound
-  })
-  return mergedResponse
-}
+    return graphRound;
+  });
+  return mergedResponse;
+};
 
 const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
   try {
@@ -69,20 +69,20 @@ const getGraphLotteries = async (): Promise<LotteryRoundGraphEntity[]> => {
           }
         }
       `,
-    )
-    return response.lotteries
+    );
+    return response.lotteries;
   } catch (error) {
-    console.error(error)
-    return []
+    console.error(error);
+    return [];
   }
-}
+};
 
 const getLotteriesData = async (currentLotteryId: string): Promise<LotteryRoundGraphEntity[]> => {
-  const idsForNodesCall = getRoundIdsArray(currentLotteryId)
-  const nodeData = await fetchMultipleLotteries(idsForNodesCall)
-  const graphResponse = await getGraphLotteries()
-  const mergedData = applyNodeDataToLotteriesGraphResponse(nodeData, graphResponse)
-  return mergedData
-}
+  const idsForNodesCall = getRoundIdsArray(currentLotteryId);
+  const nodeData = await fetchMultipleLotteries(idsForNodesCall);
+  const graphResponse = await getGraphLotteries();
+  const mergedData = applyNodeDataToLotteriesGraphResponse(nodeData, graphResponse);
+  return mergedData;
+};
 
-export default getLotteriesData
+export default getLotteriesData;

@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
-import { Flex, ExpandableLabel, CardFooter } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { LotteryRound } from 'state/types'
-import FooterExpanded from './FooterExpanded'
+import React, { useState } from 'react';
+import { Flex, ExpandableLabel, CardFooter } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { LotteryRound } from 'state/types';
+import FooterExpanded from './FooterExpanded';
 
 interface PreviousRoundCardFooterProps {
-  lotteryData: LotteryRound
-  lotteryId: string
+  lotteryData: LotteryRound;
+  lotteryId: string;
 }
 
 const PreviousRoundCardFooter: React.FC<PreviousRoundCardFooterProps> = ({ lotteryData, lotteryId }) => {
-  const { t } = useTranslation()
-  const [isExpanded, setIsExpanded] = useState(false)
+  const { t } = useTranslation();
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <CardFooter p="0">
@@ -22,7 +22,7 @@ const PreviousRoundCardFooter: React.FC<PreviousRoundCardFooterProps> = ({ lotte
         </ExpandableLabel>
       </Flex>
     </CardFooter>
-  )
-}
+  );
+};
 
-export default PreviousRoundCardFooter
+export default PreviousRoundCardFooter;

@@ -1,8 +1,8 @@
-import React from 'react'
-import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
-import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import { useTranslation } from 'contexts/Localization'
+import React from 'react';
+import BigNumber from 'bignumber.js';
+import styled from 'styled-components';
+import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance';
+import { useTranslation } from 'contexts/Localization';
 import {
   Flex,
   MetamaskIcon,
@@ -15,20 +15,20 @@ import {
   Button,
   Link,
   HelpIcon,
-} from '@kaco/uikit'
-import { BASE_BSC_SCAN_URL } from 'config'
-import { useBlock } from 'state/block/hooks'
-import { useCakeVault } from 'state/pools/hooks'
-import { Pool } from 'state/types'
-import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers'
-import { registerToken } from 'utils/wallet'
-import { getBscScanLink } from 'utils'
-import Balance from 'components/Balance'
-import { getPoolBlockInfo } from 'views/Pools/helpers'
+} from '@kaco/uikit';
+import { BASE_BSC_SCAN_URL } from 'config';
+import { useBlock } from 'state/block/hooks';
+import { useCakeVault } from 'state/pools/hooks';
+import { Pool } from 'state/types';
+import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers';
+import { registerToken } from 'utils/wallet';
+import { getBscScanLink } from 'utils';
+import Balance from 'components/Balance';
+import { getPoolBlockInfo } from 'views/Pools/helpers';
 
 interface ExpandedFooterProps {
-  pool: Pool
-  account: string
+  pool: Pool;
+  account: string;
 }
 
 const ExpandedWrapper = styled(Flex)`
@@ -36,15 +36,15 @@ const ExpandedWrapper = styled(Flex)`
     height: 14px;
     width: 14px;
   }
-`
+`;
 
 const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
-  const { t } = useTranslation()
-  const { currentBlock } = useBlock()
+  const { t } = useTranslation();
+  const { currentBlock } = useBlock();
   const {
     totalCakeInVault,
     fees: { performanceFee },
-  } = useCakeVault()
+  } = useCakeVault();
 
   const {
     stakingToken,
@@ -56,32 +56,32 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     contractAddress,
     sousId,
     isAutoVault,
-  } = pool
+  } = pool;
 
-  const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
-  const poolContractAddress = getAddress(contractAddress)
-  const cakeVaultContractAddress = getCakeVaultAddress()
-  const isMetaMaskInScope = !!window.ethereum?.isMetaMask
-  const isManualCakePool = sousId === 0
+  const tokenAddress = earningToken.address ? getAddress(earningToken.address) : '';
+  const poolContractAddress = getAddress(contractAddress);
+  const cakeVaultContractAddress = getCakeVaultAddress();
+  const isMetaMaskInScope = !!window.ethereum?.isMetaMask;
+  const isManualCakePool = sousId === 0;
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
-    getPoolBlockInfo(pool, currentBlock)
+    getPoolBlockInfo(pool, currentBlock);
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Subtracted automatically from each yield harvest and burned.'),
     { placement: 'bottom-start' },
-  )
+  );
 
   const getTotalStakedBalance = () => {
     if (isAutoVault) {
-      return getBalanceNumber(totalCakeInVault, stakingToken.decimals)
+      return getBalanceNumber(totalCakeInVault, stakingToken.decimals);
     }
     if (isManualCakePool) {
-      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked).minus(totalCakeInVault)
-      return getBalanceNumber(manualCakeTotalMinusAutoVault, stakingToken.decimals)
+      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked).minus(totalCakeInVault);
+      return getBalanceNumber(manualCakeTotalMinusAutoVault, stakingToken.decimals);
     }
-    return getBalanceNumber(totalStaked, stakingToken.decimals)
-  }
+    return getBalanceNumber(totalStaked, stakingToken.decimals);
+  };
 
   const {
     targetRef: totalStakedTargetRef,
@@ -89,7 +89,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     tooltipVisible: totalStakedTooltipVisible,
   } = useTooltip(t('Total amount of %symbol% staked in this pool', { symbol: stakingToken.symbol }), {
     placement: 'bottom',
-  })
+  });
 
   return (
     <ExpandedWrapper flexDirection="column">
@@ -183,7 +183,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
         </Flex>
       )}
     </ExpandedWrapper>
-  )
-}
+  );
+};
 
-export default React.memo(ExpandedFooter)
+export default React.memo(ExpandedFooter);

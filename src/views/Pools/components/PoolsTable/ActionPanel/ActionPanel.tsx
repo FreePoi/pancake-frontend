@@ -1,5 +1,5 @@
-import React from 'react'
-import styled, { keyframes, css } from 'styled-components'
+import React from 'react';
+import styled, { keyframes, css } from 'styled-components';
 import {
   Box,
   Button,
@@ -12,23 +12,23 @@ import {
   Text,
   TimerIcon,
   useTooltip,
-} from '@kaco/uikit'
-import { BASE_BSC_SCAN_URL } from 'config'
-import { getBscScanLink } from 'utils'
-import { useBlock } from 'state/block/hooks'
-import { useCakeVault } from 'state/pools/hooks'
-import BigNumber from 'bignumber.js'
-import { Pool } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
-import Balance from 'components/Balance'
-import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
-import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers'
-import { registerToken } from 'utils/wallet'
-import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import { getPoolBlockInfo } from 'views/Pools/helpers'
-import Harvest from './Harvest'
-import Stake from './Stake'
-import Apr from '../Apr'
+} from '@kaco/uikit';
+import { BASE_BSC_SCAN_URL } from 'config';
+import { getBscScanLink } from 'utils';
+import { useBlock } from 'state/block/hooks';
+import { useCakeVault } from 'state/pools/hooks';
+import BigNumber from 'bignumber.js';
+import { Pool } from 'state/types';
+import { useTranslation } from 'contexts/Localization';
+import Balance from 'components/Balance';
+import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags';
+import { getAddress, getCakeVaultAddress } from 'utils/addressHelpers';
+import { registerToken } from 'utils/wallet';
+import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance';
+import { getPoolBlockInfo } from 'views/Pools/helpers';
+import Harvest from './Harvest';
+import Stake from './Stake';
+import Apr from '../Apr';
 
 const expandAnimation = keyframes`
   from {
@@ -37,7 +37,7 @@ const expandAnimation = keyframes`
   to {
     max-height: 700px;
   }
-`
+`;
 
 const collapseAnimation = keyframes`
   from {
@@ -46,7 +46,7 @@ const collapseAnimation = keyframes`
   to {
     max-height: 0px;
   }
-`
+`;
 
 const StyledActionPanel = styled.div<{ expanded: boolean }>`
   animation: ${({ expanded }) =>
@@ -68,7 +68,7 @@ const StyledActionPanel = styled.div<{ expanded: boolean }>`
     flex-direction: row;
     padding: 16px 32px;
   }
-`
+`;
 
 const ActionContainer = styled.div`
   display: flex;
@@ -80,22 +80,22 @@ const ActionContainer = styled.div`
     flex-grow: 1;
     flex-basis: 0;
   }
-`
+`;
 
 type MediaBreakpoints = {
-  isXs: boolean
-  isSm: boolean
-  isMd: boolean
-  isLg: boolean
-  isXl: boolean
-}
+  isXs: boolean;
+  isSm: boolean;
+  isMd: boolean;
+  isLg: boolean;
+  isXl: boolean;
+};
 
 interface ActionPanelProps {
-  account: string
-  pool: Pool
-  userDataLoaded: boolean
-  expanded: boolean
-  breakpoints: MediaBreakpoints
+  account: string;
+  pool: Pool;
+  userDataLoaded: boolean;
+  expanded: boolean;
+  breakpoints: MediaBreakpoints;
 }
 
 const InfoSection = styled(Box)`
@@ -107,7 +107,7 @@ const InfoSection = styled(Box)`
     padding: 0;
     flex-basis: 230px;
   }
-`
+`;
 
 const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded, expanded, breakpoints }) => {
   const {
@@ -120,38 +120,38 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
     stakingLimit,
     contractAddress,
     isAutoVault,
-  } = pool
-  const { t } = useTranslation()
-  const poolContractAddress = getAddress(contractAddress)
-  const cakeVaultContractAddress = getCakeVaultAddress()
-  const { currentBlock } = useBlock()
-  const { isXs, isSm, isMd } = breakpoints
-  const showSubtitle = (isXs || isSm) && sousId === 0
+  } = pool;
+  const { t } = useTranslation();
+  const poolContractAddress = getAddress(contractAddress);
+  const cakeVaultContractAddress = getCakeVaultAddress();
+  const { currentBlock } = useBlock();
+  const { isXs, isSm, isMd } = breakpoints;
+  const showSubtitle = (isXs || isSm) && sousId === 0;
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
-    getPoolBlockInfo(pool, currentBlock)
+    getPoolBlockInfo(pool, currentBlock);
 
-  const isMetaMaskInScope = !!window.ethereum?.isMetaMask
-  const tokenAddress = earningToken.address ? getAddress(earningToken.address) : ''
+  const isMetaMaskInScope = !!window.ethereum?.isMetaMask;
+  const tokenAddress = earningToken.address ? getAddress(earningToken.address) : '';
 
   const {
     totalCakeInVault,
     fees: { performanceFee },
-  } = useCakeVault()
+  } = useCakeVault();
 
-  const performanceFeeAsDecimal = performanceFee && performanceFee / 100
-  const isManualCakePool = sousId === 0
+  const performanceFeeAsDecimal = performanceFee && performanceFee / 100;
+  const isManualCakePool = sousId === 0;
 
   const getTotalStakedBalance = () => {
     if (isAutoVault) {
-      return getBalanceNumber(totalCakeInVault, stakingToken.decimals)
+      return getBalanceNumber(totalCakeInVault, stakingToken.decimals);
     }
     if (isManualCakePool) {
-      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked).minus(totalCakeInVault)
-      return getBalanceNumber(manualCakeTotalMinusAutoVault, stakingToken.decimals)
+      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked).minus(totalCakeInVault);
+      return getBalanceNumber(manualCakeTotalMinusAutoVault, stakingToken.decimals);
     }
-    return getBalanceNumber(totalStaked, stakingToken.decimals)
-  }
+    return getBalanceNumber(totalStaked, stakingToken.decimals);
+  };
 
   const {
     targetRef: totalStakedTargetRef,
@@ -159,12 +159,12 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
     tooltipVisible: totalStakedTooltipVisible,
   } = useTooltip(t('Total amount of %symbol% staked in this pool', { symbol: stakingToken.symbol }), {
     placement: 'bottom',
-  })
+  });
 
-  const manualTooltipText = t('You must harvest and compound your earnings from this pool manually.')
+  const manualTooltipText = t('You must harvest and compound your earnings from this pool manually.');
   const autoTooltipText = t(
     'Any funds you stake in this pool will be automagically harvested and restaked (compounded) for you.',
-  )
+  );
 
   const {
     targetRef: tagTargetRef,
@@ -172,14 +172,14 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
     tooltipVisible: tagTooltipVisible,
   } = useTooltip(isAutoVault ? autoTooltipText : manualTooltipText, {
     placement: 'bottom-start',
-  })
+  });
 
   const maxStakeRow = stakingLimit.gt(0) ? (
     <Flex mb="8px" justifyContent="space-between">
       <Text>{t('Max. stake per user')}:</Text>
       <Text>{`${getFullDisplayBalance(stakingLimit, stakingToken.decimals, 0)} ${stakingToken.symbol}`}</Text>
     </Flex>
-  ) : null
+  ) : null;
 
   const blocksRow =
     blocksRemaining || blocksUntilStart ? (
@@ -197,14 +197,14 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
       </Flex>
     ) : (
       <Skeleton width="56px" height="16px" />
-    )
+    );
 
   const aprRow = (
     <Flex justifyContent="space-between" alignItems="center" mb="8px">
       <Text>{isAutoVault ? t('APY') : t('APR')}:</Text>
       <Apr pool={pool} showIcon performanceFee={isAutoVault ? performanceFeeAsDecimal : 0} />
     </Flex>
-  )
+  );
 
   const totalStakedRow = (
     <Flex justifyContent="space-between" alignItems="center" mb="8px">
@@ -223,7 +223,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
         {totalStakedTooltipVisible && totalStakedTooltip}
       </Flex>
     </Flex>
-  )
+  );
 
   return (
     <StyledActionPanel expanded={expanded}>
@@ -281,7 +281,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
         <Stake pool={pool} userDataLoaded={userDataLoaded} />
       </ActionContainer>
     </StyledActionPanel>
-  )
-}
+  );
+};
 
-export default ActionPanel
+export default ActionPanel;

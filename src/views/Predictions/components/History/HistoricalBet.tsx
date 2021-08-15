@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   Box,
   ChevronDownIcon,
@@ -8,81 +8,81 @@ import {
   PlayCircleOutlineIcon,
   Text,
   WaitIcon,
-} from '@kaco/uikit'
-import { useWeb3React } from '@web3-react/core'
-import styled from 'styled-components'
-import { useAppDispatch } from 'state'
-import { Bet, PredictionStatus } from 'state/types'
-import { useGetCurrentEpoch, useGetPredictionsStatus, useGetRewardRate } from 'state/predictions/hooks'
-import { fetchLedgerData, markBetHistoryAsCollected } from 'state/predictions'
-import { getRoundResult, Result } from 'state/predictions/helpers'
-import { useTranslation } from 'contexts/Localization'
-import { formatBnb, getNetPayout } from './helpers'
-import CollectWinningsButton from '../CollectWinningsButton'
-import ReclaimPositionButton from '../ReclaimPositionButton'
-import BetDetails from './BetDetails'
+} from '@kaco/uikit';
+import { useWeb3React } from '@web3-react/core';
+import styled from 'styled-components';
+import { useAppDispatch } from 'state';
+import { Bet, PredictionStatus } from 'state/types';
+import { useGetCurrentEpoch, useGetPredictionsStatus, useGetRewardRate } from 'state/predictions/hooks';
+import { fetchLedgerData, markBetHistoryAsCollected } from 'state/predictions';
+import { getRoundResult, Result } from 'state/predictions/helpers';
+import { useTranslation } from 'contexts/Localization';
+import { formatBnb, getNetPayout } from './helpers';
+import CollectWinningsButton from '../CollectWinningsButton';
+import ReclaimPositionButton from '../ReclaimPositionButton';
+import BetDetails from './BetDetails';
 
 interface BetProps {
-  bet: Bet
+  bet: Bet;
 }
 
 const StyledBet = styled(Flex).attrs({ alignItems: 'center', p: '16px' })`
   background-color: ${({ theme }) => theme.card.background};
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
   cursor: pointer;
-`
+`;
 
 const YourResult = styled(Box)`
   flex: 1;
-`
+`;
 
 const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const { amount, round } = bet
+  const [isOpen, setIsOpen] = useState(false);
+  const { amount, round } = bet;
 
-  const { t } = useTranslation()
-  const currentEpoch = useGetCurrentEpoch()
-  const status = useGetPredictionsStatus()
-  const rewardRate = useGetRewardRate()
-  const dispatch = useAppDispatch()
-  const { account } = useWeb3React()
+  const { t } = useTranslation();
+  const currentEpoch = useGetCurrentEpoch();
+  const status = useGetPredictionsStatus();
+  const rewardRate = useGetRewardRate();
+  const dispatch = useAppDispatch();
+  const { account } = useWeb3React();
 
-  const toggleOpen = () => setIsOpen(!isOpen)
+  const toggleOpen = () => setIsOpen(!isOpen);
 
   const getRoundColor = (result) => {
     switch (result) {
       case Result.WIN:
-        return 'success'
+        return 'success';
       case Result.LOSE:
-        return 'failure'
+        return 'failure';
       case Result.CANCELED:
-        return 'textDisabled'
+        return 'textDisabled';
       default:
-        return 'text'
+        return 'text';
     }
-  }
+  };
 
   const getRoundPrefix = (result) => {
     if (result === Result.LOSE) {
-      return '-'
+      return '-';
     }
 
     if (result === Result.WIN) {
-      return '+'
+      return '+';
     }
 
-    return ''
-  }
+    return '';
+  };
 
-  const roundResult = getRoundResult(bet, currentEpoch)
-  const resultTextColor = getRoundColor(roundResult)
-  const resultTextPrefix = getRoundPrefix(roundResult)
-  const isOpenRound = round.epoch === currentEpoch
-  const isLiveRound = status === PredictionStatus.LIVE && round.epoch === currentEpoch - 1
-  const canClaim = !bet.claimed && bet.position === bet.round.position
+  const roundResult = getRoundResult(bet, currentEpoch);
+  const resultTextColor = getRoundColor(roundResult);
+  const resultTextPrefix = getRoundPrefix(roundResult);
+  const isOpenRound = round.epoch === currentEpoch;
+  const isLiveRound = status === PredictionStatus.LIVE && round.epoch === currentEpoch - 1;
+  const canClaim = !bet.claimed && bet.position === bet.round.position;
 
   // Winners get the payout, otherwise the claim what they put it if it was canceled
-  const payout = roundResult === Result.WIN ? getNetPayout(bet, rewardRate) : amount
+  const payout = roundResult === Result.WIN ? getNetPayout(bet, rewardRate) : amount;
 
   const renderBetLabel = () => {
     if (isOpenRound) {
@@ -93,7 +93,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
             {t('Starting Soon')}
           </Text>
         </Flex>
-      )
+      );
     }
 
     if (isLiveRound) {
@@ -104,7 +104,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
             {t('Live Now')}
           </Text>
         </Flex>
-      )
+      );
     }
 
     return (
@@ -116,14 +116,14 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
           {roundResult === Result.CANCELED ? t('Canceled') : `${resultTextPrefix}${formatBnb(payout)}`}
         </Text>
       </>
-    )
-  }
+    );
+  };
 
   const handleSuccess = async () => {
     // We have to mark the bet as claimed immediately because it does not update fast enough
-    dispatch(markBetHistoryAsCollected({ account, betId: bet.id }))
-    dispatch(fetchLedgerData({ account, epochs: [bet.round.epoch] }))
-  }
+    dispatch(markBetHistoryAsCollected({ account, betId: bet.id }));
+    dispatch(fetchLedgerData({ account, epochs: [bet.round.epoch] }));
+  };
 
   return (
     <>
@@ -165,7 +165,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
       </StyledBet>
       {isOpen && <BetDetails bet={bet} result={getRoundResult(bet, currentEpoch)} />}
     </>
-  )
-}
+  );
+};
 
-export default HistoricalBet
+export default HistoricalBet;

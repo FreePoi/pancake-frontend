@@ -1,16 +1,16 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Box, Flex, Text, Heading, useMatchBreakpoints, Link } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import useTheme from 'hooks/useTheme'
-import { BallWithNumber, MatchExampleA, MatchExampleB, PoolAllocationChart } from '../svgs'
+import React from 'react';
+import styled from 'styled-components';
+import { Box, Flex, Text, Heading, useMatchBreakpoints, Link } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import useTheme from 'hooks/useTheme';
+import { BallWithNumber, MatchExampleA, MatchExampleB, PoolAllocationChart } from '../svgs';
 
 const Divider = styled.div`
   background-color: ${({ theme }) => theme.colors.cardBorder};
   height: 1px;
   margin: 40px 0;
   width: 100%;
-`
+`;
 
 const BulletList = styled.ul`
   list-style-type: none;
@@ -28,7 +28,7 @@ const BulletList = styled.ul`
   li::marker {
     font-size: 12px;
   }
-`
+`;
 
 const StepContainer = styled(Flex)`
   gap: 24px;
@@ -37,7 +37,7 @@ const StepContainer = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
   }
-`
+`;
 
 const StyledStepCard = styled(Box)`
   display: flex;
@@ -46,16 +46,16 @@ const StyledStepCard = styled(Box)`
   background: ${({ theme }) => theme.colors.cardBorder};
   padding: 1px 1px 3px 1px;
   border-radius: ${({ theme }) => theme.radii.card};
-`
+`;
 
 const StepCardInner = styled(Box)`
   width: 100%;
   padding: 24px;
   background: ${({ theme }) => theme.card.background};
   border-radius: ${({ theme }) => theme.radii.card};
-`
+`;
 
-type Step = { title: string; subtitle: string; label: string }
+type Step = { title: string; subtitle: string; label: string };
 
 const StepCard: React.FC<{ step: Step }> = ({ step }) => {
   return (
@@ -70,24 +70,24 @@ const StepCard: React.FC<{ step: Step }> = ({ step }) => {
         <Text color="textSubtle">{step.subtitle}</Text>
       </StepCardInner>
     </StyledStepCard>
-  )
-}
+  );
+};
 
 const BallsContainer = styled(Flex)`
   gap: 6.5px;
   padding-left: 7px;
   align-items: center;
   width: 100%;
-`
+`;
 
 const InlineLink = styled(Link)`
   display: inline;
-`
+`;
 
 const ExampleBalls = () => {
-  const { isXs } = useMatchBreakpoints()
-  const ballSize = isXs ? '24px' : '32px'
-  const fontSize = isXs ? '14px' : '16px'
+  const { isXs } = useMatchBreakpoints();
+  const ballSize = isXs ? '24px' : '32px';
+  const fontSize = isXs ? '14px' : '16px';
   return (
     <BallsContainer>
       <BallWithNumber size={ballSize} fontSize={fontSize} color="yellow" number="9" />
@@ -97,21 +97,21 @@ const ExampleBalls = () => {
       <BallWithNumber size={ballSize} fontSize={fontSize} color="lilac" number="6" />
       <BallWithNumber size={ballSize} fontSize={fontSize} color="pink" number="2" />
     </BallsContainer>
-  )
-}
+  );
+};
 
 const MatchExampleContainer = styled.div`
   height: 100%;
   display: grid;
   grid-template-columns: 1fr 5fr;
   grid-template-rows: 46px 64px 64px;
-`
+`;
 
 const MatchExampleCard = () => {
-  const { isDark } = useTheme()
-  const { isXs } = useMatchBreakpoints()
-  const { t } = useTranslation()
-  const exampleWidth = isXs ? '210px' : '258px'
+  const { isDark } = useTheme();
+  const { isXs } = useMatchBreakpoints();
+  const { t } = useTranslation();
+  const exampleWidth = isXs ? '210px' : '258px';
   return (
     <StyledStepCard width={['280px', '330px', '380px']}>
       <StepCardInner height="220px">
@@ -129,14 +129,14 @@ const MatchExampleCard = () => {
         </MatchExampleContainer>
       </StepCardInner>
     </StyledStepCard>
-  )
-}
+  );
+};
 
 const AllocationGrid = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-auto-rows: 30px;
-`
+`;
 
 const AllocationColorCircle = styled.div<{ color: string }>`
   border-radius: 50%;
@@ -144,7 +144,7 @@ const AllocationColorCircle = styled.div<{ color: string }>`
   height: 20px;
   margin-right: 8px;
   background-color: ${({ color }) => color};
-`
+`;
 
 const AllocationMatch: React.FC<{ color: string; text: string }> = ({ color, text }) => {
   return (
@@ -152,11 +152,11 @@ const AllocationMatch: React.FC<{ color: string; text: string }> = ({ color, tex
       <AllocationColorCircle color={color} />
       <Text color="textSubtle">{text}</Text>
     </Flex>
-  )
-}
+  );
+};
 
 const PoolAllocations = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <StyledStepCard width={['280px', '330px', '380px']}>
       <StepCardInner height="420px">
@@ -203,15 +203,15 @@ const PoolAllocations = () => {
         </AllocationGrid>
       </StepCardInner>
     </StyledStepCard>
-  )
-}
+  );
+};
 
 const GappedFlex = styled(Flex)`
   gap: 24px;
-`
+`;
 
 const HowToPlay: React.FC = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const steps: Step[] = [
     {
@@ -229,7 +229,7 @@ const HowToPlay: React.FC = () => {
       title: t('Check for Prizes'),
       subtitle: t('Once the round’s over, come back to the page and check to see if you’ve won!'),
     },
-  ]
+  ];
   return (
     <Box width="100%">
       <Flex mb="40px" alignItems="center" flexDirection="column">
@@ -353,7 +353,7 @@ const HowToPlay: React.FC = () => {
         </Flex>
       </Flex>
     </Box>
-  )
-}
+  );
+};
 
-export default HowToPlay
+export default HowToPlay;

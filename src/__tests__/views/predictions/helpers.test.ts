@@ -1,6 +1,6 @@
-import { ethers } from 'ethers'
-import { BetPosition } from 'state/types'
-import { formatRoundTime, getNetPayoutv2, getPayoutv2, padTime } from 'views/Predictions/helpers'
+import { ethers } from 'ethers';
+import { BetPosition } from 'state/types';
+import { formatRoundTime, getNetPayoutv2, getPayoutv2, padTime } from 'views/Predictions/helpers';
 
 describe('padTime', () => {
   it.each([
@@ -9,9 +9,9 @@ describe('padTime', () => {
     [299, '299'],
     [0.3, '0.3'],
   ])('correctly pads %i', (value, expected) => {
-    expect(padTime(value)).toEqual(expected)
-  })
-})
+    expect(padTime(value)).toEqual(expected);
+  });
+});
 
 describe('formatRoundTime', () => {
   it.each([
@@ -19,9 +19,9 @@ describe('formatRoundTime', () => {
     [70, '01:10'],
     [4501, '01:15:01'],
   ])('given seconds (%i) returns correctly formatted time', (value, expected) => {
-    expect(formatRoundTime(value)).toEqual(expected)
-  })
-})
+    expect(formatRoundTime(value)).toEqual(expected);
+  });
+});
 
 describe('getPayout', () => {
   it.each([
@@ -80,7 +80,7 @@ describe('getPayout', () => {
         position,
         amount: ethers.BigNumber.from(betAmountStr),
         claimed: false,
-      }
+      };
       const round = {
         epoch: 1,
         startBlock: 0,
@@ -94,13 +94,13 @@ describe('getPayout', () => {
         rewardAmount: ethers.BigNumber.from(rewardAmountStr),
         rewardBaseCalAmount: ethers.BigNumber.from(0),
         oracleCalled: true,
-      }
+      };
 
-      const payout = getPayoutv2(ledger, round)
-      expect(payout.toString()).toContain(expected)
+      const payout = getPayoutv2(ledger, round);
+      expect(payout.toString()).toContain(expected);
     },
-  )
-})
+  );
+});
 
 describe('getNetPayout', () => {
   it.each([
@@ -159,7 +159,7 @@ describe('getNetPayout', () => {
         position,
         amount: ethers.BigNumber.from(betAmountStr),
         claimed: false,
-      }
+      };
       const round = {
         epoch: 1,
         startBlock: 0,
@@ -173,10 +173,10 @@ describe('getNetPayout', () => {
         rewardAmount: ethers.BigNumber.from(rewardAmountStr),
         rewardBaseCalAmount: ethers.BigNumber.from(0),
         oracleCalled: true,
-      }
+      };
 
-      const payout = getNetPayoutv2(ledger, round)
-      expect(payout.toString()).toContain(expected)
+      const payout = getNetPayoutv2(ledger, round);
+      expect(payout.toString()).toContain(expected);
     },
-  )
-})
+  );
+});

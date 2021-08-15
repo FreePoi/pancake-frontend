@@ -1,16 +1,16 @@
-import React from 'react'
-import { Text, Flex } from '@kaco/uikit'
-import BigNumber from 'bignumber.js'
-import { useTranslation } from 'contexts/Localization'
-import { VotingBox, ModalInner } from './styles'
+import React from 'react';
+import { Text, Flex } from '@kaco/uikit';
+import BigNumber from 'bignumber.js';
+import { useTranslation } from 'contexts/Localization';
+import { VotingBox, ModalInner } from './styles';
 
 interface DetailsViewProps {
-  total: BigNumber
-  cakeBalance: BigNumber
-  cakeVaultBalance: BigNumber
-  cakePoolBalance: BigNumber
-  poolsBalance: BigNumber
-  cakeBnbLpBalance: BigNumber
+  total: BigNumber;
+  cakeBalance: BigNumber;
+  cakeVaultBalance: BigNumber;
+  cakePoolBalance: BigNumber;
+  poolsBalance: BigNumber;
+  cakeBnbLpBalance: BigNumber;
 }
 
 const DetailsView: React.FC<DetailsViewProps> = ({
@@ -21,7 +21,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
   poolsBalance,
   cakeBnbLpBalance,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <ModalInner mb="0">
@@ -73,7 +73,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
         <Text textAlign="right">{cakeBnbLpBalance.toFormat(3)}</Text>
       </Flex>
     </ModalInner>
-  )
-}
+  );
+};
 
-export default DetailsView
+export default DetailsView;

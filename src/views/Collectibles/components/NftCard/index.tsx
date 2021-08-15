@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { ethers } from 'ethers'
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { ethers } from 'ethers';
 import {
   Card,
   CardBody,
@@ -12,26 +12,26 @@ import {
   Text,
   CardFooter,
   useModal,
-} from '@kaco/uikit'
-import { useProfile } from 'state/profile/hooks'
-import { useTranslation } from 'contexts/Localization'
-import { Nft } from 'config/constants/types'
-import InfoRow from '../InfoRow'
-import TransferNftModal from '../TransferNftModal'
-import ClaimNftModal from '../ClaimNftModal'
-import Preview from './Preview'
+} from '@kaco/uikit';
+import { useProfile } from 'state/profile/hooks';
+import { useTranslation } from 'contexts/Localization';
+import { Nft } from 'config/constants/types';
+import InfoRow from '../InfoRow';
+import TransferNftModal from '../TransferNftModal';
+import ClaimNftModal from '../ClaimNftModal';
+import Preview from './Preview';
 
 export interface NftCardProps {
-  nft: Nft
-  canClaim?: boolean
-  tokenIds?: number[]
-  onClaim?: () => Promise<ethers.providers.TransactionResponse>
-  refresh: () => void
+  nft: Nft;
+  canClaim?: boolean;
+  tokenIds?: number[];
+  onClaim?: () => Promise<ethers.providers.TransactionResponse>;
+  refresh: () => void;
 }
 
 const Header = styled(InfoRow)`
   min-height: 28px;
-`
+`;
 
 const DetailsButton = styled(Button).attrs({ variant: 'text' })`
   height: auto;
@@ -44,32 +44,32 @@ const DetailsButton = styled(Button).attrs({ variant: 'text' })`
   &:focus:not(:active) {
     box-shadow: none;
   }
-`
+`;
 
 const InfoBlock = styled.div`
   padding: 24px;
-`
+`;
 
 const NftCard: React.FC<NftCardProps> = ({ nft, canClaim = false, tokenIds = [], onClaim, refresh }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const { t } = useTranslation()
-  const { profile } = useProfile()
-  const { identifier, name, description } = nft
-  const walletOwnsNft = tokenIds.length > 0
-  const Icon = isOpen ? ChevronUpIcon : ChevronDownIcon
+  const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
+  const { profile } = useProfile();
+  const { identifier, name, description } = nft;
+  const walletOwnsNft = tokenIds.length > 0;
+  const Icon = isOpen ? ChevronUpIcon : ChevronDownIcon;
 
   const handleClick = async () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   const handleSuccess = () => {
-    refresh()
-  }
+    refresh();
+  };
 
   const [onPresentTransferModal] = useModal(
     <TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />,
-  )
-  const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} onSuccess={handleSuccess} onClaim={onClaim} />)
+  );
+  const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} onSuccess={handleSuccess} onClaim={onClaim} />);
 
   return (
     <Card isActive={walletOwnsNft}>
@@ -112,7 +112,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft, canClaim = false, tokenIds = [],
         )}
       </CardFooter>
     </Card>
-  )
-}
+  );
+};
 
-export default NftCard
+export default NftCard;

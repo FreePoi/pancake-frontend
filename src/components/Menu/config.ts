@@ -1,5 +1,5 @@
-import { MenuEntry } from '@kaco/uikit'
-import { ContextApi } from 'contexts/Localization/types'
+import { MenuEntry } from '@kaco/uikit';
+import { ContextApi } from 'contexts/Localization/types';
 
 const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
   {
@@ -117,6 +117,6 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
     ],
   },
-]
+];
 
-export default config
+export default config;

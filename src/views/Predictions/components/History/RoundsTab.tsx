@@ -1,17 +1,17 @@
-import React from 'react'
-import { orderBy } from 'lodash'
-import { Box, Heading, Text } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { Bet } from 'state/types'
-import HistoricalBet from './HistoricalBet'
+import React from 'react';
+import { orderBy } from 'lodash';
+import { Box, Heading, Text } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { Bet } from 'state/types';
+import HistoricalBet from './HistoricalBet';
 
 interface RoundsTabProps {
-  hasBetHistory: boolean
-  bets: Bet[]
+  hasBetHistory: boolean;
+  bets: Bet[];
 }
 
 const RoundsTab: React.FC<RoundsTabProps> = ({ hasBetHistory, bets }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return hasBetHistory ? (
     <>
@@ -30,7 +30,7 @@ const RoundsTab: React.FC<RoundsTabProps> = ({ hasBetHistory, bets }) => {
         )}
       </Text>
     </Box>
-  )
-}
+  );
+};
 
-export default RoundsTab
+export default RoundsTab;

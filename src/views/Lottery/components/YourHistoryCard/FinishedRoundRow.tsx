@@ -1,14 +1,14 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Text, Flex, ChevronRightIcon, Box, SmallDotIcon, PrizeIcon } from '@kaco/uikit'
-import { dateOptions, timeOptions } from '../../helpers'
+import React from 'react';
+import styled from 'styled-components';
+import { Text, Flex, ChevronRightIcon, Box, SmallDotIcon, PrizeIcon } from '@kaco/uikit';
+import { dateOptions, timeOptions } from '../../helpers';
 
 interface FinishedRoundRowProps {
-  roundId: string
-  numberTickets: string
-  endTime: string
-  onClick: (string) => void
-  hasWon?: boolean
+  roundId: string;
+  numberTickets: string;
+  endTime: string;
+  onClick: (string) => void;
+  hasWon?: boolean;
 }
 
 const Grid = styled(Box)`
@@ -16,13 +16,13 @@ const Grid = styled(Box)`
   grid-template-columns: repeat(3, 1fr) auto;
   margin-bottom: 8px;
   cursor: pointer;
-`
+`;
 
 const StyledSmallDotIcon = styled(SmallDotIcon)`
   path {
     fill: ${({ theme }) => theme.colors.textDisabled};
   }
-`
+`;
 
 const FinishedRoundRow: React.FC<FinishedRoundRowProps> = ({
   roundId,
@@ -31,8 +31,8 @@ const FinishedRoundRow: React.FC<FinishedRoundRowProps> = ({
   onClick,
   hasWon = false,
 }) => {
-  const endTimeInMs = parseInt(endTime, 10) * 1000
-  const endTimeAsDate = new Date(endTimeInMs)
+  const endTimeInMs = parseInt(endTime, 10) * 1000;
+  const endTimeAsDate = new Date(endTimeInMs);
 
   return (
     <Grid onClick={() => onClick(roundId)}>
@@ -62,7 +62,7 @@ const FinishedRoundRow: React.FC<FinishedRoundRowProps> = ({
         <ChevronRightIcon color="primary" />
       </Flex>
     </Grid>
-  )
-}
+  );
+};
 
-export default FinishedRoundRow
+export default FinishedRoundRow;

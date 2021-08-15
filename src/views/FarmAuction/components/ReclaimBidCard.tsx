@@ -1,64 +1,64 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Text, Heading, Card, CardHeader, CardBody, Flex } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { useCake, useFarmAuctionContract } from 'hooks/useContract'
-import { ethersToBigNumber } from 'utils/bigNumber'
-import { useWeb3React } from '@web3-react/core'
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import useToast from 'hooks/useToast'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { ethers } from 'ethers'
-import ApproveConfirmButtons, { ButtonArrangement } from 'views/Profile/components/ApproveConfirmButtons'
-import useReclaimAuctionBid from '../hooks/useReclaimAuctionBid'
+import React from 'react';
+import styled from 'styled-components';
+import { Text, Heading, Card, CardHeader, CardBody, Flex } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction';
+import { useCake, useFarmAuctionContract } from 'hooks/useContract';
+import { ethersToBigNumber } from 'utils/bigNumber';
+import { useWeb3React } from '@web3-react/core';
+import ConnectWalletButton from 'components/ConnectWalletButton';
+import useToast from 'hooks/useToast';
+import { getBalanceNumber } from 'utils/formatBalance';
+import { ethers } from 'ethers';
+import ApproveConfirmButtons, { ButtonArrangement } from 'views/Profile/components/ApproveConfirmButtons';
+import useReclaimAuctionBid from '../hooks/useReclaimAuctionBid';
 
 const StyledReclaimBidCard = styled(Card)`
   margin-top: 16px;
   flex: 1;
-`
+`;
 
 const ReclaimBidCard: React.FC = () => {
-  const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { t } = useTranslation();
+  const { account } = useWeb3React();
 
-  const [reclaimableAuction, checkForNextReclaimableAuction] = useReclaimAuctionBid()
+  const [reclaimableAuction, checkForNextReclaimableAuction] = useReclaimAuctionBid();
 
-  const cakeContract = useCake()
-  const farmAuctionContract = useFarmAuctionContract()
+  const cakeContract = useCake();
+  const farmAuctionContract = useFarmAuctionContract();
 
-  const { toastSuccess } = useToast()
+  const { toastSuccess } = useToast();
 
   const { isApproving, isApproved, isConfirming, handleApprove, handleConfirm } = useApproveConfirmTransaction({
     onRequiresApproval: async () => {
       try {
-        const response = await cakeContract.allowance(account, farmAuctionContract.address)
-        const currentAllowance = ethersToBigNumber(response)
-        return currentAllowance.gt(0)
+        const response = await cakeContract.allowance(account, farmAuctionContract.address);
+        const currentAllowance = ethersToBigNumber(response);
+        return currentAllowance.gt(0);
       } catch (error) {
-        return false
+        return false;
       }
     },
     onApprove: () => {
-      return cakeContract.approve(farmAuctionContract.address, ethers.constants.MaxUint256)
+      return cakeContract.approve(farmAuctionContract.address, ethers.constants.MaxUint256);
     },
     onApproveSuccess: async () => {
-      toastSuccess(t('Contract approved - you can now reclaim your bid!'))
+      toastSuccess(t('Contract approved - you can now reclaim your bid!'));
     },
     onConfirm: () => {
-      return farmAuctionContract.claimAuction(reclaimableAuction.id)
+      return farmAuctionContract.claimAuction(reclaimableAuction.id);
     },
     onSuccess: async () => {
-      checkForNextReclaimableAuction()
-      toastSuccess(t('Bid reclaimed!'))
+      checkForNextReclaimableAuction();
+      toastSuccess(t('Bid reclaimed!'));
     },
-  })
+  });
 
   if (!reclaimableAuction) {
-    return null
+    return null;
   }
 
-  const { position, amount } = reclaimableAuction
+  const { position, amount } = reclaimableAuction;
 
   return (
     <StyledReclaimBidCard mb={['24px', null, null, '0']}>
@@ -96,7 +96,7 @@ const ReclaimBidCard: React.FC = () => {
         )}
       </CardBody>
     </StyledReclaimBidCard>
-  )
-}
+  );
+};
 
-export default ReclaimBidCard
+export default ReclaimBidCard;

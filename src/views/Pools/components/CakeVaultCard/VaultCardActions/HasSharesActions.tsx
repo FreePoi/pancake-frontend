@@ -1,35 +1,35 @@
-import React from 'react'
-import { Flex, Text, IconButton, AddIcon, MinusIcon, useModal, Skeleton } from '@kaco/uikit'
-import BigNumber from 'bignumber.js'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { Pool } from 'state/types'
-import { usePriceCakeBusd } from 'state/farms/hooks'
-import { useCakeVault } from 'state/pools/hooks'
-import Balance from 'components/Balance'
-import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
-import { convertSharesToCake } from '../../../helpers'
-import VaultStakeModal from '../VaultStakeModal'
+import React from 'react';
+import { Flex, Text, IconButton, AddIcon, MinusIcon, useModal, Skeleton } from '@kaco/uikit';
+import BigNumber from 'bignumber.js';
+import { getBalanceNumber } from 'utils/formatBalance';
+import { Pool } from 'state/types';
+import { usePriceCakeBusd } from 'state/farms/hooks';
+import { useCakeVault } from 'state/pools/hooks';
+import Balance from 'components/Balance';
+import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal';
+import { convertSharesToCake } from '../../../helpers';
+import VaultStakeModal from '../VaultStakeModal';
 
 interface HasStakeActionProps {
-  pool: Pool
-  stakingTokenBalance: BigNumber
+  pool: Pool;
+  stakingTokenBalance: BigNumber;
 }
 
 const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBalance }) => {
   const {
     userData: { userShares },
     pricePerFullShare,
-  } = useCakeVault()
-  const { stakingToken } = pool
-  const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
-  const cakePriceBusd = usePriceCakeBusd()
+  } = useCakeVault();
+  const { stakingToken } = pool;
+  const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare);
+  const cakePriceBusd = usePriceCakeBusd();
   const stakedDollarValue = cakePriceBusd.gt(0)
     ? getBalanceNumber(cakeAsBigNumber.multipliedBy(cakePriceBusd), stakingToken.decimals)
-    : 0
+    : 0;
 
-  const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
-  const [onPresentStake] = useModal(<VaultStakeModal stakingMax={stakingTokenBalance} pool={pool} />)
-  const [onPresentUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
+  const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />);
+  const [onPresentStake] = useModal(<VaultStakeModal stakingMax={stakingTokenBalance} pool={pool} />);
+  const [onPresentUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />);
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
@@ -52,7 +52,7 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
         </IconButton>
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
-export default HasSharesActions
+export default HasSharesActions;

@@ -1,4 +1,4 @@
-import { tokenEarnedPerThousandDollarsCompounding, getRoi } from 'utils/compoundApyHelpers'
+import { tokenEarnedPerThousandDollarsCompounding, getRoi } from 'utils/compoundApyHelpers';
 
 it.each([
   [{ numberOfDays: 1, farmApr: 365, tokenPrice: 1, performanceFee: 20 }, 8],
@@ -10,8 +10,8 @@ it.each([
 ])('calculate cake earned with values %o', ({ numberOfDays, farmApr, tokenPrice, performanceFee }, expected) => {
   expect(tokenEarnedPerThousandDollarsCompounding({ numberOfDays, farmApr, tokenPrice, performanceFee })).toEqual(
     expected,
-  )
-})
+  );
+});
 
 it.each([
   [{ amountEarned: 10, amountInvested: 1000 }, 1],
@@ -20,5 +20,5 @@ it.each([
   [{ amountEarned: 100.67, amountInvested: 100 }, 100.66999999999999],
   [{ amountEarned: 8572.84, amountInvested: 20000 }, 42.864200000000004],
 ])('calculate roi % with values %o', ({ amountEarned, amountInvested }, expected) => {
-  expect(getRoi({ amountEarned, amountInvested })).toEqual(expected)
-})
+  expect(getRoi({ amountEarned, amountInvested })).toEqual(expected);
+});

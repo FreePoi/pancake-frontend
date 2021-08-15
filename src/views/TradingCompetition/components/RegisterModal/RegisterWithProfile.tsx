@@ -1,39 +1,39 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon } from '@kaco/uikit'
-import { useTradingCompetitionContract } from 'hooks/useContract'
-import { useTranslation } from 'contexts/Localization'
-import useToast from 'hooks/useToast'
-import { CompetitionProps } from '../../types'
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon } from '@kaco/uikit';
+import { useTradingCompetitionContract } from 'hooks/useContract';
+import { useTranslation } from 'contexts/Localization';
+import useToast from 'hooks/useToast';
+import { CompetitionProps } from '../../types';
 
 const StyledCheckbox = styled(Checkbox)`
   min-width: 24px;
-`
+`;
 
 const StyledLabel = styled.label`
   cursor: pointer;
-`
+`;
 
 const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, onRegisterSuccess }) => {
-  const [isAcknowledged, setIsAcknowledged] = useState(false)
-  const [isConfirming, setIsConfirming] = useState(false)
-  const tradingCompetitionContract = useTradingCompetitionContract()
-  const { toastSuccess, toastError } = useToast()
-  const { t } = useTranslation()
+  const [isAcknowledged, setIsAcknowledged] = useState(false);
+  const [isConfirming, setIsConfirming] = useState(false);
+  const tradingCompetitionContract = useTradingCompetitionContract();
+  const { toastSuccess, toastError } = useToast();
+  const { t } = useTranslation();
 
   const handleConfirmClick = async () => {
-    const tx = await tradingCompetitionContract.register()
-    setIsConfirming(true)
-    const receipt = await tx.wait()
+    const tx = await tradingCompetitionContract.register();
+    setIsConfirming(true);
+    const receipt = await tx.wait();
     if (receipt.status) {
-      toastSuccess(t('You have registered for the competition!'))
-      onDismiss()
-      onRegisterSuccess()
+      toastSuccess(t('You have registered for the competition!'));
+      onDismiss();
+      onRegisterSuccess();
     } else {
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      setIsConfirming(false)
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'));
+      setIsConfirming(false);
     }
-  }
+  };
 
   return (
     <>
@@ -70,7 +70,7 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, o
         {t('Confirm')}
       </Button>
     </>
-  )
-}
+  );
+};
 
-export default RegisterWithProfile
+export default RegisterWithProfile;

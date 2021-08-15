@@ -1,5 +1,5 @@
-import tokens from './tokens'
-import { FarmConfig } from './types'
+import tokens from './tokens';
+import { FarmConfig } from './types';
 
 const priceHelperLps: FarmConfig[] = [
   /**
@@ -19,6 +19,6 @@ const priceHelperLps: FarmConfig[] = [
     token: tokens.qsd,
     quoteToken: tokens.wbnb,
   },
-]
+];
 
-export default priceHelperLps
+export default priceHelperLps;

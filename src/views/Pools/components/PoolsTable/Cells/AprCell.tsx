@@ -1,14 +1,14 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Text, useMatchBreakpoints } from '@kaco/uikit'
-import { Pool } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
-import BaseCell, { CellContent } from './BaseCell'
-import Apr from '../Apr'
+import React from 'react';
+import styled from 'styled-components';
+import { Text, useMatchBreakpoints } from '@kaco/uikit';
+import { Pool } from 'state/types';
+import { useTranslation } from 'contexts/Localization';
+import BaseCell, { CellContent } from './BaseCell';
+import Apr from '../Apr';
 
 interface AprCellProps {
-  pool: Pool
-  performanceFee: number
+  pool: Pool;
+  performanceFee: number;
 }
 
 const StyledCell = styled(BaseCell)`
@@ -16,12 +16,12 @@ const StyledCell = styled(BaseCell)`
   ${({ theme }) => theme.mediaQueries.md} {
     flex: 0 0 120px;
   }
-`
+`;
 
 const AprCell: React.FC<AprCellProps> = ({ pool, performanceFee }) => {
-  const { t } = useTranslation()
-  const { isXs, isSm } = useMatchBreakpoints()
-  const { isAutoVault } = pool
+  const { t } = useTranslation();
+  const { isXs, isSm } = useMatchBreakpoints();
+  const { isAutoVault } = pool;
   return (
     <StyledCell role="cell">
       <CellContent>
@@ -31,7 +31,7 @@ const AprCell: React.FC<AprCellProps> = ({ pool, performanceFee }) => {
         <Apr pool={pool} performanceFee={isAutoVault ? performanceFee : 0} showIcon={!isXs && !isSm} />
       </CellContent>
     </StyledCell>
-  )
-}
+  );
+};
 
-export default AprCell
+export default AprCell;

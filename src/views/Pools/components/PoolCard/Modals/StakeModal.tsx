@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon, Link } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import useTheme from 'hooks/useTheme'
-import useToast from 'hooks/useToast'
-import BigNumber from 'bignumber.js'
-import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
-import { Pool } from 'state/types'
-import { getAddress } from 'utils/addressHelpers'
-import PercentageButton from './PercentageButton'
-import useStakePool from '../../../hooks/useStakePool'
-import useUnstakePool from '../../../hooks/useUnstakePool'
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon, Link } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import useTheme from 'hooks/useTheme';
+import useToast from 'hooks/useToast';
+import BigNumber from 'bignumber.js';
+import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance';
+import { Pool } from 'state/types';
+import { getAddress } from 'utils/addressHelpers';
+import PercentageButton from './PercentageButton';
+import useStakePool from '../../../hooks/useStakePool';
+import useUnstakePool from '../../../hooks/useUnstakePool';
 
 interface StakeModalProps {
-  isBnbPool: boolean
-  pool: Pool
-  stakingTokenBalance: BigNumber
-  stakingTokenPrice: number
-  isRemovingStake?: boolean
-  onDismiss?: () => void
+  isBnbPool: boolean;
+  pool: Pool;
+  stakingTokenBalance: BigNumber;
+  stakingTokenPrice: number;
+  isRemovingStake?: boolean;
+  onDismiss?: () => void;
 }
 
 const StyledLink = styled(Link)`
   width: 100%;
-`
+`;
 
 const StakeModal: React.FC<StakeModalProps> = ({
   isBnbPool,
@@ -33,91 +33,91 @@ const StakeModal: React.FC<StakeModalProps> = ({
   isRemovingStake = false,
   onDismiss,
 }) => {
-  const { sousId, stakingToken, userData, stakingLimit, earningToken } = pool
-  const { t } = useTranslation()
-  const { theme } = useTheme()
-  const { onStake } = useStakePool(sousId, isBnbPool)
-  const { onUnstake } = useUnstakePool(sousId, pool.enableEmergencyWithdraw)
-  const { toastSuccess, toastError } = useToast()
-  const [pendingTx, setPendingTx] = useState(false)
-  const [stakeAmount, setStakeAmount] = useState('')
-  const [hasReachedStakeLimit, setHasReachedStakedLimit] = useState(false)
-  const [percent, setPercent] = useState(0)
+  const { sousId, stakingToken, userData, stakingLimit, earningToken } = pool;
+  const { t } = useTranslation();
+  const { theme } = useTheme();
+  const { onStake } = useStakePool(sousId, isBnbPool);
+  const { onUnstake } = useUnstakePool(sousId, pool.enableEmergencyWithdraw);
+  const { toastSuccess, toastError } = useToast();
+  const [pendingTx, setPendingTx] = useState(false);
+  const [stakeAmount, setStakeAmount] = useState('');
+  const [hasReachedStakeLimit, setHasReachedStakedLimit] = useState(false);
+  const [percent, setPercent] = useState(0);
   const getCalculatedStakingLimit = () => {
     if (isRemovingStake) {
-      return userData.stakedBalance
+      return userData.stakedBalance;
     }
-    return stakingLimit.gt(0) && stakingTokenBalance.gt(stakingLimit) ? stakingLimit : stakingTokenBalance
-  }
+    return stakingLimit.gt(0) && stakingTokenBalance.gt(stakingLimit) ? stakingLimit : stakingTokenBalance;
+  };
 
-  const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber())
+  const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber());
 
   useEffect(() => {
     if (stakingLimit.gt(0) && !isRemovingStake) {
-      const fullDecimalStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
-      setHasReachedStakedLimit(fullDecimalStakeAmount.plus(userData.stakedBalance).gt(stakingLimit))
+      const fullDecimalStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals);
+      setHasReachedStakedLimit(fullDecimalStakeAmount.plus(userData.stakedBalance).gt(stakingLimit));
     }
-  }, [stakeAmount, stakingLimit, userData, stakingToken, isRemovingStake, setHasReachedStakedLimit])
+  }, [stakeAmount, stakingLimit, userData, stakingToken, isRemovingStake, setHasReachedStakedLimit]);
 
   const handleStakeInputChange = (input: string) => {
     if (input) {
-      const convertedInput = getDecimalAmount(new BigNumber(input), stakingToken.decimals)
-      const percentage = Math.floor(convertedInput.dividedBy(getCalculatedStakingLimit()).multipliedBy(100).toNumber())
-      setPercent(Math.min(percentage, 100))
+      const convertedInput = getDecimalAmount(new BigNumber(input), stakingToken.decimals);
+      const percentage = Math.floor(convertedInput.dividedBy(getCalculatedStakingLimit()).multipliedBy(100).toNumber());
+      setPercent(Math.min(percentage, 100));
     } else {
-      setPercent(0)
+      setPercent(0);
     }
-    setStakeAmount(input)
-  }
+    setStakeAmount(input);
+  };
 
   const handleChangePercent = (sliderPercent: number) => {
     if (sliderPercent > 0) {
-      const percentageOfStakingMax = getCalculatedStakingLimit().dividedBy(100).multipliedBy(sliderPercent)
-      const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingToken.decimals, stakingToken.decimals)
-      setStakeAmount(amountToStake)
+      const percentageOfStakingMax = getCalculatedStakingLimit().dividedBy(100).multipliedBy(sliderPercent);
+      const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingToken.decimals, stakingToken.decimals);
+      setStakeAmount(amountToStake);
     } else {
-      setStakeAmount('')
+      setStakeAmount('');
     }
-    setPercent(sliderPercent)
-  }
+    setPercent(sliderPercent);
+  };
 
   const handleConfirmClick = async () => {
-    setPendingTx(true)
+    setPendingTx(true);
 
     if (isRemovingStake) {
       // unstaking
       try {
-        await onUnstake(stakeAmount, stakingToken.decimals)
+        await onUnstake(stakeAmount, stakingToken.decimals);
         toastSuccess(
           `${t('Unstaked')}!`,
           t('Your %symbol% earnings have also been harvested to your wallet!', {
             symbol: earningToken.symbol,
           }),
-        )
-        setPendingTx(false)
-        onDismiss()
+        );
+        setPendingTx(false);
+        onDismiss();
       } catch (e) {
-        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-        setPendingTx(false)
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'));
+        setPendingTx(false);
       }
     } else {
       try {
         // staking
-        await onStake(stakeAmount, stakingToken.decimals)
+        await onStake(stakeAmount, stakingToken.decimals);
         toastSuccess(
           `${t('Staked')}!`,
           t('Your %symbol% funds have been staked in the pool!', {
             symbol: stakingToken.symbol,
           }),
-        )
-        setPendingTx(false)
-        onDismiss()
+        );
+        setPendingTx(false);
+        onDismiss();
       } catch (e) {
-        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-        setPendingTx(false)
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'));
+        setPendingTx(false);
       }
     }
-  }
+  };
 
   return (
     <Modal
@@ -199,7 +199,7 @@ const StakeModal: React.FC<StakeModalProps> = ({
         </StyledLink>
       )}
     </Modal>
-  )
-}
+  );
+};
 
-export default StakeModal
+export default StakeModal;

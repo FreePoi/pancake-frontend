@@ -1,16 +1,16 @@
-import React from 'react'
-import { Button, Heading, Text } from '@kaco/uikit'
-import history from 'routerHistory'
-import { useTranslation } from 'contexts/Localization'
-import { CompetitionProps } from 'views/TradingCompetition/types'
+import React from 'react';
+import { Button, Heading, Text } from '@kaco/uikit';
+import history from 'routerHistory';
+import { useTranslation } from 'contexts/Localization';
+import { CompetitionProps } from 'views/TradingCompetition/types';
 
 const MakeProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const handleClick = () => {
-    history.push('/profile')
-    onDismiss()
-  }
+    history.push('/profile');
+    onDismiss();
+  };
 
   return (
     <>
@@ -24,7 +24,7 @@ const MakeProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
         {t('Make a profile!')}
       </Button>
     </>
-  )
-}
+  );
+};
 
-export default MakeProfile
+export default MakeProfile;

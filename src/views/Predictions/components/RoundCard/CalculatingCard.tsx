@@ -1,26 +1,26 @@
-import React from 'react'
-import { Card, CardBody, Flex, Spinner, WaitIcon, TooltipText, useTooltip, InfoIcon } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { NodeRound, BetPosition } from 'state/types'
-import { useGetTotalIntervalBlocks } from 'state/predictions/hooks'
-import useTheme from 'hooks/useTheme'
-import { RoundResultBox } from '../RoundResult'
-import MultiplierArrow from './MultiplierArrow'
-import CardHeader, { getBorderBackground } from './CardHeader'
+import React from 'react';
+import { Card, CardBody, Flex, Spinner, WaitIcon, TooltipText, useTooltip, InfoIcon } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { NodeRound, BetPosition } from 'state/types';
+import { useGetTotalIntervalBlocks } from 'state/predictions/hooks';
+import useTheme from 'hooks/useTheme';
+import { RoundResultBox } from '../RoundResult';
+import MultiplierArrow from './MultiplierArrow';
+import CardHeader, { getBorderBackground } from './CardHeader';
 
 interface CalculatingCardProps {
-  round: NodeRound
+  round: NodeRound;
 }
 
 const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
-  const { t } = useTranslation()
-  const { theme } = useTheme()
-  const interval = useGetTotalIntervalBlocks()
-  const estimatedEndBlock = round.startBlock + interval
+  const { t } = useTranslation();
+  const { theme } = useTheme();
+  const interval = useGetTotalIntervalBlocks();
+  const estimatedEndBlock = round.startBlock + interval;
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('This round’s closing transaction has been submitted to the blockchain, and is awaiting confirmation.'),
     { placement: 'bottom' },
-  )
+  );
 
   return (
     <>
@@ -48,7 +48,7 @@ const CalculatingCard: React.FC<CalculatingCardProps> = ({ round }) => {
       </Card>
       {tooltipVisible && tooltip}
     </>
-  )
-}
+  );
+};
 
-export default CalculatingCard
+export default CalculatingCard;

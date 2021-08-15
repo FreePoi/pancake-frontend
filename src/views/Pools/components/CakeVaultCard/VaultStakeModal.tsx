@@ -1,151 +1,151 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { useWeb3React } from '@web3-react/core'
-import { useAppDispatch } from 'state'
-import { BIG_TEN } from 'utils/bigNumber'
-import { usePriceCakeBusd } from 'state/farms/hooks'
-import { useCakeVault } from 'state/pools/hooks'
-import { useCakeVaultContract } from 'hooks/useContract'
-import useTheme from 'hooks/useTheme'
-import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
-import BigNumber from 'bignumber.js'
-import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
-import useToast from 'hooks/useToast'
-import { fetchCakeVaultUserData } from 'state/pools'
-import { Pool } from 'state/types'
-import { getAddress } from 'utils/addressHelpers'
-import { convertCakeToShares } from '../../helpers'
-import FeeSummary from './FeeSummary'
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { useWeb3React } from '@web3-react/core';
+import { useAppDispatch } from 'state';
+import { BIG_TEN } from 'utils/bigNumber';
+import { usePriceCakeBusd } from 'state/farms/hooks';
+import { useCakeVault } from 'state/pools/hooks';
+import { useCakeVaultContract } from 'hooks/useContract';
+import useTheme from 'hooks/useTheme';
+import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer';
+import BigNumber from 'bignumber.js';
+import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance';
+import useToast from 'hooks/useToast';
+import { fetchCakeVaultUserData } from 'state/pools';
+import { Pool } from 'state/types';
+import { getAddress } from 'utils/addressHelpers';
+import { convertCakeToShares } from '../../helpers';
+import FeeSummary from './FeeSummary';
 
 interface VaultStakeModalProps {
-  pool: Pool
-  stakingMax: BigNumber
-  isRemovingStake?: boolean
-  onDismiss?: () => void
+  pool: Pool;
+  stakingMax: BigNumber;
+  isRemovingStake?: boolean;
+  onDismiss?: () => void;
 }
 
 const StyledButton = styled(Button)`
   flex-grow: 1;
-`
+`;
 
 const callOptions = {
   gasLimit: 380000,
-}
+};
 
 const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isRemovingStake = false, onDismiss }) => {
-  const dispatch = useAppDispatch()
-  const { stakingToken } = pool
-  const { account } = useWeb3React()
-  const cakeVaultContract = useCakeVaultContract()
+  const dispatch = useAppDispatch();
+  const { stakingToken } = pool;
+  const { account } = useWeb3React();
+  const cakeVaultContract = useCakeVaultContract();
   const {
     userData: { lastDepositedTime, userShares },
     pricePerFullShare,
-  } = useCakeVault()
-  const { t } = useTranslation()
-  const { theme } = useTheme()
-  const { toastSuccess, toastError } = useToast()
-  const [pendingTx, setPendingTx] = useState(false)
-  const [stakeAmount, setStakeAmount] = useState('')
-  const [percent, setPercent] = useState(0)
-  const { hasUnstakingFee } = useWithdrawalFeeTimer(parseInt(lastDepositedTime, 10), userShares)
-  const cakePriceBusd = usePriceCakeBusd()
+  } = useCakeVault();
+  const { t } = useTranslation();
+  const { theme } = useTheme();
+  const { toastSuccess, toastError } = useToast();
+  const [pendingTx, setPendingTx] = useState(false);
+  const [stakeAmount, setStakeAmount] = useState('');
+  const [percent, setPercent] = useState(0);
+  const { hasUnstakingFee } = useWithdrawalFeeTimer(parseInt(lastDepositedTime, 10), userShares);
+  const cakePriceBusd = usePriceCakeBusd();
   const usdValueStaked =
-    cakePriceBusd.gt(0) && stakeAmount ? formatNumber(new BigNumber(stakeAmount).times(cakePriceBusd).toNumber()) : ''
+    cakePriceBusd.gt(0) && stakeAmount ? formatNumber(new BigNumber(stakeAmount).times(cakePriceBusd).toNumber()) : '';
 
   const handleStakeInputChange = (input: string) => {
     if (input) {
-      const convertedInput = new BigNumber(input).multipliedBy(BIG_TEN.pow(stakingToken.decimals))
-      const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
-      setPercent(percentage > 100 ? 100 : percentage)
+      const convertedInput = new BigNumber(input).multipliedBy(BIG_TEN.pow(stakingToken.decimals));
+      const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber());
+      setPercent(percentage > 100 ? 100 : percentage);
     } else {
-      setPercent(0)
+      setPercent(0);
     }
-    setStakeAmount(input)
-  }
+    setStakeAmount(input);
+  };
 
   const handleChangePercent = (sliderPercent: number) => {
     if (sliderPercent > 0) {
-      const percentageOfStakingMax = stakingMax.dividedBy(100).multipliedBy(sliderPercent)
-      const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingToken.decimals, stakingToken.decimals)
-      setStakeAmount(amountToStake)
+      const percentageOfStakingMax = stakingMax.dividedBy(100).multipliedBy(sliderPercent);
+      const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingToken.decimals, stakingToken.decimals);
+      setStakeAmount(amountToStake);
     } else {
-      setStakeAmount('')
+      setStakeAmount('');
     }
-    setPercent(sliderPercent)
-  }
+    setPercent(sliderPercent);
+  };
 
   const handleWithdrawal = async (convertedStakeAmount: BigNumber) => {
-    setPendingTx(true)
-    const shareStakeToWithdraw = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
+    setPendingTx(true);
+    const shareStakeToWithdraw = convertCakeToShares(convertedStakeAmount, pricePerFullShare);
     // trigger withdrawAll function if the withdrawal will leave 0.000001 CAKE or less
-    const triggerWithdrawAllThreshold = new BigNumber(1000000000000)
-    const sharesRemaining = userShares.minus(shareStakeToWithdraw.sharesAsBigNumber)
-    const isWithdrawingAll = sharesRemaining.lte(triggerWithdrawAllThreshold)
+    const triggerWithdrawAllThreshold = new BigNumber(1000000000000);
+    const sharesRemaining = userShares.minus(shareStakeToWithdraw.sharesAsBigNumber);
+    const isWithdrawingAll = sharesRemaining.lte(triggerWithdrawAllThreshold);
 
     if (isWithdrawingAll) {
       try {
-        const tx = await cakeVaultContract.withdrawAll(callOptions)
-        const receipt = await tx.wait()
+        const tx = await cakeVaultContract.withdrawAll(callOptions);
+        const receipt = await tx.wait();
         if (receipt.status) {
-          toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
-          setPendingTx(false)
-          onDismiss()
-          dispatch(fetchCakeVaultUserData({ account }))
+          toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'));
+          setPendingTx(false);
+          onDismiss();
+          dispatch(fetchCakeVaultUserData({ account }));
         }
       } catch (error) {
-        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-        setPendingTx(false)
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'));
+        setPendingTx(false);
       }
     } else {
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
       try {
-        const tx = await cakeVaultContract.withdraw(shareStakeToWithdraw.sharesAsBigNumber.toString(), callOptions)
-        const receipt = await tx.wait()
+        const tx = await cakeVaultContract.withdraw(shareStakeToWithdraw.sharesAsBigNumber.toString(), callOptions);
+        const receipt = await tx.wait();
         if (receipt.status) {
-          toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'))
-          setPendingTx(false)
-          onDismiss()
-          dispatch(fetchCakeVaultUserData({ account }))
+          toastSuccess(t('Unstaked!'), t('Your earnings have also been harvested to your wallet'));
+          setPendingTx(false);
+          onDismiss();
+          dispatch(fetchCakeVaultUserData({ account }));
         }
       } catch (error) {
-        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-        setPendingTx(false)
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'));
+        setPendingTx(false);
       }
     }
-  }
+  };
 
   const handleDeposit = async (convertedStakeAmount: BigNumber) => {
-    setPendingTx(true)
+    setPendingTx(true);
     try {
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-      const tx = await cakeVaultContract.deposit(convertedStakeAmount.toString(), callOptions)
-      const receipt = await tx.wait()
+      const tx = await cakeVaultContract.deposit(convertedStakeAmount.toString(), callOptions);
+      const receipt = await tx.wait();
       if (receipt.status) {
-        toastSuccess(t('Staked!'), t('Your funds have been staked in the pool'))
-        setPendingTx(false)
-        onDismiss()
-        dispatch(fetchCakeVaultUserData({ account }))
+        toastSuccess(t('Staked!'), t('Your funds have been staked in the pool'));
+        setPendingTx(false);
+        onDismiss();
+        dispatch(fetchCakeVaultUserData({ account }));
       }
     } catch (error) {
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      setPendingTx(false)
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'));
+      setPendingTx(false);
     }
-  }
+  };
 
   const handleConfirmClick = async () => {
-    const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
+    const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals);
     if (isRemovingStake) {
       // unstaking
-      handleWithdrawal(convertedStakeAmount)
+      handleWithdrawal(convertedStakeAmount);
     } else {
       // staking
-      handleDeposit(convertedStakeAmount)
+      handleDeposit(convertedStakeAmount);
     }
-  }
+  };
 
   return (
     <Modal
@@ -217,7 +217,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
         </Button>
       )}
     </Modal>
-  )
-}
+  );
+};
 
-export default VaultStakeModal
+export default VaultStakeModal;

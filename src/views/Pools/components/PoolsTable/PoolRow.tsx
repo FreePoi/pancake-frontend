@@ -1,42 +1,42 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { useMatchBreakpoints } from '@kaco/uikit'
-import { Pool } from 'state/types'
-import { useCakeVault } from 'state/pools/hooks'
-import useDelayedUnmount from 'hooks/useDelayedUnmount'
-import NameCell from './Cells/NameCell'
-import EarningsCell from './Cells/EarningsCell'
-import AprCell from './Cells/AprCell'
-import TotalStakedCell from './Cells/TotalStakedCell'
-import EndsInCell from './Cells/EndsInCell'
-import ExpandActionCell from './Cells/ExpandActionCell'
-import ActionPanel from './ActionPanel/ActionPanel'
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { useMatchBreakpoints } from '@kaco/uikit';
+import { Pool } from 'state/types';
+import { useCakeVault } from 'state/pools/hooks';
+import useDelayedUnmount from 'hooks/useDelayedUnmount';
+import NameCell from './Cells/NameCell';
+import EarningsCell from './Cells/EarningsCell';
+import AprCell from './Cells/AprCell';
+import TotalStakedCell from './Cells/TotalStakedCell';
+import EndsInCell from './Cells/EndsInCell';
+import ExpandActionCell from './Cells/ExpandActionCell';
+import ActionPanel from './ActionPanel/ActionPanel';
 
 interface PoolRowProps {
-  pool: Pool
-  account: string
-  userDataLoaded: boolean
+  pool: Pool;
+  account: string;
+  userDataLoaded: boolean;
 }
 
 const StyledRow = styled.div`
   background-color: transparent;
   display: flex;
   cursor: pointer;
-`
+`;
 
 const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
-  const { isXs, isSm, isMd, isLg, isXl } = useMatchBreakpoints()
-  const [expanded, setExpanded] = useState(false)
-  const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
+  const { isXs, isSm, isMd, isLg, isXl } = useMatchBreakpoints();
+  const [expanded, setExpanded] = useState(false);
+  const shouldRenderActionPanel = useDelayedUnmount(expanded, 300);
 
   const toggleExpanded = () => {
-    setExpanded((prev) => !prev)
-  }
+    setExpanded((prev) => !prev);
+  };
 
   const {
     fees: { performanceFee },
-  } = useCakeVault()
-  const performanceFeeAsDecimal = performanceFee && performanceFee / 100
+  } = useCakeVault();
+  const performanceFeeAsDecimal = performanceFee && performanceFee / 100;
 
   return (
     <>
@@ -58,7 +58,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
-export default PoolRow
+export default PoolRow;

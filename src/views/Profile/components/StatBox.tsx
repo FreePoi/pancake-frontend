@@ -1,12 +1,12 @@
-import React, { ElementType, ReactNode } from 'react'
-import { Flex, Heading, Text, TextProps } from '@kaco/uikit'
-import SecondaryCard from './SecondaryCard'
+import React, { ElementType, ReactNode } from 'react';
+import { Flex, Heading, Text, TextProps } from '@kaco/uikit';
+import SecondaryCard from './SecondaryCard';
 
 interface StatBoxProps extends TextProps {
-  icon: ElementType
-  title: ReactNode
-  subtitle: ReactNode
-  isDisabled?: boolean
+  icon: ElementType;
+  title: ReactNode;
+  subtitle: ReactNode;
+  isDisabled?: boolean;
 }
 
 const StatBox: React.FC<StatBoxProps> = ({ icon: Icon, title, subtitle, isDisabled = false, ...props }) => {
@@ -24,7 +24,7 @@ const StatBox: React.FC<StatBoxProps> = ({ icon: Icon, title, subtitle, isDisabl
         </div>
       </Flex>
     </SecondaryCard>
-  )
-}
+  );
+};
 
-export default StatBox
+export default StatBox;

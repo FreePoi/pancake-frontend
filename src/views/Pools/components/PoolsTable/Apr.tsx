@@ -1,25 +1,25 @@
-import React from 'react'
-import { Flex, useModal, CalculateIcon, Skeleton, FlexProps, Button } from '@kaco/uikit'
-import ApyCalculatorModal from 'components/ApyCalculatorModal'
-import Balance from 'components/Balance'
-import { Pool } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
-import { getAprData } from 'views/Pools/helpers'
-import { getAddress } from 'utils/addressHelpers'
+import React from 'react';
+import { Flex, useModal, CalculateIcon, Skeleton, FlexProps, Button } from '@kaco/uikit';
+import ApyCalculatorModal from 'components/ApyCalculatorModal';
+import Balance from 'components/Balance';
+import { Pool } from 'state/types';
+import { useTranslation } from 'contexts/Localization';
+import { getAprData } from 'views/Pools/helpers';
+import { getAddress } from 'utils/addressHelpers';
 
 interface AprProps extends FlexProps {
-  pool: Pool
-  showIcon: boolean
-  performanceFee?: number
+  pool: Pool;
+  showIcon: boolean;
+  performanceFee?: number;
 }
 
 const Apr: React.FC<AprProps> = ({ pool, showIcon, performanceFee = 0, ...props }) => {
-  const { stakingToken, earningToken, isFinished, earningTokenPrice, apr } = pool
-  const { t } = useTranslation()
+  const { stakingToken, earningToken, isFinished, earningTokenPrice, apr } = pool;
+  const { t } = useTranslation();
 
-  const { apr: earningsPercentageToDisplay, roundingDecimals, compoundFrequency } = getAprData(pool, performanceFee)
+  const { apr: earningsPercentageToDisplay, roundingDecimals, compoundFrequency } = getAprData(pool, performanceFee);
 
-  const apyModalLink = stakingToken.address ? `/swap?outputCurrency=${getAddress(stakingToken.address)}` : '/swap'
+  const apyModalLink = stakingToken.address ? `/swap?outputCurrency=${getAddress(stakingToken.address)}` : '/swap';
 
   const [onPresentApyModal] = useModal(
     <ApyCalculatorModal
@@ -32,12 +32,12 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, performanceFee = 0, ...props 
       compoundFrequency={compoundFrequency}
       performanceFee={performanceFee}
     />,
-  )
+  );
 
   const openRoiModal = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation()
-    onPresentApyModal()
-  }
+    event.stopPropagation();
+    onPresentApyModal();
+  };
 
   return (
     <Flex alignItems="center" justifyContent="space-between" {...props}>
@@ -61,7 +61,7 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, performanceFee = 0, ...props 
         <Skeleton width="80px" height="16px" />
       )}
     </Flex>
-  )
-}
+  );
+};
 
-export default Apr
+export default Apr;

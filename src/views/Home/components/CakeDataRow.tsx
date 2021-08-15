@@ -1,12 +1,12 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance'
-import { getCakeAddress } from 'utils/addressHelpers'
-import { getBalanceNumber, formatLocalisedCompactNumber } from 'utils/formatBalance'
-import { usePriceCakeBusd } from 'state/farms/hooks'
-import { Flex, Text, Heading, Skeleton } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import Balance from 'components/Balance'
+import React from 'react';
+import styled from 'styled-components';
+import { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance';
+import { getCakeAddress } from 'utils/addressHelpers';
+import { getBalanceNumber, formatLocalisedCompactNumber } from 'utils/formatBalance';
+import { usePriceCakeBusd } from 'state/farms/hooks';
+import { Flex, Text, Heading, Skeleton } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import Balance from 'components/Balance';
 
 const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean }>`
   flex-direction: column;
@@ -23,7 +23,7 @@ const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean }>`
            padding: 0 16px;
          }
        `}
-`
+`;
 
 const Grid = styled.div`
   display: grid;
@@ -39,18 +39,18 @@ const Grid = styled.div`
     grid-gap: 32px;
     grid-template-columns: repeat(4, auto);
   }
-`
+`;
 
-const emissionsPerBlock = 19
+const emissionsPerBlock = 19;
 
 const CakeDataRow = () => {
-  const { t } = useTranslation()
-  const totalSupply = useTotalSupply()
-  const burnedBalance = getBalanceNumber(useBurnedBalance(getCakeAddress()))
-  const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
-  const cakePriceBusd = usePriceCakeBusd()
-  const mcap = cakePriceBusd.times(cakeSupply)
-  const mcapString = formatLocalisedCompactNumber(mcap.toNumber())
+  const { t } = useTranslation();
+  const totalSupply = useTotalSupply();
+  const burnedBalance = getBalanceNumber(useBurnedBalance(getCakeAddress()));
+  const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0;
+  const cakePriceBusd = usePriceCakeBusd();
+  const mcap = cakePriceBusd.times(cakeSupply);
+  const mcapString = formatLocalisedCompactNumber(mcap.toNumber());
 
   return (
     <Grid>
@@ -84,7 +84,7 @@ const CakeDataRow = () => {
         <Heading scale="lg">{t('%cakeEmissions%/block', { cakeEmissions: emissionsPerBlock })}</Heading>
       </StyledColumn>
     </Grid>
-  )
-}
+  );
+};
 
-export default CakeDataRow
+export default CakeDataRow;

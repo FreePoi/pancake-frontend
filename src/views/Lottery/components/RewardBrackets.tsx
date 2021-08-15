@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import BigNumber from 'bignumber.js'
-import { Flex, Text } from '@kaco/uikit'
-import styled from 'styled-components'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { useTranslation } from 'contexts/Localization'
-import { LotteryRound } from 'state/types'
-import RewardBracketDetail from './RewardBracketDetail'
+import React, { useState, useEffect } from 'react';
+import BigNumber from 'bignumber.js';
+import { Flex, Text } from '@kaco/uikit';
+import styled from 'styled-components';
+import { BIG_ZERO } from 'utils/bigNumber';
+import { useTranslation } from 'contexts/Localization';
+import { LotteryRound } from 'state/types';
+import RewardBracketDetail from './RewardBracketDetail';
 
 const Wrapper = styled(Flex)`
   width: 100%;
   flex-direction: column;
-`
+`;
 
 const RewardsInner = styled.div`
   display: grid;
@@ -20,45 +20,45 @@ const RewardsInner = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     grid-template-columns: repeat(4, 1fr);
   }
-`
+`;
 
 interface RewardMatchesProps {
-  lotteryData: LotteryRound
-  isHistoricRound?: boolean
+  lotteryData: LotteryRound;
+  isHistoricRound?: boolean;
 }
 
 interface RewardsState {
-  isLoading: boolean
-  cakeToBurn: BigNumber
-  rewardsLessTreasuryFee: BigNumber
-  rewardsBreakdown: string[]
-  countWinnersPerBracket: string[]
+  isLoading: boolean;
+  cakeToBurn: BigNumber;
+  rewardsLessTreasuryFee: BigNumber;
+  rewardsBreakdown: string[];
+  countWinnersPerBracket: string[];
 }
 
 const RewardBrackets: React.FC<RewardMatchesProps> = ({ lotteryData, isHistoricRound }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const [state, setState] = useState<RewardsState>({
     isLoading: true,
     cakeToBurn: BIG_ZERO,
     rewardsLessTreasuryFee: BIG_ZERO,
     rewardsBreakdown: null,
     countWinnersPerBracket: null,
-  })
+  });
 
   useEffect(() => {
     if (lotteryData) {
-      const { treasuryFee, amountCollectedInCake, rewardsBreakdown, countWinnersPerBracket } = lotteryData
+      const { treasuryFee, amountCollectedInCake, rewardsBreakdown, countWinnersPerBracket } = lotteryData;
 
-      const feeAsPercentage = new BigNumber(treasuryFee).div(100)
-      const cakeToBurn = feeAsPercentage.div(100).times(new BigNumber(amountCollectedInCake))
-      const amountLessTreasuryFee = new BigNumber(amountCollectedInCake).minus(cakeToBurn)
+      const feeAsPercentage = new BigNumber(treasuryFee).div(100);
+      const cakeToBurn = feeAsPercentage.div(100).times(new BigNumber(amountCollectedInCake));
+      const amountLessTreasuryFee = new BigNumber(amountCollectedInCake).minus(cakeToBurn);
       setState({
         isLoading: false,
         cakeToBurn,
         rewardsLessTreasuryFee: amountLessTreasuryFee,
         rewardsBreakdown,
         countWinnersPerBracket,
-      })
+      });
     } else {
       setState({
         isLoading: true,
@@ -66,18 +66,18 @@ const RewardBrackets: React.FC<RewardMatchesProps> = ({ lotteryData, isHistoricR
         rewardsLessTreasuryFee: BIG_ZERO,
         rewardsBreakdown: null,
         countWinnersPerBracket: null,
-      })
+      });
     }
-  }, [lotteryData])
+  }, [lotteryData]);
 
   const getCakeRewards = (bracket: number) => {
-    const shareAsPercentage = new BigNumber(state.rewardsBreakdown[bracket]).div(100)
-    return state.rewardsLessTreasuryFee.div(100).times(shareAsPercentage)
-  }
+    const shareAsPercentage = new BigNumber(state.rewardsBreakdown[bracket]).div(100);
+    return state.rewardsLessTreasuryFee.div(100).times(shareAsPercentage);
+  };
 
-  const { isLoading, countWinnersPerBracket, cakeToBurn } = state
+  const { isLoading, countWinnersPerBracket, cakeToBurn } = state;
 
-  const rewardBrackets = [0, 1, 2, 3, 4, 5]
+  const rewardBrackets = [0, 1, 2, 3, 4, 5];
 
   return (
     <Wrapper>
@@ -99,7 +99,7 @@ const RewardBrackets: React.FC<RewardMatchesProps> = ({ lotteryData, isHistoricR
         <RewardBracketDetail rewardBracket={0} cakeAmount={cakeToBurn} isBurn isLoading={isLoading} />
       </RewardsInner>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default RewardBrackets
+export default RewardBrackets;

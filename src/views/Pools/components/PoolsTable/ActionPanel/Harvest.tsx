@@ -1,22 +1,22 @@
-import React from 'react'
-import { Button, Text, useModal, Flex, TooltipText, useTooltip, Skeleton, Heading } from '@kaco/uikit'
-import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@web3-react/core'
-import { getCakeVaultEarnings } from 'views/Pools/helpers'
-import { PoolCategory } from 'config/constants/types'
-import { formatNumber, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import { useTranslation } from 'contexts/Localization'
-import Balance from 'components/Balance'
-import { useCakeVault } from 'state/pools/hooks'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { Pool } from 'state/types'
+import React from 'react';
+import { Button, Text, useModal, Flex, TooltipText, useTooltip, Skeleton, Heading } from '@kaco/uikit';
+import BigNumber from 'bignumber.js';
+import { useWeb3React } from '@web3-react/core';
+import { getCakeVaultEarnings } from 'views/Pools/helpers';
+import { PoolCategory } from 'config/constants/types';
+import { formatNumber, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance';
+import { useTranslation } from 'contexts/Localization';
+import Balance from 'components/Balance';
+import { useCakeVault } from 'state/pools/hooks';
+import { BIG_ZERO } from 'utils/bigNumber';
+import { Pool } from 'state/types';
 
-import { ActionContainer, ActionTitles, ActionContent } from './styles'
-import CollectModal from '../../PoolCard/Modals/CollectModal'
-import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
+import { ActionContainer, ActionTitles, ActionContent } from './styles';
+import CollectModal from '../../PoolCard/Modals/CollectModal';
+import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow';
 
 interface HarvestActionProps extends Pool {
-  userDataLoaded: boolean
+  userDataLoaded: boolean;
 }
 
 const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
@@ -28,36 +28,36 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
   isAutoVault,
   earningTokenPrice,
 }) => {
-  const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { t } = useTranslation();
+  const { account } = useWeb3React();
 
-  const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO
+  const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO;
   // These will be reassigned later if its Auto CAKE vault
-  let earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)
-  let earningTokenDollarBalance = getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals)
-  let hasEarnings = earnings.gt(0)
-  const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
-  const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
-  const isCompoundPool = sousId === 0
-  const isBnbPool = poolCategory === PoolCategory.BINANCE
+  let earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals);
+  let earningTokenDollarBalance = getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals);
+  let hasEarnings = earnings.gt(0);
+  const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals);
+  const formattedBalance = formatNumber(earningTokenBalance, 3, 3);
+  const isCompoundPool = sousId === 0;
+  const isBnbPool = poolCategory === PoolCategory.BINANCE;
 
   // Auto CAKE vault calculations
   const {
     userData: { cakeAtLastUserAction, userShares },
     pricePerFullShare,
     fees: { performanceFee },
-  } = useCakeVault()
+  } = useCakeVault();
   const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
     account,
     cakeAtLastUserAction,
     userShares,
     pricePerFullShare,
     earningTokenPrice,
-  )
+  );
 
-  earningTokenBalance = isAutoVault ? autoCakeToDisplay : earningTokenBalance
-  hasEarnings = isAutoVault ? hasAutoEarnings : hasEarnings
-  earningTokenDollarBalance = isAutoVault ? autoUsdToDisplay : earningTokenDollarBalance
+  earningTokenBalance = isAutoVault ? autoCakeToDisplay : earningTokenBalance;
+  hasEarnings = isAutoVault ? hasAutoEarnings : hasEarnings;
+  earningTokenDollarBalance = isAutoVault ? autoUsdToDisplay : earningTokenDollarBalance;
 
   const [onPresentCollect] = useModal(
     <CollectModal
@@ -69,12 +69,12 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
       isBnbPool={isBnbPool}
       isCompoundPool={isCompoundPool}
     />,
-  )
+  );
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Subtracted automatically from each yield harvest and burned.'),
     { placement: 'bottom-start' },
-  )
+  );
 
   const actionTitle = isAutoVault ? (
     <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
@@ -89,7 +89,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
         {t('Earned')}
       </Text>
     </>
-  )
+  );
 
   if (!account) {
     return (
@@ -100,7 +100,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
           <Button disabled>{isCompoundPool ? t('Collect') : t('Harvest')}</Button>
         </ActionContent>
       </ActionContainer>
-    )
+    );
   }
 
   if (!userDataLoaded) {
@@ -111,7 +111,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
           <Skeleton width={180} height="32px" marginTop={14} />
         </ActionContent>
       </ActionContainer>
-    )
+    );
   }
 
   return (
@@ -167,7 +167,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
         )}
       </ActionContent>
     </ActionContainer>
-  )
-}
+  );
+};
 
-export default HarvestAction
+export default HarvestAction;

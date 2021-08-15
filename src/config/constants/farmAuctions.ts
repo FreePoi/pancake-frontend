@@ -1,12 +1,12 @@
-import { Token as SDKToken, Pair, ChainId } from '@pancakeswap/sdk'
-import tokens from './tokens'
-import { FarmAuctionBidderConfig, Token } from './types'
+import { Token as SDKToken, Pair, ChainId } from '@kaco/sdk';
+import tokens from './tokens';
+import { FarmAuctionBidderConfig, Token } from './types';
 
 const getLpAddress = (token: string, quoteToken: Token) => {
-  const tokenAsToken = new SDKToken(ChainId.MAINNET, token, 18)
-  const quoteTokenAsToken = new SDKToken(ChainId.MAINNET, quoteToken.address[56], 18)
-  return Pair.getAddress(tokenAsToken, quoteTokenAsToken)
-}
+  const tokenAsToken = new SDKToken(ChainId.MAINNET, token, 18);
+  const quoteTokenAsToken = new SDKToken(ChainId.MAINNET, quoteToken.address[56], 18);
+  return Pair.getAddress(tokenAsToken, quoteTokenAsToken);
+};
 
 export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
@@ -172,7 +172,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
 ].map((bidderConfig) => ({
   ...bidderConfig,
   lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),
-}))
+}));
 
 const UNKNOWN_BIDDER: FarmAuctionBidderConfig = {
   account: '',
@@ -180,12 +180,12 @@ const UNKNOWN_BIDDER: FarmAuctionBidderConfig = {
   quoteToken: tokens.wbnb,
   farmName: 'Unknown',
   tokenName: 'Unknown',
-}
+};
 
 export const getBidderInfo = (account: string): FarmAuctionBidderConfig => {
-  const matchingBidder = whitelistedBidders.find((bidder) => bidder.account === account)
+  const matchingBidder = whitelistedBidders.find((bidder) => bidder.account === account);
   if (matchingBidder) {
-    return matchingBidder
+    return matchingBidder;
   }
-  return { ...UNKNOWN_BIDDER, account }
-}
+  return { ...UNKNOWN_BIDDER, account };
+};

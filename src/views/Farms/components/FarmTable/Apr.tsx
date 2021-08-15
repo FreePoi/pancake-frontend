@@ -1,21 +1,21 @@
-import React from 'react'
-import styled from 'styled-components'
-import ApyButton from 'views/Farms/components/FarmCard/ApyButton'
-import { Address } from 'config/constants/types'
-import BigNumber from 'bignumber.js'
-import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { Skeleton } from '@kaco/uikit'
+import React from 'react';
+import styled from 'styled-components';
+import ApyButton from 'views/Farms/components/FarmCard/ApyButton';
+import { Address } from 'config/constants/types';
+import BigNumber from 'bignumber.js';
+import { BASE_ADD_LIQUIDITY_URL } from 'config';
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts';
+import { Skeleton } from '@kaco/uikit';
 
 export interface AprProps {
-  value: string
-  multiplier: string
-  lpLabel: string
-  tokenAddress?: Address
-  quoteTokenAddress?: Address
-  cakePrice: BigNumber
-  originalValue: number
-  hideButton?: boolean
+  value: string;
+  multiplier: string;
+  lpLabel: string;
+  tokenAddress?: Address;
+  quoteTokenAddress?: Address;
+  cakePrice: BigNumber;
+  originalValue: number;
+  hideButton?: boolean;
 }
 
 const Container = styled.div`
@@ -33,12 +33,12 @@ const Container = styled.div`
       }
     }
   }
-`
+`;
 
 const AprWrapper = styled.div`
   min-width: 60px;
   text-align: left;
-`
+`;
 
 const Apr: React.FC<AprProps> = ({
   value,
@@ -49,8 +49,8 @@ const Apr: React.FC<AprProps> = ({
   originalValue,
   hideButton = false,
 }) => {
-  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress })
-  const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
+  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress });
+  const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`;
 
   return originalValue !== 0 ? (
     <Container>
@@ -77,7 +77,7 @@ const Apr: React.FC<AprProps> = ({
     <Container>
       <AprWrapper>{originalValue}%</AprWrapper>
     </Container>
-  )
-}
+  );
+};
 
-export default Apr
+export default Apr;

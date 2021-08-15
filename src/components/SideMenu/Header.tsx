@@ -1,10 +1,10 @@
-import React, { FC, useState } from 'react'
-import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
-import TwitterSvg from './imgs/twitter.svg'
-import FacebookSvg from './imgs/facebook.svg'
-import ThemeWhiteSvg from './imgs/theme-white.svg'
-import ConnectWalletButton from '../ConnectWalletButton'
+import React, { FC, useState } from 'react';
+import styled from 'styled-components';
+import { useWeb3React } from '@web3-react/core';
+import TwitterSvg from './imgs/twitter.svg';
+import FacebookSvg from './imgs/facebook.svg';
+import ThemeWhiteSvg from './imgs/theme-white.svg';
+import ConnectWalletButton from '../ConnectWalletButton';
 
 export enum ThemeChoice {
   Dark,
@@ -15,7 +15,7 @@ const Header: FC<{ className?: string; onThemeChange: (theme: ThemeChoice) => vo
   className,
   onThemeChange,
 }) => {
-  const { account } = useWeb3React()
+  const { account } = useWeb3React();
 
   return (
     <div className={className}>
@@ -41,8 +41,8 @@ const Header: FC<{ className?: string; onThemeChange: (theme: ThemeChoice) => vo
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default styled(Header)`
   padding-left: 41px;
@@ -104,4 +104,4 @@ export default styled(Header)`
       }
     }
   }
-`
+`;

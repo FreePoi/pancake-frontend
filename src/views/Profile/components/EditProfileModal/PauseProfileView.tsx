@@ -1,47 +1,47 @@
-import React, { useState } from 'react'
-import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
-import { useAppDispatch } from 'state'
-import { useProfile } from 'state/profile/hooks'
-import { fetchProfile } from 'state/profile'
-import useToast from 'hooks/useToast'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { useProfile as useProfileContract } from 'hooks/useContract'
-import { useWeb3React } from '@web3-react/core'
+import React, { useState } from 'react';
+import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts';
+import { useAppDispatch } from 'state';
+import { useProfile } from 'state/profile/hooks';
+import { fetchProfile } from 'state/profile';
+import useToast from 'hooks/useToast';
+import { getBalanceNumber } from 'utils/formatBalance';
+import { useProfile as useProfileContract } from 'hooks/useContract';
+import { useWeb3React } from '@web3-react/core';
 
-type PauseProfilePageProps = InjectedModalProps
+type PauseProfilePageProps = InjectedModalProps;
 
 const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
-  const [isAcknowledged, setIsAcknowledged] = useState(false)
-  const [isConfirming, setIsConfirming] = useState(false)
-  const { profile } = useProfile()
-  const { numberCakeToReactivate } = useGetProfileCosts()
-  const { t } = useTranslation()
-  const pancakeProfileContract = useProfileContract()
-  const { account } = useWeb3React()
-  const { toastSuccess, toastError } = useToast()
-  const dispatch = useAppDispatch()
+  const [isAcknowledged, setIsAcknowledged] = useState(false);
+  const [isConfirming, setIsConfirming] = useState(false);
+  const { profile } = useProfile();
+  const { numberCakeToReactivate } = useGetProfileCosts();
+  const { t } = useTranslation();
+  const pancakeProfileContract = useProfileContract();
+  const { account } = useWeb3React();
+  const { toastSuccess, toastError } = useToast();
+  const dispatch = useAppDispatch();
 
-  const handleChange = () => setIsAcknowledged(!isAcknowledged)
+  const handleChange = () => setIsAcknowledged(!isAcknowledged);
 
   const handleDeactivateProfile = async () => {
-    const tx = await pancakeProfileContract.pauseProfile()
-    setIsConfirming(true)
-    const receipt = await tx.wait()
+    const tx = await pancakeProfileContract.pauseProfile();
+    setIsConfirming(true);
+    const receipt = await tx.wait();
     if (receipt.status) {
       // Re-fetch profile
-      await dispatch(fetchProfile(account))
-      toastSuccess(t('Profile Paused!'))
-      onDismiss()
+      await dispatch(fetchProfile(account));
+      toastSuccess(t('Profile Paused!'));
+      onDismiss();
     } else {
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      setIsConfirming(false)
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'));
+      setIsConfirming(false);
     }
-  }
+  };
 
   if (!profile) {
-    return null
+    return null;
   }
 
   return (
@@ -77,7 +77,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
         {t('Close Window')}
       </Button>
     </>
-  )
-}
+  );
+};
 
-export default PauseProfilePage
+export default PauseProfilePage;

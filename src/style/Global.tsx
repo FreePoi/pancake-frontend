@@ -1,6 +1,6 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components';
 // eslint-disable-next-line import/no-unresolved
-import { PancakeTheme } from '@kaco/uikit/dist/theme'
+import { PancakeTheme } from '@kaco/uikit/dist/theme';
 
 declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */
@@ -28,6 +28,6 @@ const GlobalStyle = createGlobalStyle`
       flex-direction: column;
     }
   }
-`
+`;
 
-export default GlobalStyle
+export default GlobalStyle;

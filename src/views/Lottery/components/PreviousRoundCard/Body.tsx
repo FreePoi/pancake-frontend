@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 import {
   CardBody,
   Heading,
@@ -11,13 +11,13 @@ import {
   useModal,
   CardRibbon,
   useMatchBreakpoints,
-} from '@kaco/uikit'
-import { LotteryRound } from 'state/types'
-import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
-import { LotteryStatus } from 'config/constants/types'
-import { useTranslation } from 'contexts/Localization'
-import WinningNumbers from '../WinningNumbers'
-import ViewTicketsModal from '../ViewTicketsModal'
+} from '@kaco/uikit';
+import { LotteryRound } from 'state/types';
+import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks';
+import { LotteryStatus } from 'config/constants/types';
+import { useTranslation } from 'contexts/Localization';
+import WinningNumbers from '../WinningNumbers';
+import ViewTicketsModal from '../ViewTicketsModal';
 
 const StyledCardBody = styled(CardBody)`
   position: relative;
@@ -25,7 +25,7 @@ const StyledCardBody = styled(CardBody)`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 const Grid = styled.div`
   display: grid;
   grid-template-columns: auto;
@@ -35,7 +35,7 @@ const Grid = styled.div`
     grid-row-gap: 36px;
     grid-template-columns: auto 1fr;
   }
-`
+`;
 
 const StyedCardRibbon = styled(CardRibbon)`
   right: -20px;
@@ -45,30 +45,30 @@ const StyedCardRibbon = styled(CardRibbon)`
     right: -10px;
     top: -10px;
   }
-`
+`;
 
 const PreviousRoundCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: string }> = ({
   lotteryData,
   lotteryId,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const {
     currentLotteryId,
     currentRound: { status },
-  } = useLottery()
-  const userLotteryData = useGetUserLotteriesGraphData()
-  const userDataForRound = userLotteryData.rounds.find((userLotteryRound) => userLotteryRound.lotteryId === lotteryId)
-  const { isLg, isXl } = useMatchBreakpoints()
-  const isDesktop = isLg || isXl
+  } = useLottery();
+  const userLotteryData = useGetUserLotteriesGraphData();
+  const userDataForRound = userLotteryData.rounds.find((userLotteryRound) => userLotteryRound.lotteryId === lotteryId);
+  const { isLg, isXl } = useMatchBreakpoints();
+  const isDesktop = isLg || isXl;
 
-  const currentLotteryIdAsInt = parseInt(currentLotteryId)
+  const currentLotteryIdAsInt = parseInt(currentLotteryId);
   const mostRecentFinishedRoundId =
-    status === LotteryStatus.CLAIMABLE ? currentLotteryIdAsInt : currentLotteryIdAsInt - 1
-  const isLatestRound = mostRecentFinishedRoundId.toString() === lotteryId
+    status === LotteryStatus.CLAIMABLE ? currentLotteryIdAsInt : currentLotteryIdAsInt - 1;
+  const isLatestRound = mostRecentFinishedRoundId.toString() === lotteryId;
 
   const [onPresentViewTicketsModal] = useModal(
     <ViewTicketsModal roundId={lotteryId} roundStatus={lotteryData?.status} />,
-  )
+  );
 
   return (
     <StyledCardBody>
@@ -126,7 +126,7 @@ const PreviousRoundCardBody: React.FC<{ lotteryData: LotteryRound; lotteryId: st
         )}
       </Grid>
     </StyledCardBody>
-  )
-}
+  );
+};
 
-export default PreviousRoundCardBody
+export default PreviousRoundCardBody;

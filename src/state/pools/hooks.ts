@@ -1,10 +1,10 @@
-import { useEffect, useMemo } from 'react'
-import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@web3-react/core'
-import { useSelector } from 'react-redux'
-import { useAppDispatch } from 'state'
-import { simpleRpcProvider } from 'utils/providers'
-import useRefresh from 'hooks/useRefresh'
+import { useEffect, useMemo } from 'react';
+import BigNumber from 'bignumber.js';
+import { useWeb3React } from '@web3-react/core';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from 'state';
+import { simpleRpcProvider } from 'utils/providers';
+import useRefresh from 'hooks/useRefresh';
 import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
@@ -12,58 +12,58 @@ import {
   fetchCakeVaultUserData,
   fetchCakeVaultFees,
   fetchPoolsStakingLimitsAsync,
-} from '.'
-import { State, Pool } from '../types'
-import { transformPool } from './helpers'
+} from '.';
+import { State, Pool } from '../types';
+import { transformPool } from './helpers';
 
 export const useFetchPublicPoolsData = () => {
-  const dispatch = useAppDispatch()
-  const { slowRefresh } = useRefresh()
+  const dispatch = useAppDispatch();
+  const { slowRefresh } = useRefresh();
 
   useEffect(() => {
     const fetchPoolsPublicData = async () => {
-      const blockNumber = await simpleRpcProvider.getBlockNumber()
-      dispatch(fetchPoolsPublicDataAsync(blockNumber))
-    }
+      const blockNumber = await simpleRpcProvider.getBlockNumber();
+      dispatch(fetchPoolsPublicDataAsync(blockNumber));
+    };
 
-    fetchPoolsPublicData()
-    dispatch(fetchPoolsStakingLimitsAsync())
-  }, [dispatch, slowRefresh])
-}
+    fetchPoolsPublicData();
+    dispatch(fetchPoolsStakingLimitsAsync());
+  }, [dispatch, slowRefresh]);
+};
 
 export const usePools = (account): { pools: Pool[]; userDataLoaded: boolean } => {
-  const { fastRefresh } = useRefresh()
-  const dispatch = useAppDispatch()
+  const { fastRefresh } = useRefresh();
+  const dispatch = useAppDispatch();
   useEffect(() => {
     if (account) {
-      dispatch(fetchPoolsUserDataAsync(account))
+      dispatch(fetchPoolsUserDataAsync(account));
     }
-  }, [account, dispatch, fastRefresh])
+  }, [account, dispatch, fastRefresh]);
 
   const { pools, userDataLoaded } = useSelector((state: State) => ({
     pools: state.pools.data,
     userDataLoaded: state.pools.userDataLoaded,
-  }))
-  return { pools: pools.map(transformPool), userDataLoaded }
-}
+  }));
+  return { pools: pools.map(transformPool), userDataLoaded };
+};
 
 export const useFetchCakeVault = () => {
-  const { account } = useWeb3React()
-  const { fastRefresh } = useRefresh()
-  const dispatch = useAppDispatch()
+  const { account } = useWeb3React();
+  const { fastRefresh } = useRefresh();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchCakeVaultPublicData())
-  }, [dispatch, fastRefresh])
+    dispatch(fetchCakeVaultPublicData());
+  }, [dispatch, fastRefresh]);
 
   useEffect(() => {
-    dispatch(fetchCakeVaultUserData({ account }))
-  }, [dispatch, fastRefresh, account])
+    dispatch(fetchCakeVaultUserData({ account }));
+  }, [dispatch, fastRefresh, account]);
 
   useEffect(() => {
-    dispatch(fetchCakeVaultFees())
-  }, [dispatch])
-}
+    dispatch(fetchCakeVaultFees());
+  }, [dispatch]);
+};
 
 export const useCakeVault = () => {
   const {
@@ -80,35 +80,35 @@ export const useCakeVault = () => {
       lastDepositedTime,
       lastUserActionTime,
     },
-  } = useSelector((state: State) => state.pools.cakeVault)
+  } = useSelector((state: State) => state.pools.cakeVault);
 
   const estimatedCakeBountyReward = useMemo(() => {
-    return new BigNumber(estimatedCakeBountyRewardAsString)
-  }, [estimatedCakeBountyRewardAsString])
+    return new BigNumber(estimatedCakeBountyRewardAsString);
+  }, [estimatedCakeBountyRewardAsString]);
 
   const totalPendingCakeHarvest = useMemo(() => {
-    return new BigNumber(totalPendingCakeHarvestAsString)
-  }, [totalPendingCakeHarvestAsString])
+    return new BigNumber(totalPendingCakeHarvestAsString);
+  }, [totalPendingCakeHarvestAsString]);
 
   const totalShares = useMemo(() => {
-    return new BigNumber(totalSharesAsString)
-  }, [totalSharesAsString])
+    return new BigNumber(totalSharesAsString);
+  }, [totalSharesAsString]);
 
   const pricePerFullShare = useMemo(() => {
-    return new BigNumber(pricePerFullShareAsString)
-  }, [pricePerFullShareAsString])
+    return new BigNumber(pricePerFullShareAsString);
+  }, [pricePerFullShareAsString]);
 
   const totalCakeInVault = useMemo(() => {
-    return new BigNumber(totalCakeInVaultAsString)
-  }, [totalCakeInVaultAsString])
+    return new BigNumber(totalCakeInVaultAsString);
+  }, [totalCakeInVaultAsString]);
 
   const userShares = useMemo(() => {
-    return new BigNumber(userSharesAsString)
-  }, [userSharesAsString])
+    return new BigNumber(userSharesAsString);
+  }, [userSharesAsString]);
 
   const cakeAtLastUserAction = useMemo(() => {
-    return new BigNumber(cakeAtLastUserActionAsString)
-  }, [cakeAtLastUserActionAsString])
+    return new BigNumber(cakeAtLastUserActionAsString);
+  }, [cakeAtLastUserActionAsString]);
 
   return {
     totalShares,
@@ -129,5 +129,5 @@ export const useCakeVault = () => {
       lastDepositedTime,
       lastUserActionTime,
     },
-  }
-}
+  };
+};

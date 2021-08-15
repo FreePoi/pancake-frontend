@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
-import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import BigNumber from 'bignumber.js';
 import {
   Card,
   CardBody,
@@ -15,19 +15,19 @@ import {
   useModal,
   Skeleton,
   Checkbox,
-} from '@kaco/uikit'
-import { parseISO, formatDistance } from 'date-fns'
-import { useWeb3React } from '@web3-react/core'
-import useToast from 'hooks/useToast'
-import { signMessage } from 'utils/web3React'
-import useWeb3Provider from 'hooks/useActiveWeb3React'
-import { useTranslation } from 'contexts/Localization'
-import useHasCakeBalance from 'hooks/useHasCakeBalance'
-import { DEFAULT_TOKEN_DECIMAL } from 'config'
-import debounce from 'lodash/debounce'
-import ConfirmProfileCreationModal from '../components/ConfirmProfileCreationModal'
-import useProfileCreation from './contexts/hook'
-import { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, REGISTER_COST } from './config'
+} from '@kaco/uikit';
+import { parseISO, formatDistance } from 'date-fns';
+import { useWeb3React } from '@web3-react/core';
+import useToast from 'hooks/useToast';
+import { signMessage } from 'utils/web3React';
+import useWeb3Provider from 'hooks/useActiveWeb3React';
+import { useTranslation } from 'contexts/Localization';
+import useHasCakeBalance from 'hooks/useHasCakeBalance';
+import { DEFAULT_TOKEN_DECIMAL } from 'config';
+import debounce from 'lodash/debounce';
+import ConfirmProfileCreationModal from '../components/ConfirmProfileCreationModal';
+import useProfileCreation from './contexts/hook';
+import { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, REGISTER_COST } from './config';
 
 enum ExistingUserState {
   IDLE = 'idle', // initial state
@@ -35,17 +35,17 @@ enum ExistingUserState {
   NEW = 'new', // username has not been created
 }
 
-const profileApiUrl = process.env.REACT_APP_API_PROFILE
-const minimumCakeToRegister = new BigNumber(REGISTER_COST).multipliedBy(DEFAULT_TOKEN_DECIMAL)
+const profileApiUrl = process.env.REACT_APP_API_PROFILE;
+const minimumCakeToRegister = new BigNumber(REGISTER_COST).multipliedBy(DEFAULT_TOKEN_DECIMAL);
 
 const InputWrap = styled.div`
   position: relative;
   max-width: 240px;
-`
+`;
 
 const Input = styled(UIKitInput)`
   padding-right: 40px;
-`
+`;
 
 const Indicator = styled(Flex)`
   align-items: center;
@@ -56,20 +56,20 @@ const Indicator = styled(Flex)`
   right: 16px;
   top: 50%;
   width: 24px;
-`
+`;
 
 const UserName: React.FC = () => {
-  const [isAcknowledged, setIsAcknowledged] = useState(false)
-  const { teamId, selectedNft, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
-  const { t } = useTranslation()
-  const { account } = useWeb3React()
-  const { toastError } = useToast()
-  const { library } = useWeb3Provider()
-  const [existingUserState, setExistingUserState] = useState<ExistingUserState>(ExistingUserState.IDLE)
-  const [isValid, setIsValid] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [message, setMessage] = useState('')
-  const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeToRegister)
+  const [isAcknowledged, setIsAcknowledged] = useState(false);
+  const { teamId, selectedNft, userName, actions, minimumCakeRequired, allowance } = useProfileCreation();
+  const { t } = useTranslation();
+  const { account } = useWeb3React();
+  const { toastError } = useToast();
+  const { library } = useWeb3Provider();
+  const [existingUserState, setExistingUserState] = useState<ExistingUserState>(ExistingUserState.IDLE);
+  const [isValid, setIsValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState('');
+  const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeToRegister);
   const [onPresentConfirmProfileCreation] = useModal(
     <ConfirmProfileCreationModal
       userName={userName}
@@ -80,38 +80,38 @@ const UserName: React.FC = () => {
       allowance={allowance}
     />,
     false,
-  )
-  const isUserCreated = existingUserState === ExistingUserState.CREATED
+  );
+  const isUserCreated = existingUserState === ExistingUserState.CREATED;
 
   const checkUsernameValidity = debounce(async (value: string) => {
     try {
-      setIsLoading(true)
-      const res = await fetch(`${profileApiUrl}/api/users/valid/${value}`)
+      setIsLoading(true);
+      const res = await fetch(`${profileApiUrl}/api/users/valid/${value}`);
 
       if (res.ok) {
-        setIsValid(true)
-        setMessage('')
+        setIsValid(true);
+        setMessage('');
       } else {
-        const data = await res.json()
-        setIsValid(false)
-        setMessage(data?.error?.message)
+        const data = await res.json();
+        setIsValid(false);
+        setMessage(data?.error?.message);
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }, 200)
+  }, 200);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
-    actions.setUserName(value)
-    checkUsernameValidity(value)
-  }
+    const { value } = event.target;
+    actions.setUserName(value);
+    checkUsernameValidity(value);
+  };
 
   const handleConfirm = async () => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
 
-      const signature = await signMessage(library, account, userName)
+      const signature = await signMessage(library, account, userName);
       const response = await fetch(`${profileApiUrl}/api/users/register`, {
         method: 'POST',
         headers: {
@@ -122,49 +122,49 @@ const UserName: React.FC = () => {
           username: userName,
           signature,
         }),
-      })
+      });
 
       if (response.ok) {
-        setExistingUserState(ExistingUserState.CREATED)
+        setExistingUserState(ExistingUserState.CREATED);
       } else {
-        const data = await response.json()
-        toastError(t('Error'), data?.error?.message)
+        const data = await response.json();
+        toastError(t('Error'), data?.error?.message);
       }
     } catch (error) {
-      toastError(error?.message ? error.message : JSON.stringify(error))
+      toastError(error?.message ? error.message : JSON.stringify(error));
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  const handleAcknowledge = () => setIsAcknowledged(!isAcknowledged)
+  const handleAcknowledge = () => setIsAcknowledged(!isAcknowledged);
 
   // Perform an initial check to see if the wallet has already created a username
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`${profileApiUrl}/api/users/${account}`)
-        const data = await response.json()
+        const response = await fetch(`${profileApiUrl}/api/users/${account}`);
+        const data = await response.json();
 
         if (response.ok) {
-          const dateCreated = formatDistance(parseISO(data.created_at), new Date())
-          setMessage(t('Created %dateCreated% ago', { dateCreated }))
+          const dateCreated = formatDistance(parseISO(data.created_at), new Date());
+          setMessage(t('Created %dateCreated% ago', { dateCreated }));
 
-          actions.setUserName(data.username)
-          setExistingUserState(ExistingUserState.CREATED)
-          setIsValid(true)
+          actions.setUserName(data.username);
+          setExistingUserState(ExistingUserState.CREATED);
+          setIsValid(true);
         } else {
-          setExistingUserState(ExistingUserState.NEW)
+          setExistingUserState(ExistingUserState.NEW);
         }
       } catch (error) {
-        toastError(t('Error'), t('Unable to verify username'))
+        toastError(t('Error'), t('Unable to verify username'));
       }
-    }
+    };
 
     if (account) {
-      fetchUser()
+      fetchUser();
     }
-  }, [account, setExistingUserState, setIsValid, setMessage, actions, toastError, t])
+  }, [account, setExistingUserState, setIsValid, setMessage, actions, toastError, t]);
 
   return (
     <>
@@ -242,7 +242,7 @@ const UserName: React.FC = () => {
         </Text>
       )}
     </>
-  )
-}
+  );
+};
 
-export default UserName
+export default UserName;

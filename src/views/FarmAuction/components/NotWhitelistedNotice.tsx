@@ -1,15 +1,15 @@
-import React from 'react'
-import { Text, Flex, Message, Box, HelpIcon } from '@kaco/uikit'
-import { Auction, ConnectedBidder } from 'config/constants/types'
-import { useTranslation } from 'contexts/Localization'
+import React from 'react';
+import { Text, Flex, Message, Box, HelpIcon } from '@kaco/uikit';
+import { Auction, ConnectedBidder } from 'config/constants/types';
+import { useTranslation } from 'contexts/Localization';
 
 const NotWhitelistedNotice: React.FC<{ conncetedBidder: ConnectedBidder; auction: Auction }> = ({
   conncetedBidder,
   auction,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   if ((conncetedBidder && conncetedBidder.isWhitelisted) || !auction) {
-    return null
+    return null;
   }
   return (
     <Flex mb="24px" justifyContent="center">
@@ -26,7 +26,7 @@ const NotWhitelistedNotice: React.FC<{ conncetedBidder: ConnectedBidder; auction
         </Box>
       </Message>
     </Flex>
-  )
-}
+  );
+};
 
-export default NotWhitelistedNotice
+export default NotWhitelistedNotice;

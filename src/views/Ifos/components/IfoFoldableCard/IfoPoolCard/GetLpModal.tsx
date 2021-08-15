@@ -1,16 +1,16 @@
-import React from 'react'
-import { Modal, ModalBody, Text, Image, Button, Link, OpenNewIcon } from '@kaco/uikit'
-import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import { Token } from 'config/constants/types'
-import { useTranslation } from 'contexts/Localization'
+import React from 'react';
+import { Modal, ModalBody, Text, Image, Button, Link, OpenNewIcon } from '@kaco/uikit';
+import { BASE_ADD_LIQUIDITY_URL } from 'config';
+import { Token } from 'config/constants/types';
+import { useTranslation } from 'contexts/Localization';
 
 interface Props {
-  currency: Token
-  onDismiss?: () => void
+  currency: Token;
+  onDismiss?: () => void;
 }
 
 const GetLpModal: React.FC<Partial<Props>> = ({ currency, onDismiss }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <Modal title={t('LP Tokens required')} onDismiss={onDismiss}>
       <ModalBody maxWidth="288px">
@@ -34,7 +34,7 @@ const GetLpModal: React.FC<Partial<Props>> = ({ currency, onDismiss }) => {
         </Button>
       </ModalBody>
     </Modal>
-  )
-}
+  );
+};
 
-export default GetLpModal
+export default GetLpModal;

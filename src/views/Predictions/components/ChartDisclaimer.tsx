@@ -1,18 +1,18 @@
-import React from 'react'
-import { ModalContainer, ModalBody, Text, Button, InjectedModalProps, LinkExternal, Flex } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
+import React from 'react';
+import { ModalContainer, ModalBody, Text, Button, InjectedModalProps, LinkExternal, Flex } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
 
 interface ChartDisclaimerProps extends InjectedModalProps {
-  onSuccess: () => void
+  onSuccess: () => void;
 }
 
 const ChartDisclaimer: React.FC<ChartDisclaimerProps> = ({ onSuccess, onDismiss }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const handleConfirm = () => {
-    onSuccess()
-    onDismiss()
-  }
+    onSuccess();
+    onDismiss();
+  };
 
   return (
     <ModalContainer title={t('Welcome!')} minWidth="320px">
@@ -36,7 +36,7 @@ const ChartDisclaimer: React.FC<ChartDisclaimerProps> = ({ onSuccess, onDismiss 
         </Flex>
       </ModalBody>
     </ModalContainer>
-  )
-}
+  );
+};
 
-export default ChartDisclaimer
+export default ChartDisclaimer;

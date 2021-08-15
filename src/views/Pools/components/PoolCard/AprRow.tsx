@@ -1,30 +1,30 @@
-import React from 'react'
-import { Flex, TooltipText, IconButton, useModal, CalculateIcon, Skeleton, useTooltip } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import Balance from 'components/Balance'
-import ApyCalculatorModal from 'components/ApyCalculatorModal'
-import { Pool } from 'state/types'
-import { getAprData } from 'views/Pools/helpers'
-import { getAddress } from 'utils/addressHelpers'
+import React from 'react';
+import { Flex, TooltipText, IconButton, useModal, CalculateIcon, Skeleton, useTooltip } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import Balance from 'components/Balance';
+import ApyCalculatorModal from 'components/ApyCalculatorModal';
+import { Pool } from 'state/types';
+import { getAprData } from 'views/Pools/helpers';
+import { getAddress } from 'utils/addressHelpers';
 
 interface AprRowProps {
-  pool: Pool
-  performanceFee?: number
+  pool: Pool;
+  performanceFee?: number;
 }
 
 const AprRow: React.FC<AprRowProps> = ({ pool, performanceFee = 0 }) => {
-  const { t } = useTranslation()
-  const { stakingToken, earningToken, isFinished, apr, earningTokenPrice, isAutoVault } = pool
+  const { t } = useTranslation();
+  const { stakingToken, earningToken, isFinished, apr, earningTokenPrice, isAutoVault } = pool;
 
   const tooltipContent = isAutoVault
     ? t('APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.')
-    : t('This pool’s rewards aren’t compounded automatically, so we show APR')
+    : t('This pool’s rewards aren’t compounded automatically, so we show APR');
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' });
 
-  const { apr: earningsPercentageToDisplay, roundingDecimals, compoundFrequency } = getAprData(pool, performanceFee)
+  const { apr: earningsPercentageToDisplay, roundingDecimals, compoundFrequency } = getAprData(pool, performanceFee);
 
-  const apyModalLink = stakingToken.address ? `/swap?outputCurrency=${getAddress(stakingToken.address)}` : '/swap'
+  const apyModalLink = stakingToken.address ? `/swap?outputCurrency=${getAddress(stakingToken.address)}` : '/swap';
 
   const [onPresentApyModal] = useModal(
     <ApyCalculatorModal
@@ -37,7 +37,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, performanceFee = 0 }) => {
       compoundFrequency={compoundFrequency}
       performanceFee={performanceFee}
     />,
-  )
+  );
 
   return (
     <Flex alignItems="center" justifyContent="space-between">
@@ -61,7 +61,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, performanceFee = 0 }) => {
         </Flex>
       )}
     </Flex>
-  )
-}
+  );
+};
 
-export default AprRow
+export default AprRow;

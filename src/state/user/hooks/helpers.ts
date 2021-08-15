@@ -1,5 +1,5 @@
-import { Token } from '@pancakeswap/sdk'
-import { SerializedToken } from '../actions'
+import { Token } from '@kaco/sdk';
+import { SerializedToken } from '../actions';
 
 export function serializeToken(token: Token): SerializedToken {
   return {
@@ -8,7 +8,7 @@ export function serializeToken(token: Token): SerializedToken {
     decimals: token.decimals,
     symbol: token.symbol,
     name: token.name,
-  }
+  };
 }
 
 export function deserializeToken(serializedToken: SerializedToken): Token {
@@ -18,5 +18,5 @@ export function deserializeToken(serializedToken: SerializedToken): Token {
     serializedToken.decimals,
     serializedToken.symbol,
     serializedToken.name,
-  )
+  );
 }

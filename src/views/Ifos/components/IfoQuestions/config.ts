@@ -33,5 +33,5 @@ const config = [
       'You can contribute to one or both, it doesn’t matter: only your overall contribution is counted for the achievement.',
     ],
   },
-]
-export default config
+];
+export default config;

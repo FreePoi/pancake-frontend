@@ -1,23 +1,23 @@
-import React from 'react'
-import { Flex, Text, TooltipText, useTooltip } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { useWeb3React } from '@web3-react/core'
-import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
-import { useCakeVault } from 'state/pools/hooks'
-import WithdrawalFeeTimer from './WithdrawalFeeTimer'
+import React from 'react';
+import { Flex, Text, TooltipText, useTooltip } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { useWeb3React } from '@web3-react/core';
+import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer';
+import { useCakeVault } from 'state/pools/hooks';
+import WithdrawalFeeTimer from './WithdrawalFeeTimer';
 
 interface UnstakingFeeCountdownRowProps {
-  isTableVariant?: boolean
+  isTableVariant?: boolean;
 }
 
 const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ isTableVariant }) => {
-  const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { t } = useTranslation();
+  const { account } = useWeb3React();
   const {
     userData: { lastDepositedTime, userShares },
     fees: { withdrawalFee, withdrawalFeePeriod },
-  } = useCakeVault()
-  const feeAsDecimal = withdrawalFee / 100 || '-'
+  } = useCakeVault();
+  const feeAsDecimal = withdrawalFee / 100 || '-';
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text bold mb="4px">
@@ -30,29 +30,29 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ isT
       </Text>
     </>,
     { placement: 'bottom-start' },
-  )
+  );
 
   const { secondsRemaining, hasUnstakingFee } = useWithdrawalFeeTimer(
     parseInt(lastDepositedTime, 10),
     userShares,
     withdrawalFeePeriod,
-  )
+  );
 
   // The user has made a deposit, but has no fee
-  const noFeeToPay = lastDepositedTime && !hasUnstakingFee && userShares.gt(0)
+  const noFeeToPay = lastDepositedTime && !hasUnstakingFee && userShares.gt(0);
 
   // Show the timer if a user is connected, has deposited, and has an unstaking fee
-  const shouldShowTimer = account && lastDepositedTime && hasUnstakingFee
+  const shouldShowTimer = account && lastDepositedTime && hasUnstakingFee;
 
   const getRowText = () => {
     if (noFeeToPay) {
-      return t('Unstaking Fee').toLowerCase()
+      return t('Unstaking Fee').toLowerCase();
     }
     if (shouldShowTimer) {
-      return t('unstaking fee until')
+      return t('unstaking fee until');
     }
-    return t('unstaking fee if withdrawn within 72h')
-  }
+    return t('unstaking fee if withdrawn within 72h');
+  };
 
   return (
     <Flex
@@ -66,7 +66,7 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ isT
       </TooltipText>
       {shouldShowTimer && <WithdrawalFeeTimer secondsRemaining={secondsRemaining} />}
     </Flex>
-  )
-}
+  );
+};
 
-export default UnstakingFeeCountdownRow
+export default UnstakingFeeCountdownRow;

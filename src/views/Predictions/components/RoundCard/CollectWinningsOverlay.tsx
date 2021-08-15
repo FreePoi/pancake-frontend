@@ -1,15 +1,15 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Flex, TrophyGoldIcon } from '@kaco/uikit'
-import { useGetIsClaimable } from 'state/predictions/hooks'
-import { useTranslation } from 'contexts/Localization'
-import CollectWinningsButton from '../CollectWinningsButton'
+import React from 'react';
+import styled from 'styled-components';
+import { Flex, TrophyGoldIcon } from '@kaco/uikit';
+import { useGetIsClaimable } from 'state/predictions/hooks';
+import { useTranslation } from 'contexts/Localization';
+import CollectWinningsButton from '../CollectWinningsButton';
 
 interface CollectWinningsOverlayProps {
-  epoch: number
-  payout: string
-  betAmount: string
-  isBottom?: boolean
+  epoch: number;
+  payout: string;
+  betAmount: string;
+  isBottom?: boolean;
 }
 
 const Wrapper = styled(Flex)<{ isBottom: CollectWinningsOverlayProps['isBottom'] }>`
@@ -27,9 +27,9 @@ const Wrapper = styled(Flex)<{ isBottom: CollectWinningsOverlayProps['isBottom']
     `
       : `
       top: 37px; // Card header height
-    `
+    `;
   }}
-`
+`;
 
 const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
   epoch,
@@ -38,11 +38,11 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
   isBottom = false,
   ...props
 }) => {
-  const { t } = useTranslation()
-  const isClaimable = useGetIsClaimable(epoch)
+  const { t } = useTranslation();
+  const isClaimable = useGetIsClaimable(epoch);
 
   if (!isClaimable) {
-    return null
+    return null;
   }
 
   return (
@@ -52,7 +52,7 @@ const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({
         {t('Collect Winnings')}
       </CollectWinningsButton>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default CollectWinningsOverlay
+export default CollectWinningsOverlay;

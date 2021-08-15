@@ -1,15 +1,15 @@
-import React, { useRef } from 'react'
-import styled from 'styled-components'
-import { useTable, Button, ChevronUpIcon, ColumnType } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
+import React, { useRef } from 'react';
+import styled from 'styled-components';
+import { useTable, Button, ChevronUpIcon, ColumnType } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
 
-import Row, { RowProps } from './Row'
+import Row, { RowProps } from './Row';
 
 export interface ITableProps {
-  data: RowProps[]
-  columns: ColumnType<RowProps>[]
-  userDataReady: boolean
-  sortColumn?: string
+  data: RowProps[];
+  columns: ColumnType<RowProps>[];
+  userDataReady: boolean;
+  sortColumn?: string;
 }
 
 const Container = styled.div`
@@ -18,7 +18,7 @@ const Container = styled.div`
   background: ${({ theme }) => theme.card.background};
   border-radius: 16px;
   margin: 16px 0px;
-`
+`;
 
 const TableWrapper = styled.div`
   overflow: visible;
@@ -26,7 +26,7 @@ const TableWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`
+`;
 
 const StyledTable = styled.table`
   border-collapse: collapse;
@@ -35,7 +35,7 @@ const StyledTable = styled.table`
   margin-left: auto;
   margin-right: auto;
   width: 100%;
-`
+`;
 
 const TableBody = styled.tbody`
   & tr {
@@ -44,31 +44,31 @@ const TableBody = styled.tbody`
       vertical-align: middle;
     }
   }
-`
+`;
 
 const TableContainer = styled.div`
   position: relative;
-`
+`;
 
 const ScrollButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 5px;
   padding-bottom: 5px;
-`
+`;
 
 const FarmTable: React.FC<ITableProps> = (props) => {
-  const tableWrapperEl = useRef<HTMLDivElement>(null)
-  const { t } = useTranslation()
-  const { data, columns, userDataReady } = props
+  const tableWrapperEl = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
+  const { data, columns, userDataReady } = props;
 
-  const { rows } = useTable(columns, data, { sortable: true, sortColumn: 'farm' })
+  const { rows } = useTable(columns, data, { sortable: true, sortColumn: 'farm' });
 
   const scrollToTop = (): void => {
     tableWrapperEl.current.scrollIntoView({
       behavior: 'smooth',
-    })
-  }
+    });
+  };
 
   return (
     <Container>
@@ -77,7 +77,7 @@ const FarmTable: React.FC<ITableProps> = (props) => {
           <StyledTable>
             <TableBody>
               {rows.map((row) => {
-                return <Row {...row.original} userDataReady={userDataReady} key={`table-row-${row.id}`} />
+                return <Row {...row.original} userDataReady={userDataReady} key={`table-row-${row.id}`} />;
               })}
             </TableBody>
           </StyledTable>
@@ -90,7 +90,7 @@ const FarmTable: React.FC<ITableProps> = (props) => {
         </ScrollButtonContainer>
       </TableContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default FarmTable
+export default FarmTable;

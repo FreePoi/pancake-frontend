@@ -1,30 +1,30 @@
-import React from 'react'
-import { Box, Button, Flex, InjectedModalProps, LinkExternal, Message, Text } from '@kaco/uikit'
-import { useWeb3React } from '@web3-react/core'
-import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
-import { getCakeAddress } from 'utils/addressHelpers'
-import useAuth from 'hooks/useAuth'
-import { useTranslation } from 'contexts/Localization'
-import { getBscScanLink } from 'utils'
-import { getFullDisplayBalance } from 'utils/formatBalance'
-import CopyAddress from './CopyAddress'
+import React from 'react';
+import { Box, Button, Flex, InjectedModalProps, LinkExternal, Message, Text } from '@kaco/uikit';
+import { useWeb3React } from '@web3-react/core';
+import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance';
+import { getCakeAddress } from 'utils/addressHelpers';
+import useAuth from 'hooks/useAuth';
+import { useTranslation } from 'contexts/Localization';
+import { getBscScanLink } from 'utils';
+import { getFullDisplayBalance } from 'utils/formatBalance';
+import CopyAddress from './CopyAddress';
 
 interface WalletInfoProps {
-  hasLowBnbBalance: boolean
-  onDismiss: InjectedModalProps['onDismiss']
+  hasLowBnbBalance: boolean;
+  onDismiss: InjectedModalProps['onDismiss'];
 }
 
 const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) => {
-  const { t } = useTranslation()
-  const { account } = useWeb3React()
-  const { balance } = useGetBnbBalance()
-  const { balance: cakeBalance } = useTokenBalance(getCakeAddress())
-  const { logout } = useAuth()
+  const { t } = useTranslation();
+  const { account } = useWeb3React();
+  const { balance } = useGetBnbBalance();
+  const { balance: cakeBalance } = useTokenBalance(getCakeAddress());
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    onDismiss()
-    logout()
-  }
+    onDismiss();
+    logout();
+  };
 
   return (
     <>
@@ -55,7 +55,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) 
         {t('Disconnect Wallet')}
       </Button>
     </>
-  )
-}
+  );
+};
 
-export default WalletInfo
+export default WalletInfo;

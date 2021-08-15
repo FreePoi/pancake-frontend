@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   Modal,
   Button,
@@ -11,13 +11,13 @@ import {
   CrownIcon,
   TrophyGoldIcon,
   TeamPlayerIcon,
-} from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { useTradingCompetitionContract } from 'hooks/useContract'
-import useToast from 'hooks/useToast'
-import { useCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
-import { CompetitionProps } from '../../types'
-import NftBunnies from '../../pngs/syrup-nft.png'
+} from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { useTradingCompetitionContract } from 'hooks/useContract';
+import useToast from 'hooks/useToast';
+import { useCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers';
+import { CompetitionProps } from '../../types';
+import NftBunnies from '../../pngs/syrup-nft.png';
 
 const ImageWrapper = styled(Flex)`
   justify-content: center;
@@ -26,31 +26,31 @@ const ImageWrapper = styled(Flex)`
   img {
     border-radius: ${({ theme }) => theme.radii.default};
   }
-`
+`;
 
 const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, userTradingInformation }) => {
-  const [isConfirming, setIsConfirming] = useState(false)
-  const tradingCompetitionContract = useTradingCompetitionContract()
-  const { toastSuccess, toastError } = useToast()
-  const { t } = useTranslation()
+  const [isConfirming, setIsConfirming] = useState(false);
+  const tradingCompetitionContract = useTradingCompetitionContract();
+  const { toastSuccess, toastError } = useToast();
+  const { t } = useTranslation();
 
-  const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
-  const { cakeReward } = useCompetitionCakeRewards(userCakeRewards)
-  const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
+  const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation;
+  const { cakeReward } = useCompetitionCakeRewards(userCakeRewards);
+  const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup);
 
   const handleClaimClick = async () => {
-    const tx = await tradingCompetitionContract.claimReward()
-    setIsConfirming(true)
-    const receipt = await tx.wait()
+    const tx = await tradingCompetitionContract.claimReward();
+    setIsConfirming(true);
+    const receipt = await tx.wait();
     if (receipt.status) {
-      toastSuccess(t('You have claimed your rewards!'))
-      onDismiss()
-      onClaimSuccess()
+      toastSuccess(t('You have claimed your rewards!'));
+      onDismiss();
+      onClaimSuccess();
     } else {
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
-      setIsConfirming(false)
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'));
+      setIsConfirming(false);
     }
-  }
+  };
 
   return (
     <Modal title={t('Collect Winnings')} onDismiss={onDismiss}>
@@ -97,7 +97,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         </Text>
       </Flex>
     </Modal>
-  )
-}
+  );
+};
 
-export default ClaimModal
+export default ClaimModal;

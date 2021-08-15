@@ -1,17 +1,17 @@
-import React from 'react'
-import { Flex, Text, Heading, Image } from '@kaco/uikit'
-import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
-import useTheme from 'hooks/useTheme'
-import AllBunniesImage from '../../pngs/all-bunnies.png'
-import { Heading1Text, Heading2Text } from '../CompetitionHeadingText'
+import React from 'react';
+import { Flex, Text, Heading, Image } from '@kaco/uikit';
+import styled from 'styled-components';
+import { useTranslation } from 'contexts/Localization';
+import useTheme from 'hooks/useTheme';
+import AllBunniesImage from '../../pngs/all-bunnies.png';
+import { Heading1Text, Heading2Text } from '../CompetitionHeadingText';
 
 const TextStyles = (theme) => `
   text-align: center;
   ${theme.mediaQueries.md} {
     text-align: left;
   }
-`
+`;
 
 const ImageWrapper = styled.div`
   width: 75%;
@@ -19,27 +19,27 @@ const ImageWrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
     display: none;
   }
-`
+`;
 
 const StyledText = styled(Text)`
   ${({ theme }) => TextStyles(theme)}
-`
+`;
 
 const StyledHeading1Text = styled(Heading1Text)`
   ${({ theme }) => TextStyles(theme)}
-`
+`;
 
 const StyledHeading2Text = styled(Heading2Text)`
   ${({ theme }) => TextStyles(theme)}
-`
+`;
 
 const StyledHeading = styled(Heading)`
   ${({ theme }) => TextStyles(theme)}
-`
+`;
 
 const BattleBanner = () => {
-  const { t } = useTranslation()
-  const { theme } = useTheme()
+  const { t } = useTranslation();
+  const { theme } = useTheme();
 
   return (
     <Flex flexDirection="column">
@@ -57,7 +57,7 @@ const BattleBanner = () => {
         {t('Compete with other teams to win CAKE, collectible NFTs, achievements & more!')}
       </StyledHeading>
     </Flex>
-  )
-}
+  );
+};
 
-export default BattleBanner
+export default BattleBanner;

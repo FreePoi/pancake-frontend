@@ -1,29 +1,29 @@
-import React from 'react'
-import { Flex, Heading, Image } from '@kaco/uikit'
-import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
-import AllBunniesImage from '../../pngs/all-bunnies.png'
-import { Heading1Text, Heading2Text } from '../CompetitionHeadingText'
+import React from 'react';
+import { Flex, Heading, Image } from '@kaco/uikit';
+import styled from 'styled-components';
+import { useTranslation } from 'contexts/Localization';
+import AllBunniesImage from '../../pngs/all-bunnies.png';
+import { Heading1Text, Heading2Text } from '../CompetitionHeadingText';
 
 const ImageWrapper = styled.div`
   width: 100%;
   margin: 0 auto;
-`
+`;
 
 const StyledHeading1Text = styled(Heading1Text)`
   text-align: center;
-`
+`;
 
 const StyledHeading2Text = styled(Heading2Text)`
   text-align: center;
-`
+`;
 
 const StyledHeading = styled(Heading)`
   text-align: center;
-`
+`;
 
 const BattleBanner = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <Flex flexDirection="column" justifyContent="center" alignItems="center">
       <ImageWrapper>
@@ -37,7 +37,7 @@ const BattleBanner = () => {
         {t('Registration starting April 5')}
       </StyledHeading>
     </Flex>
-  )
-}
+  );
+};
 
-export default BattleBanner
+export default BattleBanner;

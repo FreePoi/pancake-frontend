@@ -1,17 +1,17 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Flex, LinkExternal, Image, Text, PrizeIcon, Skeleton } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { PublicIfoData } from 'views/Ifos/types'
-import { Ifo } from 'config/constants/types'
-import { BIG_TEN } from 'utils/bigNumber'
-import { getBscScanLink } from 'utils'
+import React from 'react';
+import styled from 'styled-components';
+import { Flex, LinkExternal, Image, Text, PrizeIcon, Skeleton } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { PublicIfoData } from 'views/Ifos/types';
+import { Ifo } from 'config/constants/types';
+import { BIG_TEN } from 'utils/bigNumber';
+import { getBscScanLink } from 'utils';
 
-const MIN_DOLLAR_FOR_ACHIEVEMENT = BIG_TEN
+const MIN_DOLLAR_FOR_ACHIEVEMENT = BIG_TEN;
 
 interface Props {
-  ifo: Ifo
-  publicIfoData: PublicIfoData
+  ifo: Ifo;
+  publicIfoData: PublicIfoData;
 }
 
 const Container = styled(Flex)`
@@ -22,24 +22,24 @@ const Container = styled(Flex)`
     flex-direction: row;
     align-items: initial;
   }
-`
+`;
 
 const AchievementFlex = styled(Flex)<{ isFinished: boolean }>`
   ${({ isFinished }) => (isFinished ? 'filter: grayscale(100%)' : '')};
-`
+`;
 
 const StyledLinkExternal = styled(LinkExternal)`
   margin-top: 32px;
   ${({ theme }) => theme.mediaQueries.md} {
     margin-top: 0;
   }
-`
+`;
 
 const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
-  const { t } = useTranslation()
-  const tokenName = ifo.token.symbol.toLowerCase()
-  const campaignTitle = ifo.name
-  const minLpForAchievement = MIN_DOLLAR_FOR_ACHIEVEMENT.div(publicIfoData.currencyPriceInUSD).toNumber()
+  const { t } = useTranslation();
+  const tokenName = ifo.token.symbol.toLowerCase();
+  const campaignTitle = ifo.name;
+  const minLpForAchievement = MIN_DOLLAR_FOR_ACHIEVEMENT.div(publicIfoData.currencyPriceInUSD).toNumber();
 
   return (
     <Container>
@@ -74,7 +74,7 @@ const Achievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
         <StyledLinkExternal href={getBscScanLink(ifo.address, 'address')}>{t('View Contract')}</StyledLinkExternal>
       </Flex>
     </Container>
-  )
-}
+  );
+};
 
-export default Achievement
+export default Achievement;

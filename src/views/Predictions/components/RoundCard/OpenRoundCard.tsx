@@ -1,33 +1,33 @@
-import React, { useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
-import { Card, CardBody, PlayCircleOutlineIcon, Button, useTooltip, ArrowUpIcon, ArrowDownIcon } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { useAppDispatch } from 'state'
-import { BetPosition, NodeLedger, NodeRound } from 'state/types'
-import { useGetIntervalBlocks } from 'state/predictions/hooks'
-import { useBlock } from 'state/block/hooks'
-import { BLOCK_PADDING, fetchLedgerData } from 'state/predictions'
-import useToast from 'hooks/useToast'
-import useTheme from 'hooks/useTheme'
-import CardFlip from '../CardFlip'
-import { formatBnbv2 } from '../../helpers'
-import { RoundResultBox, PrizePoolRow } from '../RoundResult'
-import MultiplierArrow from './MultiplierArrow'
-import CardHeader, { getBorderBackground } from './CardHeader'
-import SetPositionCard from './SetPositionCard'
+import React, { useState } from 'react';
+import { useWeb3React } from '@web3-react/core';
+import { Card, CardBody, PlayCircleOutlineIcon, Button, useTooltip, ArrowUpIcon, ArrowDownIcon } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { useAppDispatch } from 'state';
+import { BetPosition, NodeLedger, NodeRound } from 'state/types';
+import { useGetIntervalBlocks } from 'state/predictions/hooks';
+import { useBlock } from 'state/block/hooks';
+import { BLOCK_PADDING, fetchLedgerData } from 'state/predictions';
+import useToast from 'hooks/useToast';
+import useTheme from 'hooks/useTheme';
+import CardFlip from '../CardFlip';
+import { formatBnbv2 } from '../../helpers';
+import { RoundResultBox, PrizePoolRow } from '../RoundResult';
+import MultiplierArrow from './MultiplierArrow';
+import CardHeader, { getBorderBackground } from './CardHeader';
+import SetPositionCard from './SetPositionCard';
 
 interface OpenRoundCardProps {
-  round: NodeRound
-  betAmount?: NodeLedger['amount']
-  hasEnteredUp: boolean
-  hasEnteredDown: boolean
-  bullMultiplier: string
-  bearMultiplier: string
+  round: NodeRound;
+  betAmount?: NodeLedger['amount'];
+  hasEnteredUp: boolean;
+  hasEnteredDown: boolean;
+  bullMultiplier: string;
+  bearMultiplier: string;
 }
 
 interface State {
-  isSettingPosition: boolean
-  position: BetPosition
+  isSettingPosition: boolean;
+  position: BetPosition;
 }
 
 const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
@@ -41,77 +41,81 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   const [state, setState] = useState<State>({
     isSettingPosition: false,
     position: BetPosition.BULL,
-  })
-  const { t } = useTranslation()
-  const { theme } = useTheme()
-  const interval = useGetIntervalBlocks()
-  const { toastSuccess } = useToast()
-  const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
-  const { currentBlock } = useBlock()
-  const { isSettingPosition, position } = state
-  const isBufferPhase = currentBlock >= round.startBlock + (interval + BLOCK_PADDING)
-  const positionDisplay = position === BetPosition.BULL ? t('Up').toUpperCase() : t('Down').toUpperCase()
+  });
+  const { t } = useTranslation();
+  const { theme } = useTheme();
+  const interval = useGetIntervalBlocks();
+  const { toastSuccess } = useToast();
+  const { account } = useWeb3React();
+  const dispatch = useAppDispatch();
+  const { currentBlock } = useBlock();
+  const { isSettingPosition, position } = state;
+  const isBufferPhase = currentBlock >= round.startBlock + (interval + BLOCK_PADDING);
+  const positionDisplay = position === BetPosition.BULL ? t('Up').toUpperCase() : t('Down').toUpperCase();
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
     <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(betAmount)} BNB`}</div>,
     { placement: 'top' },
-  )
+  );
 
   // Bettable rounds do not have an lockBlock set so we approximate it by adding the block interval
   // to the start block
-  const estimatedLockBlock = round.startBlock + (interval + BLOCK_PADDING)
+  const estimatedLockBlock = round.startBlock + (interval + BLOCK_PADDING);
 
   const getCanEnterPosition = () => {
     if (hasEnteredUp || hasEnteredDown) {
-      return false
+      return false;
     }
 
     if (round.lockPrice !== null) {
-      return false
+      return false;
     }
 
-    return true
-  }
+    return true;
+  };
 
-  const canEnterPosition = getCanEnterPosition()
+  const canEnterPosition = getCanEnterPosition();
 
   const handleBack = () =>
     setState((prevState) => ({
       ...prevState,
       isSettingPosition: false,
-    }))
+    }));
 
   const handleSetPosition = (newPosition: BetPosition) => {
     setState((prevState) => ({
       ...prevState,
       isSettingPosition: true,
       position: newPosition,
-    }))
-  }
+    }));
+  };
 
   const togglePosition = () => {
     setState((prevState) => ({
       ...prevState,
       position: prevState.position === BetPosition.BULL ? BetPosition.BEAR : BetPosition.BULL,
-    }))
-  }
+    }));
+  };
 
   const handleSuccess = async () => {
-    await dispatch(fetchLedgerData({ account, epochs: [round.epoch] }))
+    await dispatch(fetchLedgerData({ account, epochs: [round.epoch] }));
 
-    handleBack()
+    handleBack();
 
     toastSuccess(
       t('Success!'),
       t('%position% position entered', {
         position: positionDisplay,
       }),
-    )
-  }
+    );
+  };
 
   const getPositionEnteredIcon = () => {
-    return position === BetPosition.BULL ? <ArrowUpIcon color="currentColor" /> : <ArrowDownIcon color="currentColor" />
-  }
+    return position === BetPosition.BULL ? (
+      <ArrowUpIcon color="currentColor" />
+    ) : (
+      <ArrowDownIcon color="currentColor" />
+    );
+  };
 
   return (
     <CardFlip isFlipped={isSettingPosition} height="404px">
@@ -174,7 +178,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
         togglePosition={togglePosition}
       />
     </CardFlip>
-  )
-}
+  );
+};
 
-export default OpenRoundCard
+export default OpenRoundCard;

@@ -1,17 +1,17 @@
-import React from 'react'
-import { Button, Flex, Heading, useModal, PresentWonIcon } from '@kaco/uikit'
-import { useProfile } from 'state/profile/hooks'
-import { useTranslation } from 'contexts/Localization'
-import ClaimNftAndCakeModal, { useCanClaim } from './ClaimGiftModal'
-import HeaderWrapper from './HeaderWrapper'
-import EditProfileModal from './EditProfileModal'
+import React from 'react';
+import { Button, Flex, Heading, useModal, PresentWonIcon } from '@kaco/uikit';
+import { useProfile } from 'state/profile/hooks';
+import { useTranslation } from 'contexts/Localization';
+import ClaimNftAndCakeModal, { useCanClaim } from './ClaimGiftModal';
+import HeaderWrapper from './HeaderWrapper';
+import EditProfileModal from './EditProfileModal';
 
 const ProfileHeader = () => {
-  const { t } = useTranslation()
-  const { canClaim, checkClaimStatus } = useCanClaim()
-  const [onPresentClaimGiftModal] = useModal(<ClaimNftAndCakeModal onSuccess={checkClaimStatus} />)
-  const [onEditProfileModal] = useModal(<EditProfileModal />, false)
-  const { hasProfile } = useProfile()
+  const { t } = useTranslation();
+  const { canClaim, checkClaimStatus } = useCanClaim();
+  const [onPresentClaimGiftModal] = useModal(<ClaimNftAndCakeModal onSuccess={checkClaimStatus} />);
+  const [onEditProfileModal] = useModal(<EditProfileModal />, false);
+  const { hasProfile } = useProfile();
 
   return (
     <HeaderWrapper>
@@ -36,7 +36,7 @@ const ProfileHeader = () => {
         )}
       </Flex>
     </HeaderWrapper>
-  )
-}
+  );
+};
 
-export default ProfileHeader
+export default ProfileHeader;

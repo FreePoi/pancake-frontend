@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 import {
   BlockIcon,
   CheckmarkCircleIcon,
@@ -9,23 +9,23 @@ import {
   TeamPlayerIcon,
   TrophyGoldIcon,
   Skeleton,
-} from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { UserTradingInformationProps } from '../../types'
-import { useCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers'
-import { BoldTd, Td, StyledPrizeTable } from '../StyledPrizeTable'
+} from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { UserTradingInformationProps } from '../../types';
+import { useCompetitionCakeRewards, getRewardGroupAchievements } from '../../helpers';
+import { BoldTd, Td, StyledPrizeTable } from '../StyledPrizeTable';
 
 const StyledThead = styled.thead`
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
-`
+`;
 
 const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationProps }> = ({
   userTradingInformation,
 }) => {
-  const { t } = useTranslation()
-  const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
-  const { cakeReward, dollarValueOfCakeReward } = useCompetitionCakeRewards(userCakeRewards)
-  const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup)
+  const { t } = useTranslation();
+  const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation;
+  const { cakeReward, dollarValueOfCakeReward } = useCompetitionCakeRewards(userCakeRewards);
+  const { champion, teamPlayer } = getRewardGroupAchievements(userRewardGroup);
 
   return (
     <StyledPrizeTable>
@@ -64,7 +64,7 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
         </tr>
       </tbody>
     </StyledPrizeTable>
-  )
-}
+  );
+};
 
-export default UserPrizeGrid
+export default UserPrizeGrid;

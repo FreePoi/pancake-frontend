@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const ActionContainer = styled.div`
   padding: 16px;
@@ -23,15 +23,15 @@ export const ActionContainer = styled.div`
     height: 130px;
     max-height: 130px;
   }
-`
+`;
 
 export const ActionTitles = styled.div`
   font-weight: 600;
   font-size: 12px;
-`
+`;
 
 export const ActionContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;

@@ -1,55 +1,55 @@
-import React, { useState } from 'react'
-import { Button, InjectedModalProps, Skeleton, Text } from '@kaco/uikit'
-import { useWeb3React } from '@web3-react/core'
-import { useAppDispatch } from 'state'
-import { useGetCollectibles } from 'state/collectibles/hooks'
-import { useProfile } from 'state/profile/hooks'
-import { useTranslation } from 'contexts/Localization'
-import useToast from 'hooks/useToast'
-import { fetchProfile } from 'state/profile'
-import { getAddressByType } from 'utils/collectibles'
-import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { getErc721Contract } from 'utils/contractHelpers'
-import { useProfile as useProfileContract } from 'hooks/useContract'
-import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import SelectionCard from '../SelectionCard'
-import ApproveConfirmButtons from '../ApproveConfirmButtons'
+import React, { useState } from 'react';
+import { Button, InjectedModalProps, Skeleton, Text } from '@kaco/uikit';
+import { useWeb3React } from '@web3-react/core';
+import { useAppDispatch } from 'state';
+import { useGetCollectibles } from 'state/collectibles/hooks';
+import { useProfile } from 'state/profile/hooks';
+import { useTranslation } from 'contexts/Localization';
+import useToast from 'hooks/useToast';
+import { fetchProfile } from 'state/profile';
+import { getAddressByType } from 'utils/collectibles';
+import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction';
+import { getErc721Contract } from 'utils/contractHelpers';
+import { useProfile as useProfileContract } from 'hooks/useContract';
+import { getPancakeProfileAddress } from 'utils/addressHelpers';
+import SelectionCard from '../SelectionCard';
+import ApproveConfirmButtons from '../ApproveConfirmButtons';
 
-type ChangeProfilePicPageProps = InjectedModalProps
+type ChangeProfilePicPageProps = InjectedModalProps;
 
 const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }) => {
   const [selectedNft, setSelectedNft] = useState({
     tokenId: null,
     nftAddress: null,
-  })
-  const { t } = useTranslation()
-  const { isLoading, tokenIds, nftsInWallet } = useGetCollectibles()
-  const dispatch = useAppDispatch()
-  const { profile } = useProfile()
-  const profileContract = useProfileContract()
-  const { account, library } = useWeb3React()
-  const { toastSuccess } = useToast()
+  });
+  const { t } = useTranslation();
+  const { isLoading, tokenIds, nftsInWallet } = useGetCollectibles();
+  const dispatch = useAppDispatch();
+  const { profile } = useProfile();
+  const profileContract = useProfileContract();
+  const { account, library } = useWeb3React();
+  const { toastSuccess } = useToast();
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onApprove: () => {
-        const contract = getErc721Contract(selectedNft.nftAddress, library.getSigner())
-        return contract.approve(getPancakeProfileAddress(), selectedNft.tokenId)
+        const contract = getErc721Contract(selectedNft.nftAddress, library.getSigner());
+        return contract.approve(getPancakeProfileAddress(), selectedNft.tokenId);
       },
       onConfirm: () => {
         if (!profile.isActive) {
-          return profileContract.reactivateProfile(selectedNft.nftAddress, selectedNft.tokenId)
+          return profileContract.reactivateProfile(selectedNft.nftAddress, selectedNft.tokenId);
         }
 
-        return profileContract.updateProfile(selectedNft.nftAddress, selectedNft.tokenId)
+        return profileContract.updateProfile(selectedNft.nftAddress, selectedNft.tokenId);
       },
       onSuccess: async () => {
         // Re-fetch profile
-        await dispatch(fetchProfile(account))
-        toastSuccess(t('Profile Updated!'))
+        await dispatch(fetchProfile(account));
+        toastSuccess(t('Profile Updated!'));
 
-        onDismiss()
+        onDismiss();
       },
-    })
+    });
 
   return (
     <>
@@ -60,13 +60,13 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
         <Skeleton height="80px" mb="16px" />
       ) : (
         nftsInWallet.map((walletNft) => {
-          const [firstTokenId] = tokenIds[walletNft.identifier]
+          const [firstTokenId] = tokenIds[walletNft.identifier];
           const handleChange = (value: string) => {
             setSelectedNft({
               tokenId: Number(value),
               nftAddress: getAddressByType(walletNft.type),
-            })
-          }
+            });
+          };
 
           return (
             <SelectionCard
@@ -80,7 +80,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
             >
               <Text bold>{walletNft.name}</Text>
             </SelectionCard>
-          )
+          );
         })
       )}
       {!isLoading && nftsInWallet.length === 0 && (
@@ -105,7 +105,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
         {t('Close Window')}
       </Button>
     </>
-  )
-}
+  );
+};
 
-export default ChangeProfilePicPage
+export default ChangeProfilePicPage;

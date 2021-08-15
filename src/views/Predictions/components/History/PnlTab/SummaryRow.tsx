@@ -1,38 +1,38 @@
-import React from 'react'
-import BigNumber from 'bignumber.js'
-import { Flex, Text } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { formatBnb } from '../helpers'
+import React from 'react';
+import BigNumber from 'bignumber.js';
+import { Flex, Text } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { formatBnb } from '../helpers';
 
-type SummaryType = 'won' | 'lost' | 'entered'
+type SummaryType = 'won' | 'lost' | 'entered';
 
 interface SummaryRowProps {
-  type: SummaryType
-  summary: any
-  bnbBusdPrice: BigNumber
+  type: SummaryType;
+  summary: any;
+  bnbBusdPrice: BigNumber;
 }
 
 const summaryTypeColors = {
   won: 'success',
   lost: 'failure',
   entered: 'text',
-}
+};
 
 const summaryTypeSigns = {
   won: '+',
   lost: '-',
   entered: '',
-}
+};
 
 const SummaryRow: React.FC<SummaryRowProps> = ({ type, summary, bnbBusdPrice }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const color = summaryTypeColors[type]
-  const { rounds, amount } = summary[type]
-  const totalRounds = summary.entered.rounds
-  const roundsInPercents = ((rounds * 100) / totalRounds).toFixed(2)
-  const typeTranslationKey = type.charAt(0).toUpperCase() + type.slice(1)
-  const displayAmount = type === 'won' ? summary[type].payout : amount
+  const color = summaryTypeColors[type];
+  const { rounds, amount } = summary[type];
+  const totalRounds = summary.entered.rounds;
+  const roundsInPercents = ((rounds * 100) / totalRounds).toFixed(2);
+  const typeTranslationKey = type.charAt(0).toUpperCase() + type.slice(1);
+  const displayAmount = type === 'won' ? summary[type].payout : amount;
 
   return (
     <>
@@ -58,7 +58,7 @@ const SummaryRow: React.FC<SummaryRowProps> = ({ type, summary, bnbBusdPrice }) 
         </Flex>
       </Flex>
     </>
-  )
-}
+  );
+};
 
-export default SummaryRow
+export default SummaryRow;

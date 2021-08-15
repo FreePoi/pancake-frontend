@@ -1,33 +1,33 @@
-import React, { useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
-import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
-import { Modal, ModalBody, Text, Image, Button, BalanceInput, Flex } from '@kaco/uikit'
-import { PoolIds, Ifo } from 'config/constants/types'
-import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
-import { useTranslation } from 'contexts/Localization'
-import { getBalanceAmount } from 'utils/formatBalance'
-import { getAddress } from 'utils/addressHelpers'
-import ApproveConfirmButtons from 'views/Profile/components/ApproveConfirmButtons'
-import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { DEFAULT_TOKEN_DECIMAL } from 'config'
-import { useERC20 } from 'hooks/useContract'
-import { BIG_NINE, BIG_TEN } from 'utils/bigNumber'
+import React, { useState } from 'react';
+import { useWeb3React } from '@web3-react/core';
+import BigNumber from 'bignumber.js';
+import { ethers } from 'ethers';
+import { Modal, ModalBody, Text, Image, Button, BalanceInput, Flex } from '@kaco/uikit';
+import { PoolIds, Ifo } from 'config/constants/types';
+import { WalletIfoData, PublicIfoData } from 'views/Ifos/types';
+import { useTranslation } from 'contexts/Localization';
+import { getBalanceAmount } from 'utils/formatBalance';
+import { getAddress } from 'utils/addressHelpers';
+import ApproveConfirmButtons from 'views/Profile/components/ApproveConfirmButtons';
+import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction';
+import { DEFAULT_TOKEN_DECIMAL } from 'config';
+import { useERC20 } from 'hooks/useContract';
+import { BIG_NINE, BIG_TEN } from 'utils/bigNumber';
 
 interface Props {
-  poolId: PoolIds
-  ifo: Ifo
-  publicIfoData: PublicIfoData
-  walletIfoData: WalletIfoData
-  userCurrencyBalance: BigNumber
-  onSuccess: (amount: BigNumber) => void
-  onDismiss?: () => void
+  poolId: PoolIds;
+  ifo: Ifo;
+  publicIfoData: PublicIfoData;
+  walletIfoData: WalletIfoData;
+  userCurrencyBalance: BigNumber;
+  onSuccess: (amount: BigNumber) => void;
+  onDismiss?: () => void;
 }
 
-const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
+const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1];
 
 // Default value for transaction setting, tweak based on BSC network congestion.
-const gasPrice = BIG_TEN.times(BIG_TEN.pow(BIG_NINE)).toString()
+const gasPrice = BIG_TEN.times(BIG_TEN.pow(BIG_NINE)).toString();
 
 const ContributeModal: React.FC<Props> = ({
   poolId,
@@ -38,52 +38,52 @@ const ContributeModal: React.FC<Props> = ({
   onDismiss,
   onSuccess,
 }) => {
-  const publicPoolCharacteristics = publicIfoData[poolId]
-  const userPoolCharacteristics = walletIfoData[poolId]
+  const publicPoolCharacteristics = publicIfoData[poolId];
+  const userPoolCharacteristics = walletIfoData[poolId];
 
-  const { currency } = ifo
-  const { limitPerUserInLP } = publicPoolCharacteristics
-  const { amountTokenCommittedInLP } = userPoolCharacteristics
-  const { contract } = walletIfoData
-  const [value, setValue] = useState('')
-  const { account } = useWeb3React()
-  const raisingTokenContract = useERC20(getAddress(currency.address))
-  const { t } = useTranslation()
-  const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
+  const { currency } = ifo;
+  const { limitPerUserInLP } = publicPoolCharacteristics;
+  const { amountTokenCommittedInLP } = userPoolCharacteristics;
+  const { contract } = walletIfoData;
+  const [value, setValue] = useState('');
+  const { account } = useWeb3React();
+  const raisingTokenContract = useERC20(getAddress(currency.address));
+  const { t } = useTranslation();
+  const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL);
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
         try {
-          const response = await raisingTokenContract.allowance(account, contract.address)
-          const currentAllowance = new BigNumber(response.toString())
-          return currentAllowance.gt(0)
+          const response = await raisingTokenContract.allowance(account, contract.address);
+          const currentAllowance = new BigNumber(response.toString());
+          return currentAllowance.gt(0);
         } catch (error) {
-          return false
+          return false;
         }
       },
       onApprove: () => {
-        return raisingTokenContract.approve(contract.address, ethers.constants.MaxUint256, { gasPrice })
+        return raisingTokenContract.approve(contract.address, ethers.constants.MaxUint256, { gasPrice });
       },
       onConfirm: () => {
         return contract.depositPool(valueWithTokenDecimals.toString(), poolId === PoolIds.poolBasic ? 0 : 1, {
           gasPrice,
-        })
+        });
       },
       onSuccess: async () => {
-        await onSuccess(valueWithTokenDecimals)
-        onDismiss()
+        await onSuccess(valueWithTokenDecimals);
+        onDismiss();
       },
-    })
+    });
 
   const maximumLpCommitable = (() => {
     if (limitPerUserInLP.isGreaterThan(0)) {
       return limitPerUserInLP.minus(amountTokenCommittedInLP).isLessThanOrEqualTo(userCurrencyBalance)
         ? limitPerUserInLP
-        : userCurrencyBalance
+        : userCurrencyBalance;
     }
-    return userCurrencyBalance
-  })()
+    return userCurrencyBalance;
+  })();
 
   return (
     <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
@@ -148,7 +148,7 @@ const ContributeModal: React.FC<Props> = ({
         />
       </ModalBody>
     </Modal>
-  )
-}
+  );
+};
 
-export default ContributeModal
+export default ContributeModal;

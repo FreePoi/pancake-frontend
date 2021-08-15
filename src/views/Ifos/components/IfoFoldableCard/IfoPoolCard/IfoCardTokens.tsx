@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   Text,
   Flex,
@@ -10,27 +10,27 @@ import {
   Button,
   AutoRenewIcon,
   BunnyPlaceholderIcon,
-} from '@kaco/uikit'
-import { useWeb3React } from '@web3-react/core'
-import { Ifo, PoolIds, Token } from 'config/constants/types'
-import tokens from 'config/constants/tokens'
-import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-import { useTranslation } from 'contexts/Localization'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { TokenImage, TokenPairImage } from 'components/TokenImage'
-import { EnableStatus } from '../types'
-import PercentageOfTotal from './PercentageOfTotal'
-import { SkeletonCardTokens } from './Skeletons'
+} from '@kaco/uikit';
+import { useWeb3React } from '@web3-react/core';
+import { Ifo, PoolIds, Token } from 'config/constants/types';
+import tokens from 'config/constants/tokens';
+import { PublicIfoData, WalletIfoData } from 'views/Ifos/types';
+import { useTranslation } from 'contexts/Localization';
+import { getBalanceNumber } from 'utils/formatBalance';
+import { TokenImage, TokenPairImage } from 'components/TokenImage';
+import { EnableStatus } from '../types';
+import PercentageOfTotal from './PercentageOfTotal';
+import { SkeletonCardTokens } from './Skeletons';
 
 interface TokenSectionProps extends FlexProps {
-  primaryToken?: Token
-  secondaryToken?: Token
+  primaryToken?: Token;
+  secondaryToken?: Token;
 }
 
 const TokenSection: React.FC<TokenSectionProps> = ({ primaryToken, secondaryToken, children, ...props }) => {
   const renderTokenComponent = () => {
     if (!primaryToken) {
-      return <BunnyPlaceholderIcon width={32} mr="16px" />
+      return <BunnyPlaceholderIcon width={32} mr="16px" />;
     }
 
     if (primaryToken && secondaryToken) {
@@ -43,37 +43,37 @@ const TokenSection: React.FC<TokenSectionProps> = ({ primaryToken, secondaryToke
           secondaryToken={secondaryToken}
           mr="16px"
         />
-      )
+      );
     }
 
-    return <TokenImage token={primaryToken} height={32} width={32} mr="16px" />
-  }
+    return <TokenImage token={primaryToken} height={32} width={32} mr="16px" />;
+  };
 
   return (
     <Flex {...props}>
       {renderTokenComponent()}
       <div>{children}</div>
     </Flex>
-  )
-}
+  );
+};
 
 const CakeBnbTokenSection: React.FC<TokenSectionProps> = (props) => {
-  return <TokenSection primaryToken={tokens.cake} secondaryToken={tokens.wbnb} {...props} />
-}
+  return <TokenSection primaryToken={tokens.cake} secondaryToken={tokens.wbnb} {...props} />;
+};
 
-const Label = (props) => <Text bold fontSize="12px" color="secondary" textTransform="uppercase" {...props} />
+const Label = (props) => <Text bold fontSize="12px" color="secondary" textTransform="uppercase" {...props} />;
 
-const Value = (props) => <Text bold fontSize="20px" style={{ wordBreak: 'break-all' }} {...props} />
+const Value = (props) => <Text bold fontSize="20px" style={{ wordBreak: 'break-all' }} {...props} />;
 
 interface IfoCardTokensProps {
-  poolId: PoolIds
-  ifo: Ifo
-  publicIfoData: PublicIfoData
-  walletIfoData: WalletIfoData
-  hasProfile: boolean
-  isLoading: boolean
-  onApprove: () => Promise<any>
-  enableStatus: EnableStatus
+  poolId: PoolIds;
+  ifo: Ifo;
+  publicIfoData: PublicIfoData;
+  walletIfoData: WalletIfoData;
+  hasProfile: boolean;
+  isLoading: boolean;
+  onApprove: () => Promise<any>;
+  enableStatus: EnableStatus;
 }
 
 const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
@@ -86,31 +86,31 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   onApprove,
   enableStatus,
 }) => {
-  const { account } = useWeb3React()
-  const { t } = useTranslation()
+  const { account } = useWeb3React();
+  const { t } = useTranslation();
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
       'Sorry, you didn’t contribute enough LP tokens to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your LP tokens.',
     ),
     { placement: 'bottom' },
-  )
+  );
 
-  const publicPoolCharacteristics = publicIfoData[poolId]
-  const userPoolCharacteristics = walletIfoData[poolId]
+  const publicPoolCharacteristics = publicIfoData[poolId];
+  const userPoolCharacteristics = walletIfoData[poolId];
 
-  const { currency, token } = ifo
-  const { hasClaimed } = userPoolCharacteristics
-  const distributionRatio = ifo[poolId].distributionRatio * 100
+  const { currency, token } = ifo;
+  const { hasClaimed } = userPoolCharacteristics;
+  const distributionRatio = ifo[poolId].distributionRatio * 100;
 
   const renderTokenSection = () => {
     if (isLoading) {
-      return <SkeletonCardTokens />
+      return <SkeletonCardTokens />;
     }
     if (account && !hasProfile) {
       if (publicIfoData.status === 'finished') {
-        return <Text textAlign="center">{t('Activate PancakeSwap Profile to take part in next IFO‘s!')}</Text>
+        return <Text textAlign="center">{t('Activate PancakeSwap Profile to take part in next IFO‘s!')}</Text>;
       }
-      return <Text textAlign="center">{t('You need an active PancakeSwap Profile to take part in an IFO!')}</Text>
+      return <Text textAlign="center">{t('You need an active PancakeSwap Profile to take part in an IFO!')}</Text>;
     }
     if (publicIfoData.status === 'coming_soon') {
       return (
@@ -134,7 +134,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             </Button>
           )}
         </>
-      )
+      );
     }
     if (publicIfoData.status === 'live') {
       return (
@@ -152,7 +152,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
           </TokenSection>
         </>
-      )
+      );
     }
     if (publicIfoData.status === 'finished') {
       return userPoolCharacteristics.amountTokenCommittedInLP.isEqualTo(0) ? (
@@ -188,16 +188,16 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             </Flex>
           </TokenSection>
         </>
-      )
+      );
     }
-    return null
-  }
+    return null;
+  };
   return (
     <Box pb="24px">
       {tooltipVisible && tooltip}
       {renderTokenSection()}
     </Box>
-  )
-}
+  );
+};
 
-export default IfoCardTokens
+export default IfoCardTokens;

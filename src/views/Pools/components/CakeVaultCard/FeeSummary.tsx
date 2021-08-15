@@ -1,21 +1,21 @@
-import React from 'react'
-import { Text, Flex, useTooltip, TooltipText } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { useCakeVault } from 'state/pools/hooks'
-import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
+import React from 'react';
+import { Text, Flex, useTooltip, TooltipText } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { useCakeVault } from 'state/pools/hooks';
+import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow';
 
 interface FeeSummaryProps {
-  stakingTokenSymbol: string
-  stakeAmount: string
+  stakingTokenSymbol: string;
+  stakeAmount: string;
 }
 
 const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, stakeAmount }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const {
     fees: { withdrawalFee },
-  } = useCakeVault()
-  const feeAsDecimal = withdrawalFee / 100
-  const feeInCake = (parseFloat(stakeAmount) * (feeAsDecimal / 100)).toFixed(4)
+  } = useCakeVault();
+  const feeAsDecimal = withdrawalFee / 100;
+  const feeInCake = (parseFloat(stakeAmount) * (feeAsDecimal / 100)).toFixed(4);
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text bold mb="4px">
@@ -28,7 +28,7 @@ const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, stakeAmount
       </Text>
     </>,
     { placement: 'top-start' },
-  )
+  );
 
   return (
     <>
@@ -43,7 +43,7 @@ const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, stakeAmount
       </Flex>
       <UnstakingFeeCountdownRow />
     </>
-  )
-}
+  );
+};
 
-export default FeeSummary
+export default FeeSummary;

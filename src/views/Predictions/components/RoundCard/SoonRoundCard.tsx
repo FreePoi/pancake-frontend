@@ -1,27 +1,27 @@
-import React from 'react'
-import { Card, CardBody, Text, WaitIcon } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { NodeRound, BetPosition } from 'state/types'
-import { useGetCurrentEpoch, useGetTotalIntervalBlocks } from 'state/predictions/hooks'
-import useTheme from 'hooks/useTheme'
-import { formatRoundTime } from '../../helpers'
-import useRoundCountdown from '../../hooks/useRoundCountdown'
-import { RoundResultBox } from '../RoundResult'
-import MultiplierArrow from './MultiplierArrow'
-import CardHeader, { getBorderBackground } from './CardHeader'
+import React from 'react';
+import { Card, CardBody, Text, WaitIcon } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { NodeRound, BetPosition } from 'state/types';
+import { useGetCurrentEpoch, useGetTotalIntervalBlocks } from 'state/predictions/hooks';
+import useTheme from 'hooks/useTheme';
+import { formatRoundTime } from '../../helpers';
+import useRoundCountdown from '../../hooks/useRoundCountdown';
+import { RoundResultBox } from '../RoundResult';
+import MultiplierArrow from './MultiplierArrow';
+import CardHeader, { getBorderBackground } from './CardHeader';
 
 interface SoonRoundCardProps {
-  round: NodeRound
+  round: NodeRound;
 }
 
 const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
-  const { t } = useTranslation()
-  const { theme } = useTheme()
-  const interval = useGetTotalIntervalBlocks()
-  const currentEpoch = useGetCurrentEpoch()
-  const estimatedEndBlock = round.startBlock + interval
-  const seconds = useRoundCountdown(round.epoch - currentEpoch + 1)
-  const countdown = formatRoundTime(seconds)
+  const { t } = useTranslation();
+  const { theme } = useTheme();
+  const interval = useGetTotalIntervalBlocks();
+  const currentEpoch = useGetCurrentEpoch();
+  const estimatedEndBlock = round.startBlock + interval;
+  const seconds = useRoundCountdown(round.epoch - currentEpoch + 1);
+  const countdown = formatRoundTime(seconds);
 
   return (
     <Card borderBackground={getBorderBackground(theme, 'soon')}>
@@ -45,7 +45,7 @@ const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
         <MultiplierArrow betPosition={BetPosition.BEAR} isDisabled />
       </CardBody>
     </Card>
-  )
-}
+  );
+};
 
-export default SoonRoundCard
+export default SoonRoundCard;

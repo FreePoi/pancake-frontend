@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@web3-react/core'
-import { Button, Flex, Text, InjectedModalProps } from '@kaco/uikit'
-import { getFullDisplayBalance } from 'utils/formatBalance'
-import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import { useCake } from 'hooks/useContract'
-import { useTranslation } from 'contexts/Localization'
-import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
-import useHasCakeBalance from 'hooks/useHasCakeBalance'
-import { useProfile } from 'state/profile/hooks'
-import { UseEditProfileResponse } from './reducer'
-import ProfileAvatar from '../ProfileAvatar'
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import BigNumber from 'bignumber.js';
+import { useWeb3React } from '@web3-react/core';
+import { Button, Flex, Text, InjectedModalProps } from '@kaco/uikit';
+import { getFullDisplayBalance } from 'utils/formatBalance';
+import { getPancakeProfileAddress } from 'utils/addressHelpers';
+import { useCake } from 'hooks/useContract';
+import { useTranslation } from 'contexts/Localization';
+import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts';
+import useHasCakeBalance from 'hooks/useHasCakeBalance';
+import { useProfile } from 'state/profile/hooks';
+import { UseEditProfileResponse } from './reducer';
+import ProfileAvatar from '../ProfileAvatar';
 
 interface StartPageProps extends InjectedModalProps {
-  goToChange: UseEditProfileResponse['goToChange']
-  goToRemove: UseEditProfileResponse['goToRemove']
-  goToApprove: UseEditProfileResponse['goToApprove']
+  goToChange: UseEditProfileResponse['goToChange'];
+  goToRemove: UseEditProfileResponse['goToRemove'];
+  goToApprove: UseEditProfileResponse['goToApprove'];
 }
 
 const DangerOutline = styled(Button).attrs({ variant: 'secondary' })`
@@ -28,7 +28,7 @@ const DangerOutline = styled(Button).attrs({ variant: 'secondary' })`
     border-color: ${({ theme }) => theme.colors.failure};
     opacity: 0.8;
   }
-`
+`;
 
 const AvatarWrapper = styled.div`
   height: 64px;
@@ -38,18 +38,18 @@ const AvatarWrapper = styled.div`
     height: 128px;
     width: 128px;
   }
-`
+`;
 
 const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemove, onDismiss }) => {
-  const [needsApproval, setNeedsApproval] = useState(null)
-  const { profile } = useProfile()
-  const { numberCakeToUpdate, numberCakeToReactivate } = useGetProfileCosts()
-  const minimumCakeRequired = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
-  const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeRequired)
-  const { t } = useTranslation()
-  const { account } = useWeb3React()
-  const cakeContract = useCake()
-  const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
+  const [needsApproval, setNeedsApproval] = useState(null);
+  const { profile } = useProfile();
+  const { numberCakeToUpdate, numberCakeToReactivate } = useGetProfileCosts();
+  const minimumCakeRequired = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate;
+  const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeRequired);
+  const { t } = useTranslation();
+  const { account } = useWeb3React();
+  const cakeContract = useCake();
+  const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate;
 
   /**
    * Check if the wallet has the required CAKE allowance to change their profile pic or reactivate
@@ -57,18 +57,18 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
    */
   useEffect(() => {
     const checkApprovalStatus = async () => {
-      const response = await cakeContract.allowance(account, getPancakeProfileAddress())
-      const currentAllowance = new BigNumber(response.toString())
-      setNeedsApproval(currentAllowance.lt(cost))
-    }
+      const response = await cakeContract.allowance(account, getPancakeProfileAddress());
+      const currentAllowance = new BigNumber(response.toString());
+      setNeedsApproval(currentAllowance.lt(cost));
+    };
 
     if (account) {
-      checkApprovalStatus()
+      checkApprovalStatus();
     }
-  }, [account, cost, setNeedsApproval, cakeContract])
+  }, [account, cost, setNeedsApproval, cakeContract]);
 
   if (!profile) {
-    return null
+    return null;
   }
 
   return (
@@ -110,7 +110,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
         {t('Close Window')}
       </Button>
     </Flex>
-  )
-}
+  );
+};
 
-export default StartPage
+export default StartPage;

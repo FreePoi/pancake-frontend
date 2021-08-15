@@ -1,13 +1,13 @@
-import React from 'react'
-import { Card, CardBody, CardHeader, Flex, Heading, Text } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import AchievementsList from './components/AchievementsList'
-import ClaimPointsCallout from './components/ClaimPointsCallout '
-import ComingSoon from './components/ComingSoon'
-import Menu from './components/Menu'
+import React from 'react';
+import { Card, CardBody, CardHeader, Flex, Heading, Text } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import AchievementsList from './components/AchievementsList';
+import ClaimPointsCallout from './components/ClaimPointsCallout ';
+import ComingSoon from './components/ComingSoon';
+import Menu from './components/Menu';
 
 const TaskCenter = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <>
@@ -45,7 +45,7 @@ const TaskCenter = () => {
         </CardBody>
       </Card>
     </>
-  )
-}
+  );
+};
 
-export default TaskCenter
+export default TaskCenter;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   AutoRenewIcon,
   Card,
@@ -9,38 +9,38 @@ import {
   Button,
   ChevronUpIcon,
   Text,
-} from '@kaco/uikit'
-import { useWeb3React } from '@web3-react/core'
-import orderBy from 'lodash/orderBy'
-import { useTranslation } from 'contexts/Localization'
-import { Vote, VotingStateLoadingStatus } from 'state/types'
-import { useGetVotingStateLoadingStatus } from 'state/voting/hooks'
-import VotesLoading from '../components/Proposal/VotesLoading'
-import VoteRow from '../components/Proposal/VoteRow'
-import Row, { AddressColumn, ChoiceColumn, VotingPowerColumn } from '../components/Proposal/Row'
+} from '@kaco/uikit';
+import { useWeb3React } from '@web3-react/core';
+import orderBy from 'lodash/orderBy';
+import { useTranslation } from 'contexts/Localization';
+import { Vote, VotingStateLoadingStatus } from 'state/types';
+import { useGetVotingStateLoadingStatus } from 'state/voting/hooks';
+import VotesLoading from '../components/Proposal/VotesLoading';
+import VoteRow from '../components/Proposal/VoteRow';
+import Row, { AddressColumn, ChoiceColumn, VotingPowerColumn } from '../components/Proposal/Row';
 
-const VOTES_PER_VIEW = 20
+const VOTES_PER_VIEW = 20;
 
 interface VotesProps {
-  votes: Vote[]
+  votes: Vote[];
 }
 
 const parseVotePower = (incomingVote: Vote) => {
-  return parseFloat(incomingVote?.metadata?.votingPower)
-}
+  return parseFloat(incomingVote?.metadata?.votingPower);
+};
 
 const Votes: React.FC<VotesProps> = ({ votes }) => {
-  const [showAll, setShowAll] = useState(false)
-  const { t } = useTranslation()
-  const { account } = useWeb3React()
-  const orderedVotes = orderBy(votes, [parseVotePower, 'created'], ['desc', 'desc'])
-  const displayVotes = showAll ? orderedVotes : orderedVotes.slice(0, VOTES_PER_VIEW)
-  const voteStatus = useGetVotingStateLoadingStatus()
-  const isFinished = voteStatus === VotingStateLoadingStatus.IDLE
+  const [showAll, setShowAll] = useState(false);
+  const { t } = useTranslation();
+  const { account } = useWeb3React();
+  const orderedVotes = orderBy(votes, [parseVotePower, 'created'], ['desc', 'desc']);
+  const displayVotes = showAll ? orderedVotes : orderedVotes.slice(0, VOTES_PER_VIEW);
+  const voteStatus = useGetVotingStateLoadingStatus();
+  const isFinished = voteStatus === VotingStateLoadingStatus.IDLE;
 
   const handleClick = () => {
-    setShowAll(!showAll)
-  }
+    setShowAll(!showAll);
+  };
 
   return (
     <Card>
@@ -74,8 +74,8 @@ const Votes: React.FC<VotesProps> = ({ votes }) => {
             </VotingPowerColumn>
           </Row>
           {displayVotes.map((vote) => {
-            const isVoter = account && vote.voter.toLowerCase() === account.toLowerCase()
-            return <VoteRow key={vote.id} vote={vote} isVoter={isVoter} />
+            const isVoter = account && vote.voter.toLowerCase() === account.toLowerCase();
+            return <VoteRow key={vote.id} vote={vote} isVoter={isVoter} />;
           })}
           <Flex alignItems="center" justifyContent="center" py="8px" px="24px">
             <Button
@@ -103,7 +103,7 @@ const Votes: React.FC<VotesProps> = ({ votes }) => {
         </Flex>
       )}
     </Card>
-  )
-}
+  );
+};
 
-export default Votes
+export default Votes;

@@ -1,16 +1,16 @@
-import React from 'react'
-import { Flex, Text, Heading, Link } from '@kaco/uikit'
-import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
-import HowToCard from './HowToCard'
+import React from 'react';
+import { Flex, Text, Heading, Link } from '@kaco/uikit';
+import styled from 'styled-components';
+import { useTranslation } from 'contexts/Localization';
+import HowToCard from './HowToCard';
 
 const StyledLink = styled(Link)`
   display: inline;
   font-size: 14px;
-`
+`;
 
 const HowToJoin = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Flex flexDirection="column" maxWidth="736px">
@@ -37,7 +37,7 @@ const HowToJoin = () => {
         </Text>
       </HowToCard>
     </Flex>
-  )
-}
+  );
+};
 
-export default HowToJoin
+export default HowToJoin;

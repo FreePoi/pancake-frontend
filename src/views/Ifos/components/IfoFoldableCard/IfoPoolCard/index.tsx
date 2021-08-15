@@ -1,29 +1,29 @@
-import React from 'react'
-import { useTranslation } from 'contexts/Localization'
-import { Card, CardBody, CardHeader, Text, useTooltip, HelpIcon, Flex } from '@kaco/uikit'
-import { Ifo, PoolIds } from 'config/constants/types'
-import { useProfile } from 'state/profile/hooks'
-import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-import { EnableStatus } from '../types'
-import IfoCardTokens from './IfoCardTokens'
-import IfoCardActions from './IfoCardActions'
-import IfoCardDetails from './IfoCardDetails'
+import React from 'react';
+import { useTranslation } from 'contexts/Localization';
+import { Card, CardBody, CardHeader, Text, useTooltip, HelpIcon, Flex } from '@kaco/uikit';
+import { Ifo, PoolIds } from 'config/constants/types';
+import { useProfile } from 'state/profile/hooks';
+import { PublicIfoData, WalletIfoData } from 'views/Ifos/types';
+import { EnableStatus } from '../types';
+import IfoCardTokens from './IfoCardTokens';
+import IfoCardActions from './IfoCardActions';
+import IfoCardDetails from './IfoCardDetails';
 
 interface IfoCardProps {
-  poolId: PoolIds
-  ifo: Ifo
-  publicIfoData: PublicIfoData
-  walletIfoData: WalletIfoData
-  onApprove: () => Promise<any>
-  enableStatus: EnableStatus
+  poolId: PoolIds;
+  ifo: Ifo;
+  publicIfoData: PublicIfoData;
+  walletIfoData: WalletIfoData;
+  onApprove: () => Promise<any>;
+  enableStatus: EnableStatus;
 }
 
 interface CardConfig {
   [key: string]: {
-    title: string
-    variant: 'blue' | 'violet'
-    tooltip: string
-  }
+    title: string;
+    variant: 'blue' | 'violet';
+    tooltip: string;
+  };
 }
 
 const cardConfig: CardConfig = {
@@ -37,15 +37,15 @@ const cardConfig: CardConfig = {
     variant: 'violet',
     tooltip: 'No limits on the amount you can commit. Additional fee applies when claiming.',
   },
-}
+};
 
 const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletIfoData, onApprove, enableStatus }) => {
-  const { t } = useTranslation()
-  const config = cardConfig[poolId]
-  const { hasProfile, isLoading: isProfileLoading } = useProfile()
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(t(config.tooltip), { placement: 'bottom' })
+  const { t } = useTranslation();
+  const config = cardConfig[poolId];
+  const { hasProfile, isLoading: isProfileLoading } = useProfile();
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(t(config.tooltip), { placement: 'bottom' });
 
-  const isLoading = isProfileLoading || publicIfoData.status === 'idle'
+  const isLoading = isProfileLoading || publicIfoData.status === 'idle';
 
   return (
     <>
@@ -84,7 +84,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
         </CardBody>
       </Card>
     </>
-  )
-}
+  );
+};
 
-export default SmallCard
+export default SmallCard;

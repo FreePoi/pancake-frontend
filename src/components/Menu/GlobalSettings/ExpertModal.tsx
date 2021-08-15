@@ -1,21 +1,21 @@
-import React, { useState } from 'react'
-import { Button, Text, Flex, Message, Modal, InjectedModalProps, Checkbox } from '@kaco/uikit'
-import { useExpertModeManager } from 'state/user/hooks'
-import { useTranslation } from 'contexts/Localization'
+import React, { useState } from 'react';
+import { Button, Text, Flex, Message, Modal, InjectedModalProps, Checkbox } from '@kaco/uikit';
+import { useExpertModeManager } from 'state/user/hooks';
+import { useTranslation } from 'contexts/Localization';
 
 interface ExpertModalProps extends InjectedModalProps {
-  setShowConfirmExpertModal: (boolean) => void
-  setRememberExpertModeAcknowledgement: (boolean) => void
+  setShowConfirmExpertModal: (boolean) => void;
+  setRememberExpertModeAcknowledgement: (boolean) => void;
 }
 
 const ExpertModal: React.FC<ExpertModalProps> = ({
   setShowConfirmExpertModal,
   setRememberExpertModeAcknowledgement,
 }) => {
-  const [, toggleExpertMode] = useExpertModeManager()
-  const [isRememberChecked, setIsRememberChecked] = useState(false)
+  const [, toggleExpertMode] = useExpertModeManager();
+  const [isRememberChecked, setIsRememberChecked] = useState(false);
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Modal
@@ -51,10 +51,10 @@ const ExpertModal: React.FC<ExpertModalProps> = ({
         onClick={() => {
           // eslint-disable-next-line no-alert
           if (window.prompt(`Please type the word "confirm" to enable expert mode.`) === 'confirm') {
-            toggleExpertMode()
-            setShowConfirmExpertModal(false)
+            toggleExpertMode();
+            setShowConfirmExpertModal(false);
             if (isRememberChecked) {
-              setRememberExpertModeAcknowledgement(true)
+              setRememberExpertModeAcknowledgement(true);
             }
           }
         }}
@@ -64,13 +64,13 @@ const ExpertModal: React.FC<ExpertModalProps> = ({
       <Button
         variant="secondary"
         onClick={() => {
-          setShowConfirmExpertModal(false)
+          setShowConfirmExpertModal(false);
         }}
       >
         {t('Cancel')}
       </Button>
     </Modal>
-  )
-}
+  );
+};
 
-export default ExpertModal
+export default ExpertModal;

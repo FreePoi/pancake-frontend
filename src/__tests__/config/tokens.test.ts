@@ -1,16 +1,16 @@
-import map from 'lodash/map'
-import omitBy from 'lodash/omitBy'
-import erc20ABI from 'config/abi/erc20.json'
-import tokens from 'config/constants/tokens'
-import { Token } from 'config/constants/types'
-import multicall from 'utils/multicall'
+import map from 'lodash/map';
+import omitBy from 'lodash/omitBy';
+import erc20ABI from 'config/abi/erc20.json';
+import tokens from 'config/constants/tokens';
+import { Token } from 'config/constants/types';
+import multicall from 'utils/multicall';
 
 // remove BNB because it's not a Bep20 token
 // remove ONE because there are two tokens with the symbol ONE (Harmony ONE and BigONE)
 const tokensToTest = omitBy(
   tokens,
   (token) => token.symbol.toLowerCase() === 'bnb' || token.symbol.toLowerCase() === 'one',
-)
+);
 
 describe('Config tokens', () => {
   it.each(map(tokensToTest, (token, key) => [key, token]))(
@@ -25,11 +25,11 @@ describe('Config tokens', () => {
           address: token.address[56],
           name: 'decimals',
         },
-      ])
+      ]);
 
-      expect(key).toBe(token.symbol.toLowerCase())
-      expect(token.symbol.toLowerCase()).toBe(symbol.toLowerCase())
-      expect(token.decimals).toBe(parseInt(decimals, 10))
+      expect(key).toBe(token.symbol.toLowerCase());
+      expect(token.symbol.toLowerCase()).toBe(symbol.toLowerCase());
+      expect(token.decimals).toBe(parseInt(decimals, 10));
     },
-  )
-})
+  );
+});

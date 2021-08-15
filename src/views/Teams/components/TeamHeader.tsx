@@ -1,14 +1,14 @@
-import React from 'react'
-import { Heading, Text } from '@kaco/uikit'
-import { useProfile } from 'state/profile/hooks'
-import { useTranslation } from 'contexts/Localization'
-import HeaderWrapper from 'views/Profile/components/HeaderWrapper'
-import NoProfileCard from './NoProfileCard'
+import React from 'react';
+import { Heading, Text } from '@kaco/uikit';
+import { useProfile } from 'state/profile/hooks';
+import { useTranslation } from 'contexts/Localization';
+import HeaderWrapper from 'views/Profile/components/HeaderWrapper';
+import NoProfileCard from './NoProfileCard';
 
 const TeamHeader = () => {
-  const { t } = useTranslation()
-  const { isInitialized, profile } = useProfile()
-  const showProfileCallout = isInitialized && !profile
+  const { t } = useTranslation();
+  const { isInitialized, profile } = useProfile();
+  const showProfileCallout = isInitialized && !profile;
 
   return (
     <>
@@ -22,7 +22,7 @@ const TeamHeader = () => {
         </Text>
       </HeaderWrapper>
     </>
-  )
-}
+  );
+};
 
-export default TeamHeader
+export default TeamHeader;

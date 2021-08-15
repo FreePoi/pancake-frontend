@@ -1,5 +1,5 @@
-import React from 'react'
-import { Heading, Card, CardBody } from '@kaco/uikit'
+import React from 'react';
+import { Heading, Card, CardBody } from '@kaco/uikit';
 
 const RulesCard: React.FC<{ title?: string }> = ({ title, children }) => {
   return (
@@ -11,7 +11,7 @@ const RulesCard: React.FC<{ title?: string }> = ({ title, children }) => {
         {children}
       </CardBody>
     </Card>
-  )
-}
+  );
+};
 
-export default RulesCard
+export default RulesCard;

@@ -1,5 +1,5 @@
-import React from 'react'
-import { Svg, SvgProps } from '@kaco/uikit'
+import React from 'react';
+import { Svg, SvgProps } from '@kaco/uikit';
 
 const TicketPurchaseCard: React.FC<SvgProps> = (props) => {
   return (
@@ -51,7 +51,7 @@ const TicketPurchaseCard: React.FC<SvgProps> = (props) => {
         </filter>
       </defs>
     </Svg>
-  )
-}
+  );
+};
 
-export default TicketPurchaseCard
+export default TicketPurchaseCard;

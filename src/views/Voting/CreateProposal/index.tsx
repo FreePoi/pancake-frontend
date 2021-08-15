@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, lazy, useEffect, useState, useMemo } from 'react'
+import React, { ChangeEvent, FormEvent, lazy, useEffect, useState, useMemo } from 'react';
 import {
   AutoRenewIcon,
   Box,
@@ -13,34 +13,34 @@ import {
   LinkExternal,
   Text,
   useModal,
-} from '@kaco/uikit'
-import { useHistory } from 'react-router'
-import { useWeb3React } from '@web3-react/core'
-import times from 'lodash/times'
-import isEmpty from 'lodash/isEmpty'
-import { useInitialBlock } from 'state/block/hooks'
-import { SnapshotCommand } from 'state/types'
-import useToast from 'hooks/useToast'
-import useWeb3Provider from 'hooks/useActiveWeb3React'
-import { getBscScanLink } from 'utils'
-import truncateWalletAddress from 'utils/truncateWalletAddress'
-import { signMessage } from 'utils/web3React'
-import { useTranslation } from 'contexts/Localization'
-import Container from 'components/Layout/Container'
-import { DatePicker, TimePicker } from 'components/DatePicker'
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import ReactMarkdown from 'components/ReactMarkdown'
-import BreadcrumbLink from '../components/BreadcrumbLink'
-import { sendSnaphotData, Message, generateMetaData, generatePayloadData } from '../helpers'
-import Layout from '../components/Layout'
-import { FormErrors, Label, SecondaryLabel } from './styles'
-import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices'
-import { combineDateAndTime, getFormErrors } from './helpers'
-import { FormState } from './types'
-import { ADMIN_ADDRESS, VOTE_THRESHOLD } from '../config'
-import VoteDetailsModal from '../components/VoteDetailsModal'
+} from '@kaco/uikit';
+import { useHistory } from 'react-router';
+import { useWeb3React } from '@web3-react/core';
+import times from 'lodash/times';
+import isEmpty from 'lodash/isEmpty';
+import { useInitialBlock } from 'state/block/hooks';
+import { SnapshotCommand } from 'state/types';
+import useToast from 'hooks/useToast';
+import useWeb3Provider from 'hooks/useActiveWeb3React';
+import { getBscScanLink } from 'utils';
+import truncateWalletAddress from 'utils/truncateWalletAddress';
+import { signMessage } from 'utils/web3React';
+import { useTranslation } from 'contexts/Localization';
+import Container from 'components/Layout/Container';
+import { DatePicker, TimePicker } from 'components/DatePicker';
+import ConnectWalletButton from 'components/ConnectWalletButton';
+import ReactMarkdown from 'components/ReactMarkdown';
+import BreadcrumbLink from '../components/BreadcrumbLink';
+import { sendSnaphotData, Message, generateMetaData, generatePayloadData } from '../helpers';
+import Layout from '../components/Layout';
+import { FormErrors, Label, SecondaryLabel } from './styles';
+import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices';
+import { combineDateAndTime, getFormErrors } from './helpers';
+import { FormState } from './types';
+import { ADMIN_ADDRESS, VOTE_THRESHOLD } from '../config';
+import VoteDetailsModal from '../components/VoteDetailsModal';
 
-const EasyMde = lazy(() => import('components/EasyMde'))
+const EasyMde = lazy(() => import('components/EasyMde'));
 
 const CreateProposal = () => {
   const [state, setState] = useState<FormState>({
@@ -52,24 +52,24 @@ const CreateProposal = () => {
     endDate: null,
     endTime: null,
     snapshot: 0,
-  })
-  const [isLoading, setIsLoading] = useState(false)
-  const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
-  const { t } = useTranslation()
-  const { account } = useWeb3React()
-  const initialBlock = useInitialBlock()
-  const { push } = useHistory()
-  const { library } = useWeb3Provider()
-  const { toastSuccess, toastError } = useToast()
-  const [onPresentVoteDetailsModal] = useModal(<VoteDetailsModal block={state.snapshot} />)
-  const { name, body, choices, startDate, startTime, endDate, endTime, snapshot } = state
-  const formErrors = getFormErrors(state, t)
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({});
+  const { t } = useTranslation();
+  const { account } = useWeb3React();
+  const initialBlock = useInitialBlock();
+  const { push } = useHistory();
+  const { library } = useWeb3Provider();
+  const { toastSuccess, toastError } = useToast();
+  const [onPresentVoteDetailsModal] = useModal(<VoteDetailsModal block={state.snapshot} />);
+  const { name, body, choices, startDate, startTime, endDate, endTime, snapshot } = state;
+  const formErrors = getFormErrors(state, t);
 
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault()
+    evt.preventDefault();
 
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const proposal = JSON.stringify({
         ...generatePayloadData(),
         type: SnapshotCommand.PROPOSAL,
@@ -82,80 +82,80 @@ const CreateProposal = () => {
           choices: choices
             .filter((choice) => choice.value)
             .map((choice) => {
-              return choice.value
+              return choice.value;
             }),
           metadata: generateMetaData(),
           type: 'single-choice',
         },
-      })
+      });
 
-      const sig = await signMessage(library, account, proposal)
+      const sig = await signMessage(library, account, proposal);
 
       if (sig) {
-        const msg: Message = { address: account, msg: proposal, sig }
+        const msg: Message = { address: account, msg: proposal, sig };
 
         // Save proposal to snapshot
-        const data = await sendSnaphotData(msg)
+        const data = await sendSnaphotData(msg);
 
         // Redirect user to newly created proposal page
-        push(`/voting/proposal/${data.ipfsHash}`)
+        push(`/voting/proposal/${data.ipfsHash}`);
 
-        toastSuccess(t('Proposal created!'))
+        toastSuccess(t('Proposal created!'));
       } else {
-        toastError(t('Error'), t('Unable to sign payload'))
+        toastError(t('Error'), t('Unable to sign payload'));
       }
     } catch (error) {
-      toastError(t('Error'), error?.message || error?.error)
-      console.error(error)
-      setIsLoading(false)
+      toastError(t('Error'), error?.message || error?.error);
+      console.error(error);
+      setIsLoading(false);
     }
-  }
+  };
 
   const updateValue = (key: string, value: string | Choice[] | Date) => {
     setState((prevState) => ({
       ...prevState,
       [key]: value,
-    }))
+    }));
 
     // Keep track of what fields the user has attempted to edit
     setFieldsState((prevFieldsState) => ({
       ...prevFieldsState,
       [key]: true,
-    }))
-  }
+    }));
+  };
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const { name: inputName, value } = evt.currentTarget
-    updateValue(inputName, value)
-  }
+    const { name: inputName, value } = evt.currentTarget;
+    updateValue(inputName, value);
+  };
 
   const handleEasyMdeChange = (value: string) => {
-    updateValue('body', value)
-  }
+    updateValue('body', value);
+  };
 
   const handleChoiceChange = (newChoices: Choice[]) => {
-    updateValue('choices', newChoices)
-  }
+    updateValue('choices', newChoices);
+  };
 
   const handleDateChange = (key: string) => (value: Date) => {
-    updateValue(key, value)
-  }
+    updateValue(key, value);
+  };
 
   const options = useMemo(
     () => ({
       hideIcons: account === ADMIN_ADDRESS ? [] : ['guide', 'fullscreen', 'preview', 'side-by-side', 'image'],
     }),
     [account],
-  )
+  );
 
   useEffect(() => {
     if (initialBlock > 0) {
       setState((prevState) => ({
         ...prevState,
         snapshot: initialBlock,
-      }))
+      }));
     }
-  }, [initialBlock, setState])
+  }, [initialBlock, setState]);
 
   return (
     <Container py="40px">
@@ -298,7 +298,7 @@ const CreateProposal = () => {
         </Layout>
       </form>
     </Container>
-  )
-}
+  );
+};
 
-export default CreateProposal
+export default CreateProposal;

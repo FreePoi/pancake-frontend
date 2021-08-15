@@ -1,9 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
-import { format } from 'date-fns'
-import { Text, Flex, Box } from '@kaco/uikit'
-import { Auction, AuctionStatus } from 'config/constants/types'
-import { useTranslation } from 'contexts/Localization'
+import React from 'react';
+import styled from 'styled-components';
+import { format } from 'date-fns';
+import { Text, Flex, Box } from '@kaco/uikit';
+import { Auction, AuctionStatus } from 'config/constants/types';
+import { useTranslation } from 'contexts/Localization';
 
 const ScheduleInner = styled(Flex)`
   flex-direction: column;
@@ -11,18 +11,18 @@ const ScheduleInner = styled(Flex)`
   border-radius: ${({ theme }) => theme.radii.default};
   background-color: ${({ theme }) => theme.colors.background};
   border: 1px ${({ theme }) => theme.colors.cardBorder} solid;
-`
+`;
 
 interface ScheduleProps {
-  auction: Auction
-  showForClosedAuction?: boolean
+  auction: Auction;
+  showForClosedAuction?: boolean;
 }
 
 export const AuctionSchedule: React.FC<ScheduleProps> = ({ auction }) => {
-  const { startBlock, endBlock, auctionDuration, startDate, endDate, status } = auction
-  const { t } = useTranslation()
+  const { startBlock, endBlock, auctionDuration, startDate, endDate, status } = auction;
+  const { t } = useTranslation();
 
-  const noLiveOrPendingAuction = status === AuctionStatus.ToBeAnnounced || status === AuctionStatus.Closed
+  const noLiveOrPendingAuction = status === AuctionStatus.ToBeAnnounced || status === AuctionStatus.Closed;
 
   return (
     <>
@@ -70,17 +70,17 @@ export const AuctionSchedule: React.FC<ScheduleProps> = ({ auction }) => {
         </Flex>
       </ScheduleInner>
     </>
-  )
-}
+  );
+};
 
 export const FarmSchedule: React.FC<ScheduleProps> = ({ auction, showForClosedAuction }) => {
-  const { status, farmStartBlock, farmEndBlock, farmStartDate, farmEndDate } = auction
-  const { t } = useTranslation()
+  const { status, farmStartBlock, farmEndBlock, farmStartDate, farmEndDate } = auction;
+  const { t } = useTranslation();
 
-  let scheduleToBeAnnounced = status === AuctionStatus.ToBeAnnounced || status === AuctionStatus.Closed
+  let scheduleToBeAnnounced = status === AuctionStatus.ToBeAnnounced || status === AuctionStatus.Closed;
   // Schedule for closed auction is shown in congratulation card but not shown in Next Auction card
   if (showForClosedAuction) {
-    scheduleToBeAnnounced = false
+    scheduleToBeAnnounced = false;
   }
 
   return (
@@ -127,5 +127,5 @@ export const FarmSchedule: React.FC<ScheduleProps> = ({ auction, showForClosedAu
         </Flex>
       </ScheduleInner>
     </Flex>
-  )
-}
+  );
+};

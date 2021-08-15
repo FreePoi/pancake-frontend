@@ -1,10 +1,10 @@
-import { Farm } from 'state/types'
-import fetchPublicFarmData from './fetchPublicFarmData'
+import { Farm } from 'state/types';
+import fetchPublicFarmData from './fetchPublicFarmData';
 
 const fetchFarm = async (farm: Farm): Promise<Farm> => {
-  const farmPublicData = await fetchPublicFarmData(farm)
+  const farmPublicData = await fetchPublicFarmData(farm);
 
-  return { ...farm, ...farmPublicData }
-}
+  return { ...farm, ...farmPublicData };
+};
 
-export default fetchFarm
+export default fetchFarm;

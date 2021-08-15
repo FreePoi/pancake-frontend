@@ -1,10 +1,10 @@
-import React from 'react'
-import { Card, CardBody, Heading, Text } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import CardContent from './CardContent'
+import React from 'react';
+import { Card, CardBody, Heading, Text } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import CardContent from './CardContent';
 
 const NftInWalletCard = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Card>
@@ -15,7 +15,7 @@ const NftInWalletCard = () => {
         </CardContent>
       </CardBody>
     </Card>
-  )
-}
+  );
+};
 
-export default NftInWalletCard
+export default NftInWalletCard;

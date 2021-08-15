@@ -1,17 +1,17 @@
-import React from 'react'
-import { Button, AutoRenewIcon, Skeleton } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { useVaultApprove } from '../../../hooks/useApprove'
+import React from 'react';
+import { Button, AutoRenewIcon, Skeleton } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import { useVaultApprove } from '../../../hooks/useApprove';
 
 interface ApprovalActionProps {
-  setLastUpdated: () => void
-  isLoading?: boolean
+  setLastUpdated: () => void;
+  isLoading?: boolean;
 }
 
 const VaultApprovalAction: React.FC<ApprovalActionProps> = ({ isLoading = false, setLastUpdated }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const { handleApprove, requestedApproval } = useVaultApprove(setLastUpdated)
+  const { handleApprove, requestedApproval } = useVaultApprove(setLastUpdated);
 
   return (
     <>
@@ -29,7 +29,7 @@ const VaultApprovalAction: React.FC<ApprovalActionProps> = ({ isLoading = false,
         </Button>
       )}
     </>
-  )
-}
+  );
+};
 
-export default VaultApprovalAction
+export default VaultApprovalAction;

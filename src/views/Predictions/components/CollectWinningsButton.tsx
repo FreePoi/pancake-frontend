@@ -1,13 +1,13 @@
-import React from 'react'
-import { Button, ButtonProps, useModal } from '@kaco/uikit'
-import CollectRoundWinningsModal from './CollectRoundWinningsModal'
+import React from 'react';
+import { Button, ButtonProps, useModal } from '@kaco/uikit';
+import CollectRoundWinningsModal from './CollectRoundWinningsModal';
 
 interface CollectWinningsButtonProps extends ButtonProps {
-  payout: string
-  betAmount: string
-  epoch: number
-  hasClaimed: boolean
-  onSuccess?: () => Promise<void>
+  payout: string;
+  betAmount: string;
+  epoch: number;
+  hasClaimed: boolean;
+  onSuccess?: () => Promise<void>;
 }
 
 const CollectWinningsButton: React.FC<CollectWinningsButtonProps> = ({
@@ -22,13 +22,13 @@ const CollectWinningsButton: React.FC<CollectWinningsButtonProps> = ({
   const [onPresentCollectWinningsModal] = useModal(
     <CollectRoundWinningsModal payout={payout} betAmount={betAmount} epoch={epoch} onSuccess={onSuccess} />,
     false,
-  )
+  );
 
   return (
     <Button onClick={onPresentCollectWinningsModal} disabled={hasClaimed} {...props}>
       {children}
     </Button>
-  )
-}
+  );
+};
 
-export default CollectWinningsButton
+export default CollectWinningsButton;

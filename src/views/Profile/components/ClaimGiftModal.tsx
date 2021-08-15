@@ -1,59 +1,59 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { Modal, Text, InjectedModalProps, Button, AutoRenewIcon } from '@kaco/uikit'
-import { useWeb3React } from '@web3-react/core'
-import useToast from 'hooks/useToast'
-import { useClaimRefundContract } from 'hooks/useContract'
-import { useTranslation } from 'contexts/Localization'
-import { getClaimRefundContract } from 'utils/contractHelpers'
+import React, { useCallback, useEffect, useState } from 'react';
+import { Modal, Text, InjectedModalProps, Button, AutoRenewIcon } from '@kaco/uikit';
+import { useWeb3React } from '@web3-react/core';
+import useToast from 'hooks/useToast';
+import { useClaimRefundContract } from 'hooks/useContract';
+import { useTranslation } from 'contexts/Localization';
+import { getClaimRefundContract } from 'utils/contractHelpers';
 
 interface ClaimGiftProps extends InjectedModalProps {
-  onSuccess: () => void
+  onSuccess: () => void;
 }
 
 export const useCanClaim = () => {
-  const [canClaim, setCanClaim] = useState(false)
-  const [refresh, setRefresh] = useState(1)
-  const { account } = useWeb3React()
+  const [canClaim, setCanClaim] = useState(false);
+  const [refresh, setRefresh] = useState(1);
+  const { account } = useWeb3React();
 
   const checkClaimStatus = useCallback(() => {
-    setRefresh((prevRefresh) => prevRefresh + 1)
-  }, [setRefresh])
+    setRefresh((prevRefresh) => prevRefresh + 1);
+  }, [setRefresh]);
 
   useEffect(() => {
     const fetchClaimStatus = async () => {
-      const claimRefundContract = getClaimRefundContract()
-      const walletCanClaim = await claimRefundContract.canClaim(account)
-      setCanClaim(walletCanClaim)
-    }
+      const claimRefundContract = getClaimRefundContract();
+      const walletCanClaim = await claimRefundContract.canClaim(account);
+      setCanClaim(walletCanClaim);
+    };
 
     if (account) {
-      fetchClaimStatus()
+      fetchClaimStatus();
     }
-  }, [account, refresh, setCanClaim])
+  }, [account, refresh, setCanClaim]);
 
-  return { canClaim, checkClaimStatus }
-}
+  return { canClaim, checkClaimStatus };
+};
 
 const ClaimGift: React.FC<ClaimGiftProps> = ({ onSuccess, onDismiss }) => {
-  const [isConfirming, setIsConfirming] = useState(false)
-  const { t } = useTranslation()
-  const { canClaim } = useCanClaim()
-  const claimRefundContract = useClaimRefundContract()
-  const { toastSuccess, toastError } = useToast()
+  const [isConfirming, setIsConfirming] = useState(false);
+  const { t } = useTranslation();
+  const { canClaim } = useCanClaim();
+  const claimRefundContract = useClaimRefundContract();
+  const { toastSuccess, toastError } = useToast();
 
   const handleClick = async () => {
-    const tx = await claimRefundContract.getCakeBack()
-    setIsConfirming(true)
-    const receipt = await tx.wait()
+    const tx = await claimRefundContract.getCakeBack();
+    setIsConfirming(true);
+    const receipt = await tx.wait();
     if (receipt.status) {
-      toastSuccess(t('Success!'))
-      onSuccess()
-      onDismiss()
+      toastSuccess(t('Success!'));
+      onSuccess();
+      onDismiss();
     } else {
-      setIsConfirming(false)
-      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
+      setIsConfirming(false);
+      toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'));
     }
-  }
+  };
 
   return (
     <Modal title={t('Claim your Gift!')} onDismiss={onDismiss}>
@@ -83,7 +83,7 @@ const ClaimGift: React.FC<ClaimGiftProps> = ({ onSuccess, onDismiss }) => {
         </Button>
       </div>
     </Modal>
-  )
-}
+  );
+};
 
-export default ClaimGift
+export default ClaimGift;

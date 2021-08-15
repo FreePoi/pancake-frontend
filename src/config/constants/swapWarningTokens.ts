@@ -1,20 +1,20 @@
-import tokens from 'config/constants/tokens'
-import { Address } from './types'
+import tokens from 'config/constants/tokens';
+import { Address } from './types';
 
-const { bondly, safemoon } = tokens
+const { bondly, safemoon } = tokens;
 
 interface WarningToken {
-  symbol: string
-  address: Address
+  symbol: string;
+  address: Address;
 }
 
 interface WarningTokenList {
-  [key: string]: WarningToken
+  [key: string]: WarningToken;
 }
 
 const SwapWarningTokens = <WarningTokenList>{
   safemoon,
   bondly,
-}
+};
 
-export default SwapWarningTokens
+export default SwapWarningTokens;

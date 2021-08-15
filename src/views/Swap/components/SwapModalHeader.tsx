@@ -1,13 +1,13 @@
-import React, { useMemo } from 'react'
-import { Trade, TradeType } from '@pancakeswap/sdk'
-import { Button, Text, ErrorIcon, ArrowDownIcon } from '@kaco/uikit'
-import { Field } from 'state/swap/actions'
-import { isAddress, shortenAddress } from 'utils'
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
-import { AutoColumn } from 'components/Layout/Column'
-import { CurrencyLogo } from 'components/Logo'
-import { RowBetween, RowFixed } from 'components/Layout/Row'
-import { TruncatedText, SwapShowAcceptChanges } from './styleds'
+import React, { useMemo } from 'react';
+import { Trade, TradeType } from '@kaco/sdk';
+import { Button, Text, ErrorIcon, ArrowDownIcon } from '@kaco/uikit';
+import { Field } from 'state/swap/actions';
+import { isAddress, shortenAddress } from 'utils';
+import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from 'utils/prices';
+import { AutoColumn } from 'components/Layout/Column';
+import { CurrencyLogo } from 'components/Logo';
+import { RowBetween, RowFixed } from 'components/Layout/Row';
+import { TruncatedText, SwapShowAcceptChanges } from './styleds';
 
 export default function SwapModalHeader({
   trade,
@@ -16,18 +16,18 @@ export default function SwapModalHeader({
   showAcceptChanges,
   onAcceptChanges,
 }: {
-  trade: Trade
-  allowedSlippage: number
-  recipient: string | null
-  showAcceptChanges: boolean
-  onAcceptChanges: () => void
+  trade: Trade;
+  allowedSlippage: number;
+  recipient: string | null;
+  showAcceptChanges: boolean;
+  onAcceptChanges: () => void;
 }) {
   const slippageAdjustedAmounts = useMemo(
     () => computeSlippageAdjustedAmounts(trade, allowedSlippage),
     [trade, allowedSlippage],
-  )
-  const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
-  const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
+  );
+  const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade]);
+  const priceImpactSeverity = warningSeverity(priceImpactWithoutFee);
 
   return (
     <AutoColumn gap="md">
@@ -111,5 +111,5 @@ export default function SwapModalHeader({
         </AutoColumn>
       ) : null}
     </AutoColumn>
-  )
+  );
 }

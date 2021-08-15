@@ -1,18 +1,18 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Heading } from '@kaco/uikit'
-import { useTranslation } from 'contexts/Localization'
-import Page from 'components/Layout/Page'
-import NftList from './components/NftList'
+import React from 'react';
+import styled from 'styled-components';
+import { Heading } from '@kaco/uikit';
+import { useTranslation } from 'contexts/Localization';
+import Page from 'components/Layout/Page';
+import NftList from './components/NftList';
 
 const StyledHero = styled.div`
   border-bottom: 2px solid ${({ theme }) => theme.colors.textSubtle};
   margin-bottom: 24px;
   padding-bottom: 32px;
-`
+`;
 
 const Collectibles = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Page>
@@ -23,7 +23,7 @@ const Collectibles = () => {
       </StyledHero>
       <NftList />
     </Page>
-  )
-}
+  );
+};
 
-export default Collectibles
+export default Collectibles;

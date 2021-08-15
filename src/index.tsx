@@ -1,13 +1,13 @@
-import React, { useMemo, ReactNode } from 'react'
-import ReactDOM from 'react-dom'
-import useActiveWeb3React from './hooks/useActiveWeb3React'
-import { BLOCKED_ADDRESSES } from './config/constants'
-import ApplicationUpdater from './state/application/updater'
-import ListsUpdater from './state/lists/updater'
-import MulticallUpdater from './state/multicall/updater'
-import TransactionUpdater from './state/transactions/updater'
-import App from './App'
-import Providers from './Providers'
+import React, { useMemo, ReactNode } from 'react';
+import ReactDOM from 'react-dom';
+import useActiveWeb3React from './hooks/useActiveWeb3React';
+import { BLOCKED_ADDRESSES } from './config/constants';
+import ApplicationUpdater from './state/application/updater';
+import ListsUpdater from './state/lists/updater';
+import MulticallUpdater from './state/multicall/updater';
+import TransactionUpdater from './state/transactions/updater';
+import App from './App';
+import Providers from './Providers';
 
 function Updaters() {
   return (
@@ -17,16 +17,16 @@ function Updaters() {
       <TransactionUpdater />
       <MulticallUpdater />
     </>
-  )
+  );
 }
 
 function Blocklist({ children }: { children: ReactNode }) {
-  const { account } = useActiveWeb3React()
-  const blocked: boolean = useMemo(() => Boolean(account && BLOCKED_ADDRESSES.indexOf(account) !== -1), [account])
+  const { account } = useActiveWeb3React();
+  const blocked: boolean = useMemo(() => Boolean(account && BLOCKED_ADDRESSES.indexOf(account) !== -1), [account]);
   if (blocked) {
-    return <div>Blocked address</div>
+    return <div>Blocked address</div>;
   }
-  return <>{children}</>
+  return <>{children}</>;
 }
 
 ReactDOM.render(
@@ -39,4 +39,4 @@ ReactDOM.render(
     </Blocklist>
   </React.StrictMode>,
   document.getElementById('root'),
-)
+);

@@ -1,20 +1,20 @@
-import React from 'react'
-import { useTranslation } from 'contexts/Localization'
-import { getBscScanLink } from 'utils'
-import { Flex, Link, PocketWatchIcon, Text, Skeleton } from '@kaco/uikit'
-import getTimePeriods from 'utils/getTimePeriods'
-import { PublicIfoData } from 'views/Ifos/types'
+import React from 'react';
+import { useTranslation } from 'contexts/Localization';
+import { getBscScanLink } from 'utils';
+import { Flex, Link, PocketWatchIcon, Text, Skeleton } from '@kaco/uikit';
+import getTimePeriods from 'utils/getTimePeriods';
+import { PublicIfoData } from 'views/Ifos/types';
 
 interface Props {
-  publicIfoData: PublicIfoData
+  publicIfoData: PublicIfoData;
 }
 
 const Timer: React.FC<Props> = ({ publicIfoData }) => {
-  const { t } = useTranslation()
-  const { status, secondsUntilStart, secondsUntilEnd, startBlockNum } = publicIfoData
-  const countdownToUse = status === 'coming_soon' ? secondsUntilStart : secondsUntilEnd
-  const timeUntil = getTimePeriods(countdownToUse)
-  const suffix = status === 'coming_soon' ? t('Start').toLowerCase() : t('Finish').toLowerCase()
+  const { t } = useTranslation();
+  const { status, secondsUntilStart, secondsUntilEnd, startBlockNum } = publicIfoData;
+  const countdownToUse = status === 'coming_soon' ? secondsUntilStart : secondsUntilEnd;
+  const timeUntil = getTimePeriods(countdownToUse);
+  const suffix = status === 'coming_soon' ? t('Start').toLowerCase() : t('Finish').toLowerCase();
   return (
     <Flex justifyContent="center" mb="32px">
       {status === 'idle' ? (
@@ -46,7 +46,7 @@ const Timer: React.FC<Props> = ({ publicIfoData }) => {
         </>
       )}
     </Flex>
-  )
-}
+  );
+};
 
-export default Timer
+export default Timer;

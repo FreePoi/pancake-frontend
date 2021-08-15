@@ -1,9 +1,9 @@
-import React from 'react'
-import { Flex, IconButton, CogIcon, useModal } from '@kaco/uikit'
-import SettingsModal from './SettingsModal'
+import React from 'react';
+import { Flex, IconButton, CogIcon, useModal } from '@kaco/uikit';
+import SettingsModal from './SettingsModal';
 
 const GlobalSettings = () => {
-  const [onPresentSettingsModal] = useModal(<SettingsModal />)
+  const [onPresentSettingsModal] = useModal(<SettingsModal />);
 
   return (
     <Flex>
@@ -11,7 +11,7 @@ const GlobalSettings = () => {
         <CogIcon height={22} width={22} color="textSubtle" />
       </IconButton>
     </Flex>
-  )
-}
+  );
+};
 
-export default GlobalSettings
+export default GlobalSettings;

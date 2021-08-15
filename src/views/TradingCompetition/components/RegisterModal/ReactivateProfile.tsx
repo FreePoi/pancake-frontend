@@ -1,16 +1,16 @@
-import React from 'react'
-import { Heading, Button, Text } from '@kaco/uikit'
-import history from 'routerHistory'
-import { useTranslation } from 'contexts/Localization'
-import { CompetitionProps } from 'views/TradingCompetition/types'
+import React from 'react';
+import { Heading, Button, Text } from '@kaco/uikit';
+import history from 'routerHistory';
+import { useTranslation } from 'contexts/Localization';
+import { CompetitionProps } from 'views/TradingCompetition/types';
 
 const ReactivateProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const handleClick = () => {
-    history.push('/profile')
-    onDismiss()
-  }
+    history.push('/profile');
+    onDismiss();
+  };
 
   return (
     <>
@@ -27,7 +27,7 @@ const ReactivateProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
         {t('Go to my profile')}
       </Button>
     </>
-  )
-}
+  );
+};
 
-export default ReactivateProfile
+export default ReactivateProfile;
