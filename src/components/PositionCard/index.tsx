@@ -18,6 +18,7 @@ import { DoubleCurrencyLogo } from '../Logo';
 import { RowBetween, RowFixed } from '../Layout/Row';
 import { BIG_INT_ZERO } from '../../config/constants';
 import Dots from '../Loader/Dots';
+import DropdownSvg from './imgs/dropdown.png';
 
 const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -132,6 +133,45 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
     </>
   );
 }
+const Wrapper = styled.div`
+  background: #1f252a;
+  border-radius: 12px;
+  margin-bottom: 12px;
+
+  > .main {
+    padding: 0px 20px;
+    height: 68px;
+    align-items: center;
+    background-color: #272e32;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+
+    > .left,
+    > .right {
+      display: flex;
+      align-items: center;
+    }
+
+    > .left {
+      > span {
+        font-size: 16px;
+        font-weight: bold;
+        color: #1bd3d5;
+        margin-left: 14px;
+      }
+    }
+
+    > .right {
+      > span {
+        font-weight: bold;
+        margin-right: 12px;
+        color: #ffffff;
+      }
+    }
+  }
+`;
 
 export default function FullPositionCard({ pair, ...props }: PositionCardProps) {
   const { account } = useActiveWeb3React();
@@ -162,34 +202,32 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
       : [undefined, undefined];
 
   return (
-    <Card style={{ borderRadius: '12px' }} {...props}>
-      <Flex justifyContent="space-between" role="button" onClick={() => setShowMore(!showMore)} p="16px">
-        <Flex flexDirection="column">
-          <Flex alignItems="center" mb="4px">
-            <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
-            <Text bold ml="8px">
-              {!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol}/${currency1.symbol}`}
-            </Text>
-          </Flex>
-          <Text fontSize="14px" color="textSubtle">
-            {userPoolBalance?.toSignificant(4)}
-          </Text>
-        </Flex>
-        {showMore ? <ChevronUpIcon /> : <ChevronDownIcon />}
-      </Flex>
+    <Wrapper style={{ borderRadius: '12px' }} {...props}>
+      <div className="main" onClick={() => setShowMore(!showMore)}>
+        <div className="left">
+          <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
+          <span>{!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol}/${currency1.symbol}`}</span>
+        </div>
+        <div className="right">
+          <span>{userPoolBalance?.toSignificant(4)}</span>
+          <img src={DropdownSvg} style={{ transform: showMore ? '' : 'scaleY(-1)' }} alt="" />
+        </div>
+      </div>
 
       {showMore && (
         <AutoColumn gap="8px" style={{ padding: '16px' }}>
           <FixedHeightRow>
             <RowFixed>
               <CurrencyLogo size="20px" currency={currency0} />
-              <Text color="textSubtle" ml="4px">
+              <Text fontSize="12px" color="#9DA6A6" ml="14px">
                 Pooled {currency0.symbol}
               </Text>
             </RowFixed>
             {token0Deposited ? (
               <RowFixed>
-                <Text ml="6px">{token0Deposited?.toSignificant(6)}</Text>
+                <Text fontSize="12px" color="#F1842C">
+                  {token0Deposited?.toSignificant(6)}
+                </Text>
               </RowFixed>
             ) : (
               '-'
@@ -199,13 +237,15 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
           <FixedHeightRow>
             <RowFixed>
               <CurrencyLogo size="20px" currency={currency1} />
-              <Text color="textSubtle" ml="4px">
+              <Text fontSize="12px" color="#9DA6A6" ml="14px">
                 Pooled {currency1.symbol}
               </Text>
             </RowFixed>
             {token1Deposited ? (
               <RowFixed>
-                <Text ml="6px">{token1Deposited?.toSignificant(6)}</Text>
+                <Text fontSize="12px" color="#F1842C">
+                  {token1Deposited?.toSignificant(6)}
+                </Text>
               </RowFixed>
             ) : (
               '-'
@@ -213,8 +253,10 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
           </FixedHeightRow>
 
           <FixedHeightRow>
-            <Text color="textSubtle">Share of pool</Text>
-            <Text>
+            <Text fontSize="12px" color="#9DA6A6">
+              Share of pool
+            </Text>
+            <Text fontSize="12px" color="#F1842C">
               {poolTokenPercentage
                 ? `${poolTokenPercentage.toFixed(2) === '0.00' ? '<0.01' : poolTokenPercentage.toFixed(2)}%`
                 : '-'}
@@ -222,8 +264,14 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
           </FixedHeightRow>
 
           {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, BIG_INT_ZERO) && (
-            <Flex flexDirection="column">
+            <Flex flexDirection="column" pt="10px">
               <Button
+                style={{
+                  height: '48px',
+                  background: '#272E32',
+                  border: '2px solid #1BD3D5',
+                  borderRadius: '12px',
+                }}
                 as={Link}
                 to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
                 variant="primary"
@@ -238,6 +286,7 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
                 variant="text"
                 startIcon={<AddIcon color="primary" />}
                 width="100%"
+                style={{ fontSize: '12px' }}
               >
                 Add liquidity instead
               </Button>
@@ -245,6 +294,6 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
           )}
         </AutoColumn>
       )}
-    </Card>
+    </Wrapper>
   );
 }

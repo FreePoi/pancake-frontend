@@ -12,10 +12,9 @@ import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks
 import Dots from '../../components/Loader/Dots';
 import { AppHeader, AppBody } from '../../components/App';
 import Page from '../Page';
+import Status from './Status';
 
-const Body = styled(CardBody)`
-  background-color: ${({ theme }) => theme.colors.dropdownDeep};
-`;
+const Body = styled(CardBody)``;
 
 export default function Pool() {
   const { account } = useActiveWeb3React();
@@ -65,11 +64,7 @@ export default function Pool() {
 
   const renderBody = () => {
     if (!account) {
-      return (
-        <Text color="textSubtle" textAlign="center">
-          {t('Connect to a wallet to view your liquidity.')}
-        </Text>
-      );
+      return <Status span={t('Connect to a wallet to view your liquidity.')} status="not-connected" />;
     }
     if (v2IsLoading) {
       return (
@@ -87,17 +82,17 @@ export default function Pool() {
         />
       ));
     }
-    return (
-      <Text color="textSubtle" textAlign="center">
-        {t('No liquidity found.')}
-      </Text>
-    );
+    return <Status span={t('No liquidity found.')} status="no-liquidity" />;
   };
 
   return (
     <Page>
       <AppBody>
-        <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} />
+        <AppHeader
+          style={{ paddingBottom: '10px' }}
+          title={t('Your Liquidity')}
+          subtitle={t('Remove liquidity to receive tokens back')}
+        />
         <Body>
           {renderBody()}
           {account && !v2IsLoading && (
@@ -111,7 +106,7 @@ export default function Pool() {
             </Flex>
           )}
         </Body>
-        <CardFooter style={{ textAlign: 'center' }}>
+        <CardFooter style={{ textAlign: 'center', borderTop: '0', paddingTop: '8px' }}>
           <Button id="join-pool-button" as={Link} to="/add" width="100%" startIcon={<AddIcon color="white" />}>
             {t('Add Liquidity')}
           </Button>

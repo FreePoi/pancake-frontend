@@ -4,7 +4,7 @@ import { Card } from '@kaco/uikit';
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
-  max-width: 436px;
+  max-width: 486px;
   width: 100%;
   z-index: 1;
   width: 486px;
