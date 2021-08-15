@@ -214,11 +214,21 @@ const Farms: React.FC = () => {
       }
     };
 
+    // console.log(
+    //   'stakedOnlyFarms',
+    //   stakedOnlyFarms,
+    //   'stakedArchivedFarms',
+    //   stakedArchivedFarms,
+    //   'activeFarms',
+    //   activeFarms,
+    //   'inactiveFarms',
+    //   inactiveFarms,
+    // );
     if (isActive) {
       chosenFarms = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms);
     }
     if (isInactive) {
-      chosenFarms = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms);
+      chosenFarms = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(inactiveFarms);
     }
     if (isArchived) {
       chosenFarms = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms);
@@ -266,6 +276,7 @@ const Farms: React.FC = () => {
     }
   }, [chosenFarmsMemoized, observerIsSet]);
 
+  console.log('chosenFarmsMemoized', chosenFarmsMemoized);
   const rowData = chosenFarmsMemoized.map((farm) => {
     const { token, quoteToken } = farm;
     const tokenAddress = token.address;

@@ -39,6 +39,7 @@ const StyledTable = styled.table`
 
 const TableBody = styled.tbody`
   & tr {
+    background: #1f373b;
     td {
       font-size: 16px;
       vertical-align: middle;
@@ -64,6 +65,7 @@ const FarmTable: React.FC<ITableProps> = (props) => {
 
   const { rows } = useTable(columns, data, { sortable: true, sortColumn: 'farm' });
 
+  // console.log('rows', rows);
   const scrollToTop = (): void => {
     tableWrapperEl.current.scrollIntoView({
       behavior: 'smooth',
@@ -82,12 +84,12 @@ const FarmTable: React.FC<ITableProps> = (props) => {
             </TableBody>
           </StyledTable>
         </TableWrapper>
-        <ScrollButtonContainer>
+        {/* <ScrollButtonContainer>
           <Button variant="text" onClick={scrollToTop}>
             {t('To Top')}
             <ChevronUpIcon color="primary" />
           </Button>
-        </ScrollButtonContainer>
+        </ScrollButtonContainer> */}
       </TableContainer>
     </Container>
   );

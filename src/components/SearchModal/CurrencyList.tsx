@@ -75,6 +75,7 @@ function CurrencyRow({
   const customAdded = useIsUserAddedToken(currency);
   const balance = useCurrencyBalance(account ?? undefined, currency);
 
+  // console.log('balance', balance?.toFixed(), account, currency);
   // only show add or remove buttons if not on selected list
   return (
     <MenuItem
@@ -171,6 +172,7 @@ export default function CurrencyList({
           <ImportRow style={style} token={token} showImportView={showImportView} setImportToken={setImportToken} dim />
         );
       }
+      console.log('currency', currency);
       return (
         <CurrencyRow
           style={style}
@@ -195,7 +197,7 @@ export default function CurrencyList({
   );
 
   const itemKey = useCallback((index: number, data: any) => currencyKey(data[index]), []);
-
+  console.log('itemData', itemData);
   return (
     <FixedSizeList
       height={height}

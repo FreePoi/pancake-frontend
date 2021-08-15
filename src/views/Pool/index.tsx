@@ -44,7 +44,7 @@ export default function Pool() {
     'tokenPairsWithLiquidityTokens',
     tokenPairsWithLiquidityTokens,
     'v2PairsBalances',
-    v2PairsBalances['0x2e669ef9d7f2b6302ee4710b0c9b08829074e85f']?.toFixed(),
+    v2PairsBalances,
   );
   // fetch the reserves for all V2 pools in which the user has a balance
   const liquidityTokensWithBalances = useMemo(

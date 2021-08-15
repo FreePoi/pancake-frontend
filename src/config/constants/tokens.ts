@@ -10,7 +10,7 @@ export const Kaco: { [chainId: number]: Token } = {
   // ),
   [ChainId.TESTNET]: new Token(
     ChainId.TESTNET,
-    '0xb6f33B452B3e179dA1C2De637547163c8caD9123',
+    '0x0bA819e30016Cf682C7795b44859148C65e62292',
     18,
     'Kaco',
     'KacoSwap Token',
@@ -72,7 +72,7 @@ const tokens = {
     symbol: 'BNB',
     projectLink: 'https://www.binance.com/',
   },
-  cake: {
+  kaco: {
     symbol: 'Kaco',
     address: {
       56: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
@@ -823,7 +823,7 @@ const tokens = {
     symbol: 'SYRUP',
     address: {
       56: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
-      97: '0xfE1e507CeB712BDe086f3579d2c03248b2dB77f9',
+      97: '0x4b7349f116992EE73Cafe34d9Eaf3365f8192a9D',
     },
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
@@ -850,7 +850,7 @@ const tokens = {
     symbol: 'BUSD',
     address: {
       56: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
-      97: '',
+      97: '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee',
     },
     decimals: 18,
     projectLink: 'https://www.paxos.com/busd/',

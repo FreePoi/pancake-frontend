@@ -82,6 +82,7 @@ function CurrencySearch({
     [audioPlay, onCurrencySelect],
   );
 
+  // console.log('all', allTokens, 'filteredSortedTokens', filteredSortedTokens);
   // manage focus on modal show
   const inputRef = useRef<HTMLInputElement>();
 
@@ -139,6 +140,7 @@ function CurrencySearch({
             <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
           )}
         </AutoColumn>
+        {filteredSortedTokens.length}
         {searchToken && !searchTokenIsAdded ? (
           <Column style={{ padding: '20px 0', height: '100%' }}>
             <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
