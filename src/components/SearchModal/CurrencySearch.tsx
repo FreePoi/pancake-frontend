@@ -16,7 +16,18 @@ import { filterTokens, useSortedTokensByQuery } from './filtering';
 import useTokenComparator from './sorting';
 
 import ImportRow from './ImportRow';
-
+import styled from 'styled-components';
+const Wrapper = styled.div`
+  #token-search-input {
+    background: #1f252a;
+    border: 1px solid #12171a;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #9da6a6;
+    outline: none;
+    box-shadow: none;
+  }
+`;
 interface CurrencySearchProps {
   selectedCurrency?: Currency | null;
   onCurrencySelect: (currency: Currency) => void;
@@ -121,56 +132,53 @@ function CurrencySearch({
   const filteredInactiveTokens: Token[] = useSortedTokensByQuery(inactiveTokens, debouncedQuery);
 
   return (
-    <>
-      <div>
-        <AutoColumn gap="16px">
-          <Row>
-            <Input
-              id="token-search-input"
-              placeholder={t('Search name or paste address')}
-              scale="lg"
-              autoComplete="off"
-              value={searchQuery}
-              ref={inputRef as RefObject<HTMLInputElement>}
-              onChange={handleInput}
-              onKeyDown={handleEnter}
-            />
-          </Row>
-          {showCommonBases && (
-            <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
-          )}
-        </AutoColumn>
-        {filteredSortedTokens.length}
-        {searchToken && !searchTokenIsAdded ? (
-          <Column style={{ padding: '20px 0', height: '100%' }}>
-            <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
-          </Column>
-        ) : filteredSortedTokens?.length > 0 || filteredInactiveTokens?.length > 0 ? (
-          <Box margin="24px -24px">
-            <CurrencyList
-              height={390}
-              showETH={showETH}
-              currencies={
-                filteredInactiveTokens ? filteredSortedTokens.concat(filteredInactiveTokens) : filteredSortedTokens
-              }
-              breakIndex={inactiveTokens && filteredSortedTokens ? filteredSortedTokens.length : undefined}
-              onCurrencySelect={handleCurrencySelect}
-              otherCurrency={otherSelectedCurrency}
-              selectedCurrency={selectedCurrency}
-              fixedListRef={fixedList}
-              showImportView={showImportView}
-              setImportToken={setImportToken}
-            />
-          </Box>
-        ) : (
-          <Column style={{ padding: '20px', height: '100%' }}>
-            <Text color="textSubtle" textAlign="center" mb="20px">
-              {t('No results found.')}
-            </Text>
-          </Column>
+    <Wrapper>
+      <Row>
+        <Input
+          id="token-search-input"
+          placeholder={t('Search name or paste address')}
+          scale="lg"
+          autoComplete="off"
+          value={searchQuery}
+          ref={inputRef as RefObject<HTMLInputElement>}
+          onChange={handleInput}
+          onKeyDown={handleEnter}
+        />
+      </Row>
+      {/* <AutoColumn gap="16px">
+        {showCommonBases && (
+          <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
         )}
-      </div>
-    </>
+      </AutoColumn> */}
+      {searchToken && !searchTokenIsAdded ? (
+        <Column style={{ padding: '20px 0', height: '100%' }}>
+          <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
+        </Column>
+      ) : filteredSortedTokens?.length > 0 || filteredInactiveTokens?.length > 0 ? (
+        <Box margin="24px -24px">
+          <CurrencyList
+            height={390}
+            showETH={showETH}
+            currencies={
+              filteredInactiveTokens ? filteredSortedTokens.concat(filteredInactiveTokens) : filteredSortedTokens
+            }
+            breakIndex={inactiveTokens && filteredSortedTokens ? filteredSortedTokens.length : undefined}
+            onCurrencySelect={handleCurrencySelect}
+            otherCurrency={otherSelectedCurrency}
+            selectedCurrency={selectedCurrency}
+            fixedListRef={fixedList}
+            showImportView={showImportView}
+            setImportToken={setImportToken}
+          />
+        </Box>
+      ) : (
+        <Column style={{ padding: '20px', height: '100%' }}>
+          <Text color="textSubtle" textAlign="center" mb="20px">
+            {t('No results found.')}
+          </Text>
+        </Column>
+      )}
+    </Wrapper>
   );
 }
 

@@ -23,17 +23,32 @@ import { CurrencyModalView } from './types';
 
 const Footer = styled.div`
   width: 100%;
-  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   text-align: center;
 `;
 
 const StyledModalContainer = styled(ModalContainer)`
   max-width: 420px;
   width: 100%;
+  background: #1f252a;
+  box-shadow: 0px 8px 13px 3px rgb(9 2 18 / 20%);
+  border-radius: 20px;
+  border-width: 0;
+
+  > .header {
+    background: #272e32;
+  }
 `;
 
 const StyledModalBody = styled(ModalBody)`
   padding: 24px;
+
+  .list-token-manage-button {
+    width: 200px;
+    height: 36px;
+    background: #272e32;
+    border-radius: 12px;
+    color: #1bd3d5;
+  }
 `;
 
 interface CurrencySearchModalProps extends InjectedModalProps {
@@ -85,7 +100,7 @@ export default function CurrencySearchModal({
 
   return (
     <StyledModalContainer minWidth="320px">
-      <ModalHeader>
+      <ModalHeader className="header">
         <ModalTitle>
           {config[modalView].onBack && <ModalBackButton onBack={config[modalView].onBack} />}
           <Heading>{config[modalView].title}</Heading>
