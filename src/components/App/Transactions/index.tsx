@@ -1,13 +1,14 @@
 import React from 'react';
-import { HistoryIcon, Button, useModal } from '@kaco/uikit';
+import { Button, useModal } from '@kaco/uikit';
 import TransactionsModal from './TransactionsModal';
+import HistorySvg from '../../svg/history.svg';
 
 const Transactions = () => {
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />);
   return (
     <>
-      <Button variant="text" p={0} onClick={onPresentTransactionsModal} ml="16px">
-        <HistoryIcon color="textSubtle" width="24px" />
+      <Button variant="text" p={0} onClick={onPresentTransactionsModal} height={0}>
+        <img src={HistorySvg} alt="" />
       </Button>
     </>
   );

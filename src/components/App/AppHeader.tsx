@@ -9,7 +9,7 @@ import QuestionHelper from '../QuestionHelper';
 
 interface Props {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   helper?: string;
   backTo?: string;
   noConfig?: boolean;
@@ -20,7 +20,7 @@ const AppHeaderContainer = styled(Flex)`
   justify-content: space-between;
   padding: 24px;
   width: 100%;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  /* border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder}; */
 `;
 
 const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig = false }) => {
@@ -34,24 +34,18 @@ const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig 
             <ArrowBackIcon width="32px" />
           </IconButton>
         )}
-        <Flex flexDirection="column">
-          <Heading as="h2" mb="8px">
+        <Flex flexDirection="column" alignItems="center" style={{ height: '100%' }}>
+          <Heading as="h2" mb="8px" marginBottom="0px">
             {title}
           </Heading>
-          <Flex alignItems="center">
-            {helper && <QuestionHelper text={helper} mr="4px" />}
-            <Text color="textSubtle" fontSize="14px">
-              {subtitle}
-            </Text>
-          </Flex>
         </Flex>
       </Flex>
       {!noConfig && (
         <Flex alignItems="center">
+          <Transactions />
           <NotificationDot show={expertMode}>
             <GlobalSettings />
           </NotificationDot>
-          <Transactions />
         </Flex>
       )}
     </AppHeaderContainer>

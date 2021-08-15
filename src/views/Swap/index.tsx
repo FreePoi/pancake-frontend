@@ -43,7 +43,7 @@ import CircleLoader from '../../components/Loader/CircleLoader';
 import Page from '../Page';
 import SwapWarningModal from './components/SwapWarningModal';
 import ArrowDownIcon from '../../components/svg/ArrowDown';
-
+import SwapSvg from './components/imgs/swap.svg';
 const Label = styled(Text)`
   font-size: 12px;
   font-weight: bold;
@@ -306,7 +306,7 @@ export default function Swap({ history }: RouteComponentProps) {
   return (
     <Page>
       <AppBody>
-        <AppHeader title={t('Exchange')} subtitle={t('Trade tokens in an instant')} />
+        <AppHeader title={t('Trade')} />
         <Wrapper id="swap-page">
           <AutoColumn gap="md">
             <CurrencyInputPanel
@@ -323,13 +323,14 @@ export default function Swap({ history }: RouteComponentProps) {
             <AutoColumn justify="space-between">
               <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
                 <ArrowWrapper clickable>
-                  <ArrowDownIcon
-                    width="16px"
+                  <img
+                    style={{ width: '24px' }}
+                    src={SwapSvg}
+                    alt=""
                     onClick={() => {
                       setApprovalSubmitted(false); // reset 2 step UI for approvals
                       onSwitchTokens();
                     }}
-                    color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
                   />
                 </ArrowWrapper>
                 {recipient === null && !showWrap && isExpertMode ? (
