@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { useWeb3React } from '@web3-react/core';
 import TwitterSvg from './imgs/twitter.svg';

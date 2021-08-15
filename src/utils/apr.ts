@@ -45,4 +45,5 @@ export const getFarmApr = (
   return { cakeRewardsApr: cakeRewardsAprAsNumber, lpRewardsApr };
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default null;

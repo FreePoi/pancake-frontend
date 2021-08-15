@@ -34,7 +34,7 @@ import BreadcrumbLink from '../components/BreadcrumbLink';
 import { sendSnaphotData, Message, generateMetaData, generatePayloadData } from '../helpers';
 import Layout from '../components/Layout';
 import { FormErrors, Label, SecondaryLabel } from './styles';
-import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices';
+import Choices, { ChoiceType, makeChoice, MINIMUM_CHOICES } from './Choices';
 import { combineDateAndTime, getFormErrors } from './helpers';
 import { FormState } from './types';
 import { ADMIN_ADDRESS, VOTE_THRESHOLD } from '../config';
@@ -111,7 +111,7 @@ const CreateProposal = () => {
     }
   };
 
-  const updateValue = (key: string, value: string | Choice[] | Date) => {
+  const updateValue = (key: string, value: string | ChoiceType[] | Date) => {
     setState((prevState) => ({
       ...prevState,
       [key]: value,
@@ -133,7 +133,7 @@ const CreateProposal = () => {
     updateValue('body', value);
   };
 
-  const handleChoiceChange = (newChoices: Choice[]) => {
+  const handleChoiceChange = (newChoices: ChoiceType[]) => {
     updateValue('choices', newChoices);
   };
 

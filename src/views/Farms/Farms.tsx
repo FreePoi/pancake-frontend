@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react';
-import { Route, useRouteMatch, useLocation, NavLink } from 'react-router-dom';
+import { Route, useRouteMatch, useLocation } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import { useWeb3React } from '@web3-react/core';
-import { Image, Heading, RowType, Toggle, Text, Button, ArrowForwardIcon, Flex } from '@kaco/uikit';
+import { Image, RowType, Flex } from '@kaco/uikit';
 import { ChainId } from '@kaco/sdk';
 import styled from 'styled-components';
 import FlexLayout from 'components/Layout/Flex';
@@ -10,90 +10,17 @@ import Page from 'components/Layout/Page';
 import { useFarms, usePollFarmsData, usePriceCakeBusd } from 'state/farms/hooks';
 import usePersistState from 'hooks/usePersistState';
 import { Farm } from 'state/types';
-import { useTranslation } from 'contexts/Localization';
 import { getBalanceNumber } from 'utils/formatBalance';
 import { getFarmApr } from 'utils/apr';
 import { orderBy } from 'lodash';
 import isArchivedPid from 'utils/farmHelpers';
 import { latinise } from 'utils/latinise';
 import { useUserFarmStakedOnly } from 'state/user/hooks';
-import PageHeader from 'components/PageHeader';
-import SearchInput from 'components/SearchInput';
-import Select, { OptionProps } from 'components/Select/Select';
 import Loading from 'components/Loading';
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard';
 import Table from './components/FarmTable/FarmTable';
-import FarmTabButtons from './components/FarmTabButtons';
 import { RowProps } from './components/FarmTable/Row';
-import ToggleView from './components/ToggleView/ToggleView';
 import { DesktopColumnSchema, ViewMode } from './components/types';
-
-const ControlContainer = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-  position: relative;
-
-  justify-content: space-between;
-  flex-direction: column;
-  margin-bottom: 32px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 16px 32px;
-    margin-bottom: 0;
-  }
-`;
-
-const ToggleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
-
-  ${Text} {
-    margin-left: 8px;
-  }
-`;
-
-const LabelWrapper = styled.div`
-  > ${Text} {
-    font-size: 12px;
-  }
-`;
-
-const FilterContainer = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 8px 0px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: auto;
-    padding: 0;
-  }
-`;
-
-const ViewControls = styled.div`
-  flex-wrap: wrap;
-  justify-content: space-between;
-  display: flex;
-  align-items: center;
-  width: 100%;
-
-  > div {
-    padding: 8px 0px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    justify-content: flex-start;
-    width: auto;
-
-    > div {
-      padding: 0;
-    }
-  }
-`;
 
 const StyledImage = styled(Image)`
   margin-left: auto;
@@ -115,13 +42,12 @@ const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
 const Farms: React.FC = () => {
   const { path } = useRouteMatch();
   const { pathname } = useLocation();
-  const { t } = useTranslation();
   const { data: farmsLP, userDataLoaded } = useFarms();
   const cakePrice = usePriceCakeBusd();
-  const [query, setQuery] = useState('');
-  const [viewMode, setViewMode] = usePersistState(ViewMode.TABLE, { localStorageKey: 'pancake_farm_view' });
+  const [query] = useState('');
+  const [viewMode] = usePersistState(ViewMode.TABLE, { localStorageKey: 'pancake_farm_view' });
   const { account } = useWeb3React();
-  const [sortOption, setSortOption] = useState('hot');
+  const [sortOption] = useState('hot');
   const chosenFarmsLength = useRef(0);
 
   const isArchived = pathname.includes('archived');
@@ -134,7 +60,7 @@ const Farms: React.FC = () => {
   // Connected users should see loading indicator until first userData has loaded
   const userDataReady = !account || (!!account && userDataLoaded);
 
-  const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive);
+  const [stakedOnly] = useUserFarmStakedOnly(isActive);
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid));
   const inactiveFarms = farmsLP.filter(
@@ -143,10 +69,6 @@ const Farms: React.FC = () => {
   const archivedFarms = farmsLP.filter((farm) => isArchivedPid(farm.pid));
 
   const stakedOnlyFarms = activeFarms.filter(
-    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
-  );
-
-  const stakedInactiveFarms = inactiveFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   );
 
@@ -178,10 +100,6 @@ const Farms: React.FC = () => {
     },
     [cakePrice, query, isActive],
   );
-
-  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
-  };
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
@@ -245,7 +163,6 @@ const Farms: React.FC = () => {
     isInactive,
     isArchived,
     stakedArchivedFarms,
-    stakedInactiveFarms,
     stakedOnly,
     stakedOnlyFarms,
     numberOfFarmsVisible,
@@ -385,10 +302,6 @@ const Farms: React.FC = () => {
         </Route>
       </FlexLayout>
     );
-  };
-
-  const handleSortOptionChange = (option: OptionProps): void => {
-    setSortOption(option.value);
   };
 
   return (

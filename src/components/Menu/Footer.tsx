@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ButtonMenu, ButtonMenuItem, LinkExternal, Flex, Svg, Image, Button } from '@kaco/uikit';
-import { useTranslation } from 'contexts/Localization';
+import { Flex } from '@kaco/uikit';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -16,26 +15,7 @@ const Wrapper = styled.div`
     flex-direction: row;
   }
 `;
-
-const BubbleWrapper = styled(Flex)`
-  svg {
-    fill: ${({ theme }) => theme.colors.textSubtle};
-    transition: background-color 0.2s, opacity 0.2s;
-  }
-  &:hover {
-    svg {
-      opacity: 0.65;
-    }
-  }
-  &:active {
-    svg {
-      opacity: 0.85;
-    }
-  }
-`;
-
 const Footer = () => {
-  const { t } = useTranslation();
   return (
     <Wrapper>
       <Flex flexDirection={['column', 'column', 'row']} alignItems="center" />

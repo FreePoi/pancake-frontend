@@ -22,4 +22,5 @@ export const getStatus = (currentBlock: number, startBlock: number, endBlock: nu
   return 'idle';
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default null;

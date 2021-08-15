@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { useTable, Button, ChevronUpIcon, ColumnType } from '@kaco/uikit';
-import { useTranslation } from 'contexts/Localization';
+import { useTable, ColumnType } from '@kaco/uikit';
 
 import Row, { RowProps } from './Row';
 
@@ -51,26 +50,13 @@ const TableContainer = styled.div`
   position: relative;
 `;
 
-const ScrollButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  padding-top: 5px;
-  padding-bottom: 5px;
-`;
-
 const FarmTable: React.FC<ITableProps> = (props) => {
   const tableWrapperEl = useRef<HTMLDivElement>(null);
-  const { t } = useTranslation();
   const { data, columns, userDataReady } = props;
 
   const { rows } = useTable(columns, data, { sortable: true, sortColumn: 'farm' });
 
-  // console.log('rows', rows);
-  const scrollToTop = (): void => {
-    tableWrapperEl.current.scrollIntoView({
-      behavior: 'smooth',
-    });
-  };
+  // console.log('rows', rows)
 
   return (
     <Container>

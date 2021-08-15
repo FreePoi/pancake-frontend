@@ -1,9 +1,9 @@
-import { Choice } from './Choices';
+import { ChoiceType } from './Choices';
 
 export interface FormState {
   name: string;
   body: string;
-  choices: Choice[];
+  choices: ChoiceType[];
   startDate: Date;
   startTime: Date;
   endDate: Date;
