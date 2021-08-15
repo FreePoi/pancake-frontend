@@ -73,8 +73,7 @@ const Farm: React.FunctionComponent<FarmProps> = ({ token, quoteToken, label, pi
       <div>
         <div className="label">{label}</div>
         <div className="ratio">
-          <span>50%</span>
-          <span>50%</span>
+          <span>50%</span>-<span>50%</span>
         </div>
       </div>
     </Container>

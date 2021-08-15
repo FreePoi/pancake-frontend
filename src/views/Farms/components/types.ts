@@ -69,15 +69,15 @@ export const DesktopColumnSchema: ColumnsDefTypes[] = [
   },
   {
     id: 3,
-    name: 'apr',
+    name: 'liquidity',
     sortable: true,
-    label: 'APR',
+    label: 'TVL',
   },
   {
     id: 4,
-    name: 'liquidity',
+    name: 'apr',
     sortable: true,
-    label: 'Liquidity',
+    label: 'APR',
   },
   {
     id: 5,

@@ -9,15 +9,15 @@ declare module 'styled-components' {
 
 const GlobalStyle = createGlobalStyle`
   * {
-    font-family: 'Kanit', sans-serif;
+    font-family: Microsoft YaHei;
   }
   html {
     height: 100%;
   }
+  
   body {
     height: 100%;
     background-color: ${({ theme }) => theme.colors.background};
-    font-family: Microsoft YaHei;
 
     img {
       height: auto;

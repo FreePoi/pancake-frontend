@@ -95,45 +95,47 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
     if (!isXs) {
       return (
         <StyledTr onClick={toggleActionPanel}>
-          {Object.keys(props).map((key) => {
-            const columnIndex = columnNames.indexOf(key);
-            if (columnIndex === -1) {
-              return null;
-            }
+          {Object.keys(props)
+            .filter((key) => key !== 'multiplier')
+            .map((key) => {
+              const columnIndex = columnNames.indexOf(key);
+              if (columnIndex === -1) {
+                return null;
+              }
 
-            switch (key) {
-              case 'details':
-                return (
-                  <td key={key}>
-                    <CellInner>
-                      <CellLayout>
-                        <Details actionPanelToggled={actionPanelExpanded} />
-                      </CellLayout>
-                    </CellInner>
-                  </td>
-                );
-              case 'apr':
-                return (
-                  <td key={key}>
-                    <CellInner>
-                      <CellLayout label={t('APR')}>
-                        <Apr {...props.apr} hideButton={isMobile} />
-                      </CellLayout>
-                    </CellInner>
-                  </td>
-                );
-              default:
-                return (
-                  <td key={key}>
-                    <CellInner>
-                      <CellLayout label={t(tableSchema[columnIndex].label)}>
-                        {React.createElement(cells[key], { ...props[key], userDataReady })}
-                      </CellLayout>
-                    </CellInner>
-                  </td>
-                );
-            }
-          })}
+              switch (key) {
+                case 'details':
+                  return (
+                    <td key={key}>
+                      <CellInner>
+                        <CellLayout>
+                          <Details actionPanelToggled={actionPanelExpanded} />
+                        </CellLayout>
+                      </CellInner>
+                    </td>
+                  );
+                case 'apr':
+                  return (
+                    <td key={key}>
+                      <CellInner>
+                        <CellLayout label={t('APR')}>
+                          <Apr {...props.apr} hideButton={isMobile} />
+                        </CellLayout>
+                      </CellInner>
+                    </td>
+                  );
+                default:
+                  return (
+                    <td key={key}>
+                      <CellInner>
+                        <CellLayout label={t(tableSchema[columnIndex].label)}>
+                          {React.createElement(cells[key], { ...props[key], userDataReady })}
+                        </CellLayout>
+                      </CellInner>
+                    </td>
+                  );
+              }
+            })}
         </StyledTr>
       );
     }

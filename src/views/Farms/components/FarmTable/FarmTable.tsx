@@ -48,6 +48,20 @@ const TableBody = styled.tbody`
 
 const TableContainer = styled.div`
   position: relative;
+  table tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+  }
+
+  table tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+  }
+  table tr:first-child td:first-child {
+    border-top-left-radius: 10px;
+  }
+
+  table tr:first-child td:last-child {
+    border-top-right-radius: 10px;
+  }
 `;
 
 const FarmTable: React.FC<ITableProps> = (props) => {
@@ -56,7 +70,7 @@ const FarmTable: React.FC<ITableProps> = (props) => {
 
   const { rows } = useTable(columns, data, { sortable: true, sortColumn: 'farm' });
 
-  console.log('rows', rows);
+  console.log('rows', rows, data, columns);
 
   return (
     <Container>
