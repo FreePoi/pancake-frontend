@@ -2,6 +2,7 @@ import React from 'react';
 import { Price } from '@kaco/sdk';
 import { Text, AutoRenewIcon } from '@kaco/uikit';
 import { StyledBalanceMaxMini } from './styleds';
+import SwapSVG from './imgs/swap-price.svg';
 
 interface TradePriceProps {
   price?: Price;
@@ -18,13 +19,24 @@ export default function TradePrice({ price, showInverted, setShowInverted }: Tra
     : `${price?.baseCurrency?.symbol} per ${price?.quoteCurrency?.symbol}`;
 
   return (
-    <Text style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+    <Text
+      style={{
+        color: '#9DA6A6',
+        fontSize: '12px',
+        justifyContent: 'center',
+        alignItems: 'center',
+        display: 'flex',
+      }}
+    >
       {show ? (
         <>
           {formattedPrice ?? '-'} {label}
-          <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
-            <AutoRenewIcon width="14px" />
-          </StyledBalanceMaxMini>
+          <img
+            style={{ cursor: 'pointer', marginLeft: '9px' }}
+            src={SwapSVG}
+            alt=""
+            onClick={() => setShowInverted(!showInverted)}
+          />
         </>
       ) : (
         '-'

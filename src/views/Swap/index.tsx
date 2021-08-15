@@ -308,7 +308,7 @@ export default function Swap({ history }: RouteComponentProps) {
       <AppBody>
         <AppHeader title={t('Trade')} />
         <Wrapper id="swap-page">
-          <AutoColumn gap="md">
+          <div>
             <CurrencyInputPanel
               label={independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')}
               value={formattedAmounts[Field.INPUT]}
@@ -321,8 +321,8 @@ export default function Swap({ history }: RouteComponentProps) {
               id="swap-currency-input"
             />
             <AutoColumn justify="space-between">
-              <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
-                <ArrowWrapper clickable>
+              <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0' }}>
+                <ArrowWrapper style={{ height: '32px', padding: '4px' }} clickable>
                   <img
                     style={{ width: '24px' }}
                     src={SwapSvg}
@@ -366,16 +366,15 @@ export default function Swap({ history }: RouteComponentProps) {
             ) : null}
 
             {showWrap ? null : (
-              <AutoColumn gap="8px" style={{ padding: '0 16px' }}>
+              <AutoColumn gap="8px" style={{ padding: '20px 16px' }}>
                 {Boolean(trade) && (
-                  <RowBetween align="center">
-                    <Label>{t('Price')}</Label>
+                  <div className="trade-price" style={{ display: 'flex', justifyContent: 'center' }}>
                     <TradePrice
                       price={trade?.executionPrice}
                       showInverted={showInverted}
                       setShowInverted={setShowInverted}
                     />
-                  </RowBetween>
+                  </div>
                 )}
                 {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                   <RowBetween align="center">
@@ -387,8 +386,8 @@ export default function Swap({ history }: RouteComponentProps) {
                 )}
               </AutoColumn>
             )}
-          </AutoColumn>
-          <Box mt="1rem">
+          </div>
+          <Box>
             {swapIsUnsupported ? (
               <Button width="100%" disabled mb="4px">
                 {t('Unsupported Asset')}
