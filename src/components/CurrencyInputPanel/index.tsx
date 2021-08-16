@@ -1,6 +1,6 @@
 import React from 'react';
 import { Currency, Pair } from '@kaco/sdk';
-import { Button, ChevronDownIcon, useModal, Flex } from '@kaco/uikit';
+import { Button, useModal, Flex } from '@kaco/uikit';
 import styled from 'styled-components';
 import { useTranslation } from 'contexts/Localization';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
@@ -19,15 +19,15 @@ const InputRow = styled.div<{ selected: boolean }>`
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 0 0.5rem;
 `;
-const LabelRow = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 0.75rem;
-  line-height: 1rem;
-  padding: 0.75rem 1rem 0 1rem;
-`;
+// const LabelRow = styled.div`
+//   display: flex;
+//   flex-flow: row nowrap;
+//   align-items: center;
+//   color: ${({ theme }) => theme.colors.text};
+//   font-size: 0.75rem;
+//   line-height: 1rem;
+//   padding: 0.75rem 1rem 0 1rem;
+// `;
 const InputPanel = styled.div<{ hideInput?: boolean }>`
   display: flex;
   justify-content: space-between;

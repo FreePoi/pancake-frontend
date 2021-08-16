@@ -5,8 +5,8 @@ import { LinkExternal, Text } from '@kaco/uikit';
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard';
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts';
 import { getAddress } from 'utils/addressHelpers';
-import { getBscScanLink } from 'utils';
-import { CommunityTag, CoreTag, DualTag } from 'components/Tags';
+// import { getBscScanLink } from 'utils';
+// import { CommunityTag, CoreTag, DualTag } from 'components/Tags';
 
 import HarvestAction from './HarvestAction';
 import StakedAction from './StakedAction';
@@ -79,26 +79,26 @@ const StakeContainer = styled.div`
   }
 `;
 
-const TagsContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 25px;
+// const TagsContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+//   margin-top: 25px;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-top: 16px;
-  }
+//   ${({ theme }) => theme.mediaQueries.sm} {
+//     margin-top: 16px;
+//   }
 
-  > div {
-    height: 24px;
-    padding: 0 6px;
-    font-size: 14px;
-    margin-right: 4px;
+//   > div {
+//     height: 24px;
+//     padding: 0 6px;
+//     font-size: 14px;
+//     margin-right: 4px;
 
-    svg {
-      width: 14px;
-    }
-  }
-`;
+//     svg {
+//       width: 14px;
+//     }
+//   }
+// `;
 
 const ActionContainer = styled.div`
   display: flex;
@@ -146,14 +146,14 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
 
   const { t } = useTranslation();
   const isActive = farm.multiplier !== '0X';
-  const { quoteToken, token, dual } = farm;
+  const { quoteToken, token } = farm;
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '');
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
   });
   const lpAddress = getAddress(farm.lpAddresses);
-  const bsc = getBscScanLink(lpAddress, 'address');
+  // const bsc = getBscScanLink(lpAddress, 'address');
   const info = `https://pancakeswap.info/pool/${lpAddress}`;
 
   return (

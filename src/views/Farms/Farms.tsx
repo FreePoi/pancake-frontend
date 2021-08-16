@@ -2,9 +2,8 @@ import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react'
 import { Route, useRouteMatch, useLocation } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import { useWeb3React } from '@web3-react/core';
-import { Image, RowType, Flex } from '@kaco/uikit';
+import { RowType, Flex } from '@kaco/uikit';
 import { ChainId } from '@kaco/sdk';
-import styled from 'styled-components';
 import FlexLayout from 'components/Layout/Flex';
 import Page from 'components/Layout/Page';
 import { useFarms, usePollFarmsData, usePriceCakeBusd } from 'state/farms/hooks';
@@ -23,11 +22,11 @@ import { RowProps } from './components/FarmTable/Row';
 import { DesktopColumnSchema, ViewMode } from './components/types';
 import FarmHeader from './components/FarmHeader';
 
-const StyledImage = styled(Image)`
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 58px;
-`;
+// const StyledImage = styled(Image)`
+//   margin-left: auto;
+//   margin-right: auto;
+//   margin-top: 58px;
+// `;
 const NUMBER_OF_FARMS_VISIBLE = 12;
 
 const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {

@@ -5,12 +5,12 @@ import { useTranslation } from 'contexts/Localization';
 import { FixedSizeList } from 'react-window';
 import { useAudioModeManager } from 'state/user/hooks';
 import useDebounce from 'hooks/useDebounce';
-import useActiveWeb3React from 'hooks/useActiveWeb3React';
+// import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { useAllTokens, useToken, useIsUserAddedToken, useFoundOnInactiveList } from '../../hooks/Tokens';
 import { isAddress } from '../../utils';
-import Column, { AutoColumn } from '../Layout/Column';
+import Column from '../Layout/Column';
 import Row from '../Layout/Row';
-import CommonBases from './CommonBases';
+// import CommonBases from './CommonBases';
 import CurrencyList from './CurrencyList';
 import { filterTokens, useSortedTokensByQuery } from './filtering';
 import useTokenComparator from './sorting';
@@ -48,7 +48,7 @@ function CurrencySearch({
   setImportToken,
 }: CurrencySearchProps) {
   const { t } = useTranslation();
-  const { chainId } = useActiveWeb3React();
+  // const { chainId } = useActiveWeb3React();
 
   // refs for fixed size lists
   const fixedList = useRef<FixedSizeList>();

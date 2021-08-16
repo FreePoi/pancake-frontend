@@ -1,7 +1,6 @@
 import React from 'react';
 import { Price } from '@kaco/sdk';
-import { Text, AutoRenewIcon } from '@kaco/uikit';
-import { StyledBalanceMaxMini } from './styleds';
+import { Text } from '@kaco/uikit';
 import SwapSVG from './imgs/swap-price.svg';
 
 interface TradePriceProps {

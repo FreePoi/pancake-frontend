@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, IconButton, CogIcon, useModal } from '@kaco/uikit';
+import { Flex, IconButton, useModal } from '@kaco/uikit';
 import SettingsModal from './SettingsModal';
 import SettingSvg from '../../svg/setting.svg';
 

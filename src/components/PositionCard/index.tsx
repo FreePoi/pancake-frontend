@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { JSBI, Pair, Percent } from '@kaco/sdk';
-import { Button, Text, ChevronUpIcon, ChevronDownIcon, Card, CardBody, Flex, CardProps, AddIcon } from '@kaco/uikit';
+import { Button, Text, Card, CardBody, Flex, CardProps, AddIcon } from '@kaco/uikit';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTranslation } from 'contexts/Localization';
