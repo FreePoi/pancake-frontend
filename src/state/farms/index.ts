@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import farmsConfig from 'config/constants/farms';
 import isArchivedPid from 'utils/farmHelpers';
-import priceHelperLpsConfig from 'config/constants/priceHelperLps';
+// import priceHelperLpsConfig from 'config/constants/priceHelperLps';
 import fetchFarms from './fetchFarms';
 import fetchFarmsPrices from './fetchFarmsPrices';
 import {
@@ -33,17 +33,24 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<Farm[], number[]>(
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid));
 
     // Add price helper farms
-    const farmsWithPriceHelpers = farmsToFetch.concat(priceHelperLpsConfig);
+    const farmsWithPriceHelpers = farmsToFetch.concat([]);
+    console.log('farmsWithPriceHelpers------------', farmsWithPriceHelpers);
 
-    const farms = await fetchFarms(farmsWithPriceHelpers);
-    const farmsWithPrices = await fetchFarmsPrices(farms);
+    try {
+      const farms = await fetchFarms(farmsWithPriceHelpers);
+      const farmsWithPrices = await fetchFarmsPrices(farms);
+      console.log('farmsWithPrices------------', farmsWithPrices);
 
-    // Filter out price helper LP config farms
-    const farmsWithoutHelperLps = farmsWithPrices.filter((farm: Farm) => {
-      return farm.pid || farm.pid === 0;
-    });
+      // Filter out price helper LP config farms
+      const farmsWithoutHelperLps = farmsWithPrices.filter((farm: Farm) => {
+        return farm.pid || farm.pid === 0;
+      });
 
-    return farmsWithoutHelperLps;
+      return farmsWithoutHelperLps;
+    } catch (e) {
+      console.log('eeeeeee', e);
+      return [];
+    }
   },
 );
 

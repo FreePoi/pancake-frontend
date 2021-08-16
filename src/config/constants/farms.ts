@@ -3,13 +3,13 @@ import { FarmConfig } from './types';
 
 const farms: FarmConfig[] = [
   /**
-   * These 3 farms (PID 0, 1, 252) should always be at the top of the file.
+   * These 3 farms (PID 0, 1, 2) should always be at the top of the file.
    */
   {
     pid: 0,
     lpSymbol: 'Kaco',
     lpAddresses: {
-      97: '0xb6f33B452B3e179dA1C2De637547163c8caD9123',
+      97: '0x0bA819e30016Cf682C7795b44859148C65e62292',
       56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
     },
     token: tokens.syrup,

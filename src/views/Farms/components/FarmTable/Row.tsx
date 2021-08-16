@@ -91,7 +91,6 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
   const columnNames = tableSchema.map((column) => column.name);
 
   const handleRenderRow = () => {
-    console.log('props', props);
     if (!isXs) {
       return (
         <StyledTr onClick={toggleActionPanel}>

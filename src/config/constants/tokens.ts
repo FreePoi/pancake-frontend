@@ -76,7 +76,7 @@ const tokens = {
     symbol: 'Kaco',
     address: {
       56: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
-      97: '0xb6f33B452B3e179dA1C2De637547163c8caD9123',
+      97: '0x0bA819e30016Cf682C7795b44859148C65e62292',
     },
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
