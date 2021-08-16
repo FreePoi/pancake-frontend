@@ -23,6 +23,7 @@ import {
 import RedirectOldRemoveLiquidityPathStructure from './views/RemoveLiquidity/redirects';
 import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects';
 import SideMenu from './components/SideMenu';
+import { usePollCoreFarmData } from './state/farms/hooks';
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
@@ -56,7 +57,7 @@ const App: React.FC = () => {
   usePollBlockNumber();
   useEagerConnect();
   useFetchProfile();
-  // usePollCoreFarmData()
+  usePollCoreFarmData();
 
   return (
     <Router history={history}>

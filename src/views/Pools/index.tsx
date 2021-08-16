@@ -8,7 +8,7 @@ import orderBy from 'lodash/orderBy';
 import partition from 'lodash/partition';
 import { useTranslation } from 'contexts/Localization';
 import usePersistState from 'hooks/usePersistState';
-import { usePools, useFetchCakeVault, useCakeVault } from 'state/pools/hooks';
+import { usePools, useFetchCakeVault, useCakeVault, useFetchPublicPoolsData } from 'state/pools/hooks';
 import { usePollFarmsData } from 'state/farms/hooks';
 import { latinise } from 'utils/latinise';
 import FlexLayout from 'components/Layout/Flex';
@@ -129,7 +129,7 @@ const Pools: React.FC = () => {
 
   usePollFarmsData();
   useFetchCakeVault();
-  // useFetchPublicPoolsData()
+  useFetchPublicPoolsData();
 
   useEffect(() => {
     const showMorePools = (entries) => {
