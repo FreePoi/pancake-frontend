@@ -179,7 +179,7 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
 const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const cakePriceUsd = usePriceCakeBusd();
-  const { isXs, isSm, isMd, isLg, isXl } = useMatchBreakpoints();
+  const { isXs, isSm, isMd } = useMatchBreakpoints();
 
   const sideCollapsedWidth = useMemo(() => {
     if ([isXs, isSm].some(Boolean)) {
