@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button, Heading, Text, LogoIcon } from '@kaco/uikit';
+import { Button, Heading, Text } from '@kaco/uikit';
 import Page from 'components/Layout/Page';
 import { useTranslation } from 'contexts/Localization';
+import LogoMainSvg from 'components/svg/logo-main.svg';
 
 const StyledNotFound = styled.div`
   align-items: center;
@@ -18,7 +19,7 @@ const NotFound = () => {
   return (
     <Page>
       <StyledNotFound>
-        <LogoIcon width="64px" mb="8px" />
+        <img alt="" src={LogoMainSvg} style={{ marginBottom: '8px', width: '64px' }} />
         <Heading scale="xxl">404</Heading>
         <Text mb="16px">{t('Oops, page not found.')}</Text>
         <Button as="a" href="/" scale="sm">

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { usePriceCakeBusd } from 'state/farms/hooks';
@@ -19,6 +19,8 @@ import TradeNSvg from './imgs/icon_trade_N.svg';
 import Logo2Svg from './imgs/logo2_primary.svg';
 import Logo2DefaultSvg from './imgs/logo2_default.svg';
 import Header from './Header';
+import { useEffect } from 'react';
+import { useMatchBreakpoints } from '@kaco/uikit';
 
 const menuItems: {
   text: string;
@@ -28,7 +30,7 @@ const menuItems: {
   {
     text: 'Home',
     imgs: [HomeSvg, HomeNSvg],
-    link: '/home',
+    link: '/',
   },
   {
     text: 'Trade',
@@ -61,24 +63,43 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
   display: flex;
   flex-direction: column;
   > .body-container {
+    ${({ theme }) => theme.mediaQueries.xs} {
+      padding-left: 0px;
+    }
+    ${({ theme }) => theme.mediaQueries.sm} {
+      padding-left: 64px;
+    }
+    ${({ theme }) => theme.mediaQueries.sm} {
+      padding-left: 200px;
+    }
     flex: 1;
     transition: 0.15s padding;
     background: #1f252a;
     > .content {
       position: relative;
+      padding-top: 72px;
     }
   }
 
   > .side {
     z-index: 10;
-    display: flex;
     flex-direction: column;
     transition: 0.15s width;
     position: fixed;
     left: 0px;
     top: 0px;
     bottom: 0px;
+    display: flex;
     background: linear-gradient(0deg, rgba(17, 66, 36, 0.1), rgba(64, 242, 244, 0.1));
+    /* ${({ theme }) => theme.mediaQueries.xs} {
+      background: linear-gradient(0deg, rgb(17, 66, 36), rgb(64, 242, 244));
+    }
+    ${({ theme }) => theme.mediaQueries.sm} {
+      background: linear-gradient(0deg, rgb(17, 66, 36), rgb(64, 242, 244));
+    } */
+    ${({ theme }) => theme.mediaQueries.md} {
+      background: linear-gradient(0deg, rgba(17, 66, 36, 0.1), rgba(64, 242, 244, 0.1));
+    }
 
     > img {
       cursor: pointer;
@@ -158,10 +179,34 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
 const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const cakePriceUsd = usePriceCakeBusd();
+  const { isXs, isSm, isMd, isLg, isXl } = useMatchBreakpoints();
+
+  const sideCollapsedWidth = useMemo(() => {
+    if ([isXs, isSm].some(Boolean)) {
+      return '0px';
+    }
+    return '64px';
+  }, [isXs, isSm]);
+
+  // const sideUncollapsedWidth = useMemo(() => {
+  //   if ([isXs, isSm].some(Boolean)) {
+  //     return '200px'
+  //   }
+  //   return '64px';
+  // }, [])
+
+  useEffect(() => {
+    console.log('isXs, isSm, isMd', isXs, isSm, isMd, [isXs, isSm, isMd].some(Boolean));
+    if ([isXs, isSm, isMd].some(Boolean)) {
+      setCollapsed(true);
+    } else {
+      setCollapsed(false);
+    }
+  }, [isXs, isSm, isMd]);
 
   return (
     <Wrapper className={className} collapsed={collapsed}>
-      <div className="side" style={{ width: collapsed ? '64px' : '200px' }}>
+      <div className="side" style={{ width: collapsed ? sideCollapsedWidth : '200px' }}>
         <img
           src={CollapseSvg}
           alt=""
@@ -188,9 +233,12 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
           </div>
         </div>
       </div>
-      <div className="body-container" style={{ paddingLeft: collapsed ? '64px' : '200px' }}>
+      <div
+        className="body-container"
+        style={{ paddingLeft: [isXs, isSm, isMd].some(Boolean) ? '0px' : collapsed ? '64px' : '200px' }}
+      >
         <div className="content">
-          <Header onThemeChange={() => {}} />
+          <Header setCollapsed={setCollapsed} collapsed={collapsed} />
           {children}
         </div>
       </div>

@@ -5,20 +5,32 @@ import TwitterSvg from './imgs/twitter.svg';
 import FacebookSvg from './imgs/facebook.svg';
 import ThemeWhiteSvg from './imgs/theme-white.svg';
 import ConnectWalletButton from '../ConnectWalletButton';
+import CollapseSvg from './imgs/collapse.svg';
+import { useMatchBreakpoints } from '@kaco/uikit';
 
 export enum ThemeChoice {
   Dark,
   White,
 }
 
-const Header: FC<{ className?: string; onThemeChange: (theme: ThemeChoice) => void }> = ({
+const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => void; collapsed: boolean }> = ({
   className,
-  onThemeChange,
+  setCollapsed,
+  collapsed,
 }) => {
   const { account } = useWeb3React();
+  const { isXs, isSm } = useMatchBreakpoints();
 
   return (
     <div className={className}>
+      {(isXs || isSm) && (
+        <img
+          src={CollapseSvg}
+          alt=""
+          style={{ transform: collapsed ? 'scaleX(-1)' : '' }}
+          onClick={() => setCollapsed(!collapsed)}
+        />
+      )}
       <div className="left">
         <a href="https://www.twitter.com">
           <img src={TwitterSvg} alt="" />
@@ -28,9 +40,9 @@ const Header: FC<{ className?: string; onThemeChange: (theme: ThemeChoice) => vo
         </a>
       </div>
       <div className="right">
-        <div className="theme-choice">
+        {/* <div className="theme-choice">
           <img src={ThemeWhiteSvg} alt="" />
-        </div>
+        </div> */}
         {account ? (
           <div className="account">
             <span>{account}</span>
@@ -98,7 +110,11 @@ export default styled(Header)`
       border: 1px solid #2f363b;
       border-radius: 12px;
       padding: 0px 16px;
-
+      max-width: 200px;
+      > span {
+        text-overflow: ellipsis;
+        overflow-x: hidden;
+      }
       > img {
         margin-left: 14px;
       }
