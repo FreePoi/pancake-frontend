@@ -37,3 +37,9 @@ export const PlainCard = styled(Card)`
   background: ${({ theme }) => theme.colors.cardBorder};
   border-radius: 8px;
 `;
+
+export const DashedPrimayCard = styled(Card)`
+  background: ${({ theme }) => theme.colors.cardBorder};
+  border: 1px dashed ${({ theme }) => theme.colors.primarySecondary};
+  border-radius: 12px;
+`;

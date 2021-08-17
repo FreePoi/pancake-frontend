@@ -12,7 +12,7 @@ import Toggle from './Toggle';
 const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const [showConfirmExpertModal, setShowConfirmExpertModal] = useState(false);
   const [rememberExpertModeAcknowledgement, setRememberExpertModeAcknowledgement] = usePersistState(false, {
-    localStorageKey: 'pancake_expert_mode_remember_acknowledgement',
+    localStorageKey: 'kacoswap_expert_mode_remember_acknowledgement',
   });
   const [expertMode, toggleExpertMode] = useExpertModeManager();
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly();
