@@ -28,7 +28,7 @@ const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm'
 //   line-height: 1rem;
 //   padding: 0.75rem 1rem 0 1rem;
 // `;
-const InputPanel = styled.div<{ hideInput?: boolean }>`
+const InputPanel = styled.div<{ hideInput?: boolean; focused: boolean }>`
   display: flex;
   justify-content: space-between;
   position: relative;
@@ -40,12 +40,21 @@ const InputPanel = styled.div<{ hideInput?: boolean }>`
   border-radius: 16px;
   padding: 10px 16px;
   color: white;
+  /* &:active {
+    > .currency {
+      border: 2px solid #1bd3d5;
+    }
+  }
+  &:focus {
+    > .currency {
+    }
+  } */
   > .currency {
+    border: ${(props) => (props.focused ? '2px solid #1bd3d5' : '')};
     height: 72px;
     padding: 10px 16px;
     width: 136px;
     background: #1f252a;
-    border: 2px solid #1bd3d5;
     border-radius: 16px;
     > .label {
       font-size: 12px;
@@ -103,6 +112,7 @@ interface CurrencyInputPanelProps {
   otherCurrency?: Currency | null;
   id: string;
   showCommonBases?: boolean;
+  focused?: boolean;
 }
 export default function CurrencyInputPanel({
   value,
@@ -119,6 +129,7 @@ export default function CurrencyInputPanel({
   otherCurrency,
   id,
   showCommonBases,
+  focused = false,
 }: CurrencyInputPanelProps) {
   const { account } = useActiveWeb3React();
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined);
@@ -134,7 +145,7 @@ export default function CurrencyInputPanel({
     />,
   );
   return (
-    <InputPanel id={id}>
+    <InputPanel id={id} focused={focused}>
       <div className="currency">
         <div className="label">{translatedLabel}</div>
         <CurrencySelectButton

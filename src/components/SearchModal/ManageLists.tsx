@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useState, useEffect } from 'react';
-import { Button, Text, CheckmarkIcon, CogIcon, Input, Toggle, LinkExternal, useTooltip } from '@kaco/uikit';
+import { Button, Text, CheckmarkIcon, CogIcon, Input, LinkExternal, useTooltip } from '@kaco/uikit';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { TokenList, Version } from '@uniswap/token-lists';
@@ -18,6 +18,7 @@ import Column, { AutoColumn } from '../Layout/Column';
 import { ListLogo } from '../Logo';
 import Row, { RowFixed, RowBetween } from '../Layout/Row';
 import { CurrencyModalView } from './types';
+import Toggle from './Toggle';
 
 function listVersionLabel(version: Version): string {
   return `v${version.major}.${version.minor}.${version.patch}`;
@@ -29,13 +30,13 @@ const Wrapper = styled(Column)`
 `;
 
 const RowWrapper = styled(Row)<{ active: boolean }>`
-  background-color: ${({ active, theme }) => (active ? `${theme.colors.success}19` : 'transparent')};
-  border: solid 1px;
-  border-color: ${({ active, theme }) => (active ? theme.colors.success : theme.colors.tertiary)};
+  background-color: ${({ active, theme }) => (active ? '#1F373B' : 'transparent')};
+  border: solid 2px;
+  border-color: ${({ active, theme }) => (active ? '#1BD3D5' : '#272E32')};
   transition: 200ms;
   align-items: center;
-  padding: 1rem;
-  border-radius: 20px;
+  padding: 1.2rem 1.2rem;
+  border-radius: 16px;
 `;
 
 function listUrlRowHTMLId(listUrl: string) {
@@ -101,14 +102,16 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
       )}
       <Column style={{ flex: '1' }}>
         <Row>
-          <Text bold>{list.name}</Text>
+          <Text bold color="white" fontSize="16px">
+            {list.name}
+          </Text>
         </Row>
         <RowFixed mt="4px">
-          <Text fontSize="12px" mr="6px" textTransform="lowercase">
+          <Text fontSize="12px" color=" #9DA6A6" mr="6px" textTransform="lowercase">
             {list.tokens.length} {t('Tokens')}
           </Text>
           <span ref={targetRef}>
-            <CogIcon color="text" width="12px" />
+            <CogIcon color="#9DA6A6" width="12px" />
           </span>
         </RowFixed>
       </Column>
@@ -240,6 +243,14 @@ function ManageLists({
       <AutoColumn gap="14px">
         <Row>
           <Input
+            style={{
+              boxShadow: 'none',
+              height: '48px',
+              background: '#1F252A',
+              border: '1px solid #12171A',
+              borderRadius: '12px',
+              fontSize: '12px',
+            }}
             id="list-add-input"
             scale="lg"
             placeholder={t('https:// or ipfs:// or ENS name')}

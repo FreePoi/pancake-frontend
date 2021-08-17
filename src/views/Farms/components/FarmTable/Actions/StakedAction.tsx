@@ -141,10 +141,11 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
           </ActionTitles>
           <ActionContent>
             <IconButtonWrapper>
-              <IconButton variant="secondary" onClick={onPresentWithdraw} mr="6px">
+              <IconButton width="48px" variant="secondary" onClick={onPresentWithdraw} mr="6px">
                 <MinusIcon color="primary" width="14px" />
               </IconButton>
               <IconButton
+                width="48px"
                 variant="secondary"
                 onClick={onPresentDeposit}
                 disabled={['history', 'archived'].some((item) => location.pathname.includes(item))}

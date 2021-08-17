@@ -69,14 +69,14 @@ export default function ImportRow({
       <CurrencyLogo currency={token} size="24px" style={{ opacity: dim ? '0.6' : '1' }} />
       <AutoColumn gap="4px" style={{ opacity: dim ? '0.6' : '1' }}>
         <AutoRow>
-          <Text>{token.symbol}</Text>
-          <Text color="textDisabled" ml="8px">
+          <Text fontSize="16px">{token.symbol}</Text>
+          <Text color="#484E4E" fontSize="12px" ml="8px">
             <NameOverflow title={token.name}>{token.name}</NameOverflow>
           </Text>
         </AutoRow>
         {list && list.logoURI && (
           <RowFixed>
-            <Text small mr="4px" color="textSubtle">
+            <Text small mr="4px" color="#9DA6A6" fontSize="12px">
               {t('via')} {list.name}
             </Text>
             <ListLogo logoURI={list.logoURI} size="12px" />
@@ -85,6 +85,7 @@ export default function ImportRow({
       </AutoColumn>
       {!isActive && !isAdded ? (
         <Button
+          style={{ background: '#238485', fontSize: '14px' }}
           width="fit-content"
           onClick={() => {
             if (setImportToken) {

@@ -96,6 +96,14 @@ export default function ManageTokens({
         <AutoColumn gap="14px">
           <Row>
             <Input
+              style={{
+                boxShadow: 'none',
+                height: '48px',
+                background: '#1F252A',
+                border: '1px solid #12171A',
+                borderRadius: '12px',
+                fontSize: '12px',
+              }}
               id="token-search-input"
               scale="lg"
               placeholder="0x0000"
@@ -118,7 +126,7 @@ export default function ManageTokens({
         </AutoColumn>
         {tokenList}
         <Footer>
-          <Text bold color="textSubtle">
+          <Text fontSize="16px" bold color="#9DA6A6">
             {userAddedTokens?.length} {userAddedTokens.length === 1 ? t('Custom Token') : t('Custom Tokens')}
           </Text>
           {userAddedTokens.length > 0 && (

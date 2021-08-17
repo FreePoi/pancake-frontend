@@ -82,15 +82,15 @@ const fetchFarmsPrices = async (farms) => {
     const quoteTokenPrice = getFarmQuoteTokenPrice(farm, quoteTokenFarm, bnbPriceBusd);
     const token = { ...farm.token, busdPrice: baseTokenPrice.toJSON() };
     const quoteToken = { ...farm.quoteToken, busdPrice: quoteTokenPrice.toJSON() };
-    farm.pid === 1 &&
-      console.log(
-        'farm',
-        { ...farm, token, quoteToken },
-        'quoteTokenPrice',
-        quoteTokenPrice.toString(),
-        'baseTokenPrice',
-        baseTokenPrice.toString(),
-      );
+    // farm.pid === 1 &&
+    //   console.log(
+    //     'farm',
+    //     { ...farm, token, quoteToken },
+    //     'quoteTokenPrice',
+    //     quoteTokenPrice.toString(),
+    //     'baseTokenPrice',
+    //     baseTokenPrice.toString(),
+    //   );
     return { ...farm, token, quoteToken };
   });
 

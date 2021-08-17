@@ -2,7 +2,7 @@
 import { isTradeBetter } from 'utils/trades';
 import { Currency, CurrencyAmount, Pair, Token, Trade } from '@kaco/sdk';
 import flatMap from 'lodash/flatMap';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 
 import { useUserSingleHopOnly } from 'state/user/hooks';
@@ -23,7 +23,6 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   const [tokenA, tokenB] = chainId
     ? [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
     : [undefined, undefined];
-
   const bases: Token[] = useMemo(() => {
     if (!chainId) return [];
 
@@ -33,7 +32,11 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
 
     return [...common, ...additionalA, ...additionalB];
   }, [chainId, tokenA, tokenB]);
-
+  useEffect(
+    () =>
+      console.log('[tokenA, tokenB]', [tokenA, tokenB], currencyB, chainId, currencyB instanceof Token, 'bases', bases),
+    [tokenA, tokenB, currencyA, chainId, currencyB, bases],
+  );
   const basePairs: [Token, Token][] = useMemo(
     () => flatMap(bases, (base): [Token, Token][] => bases.map((otherBase) => [base, otherBase])),
     [bases],
@@ -73,7 +76,21 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   );
 
   const allPairs = usePairs(allPairCombinations);
-
+  useEffect(
+    () =>
+      console.log(
+        'basePairs',
+        basePairs.map((p) => `${p[0].symbol}-${p[1].symbol}`),
+        'allPairCombinations',
+        allPairCombinations,
+        'allPairs',
+        allPairs,
+        allPairs
+          // filter out invalid pairs
+          .filter((result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1])),
+      ),
+    [basePairs, allPairCombinations, allPairs],
+  );
   // only pass along valid pairs, non-duplicated pairs
   return useMemo(
     () =>
@@ -101,6 +118,18 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
 
   const [singleHopOnly] = useUserSingleHopOnly();
 
+  useEffect(
+    () =>
+      console.log(
+        'singleHopOnly',
+        singleHopOnly,
+        currencyAmountIn,
+        currencyOut,
+        'allowedPairs',
+        allowedPairs.map((p) => `${p.token0.symbol}-${p.token1.symbol}`),
+      ),
+    [singleHopOnly, currencyAmountIn, currencyOut, allowedPairs],
+  );
   return useMemo(() => {
     if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
       if (singleHopOnly) {

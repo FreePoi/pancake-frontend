@@ -5,15 +5,19 @@ import { AdvancedSwapDetails, AdvancedSwapDetailsProps } from './AdvancedSwapDet
 
 const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
   margin-top: ${({ show }) => (show ? '16px' : 0)};
-  padding-top: 16px;
-  padding-bottom: 16px;
+
   width: 100%;
-  max-width: 400px;
-  border-radius: 20px;
-  background-color: ${({ theme }) => theme.colors.invertedContrast};
+  /* background-color: ${({ theme }) => theme.colors.invertedContrast}; */
 
   transform: ${({ show }) => (show ? 'translateY(0%)' : 'translateY(-100%)')};
   transition: transform 300ms ease-in-out;
+
+  background: #122124;
+  border-radius: 12px;
+
+  padding: 12px;
+  font-size: 12px;
+  color: #9da6a6;
 `;
 
 export default function AdvancedSwapDetailsDropdown({ trade, ...rest }: AdvancedSwapDetailsProps) {

@@ -2487,10 +2487,10 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@kaco/uikit@0.46.3":
-  version "0.46.3"
-  resolved "https://registry.npmjs.org/@kaco/uikit/-/uikit-0.46.3.tgz#d00beb9e94f05069286c7375ae41b8d68f6773bc"
-  integrity sha512-Dfg4VsRK9kZ1Jr/RxOIMc3k+G4lyqATohvV5/zn7NN0Xe1eliXGVCnNROV456QJyr+jpAPlrOHk1cyJF+DT/tA==
+"@kaco/uikit@^0.46.15":
+  version "0.46.15"
+  resolved "https://registry.npmjs.org/@kaco/uikit/-/uikit-0.46.15.tgz#b4eec3f934f59fb3c1fe4ee7a2bff36d11eafecd"
+  integrity sha512-Jq1nwVEXfleaHNurDjXpRma89PNqcfXGC7PH73bxeaMu819ZnvOwNUkDIuwRCVvZ0tNvzRmq3YDO+2bea0gftg==
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"
@@ -13464,6 +13464,11 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0, loose-envify@^1.3
   integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
+
+lottie-web@^5.7.13:
+  version "5.7.13"
+  resolved "https://registry.npmjs.org/lottie-web/-/lottie-web-5.7.13.tgz#c4087e4742c485fc2c4034adad65d1f3fcd438b0"
+  integrity sha512-6iy93BGPkdk39b0jRgJ8Zosxi8QqcMP5XcDvg1f0XAvEkke6EMCl6BUO4Lu78dpgvfG2tzut4QJ+0vCrfbrldQ==
 
 lower-case-first@^1.0.0:
   version "1.0.2"

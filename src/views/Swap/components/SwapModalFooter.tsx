@@ -14,13 +14,15 @@ import QuestionHelper from 'components/QuestionHelper';
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row';
 import FormattedPriceImpact from './FormattedPriceImpact';
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds';
+import { ONE_BIPS } from 'config/constants';
 
 const SwapModalFooterContainer = styled(AutoColumn)`
   margin-top: 24px;
+  margin-bottom: 12px;
   padding: 16px;
-  border-radius: ${({ theme }) => theme.radii.default};
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background-color: ${({ theme }) => theme.colors.background};
+  background: #272e32;
+  border: 1px dashed #238485;
+  border-radius: 12px;
 `;
 
 export default function SwapModalFooter({
@@ -47,11 +49,12 @@ export default function SwapModalFooter({
   return (
     <>
       <SwapModalFooterContainer>
-        <RowBetween align="center">
-          <Text fontSize="14px">Price</Text>
+        <RowBetween align="center" style={{ marginBottom: '6px' }}>
+          <Text fontSize="12px">Price</Text>
           <Text
-            fontSize="14px"
+            fontSize="12px"
             style={{
+              color: 'white',
               justifyContent: 'center',
               alignItems: 'center',
               display: 'flex',
@@ -61,45 +64,51 @@ export default function SwapModalFooter({
           >
             {formatExecutionPrice(trade, showInverted)}
             <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
-              <AutoRenewIcon width="14px" />
+              <AutoRenewIcon width="12px" />
             </StyledBalanceMaxMini>
           </Text>
         </RowBetween>
 
-        <RowBetween>
+        <RowBetween style={{ marginBottom: '6px' }}>
           <RowFixed>
-            <Text fontSize="14px">
+            <Text fontSize="12px">
               {trade.tradeType === TradeType.EXACT_INPUT ? 'Minimum received' : 'Maximum sold'}
             </Text>
-            <QuestionHelper
+            {/* <QuestionHelper
               text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed."
               ml="4px"
-            />
+            /> */}
           </RowFixed>
           <RowFixed>
-            <Text fontSize="14px">
+            <Text fontSize="12px" color="white">
               {trade.tradeType === TradeType.EXACT_INPUT
                 ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4) ?? '-'
                 : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4) ?? '-'}
             </Text>
-            <Text fontSize="14px" marginLeft="4px">
+            <Text fontSize="12px" color="white" marginLeft="4px">
               {trade.tradeType === TradeType.EXACT_INPUT
                 ? trade.outputAmount.currency.symbol
                 : trade.inputAmount.currency.symbol}
             </Text>
           </RowFixed>
         </RowBetween>
-        <RowBetween>
+        <RowBetween style={{ marginBottom: '6px' }}>
           <RowFixed>
-            <Text fontSize="14px">Price Impact</Text>
-            <QuestionHelper text="The difference between the market price and your price due to trade size." ml="4px" />
+            <Text fontSize="12px">Price Impact</Text>
+            {/* <QuestionHelper text="The difference between the market price and your price due to trade size." ml="4px" /> */}
           </RowFixed>
-          <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
+          <Text fontSize="12px" color="white">
+            {priceImpactWithoutFee
+              ? priceImpactWithoutFee.lessThan(ONE_BIPS)
+                ? '<0.01%'
+                : `${priceImpactWithoutFee.toFixed(2)}%`
+              : '-'}
+          </Text>
         </RowBetween>
-        <RowBetween>
+        <RowBetween style={{ marginBottom: '6px' }}>
           <RowFixed>
-            <Text fontSize="14px">Liquidity Provider Fee</Text>
-            <QuestionHelper
+            <Text fontSize="12px">Liquidity Provider Fee</Text>
+            {/* <QuestionHelper
               text={
                 <>
                   <Text mb="12px">For each trade a 0.25% fee is paid</Text>
@@ -109,9 +118,9 @@ export default function SwapModalFooter({
                 </>
               }
               ml="4px"
-            />
+            /> */}
           </RowFixed>
-          <Text fontSize="14px">
+          <Text fontSize="12px" color="white">
             {realizedLPFee ? `${realizedLPFee?.toSignificant(6)} ${trade.inputAmount.currency.symbol}` : '-'}
           </Text>
         </RowBetween>

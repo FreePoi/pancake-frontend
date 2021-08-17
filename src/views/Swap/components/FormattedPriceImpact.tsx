@@ -1,16 +1,15 @@
 import { Percent } from '@kaco/sdk';
 import React from 'react';
-import { warningSeverity } from 'utils/prices';
 import { ONE_BIPS } from '../../../config/constants';
-import { ErrorText } from './styleds';
+import { Text } from '@kaco/uikit';
 
 /**
  * Formatted version of price impact text with warning colors
  */
 export default function FormattedPriceImpact({ priceImpact }: { priceImpact?: Percent }) {
   return (
-    <ErrorText fontSize="14px" severity={warningSeverity(priceImpact)}>
+    <Text fontSize="12px" color="#9da6a6">
       {priceImpact ? (priceImpact.lessThan(ONE_BIPS) ? '<0.01%' : `${priceImpact.toFixed(2)}%`) : '-'}
-    </ErrorText>
+    </Text>
   );
 }

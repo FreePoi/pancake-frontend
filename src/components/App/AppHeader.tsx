@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Flex, Heading, IconButton, ArrowBackIcon, NotificationDot } from '@kaco/uikit';
+import { Flex, Heading, IconButton, Text, NotificationDot } from '@kaco/uikit';
 import { Link } from 'react-router-dom';
 import { useExpertModeManager } from 'state/user/hooks';
 import GlobalSettings from 'components/Menu/GlobalSettings';
@@ -27,19 +27,37 @@ const AppHeaderContainer = styled(Flex)`
 const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig = false, style }) => {
   const [expertMode] = useExpertModeManager();
 
+  if (backTo) {
+    return (
+      <AppHeaderContainer style={style}>
+        {backTo && (
+          <IconButton style={{ whiteSpace: 'nowrap' }} as={Link} to={backTo}>
+            &lt; Back
+          </IconButton>
+        )}
+        <Heading as="h2" mb="8px" marginBottom="0px">
+          {title}
+        </Heading>
+
+        {!noConfig && (
+          <Flex alignItems="center">
+            <Transactions />
+            <NotificationDot show={expertMode}>
+              <GlobalSettings />
+            </NotificationDot>
+          </Flex>
+        )}
+      </AppHeaderContainer>
+    );
+  }
+
   return (
     <AppHeaderContainer style={style}>
       <Flex alignItems="center" mr={noConfig ? 0 : '16px'}>
-        {backTo && (
-          <IconButton as={Link} to={backTo}>
-            <ArrowBackIcon width="32px" />
-          </IconButton>
-        )}
-        <Flex flexDirection="column" alignItems="center" style={{ height: '100%' }}>
-          <Heading as="h2" mb="8px" marginBottom="0px">
-            {title}
-          </Heading>
-        </Flex>
+        {backTo && <Text>&lt; Back</Text>}
+        <Heading as="h2" mb="8px" marginBottom="0px">
+          {title}
+        </Heading>
       </Flex>
       {!noConfig && (
         <Flex alignItems="center">

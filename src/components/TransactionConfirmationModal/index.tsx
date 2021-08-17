@@ -10,7 +10,6 @@ import {
   Flex,
   Box,
   Link,
-  Spinner,
   Modal,
   InjectedModalProps,
 } from '@kaco/uikit';
@@ -21,9 +20,11 @@ import { wrappedCurrency } from 'utils/wrappedCurrency';
 import { RowFixed } from '../Layout/Row';
 import { AutoColumn, ColumnCenter } from '../Layout/Column';
 import { getBscScanLink } from '../../utils';
+import Spinner from './Spinner';
 
 const Wrapper = styled.div`
   width: 100%;
+  max-width: 400px;
 `;
 const Section = styled(AutoColumn)`
   padding: 24px;
@@ -41,15 +42,26 @@ function ConfirmationPendingContent({ pendingText }: { pendingText: string }) {
         <Spinner />
       </ConfirmedIcon>
       <AutoColumn gap="12px" justify="center">
-        <Text fontSize="20px">{t('Waiting For Confirmation')}</Text>
+        <Text fontSize="12px">{t('Waiting For Confirmation')}</Text>
         <AutoColumn gap="12px" justify="center">
-          <Text bold small textAlign="center">
+          <Text fontSize="12px" color="#1BD3D5" textAlign="center">
             {pendingText}
           </Text>
         </AutoColumn>
-        <Text small color="textSubtle" textAlign="center">
+        <Flex
+          style={{
+            color: '#F1842C',
+            padding: '0px 30px',
+            background: '#272E32',
+            borderRadius: '12px',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '32px',
+            fontSize: '12px',
+          }}
+        >
           {t('Confirm this transaction in your wallet')}
-        </Text>
+        </Flex>
       </AutoColumn>
     </Wrapper>
   );
@@ -172,7 +184,7 @@ const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationMo
   if (!chainId) return null;
 
   return (
-    <Modal title={title} headerBackground="gradients.cardHeader" onDismiss={handleDismiss}>
+    <Modal style={{ border: '0' }} title={title} onDismiss={handleDismiss}>
       {attemptingTxn ? (
         <ConfirmationPendingContent pendingText={pendingText} />
       ) : hash ? (

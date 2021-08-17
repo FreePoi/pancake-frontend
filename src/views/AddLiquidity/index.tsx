@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { BigNumber } from '@ethersproject/bignumber';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '@kaco/sdk';
-import { Button, Text, Flex, AddIcon, CardBody, Message, useModal } from '@kaco/uikit';
+import { Button, Text, Flex, AddIcon, CardBody, useModal } from '@kaco/uikit';
 import { RouteComponentProps } from 'react-router-dom';
 import { useIsTransactionUnsupported } from 'hooks/Trades';
 import { useTranslation } from 'contexts/Localization';
@@ -36,6 +36,7 @@ import ConfirmAddModalBottom from './ConfirmAddModalBottom';
 import { currencyId } from '../../utils/currencyId';
 import PoolPriceBar from './PoolPriceBar';
 import Page from '../Page';
+import WarningSvg from './imgs/warning.svg';
 
 export default function AddLiquidity({
   match: {
@@ -317,15 +318,16 @@ export default function AddLiquidity({
           <AutoColumn gap="20px">
             {noLiquidity && (
               <ColumnCenter>
-                <Message variant="warning">
-                  <div>
-                    <Text bold mb="8px">
-                      {t('You are the first liquidity provider.')}
-                    </Text>
-                    <Text mb="8px">{t('The ratio of tokens you add will set the price of this pool.')}</Text>
-                    <Text>{t('Once you are happy with the rate click supply to review.')}</Text>
-                  </div>
-                </Message>
+                <div style={{ padding: '0px 16px' }}>
+                  <img src={WarningSvg} alt="" style={{ marginBottom: '20px' }} />
+                  <Text color="#F1842C" mb="8px">
+                    {t('You are the first liquidity provider.')}
+                  </Text>
+                  <Text color="#F1842C" mb="8px">
+                    {t('The ratio of tokens you add will set the price of this pool.')}
+                  </Text>
+                  <Text color="#F1842C">{t('Once you are happy with the rate click supply to review.')}</Text>
+                </div>
               </ColumnCenter>
             )}
             <CurrencyInputPanel
@@ -341,7 +343,7 @@ export default function AddLiquidity({
               showCommonBases
             />
             <ColumnCenter>
-              <AddIcon width="16px" />
+              <AddIcon color="#1BD3D5" width="16px" />
             </ColumnCenter>
             <CurrencyInputPanel
               value={formattedAmounts[Field.CURRENCY_B]}
@@ -356,10 +358,10 @@ export default function AddLiquidity({
               showCommonBases
             />
             {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
-              <>
-                <LightCard padding="0px" borderRadius="20px">
+              <div style={{ border: '1px dashed #272E32', borderRadius: '16px' }}>
+                <LightCard padding="0px">
                   <RowBetween padding="1rem">
-                    <Text fontSize="14px">
+                    <Text fontSize="12px">
                       {noLiquidity ? t('Initial prices and pool share') : t('Prices and pool share')}
                     </Text>
                   </RowBetween>{' '}
@@ -372,7 +374,7 @@ export default function AddLiquidity({
                     />
                   </LightCard>
                 </LightCard>
-              </>
+              </div>
             )}
 
             {addIsUnsupported ? (

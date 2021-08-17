@@ -151,6 +151,7 @@ export default function Swap({ history }: RouteComponentProps) {
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false);
+  console.log('showWrap', showWrap, 'trade', trade, 'currencies', currencies);
 
   // mark when a user has submitted an approval, reset onTokenSelection for input field
   useEffect(() => {
@@ -310,6 +311,7 @@ export default function Swap({ history }: RouteComponentProps) {
         <Wrapper id="swap-page">
           <div>
             <CurrencyInputPanel
+              focused={independentField === Field.INPUT}
               label={independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')}
               value={formattedAmounts[Field.INPUT]}
               showMaxButton={!atMaxAmountInput}
@@ -341,6 +343,7 @@ export default function Swap({ history }: RouteComponentProps) {
               </AutoRow>
             </AutoColumn>
             <CurrencyInputPanel
+              focused={independentField === Field.OUTPUT}
               value={formattedAmounts[Field.OUTPUT]}
               onUserInput={handleTypeOutput}
               label={independentField === Field.INPUT && !showWrap && trade ? t('To (estimated)') : t('To')}
@@ -491,13 +494,13 @@ export default function Swap({ history }: RouteComponentProps) {
             )}
             {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
           </Box>
+          {!swapIsUnsupported ? (
+            trade && <AdvancedSwapDetailsDropdown trade={trade} />
+          ) : (
+            <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
+          )}
         </Wrapper>
       </AppBody>
-      {!swapIsUnsupported ? (
-        <AdvancedSwapDetailsDropdown trade={trade} />
-      ) : (
-        <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
-      )}
     </Page>
   );
 }

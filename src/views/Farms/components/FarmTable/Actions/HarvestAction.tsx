@@ -55,6 +55,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
       </ActionTitles>
       <ActionContent>
         <Button
+          variant="primary"
           width="88px"
           disabled={earnings.eq(0) || pendingTx || !userDataReady}
           onClick={async () => {
