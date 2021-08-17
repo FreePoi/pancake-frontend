@@ -21,6 +21,7 @@ import { RowFixed } from '../Layout/Row';
 import { AutoColumn, ColumnCenter } from '../Layout/Column';
 import { getBscScanLink } from '../../utils';
 import Spinner from './Spinner';
+import IconSvg from '../svg/icon.svg';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -86,18 +87,17 @@ function TransactionSubmittedContent({
 
   return (
     <Wrapper>
-      <Section>
-        <ConfirmedIcon>
-          <ArrowUpIcon strokeWidth={0.5} width="90px" color="primary" />
-        </ConfirmedIcon>
-        <AutoColumn gap="12px" justify="center">
-          <Text fontSize="20px">{t('Transaction Submitted')}</Text>
-          {chainId && hash && (
-            <Link external small href={getBscScanLink(hash, 'transaction', chainId)}>
-              {t('View on BscScan')}
-            </Link>
-          )}
-          {currencyToAdd && library?.provider?.isMetaMask && (
+      <ConfirmedIcon>
+        <img src={IconSvg} style={{ width: '64px', height: '64px' }} alt="" />
+      </ConfirmedIcon>
+      <AutoColumn gap="12px" justify="center">
+        <Text fontSize="14px">{t('Transaction Submitted')}</Text>
+        {chainId && hash && (
+          <Link external small href={getBscScanLink(hash, 'transaction', chainId)}>
+            {t('View on BscScan')}
+          </Link>
+        )}
+        {/* {currencyToAdd && library?.provider?.isMetaMask && (
             <Button
               variant="tertiary"
               mt="12px"
@@ -109,12 +109,16 @@ function TransactionSubmittedContent({
                 <MetamaskIcon width="16px" ml="6px" />
               </RowFixed>
             </Button>
-          )}
-          <Button onClick={onDismiss} mt="20px">
-            {t('Close')}
-          </Button>
-        </AutoColumn>
-      </Section>
+          )} */}
+        <Button
+          onClick={onDismiss}
+          mt="20px"
+          variant="text"
+          style={{ fontSize: '14px', width: '200px', background: '#272E32' }}
+        >
+          {t('Close')}
+        </Button>
+      </AutoColumn>
     </Wrapper>
   );
 }

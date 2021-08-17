@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Text, PancakeToggle, Toggle, Flex, Modal, InjectedModalProps } from '@kaco/uikit';
+import { Text, Flex, Modal, InjectedModalProps } from '@kaco/uikit';
 import { useAudioModeManager, useExpertModeManager, useUserSingleHopOnly } from 'state/user/hooks';
 import { useTranslation } from 'contexts/Localization';
 import { useSwapActionHandlers } from 'state/swap/hooks';
@@ -8,6 +8,7 @@ import usePersistState from 'hooks/usePersistState';
 import QuestionHelper from '../../QuestionHelper';
 import TransactionSettings from './TransactionSettings';
 import ExpertModal from './ExpertModal';
+import Toggle from './Toggle';
 
 // TODO: Temporary. Once uikit is merged with this style change, this can be removed.
 const PancakeToggleWrapper = styled.div`
@@ -23,7 +24,6 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   });
   const [expertMode, toggleExpertMode] = useExpertModeManager();
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly();
-  const [audioPlay, toggleSetAudioMode] = useAudioModeManager();
   const { onChangeRecipient } = useSwapActionHandlers();
 
   const { t } = useTranslation();
@@ -52,53 +52,43 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
 
   return (
     <Modal
+      bodyPadding="0px 24px 24px 24px"
       title={t('Settings')}
-      headerBackground="gradients.cardHeader"
       onDismiss={onDismiss}
-      style={{ maxWidth: '380px' }}
+      style={{ width: '480px', border: '2px solid #238485' }}
     >
       <Flex flexDirection="column">
-        <Flex flexDirection="column">
-          <Text bold textTransform="uppercase" fontSize="12px" color="secondary" mb="24px">
-            {t('Swaps & Liquidity')}
-          </Text>
-        </Flex>
         <TransactionSettings />
-        <Flex justifyContent="space-between" alignItems="center" mb="24px">
-          <Flex alignItems="center">
-            <Text>{t('Expert Mode')}</Text>
-            <QuestionHelper
-              text={t('Bypasses confirmation modals and allows high slippage trades. Use at your own risk.')}
-              ml="4px"
+        <Flex
+          justifyContent="space-between"
+          style={{ paddingTop: '25px', marginTop: '19px', borderTop: '2px solid #272E32' }}
+        >
+          <Flex justifyContent="space-between" alignItems="center">
+            <Toggle checked={expertMode} onChange={handleExpertModeToggle} />
+            <Flex alignItems="center" ml="11px">
+              <Text fontSize="12px" bold>
+                {t('Expert Mode')}
+              </Text>
+              <QuestionHelper
+                ml="5px"
+                text={t('Bypasses confirmation modals and allows high slippage trades. Use at your own risk.')}
+              />
+            </Flex>
+          </Flex>
+          <Flex justifyContent="space-between" alignItems="center">
+            <Toggle
+              checked={singleHopOnly}
+              onChange={() => {
+                setSingleHopOnly(!singleHopOnly);
+              }}
             />
+            <Flex alignItems="center" ml="11px">
+              <Text fontSize="12px" bold>
+                {t('Disable Multihops')}
+              </Text>
+              <QuestionHelper text={t('Restricts swaps to direct pairs only.')} ml="5px" />
+            </Flex>
           </Flex>
-          <Toggle id="toggle-expert-mode-button" scale="md" checked={expertMode} onChange={handleExpertModeToggle} />
-        </Flex>
-        <Flex justifyContent="space-between" alignItems="center" mb="24px">
-          <Flex alignItems="center">
-            <Text>{t('Disable Multihops')}</Text>
-            <QuestionHelper text={t('Restricts swaps to direct pairs only.')} ml="4px" />
-          </Flex>
-          <Toggle
-            id="toggle-disable-multihop-button"
-            checked={singleHopOnly}
-            scale="md"
-            onChange={() => {
-              setSingleHopOnly(!singleHopOnly);
-            }}
-          />
-        </Flex>
-        <Flex justifyContent="space-between" alignItems="center">
-          <Flex alignItems="center">
-            <Text>{t('Flippy sounds')}</Text>
-            <QuestionHelper
-              text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
-              ml="4px"
-            />
-          </Flex>
-          <PancakeToggleWrapper>
-            <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
-          </PancakeToggleWrapper>
         </Flex>
       </Flex>
     </Modal>

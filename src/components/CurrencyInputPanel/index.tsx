@@ -186,9 +186,9 @@ export default function CurrencyInputPanel({
           <div className="label">
             {account && !hideBalance && !!currency && selectedCurrencyBalance
               ? t('Balance: %amount%', { amount: selectedCurrencyBalance?.toSignificant(6) ?? '' })
-              : ' -'}
+              : '--'}
 
-            {!hideInput && account && currency && showMaxButton && label !== 'To' && (
+            {!hideInput && selectedCurrencyBalance && account && currency && showMaxButton && label !== 'To' && (
               <Button onClick={onMax} scale="sm" variant="text" pr={0}>
                 MAX
               </Button>

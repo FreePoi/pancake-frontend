@@ -17,10 +17,10 @@ const QuestionHelper: React.FC<Props> = ({ text, ...props }) => {
   const { targetRef, tooltip, tooltipVisible } = useTooltip(text, { placement: 'right-end', trigger: 'hover' });
 
   return (
-    <Box {...props}>
+    <Box {...props} width="16px" height="16px">
       {tooltipVisible && tooltip}
       <QuestionWrapper ref={targetRef}>
-        <HelpIcon color="textSubtle" width="16px" />
+        <HelpIcon color="textSubtle" width="16px" height="16px" />
       </QuestionWrapper>
     </Box>
   );
