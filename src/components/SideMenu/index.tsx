@@ -8,12 +8,12 @@ import FarmSvg from './imgs/icon_Farm_D.svg';
 import FarmNSvg from './imgs/icon_Farm_N.svg';
 import HomeSvg from './imgs/icon_home_D.svg';
 import HomeNSvg from './imgs/icon_home_N.svg';
-import InfoSvg from './imgs/icon_Info_D.svg';
-import InfoNSvg from './imgs/icon_Info_N.svg';
-import MintSvg from './imgs/icon_Mint_D.svg';
-import MintNSvg from './imgs/icon_Mint_N.svg';
-import PoolsSvg from './imgs/icon_Pools_D.svg';
-import PoolsNSvg from './imgs/icon_Pools_N.svg';
+// import InfoSvg from './imgs/icon_Info_D.svg';
+// import InfoNSvg from './imgs/icon_Info_N.svg';
+// import MintSvg from './imgs/icon_Mint_D.svg';
+// import MintNSvg from './imgs/icon_Mint_N.svg';
+// import PoolsSvg from './imgs/icon_Pools_D.svg';
+// import PoolsNSvg from './imgs/icon_Pools_N.svg';
 import TradeSvg from './imgs/icon_trade_D.svg';
 import TradeNSvg from './imgs/icon_trade_N.svg';
 import Logo2Svg from './imgs/logo2_primary.svg';
@@ -35,26 +35,26 @@ const menuItems: {
     imgs: [TradeSvg, TradeNSvg],
     link: '/swap',
   },
-  {
-    text: 'Mint',
-    imgs: [MintSvg, MintNSvg],
-    link: '/mint',
-  },
+  // {
+  //   text: 'Mint',
+  //   imgs: [MintSvg, MintNSvg],
+  //   link: '/mint',
+  // },
   {
     text: 'Farm',
     imgs: [FarmSvg, FarmNSvg],
     link: '/farms',
   },
-  {
-    text: 'Pools',
-    imgs: [PoolsSvg, PoolsNSvg],
-    link: '/pools',
-  },
-  {
-    text: 'Info',
-    imgs: [InfoSvg, InfoNSvg],
-    link: '/info',
-  },
+  // {
+  //   text: 'Pools',
+  //   imgs: [PoolsSvg, PoolsNSvg],
+  //   link: '/pools',
+  // },
+  // {
+  //   text: 'Info',
+  //   imgs: [InfoSvg, InfoNSvg],
+  //   link: '/info',
+  // },
 ];
 const Wrapper = styled.div<{ collapsed: boolean }>`
   flex: 1;
