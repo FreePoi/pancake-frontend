@@ -1,23 +1,10 @@
 import React, { useCallback } from 'react';
-import { ChainId, Currency, Token } from '@kaco/sdk';
+import { ChainId, Currency } from '@kaco/sdk';
 import styled from 'styled-components';
-import {
-  Button,
-  Text,
-  ErrorIcon,
-  ArrowUpIcon,
-  MetamaskIcon,
-  Flex,
-  Box,
-  Link,
-  Modal,
-  InjectedModalProps,
-} from '@kaco/uikit';
-import { registerToken } from 'utils/wallet';
+import { Button, Text, ErrorIcon, Flex, Box, Link, Modal, InjectedModalProps } from '@kaco/uikit';
+// import { registerToken } from 'utils/wallet';
 import { useTranslation } from 'contexts/Localization';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
-import { wrappedCurrency } from 'utils/wrappedCurrency';
-import { RowFixed } from '../Layout/Row';
 import { AutoColumn, ColumnCenter } from '../Layout/Column';
 import { getBscScanLink } from '../../utils';
 import Spinner from './Spinner';
@@ -27,10 +14,6 @@ const Wrapper = styled.div`
   width: 100%;
   max-width: 400px;
 `;
-const Section = styled(AutoColumn)`
-  padding: 24px;
-`;
-
 const ConfirmedIcon = styled(ColumnCenter)`
   padding: 24px 0;
 `;
@@ -79,11 +62,7 @@ function TransactionSubmittedContent({
   chainId: ChainId;
   currencyToAdd?: Currency | undefined;
 }) {
-  const { library } = useActiveWeb3React();
-
   const { t } = useTranslation();
-
-  const token: Token | undefined = wrappedCurrency(currencyToAdd, chainId);
 
   return (
     <Wrapper>

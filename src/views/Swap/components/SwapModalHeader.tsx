@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { Trade, TradeType } from '@kaco/sdk';
-import { Button, Text, ErrorIcon, ArrowDownIcon } from '@kaco/uikit';
+import { Button, Text, ErrorIcon } from '@kaco/uikit';
 import { Field } from 'state/swap/actions';
 import { isAddress, shortenAddress } from 'utils';
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from 'utils/prices';
+import { computeSlippageAdjustedAmounts } from 'utils/prices';
 import { AutoColumn } from 'components/Layout/Column';
 import { CurrencyLogo } from 'components/Logo';
 import { RowBetween, RowFixed } from 'components/Layout/Row';
@@ -26,8 +26,6 @@ export default function SwapModalHeader({
     () => computeSlippageAdjustedAmounts(trade, allowedSlippage),
     [trade, allowedSlippage],
   );
-  const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade]);
-  const priceImpactSeverity = warningSeverity(priceImpactWithoutFee);
 
   return (
     <AutoColumn gap="md">

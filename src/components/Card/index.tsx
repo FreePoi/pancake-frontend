@@ -27,3 +27,13 @@ export const LightGreyCard = styled(Card)`
 export const GreyCard = styled(Card)`
   background-color: ${({ theme }) => theme.colors.dropdown};
 `;
+
+export const SolidCard = styled(Card)`
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  background-color: ${({ theme }) => theme.colors.cardBackground};
+`;
+
+export const PlainCard = styled(Card)`
+  background: ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 8px;
+`;

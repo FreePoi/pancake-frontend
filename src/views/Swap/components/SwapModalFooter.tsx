@@ -10,9 +10,7 @@ import {
   warningSeverity,
 } from 'utils/prices';
 import { AutoColumn } from 'components/Layout/Column';
-import QuestionHelper from 'components/QuestionHelper';
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row';
-import FormattedPriceImpact from './FormattedPriceImpact';
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds';
 import { ONE_BIPS } from 'config/constants';
 

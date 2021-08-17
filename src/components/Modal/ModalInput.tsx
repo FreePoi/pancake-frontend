@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Text, Button, Input, InputProps, Flex, Link } from '@kaco/uikit';
+import { Text, Input, InputProps, Flex, Link } from '@kaco/uikit';
 import { useTranslation } from 'contexts/Localization';
 import { BigNumber } from 'bignumber.js';
 
@@ -15,14 +15,6 @@ interface ModalInputProps {
   inputTitle?: string;
   decimals?: number;
 }
-
-const getBoxShadow = ({ isWarning = false, theme }) => {
-  if (isWarning) {
-    return theme.shadows.warning;
-  }
-
-  return theme.shadows.inset;
-};
 
 const StyledTokenInput = styled.div<InputProps>`
   display: flex;

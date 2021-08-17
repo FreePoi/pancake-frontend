@@ -15,7 +15,7 @@ import { MinimalPositionCard } from '../../components/PositionCard';
 import { AppHeader, AppBody } from '../../components/App';
 import { RowBetween, RowFixed } from '../../components/Layout/Row';
 import ConnectWalletButton from '../../components/ConnectWalletButton';
-import { LightGreyCard } from '../../components/Card';
+import { SolidCard, PlainCard } from '../../components/Card';
 
 import { CurrencyLogo, DoubleCurrencyLogo } from '../../components/Logo';
 import { ROUTER_ADDRESS } from '../../config/constants';
@@ -37,10 +37,9 @@ import { useBurnActionHandlers, useDerivedBurnInfo, useBurnState } from '../../s
 import { Field } from '../../state/burn/actions';
 import { useUserSlippageTolerance } from '../../state/user/hooks';
 import Page from '../Page';
+import ArrowSvg from './imgs/arrow.svg';
 
 const BorderCard = styled.div`
-  border: solid 1px ${({ theme }) => theme.colors.cardBorder};
-  border-radius: 16px;
   padding: 16px;
 `;
 
@@ -66,7 +65,7 @@ export default function RemoveLiquidity({
   const isValid = !error;
 
   // modal and loading
-  const [showDetailed, setShowDetailed] = useState<boolean>(false);
+  const [showDetailed] = useState<boolean>(false);
   const [attemptingTxn, setAttemptingTxn] = useState(false); // clicked confirm
 
   // txn values
@@ -467,17 +466,23 @@ export default function RemoveLiquidity({
 
         <CardBody>
           <AutoColumn gap="20px">
-            <RowBetween>
+            {/* <RowBetween>
               <Text>{t('Amount')}</Text>
               <Button variant="text" scale="sm" onClick={() => setShowDetailed(!showDetailed)}>
                 {showDetailed ? t('Simple') : t('Detailed')}
               </Button>
-            </RowBetween>
+            </RowBetween> */}
             {!showDetailed && (
               <BorderCard>
-                <Text fontSize="40px" bold mb="16px" style={{ lineHeight: 1 }}>
-                  {formattedAmounts[Field.LIQUIDITY_PERCENT]}%
-                </Text>
+                <Flex mb="26px" alignItems="flex-end">
+                  <Text fontSize="32px" color="#1BD3D5" bold style={{ lineHeight: 1 }}>
+                    {formattedAmounts[Field.LIQUIDITY_PERCENT]}%
+                  </Text>
+                  <Text color="#1BD3D5" fontSize="12px" marginLeft="10px">
+                    {t('Amount')}
+                  </Text>
+                </Flex>
+
                 <Slider
                   name="lp-amount"
                   min={0}
@@ -487,32 +492,70 @@ export default function RemoveLiquidity({
                   mb="16px"
                 />
                 <Flex flexWrap="wrap" justifyContent="space-evenly">
-                  <Button variant="tertiary" scale="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '25')}>
+                  <Button
+                    style={{
+                      color: innerLiquidityPercentage === 25 ? 'white' : '#1BD3D5',
+                      background: innerLiquidityPercentage === 25 ? '#1BD3D5' : '#1F252A',
+                      borderRadius: '12px',
+                    }}
+                    variant="tertiary"
+                    scale="sm"
+                    onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '25')}
+                  >
                     25%
                   </Button>
-                  <Button variant="tertiary" scale="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '50')}>
+                  <Button
+                    style={{
+                      color: innerLiquidityPercentage === 50 ? 'white' : '#1BD3D5',
+                      background: innerLiquidityPercentage === 50 ? '#1BD3D5' : '#1F252A',
+                      borderRadius: '12px',
+                    }}
+                    variant="tertiary"
+                    scale="sm"
+                    onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '50')}
+                  >
                     50%
                   </Button>
-                  <Button variant="tertiary" scale="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '75')}>
+                  <Button
+                    style={{
+                      color: innerLiquidityPercentage === 75 ? 'white' : '#1BD3D5',
+                      background: innerLiquidityPercentage === 75 ? '#1BD3D5' : '#1F252A',
+                      borderRadius: '12px',
+                    }}
+                    variant="tertiary"
+                    scale="sm"
+                    onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '75')}
+                  >
                     75%
                   </Button>
-                  <Button variant="tertiary" scale="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}>
-                    Max
+                  <Button
+                    style={{
+                      color: innerLiquidityPercentage === 100 ? 'white' : '#1BD3D5',
+                      background: innerLiquidityPercentage === 100 ? '#1BD3D5' : '#1F252A',
+                      borderRadius: '12px',
+                    }}
+                    variant="tertiary"
+                    scale="sm"
+                    onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
+                  >
+                    100%
                   </Button>
                 </Flex>
               </BorderCard>
             )}
           </AutoColumn>
+
           {!showDetailed && (
             <>
               <ColumnCenter>
-                <ArrowDownIcon color="textSubtle" width="24px" my="16px" />
+                <img src={ArrowSvg} alt="" />
+                {/* <ArrowDownIcon color="textSubtle" width="24px" my="16px" /> */}
               </ColumnCenter>
               <AutoColumn gap="10px">
-                <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
+                <Text bold color="secondary" fontSize="14px" mb="16px" textTransform="uppercase">
                   {t('You will receive')}
                 </Text>
-                <LightGreyCard>
+                <SolidCard>
                   <Flex justifyContent="space-between" mb="8px">
                     <Flex>
                       <CurrencyLogo currency={currencyA} />
@@ -552,13 +595,13 @@ export default function RemoveLiquidity({
                       ) : null}
                     </RowBetween>
                   ) : null}
-                </LightGreyCard>
+                </SolidCard>
               </AutoColumn>
             </>
           )}
 
           {showDetailed && (
-            <Box my="16px">
+            <PlainCard my="16px">
               <CurrencyInputPanel
                 value={formattedAmounts[Field.LIQUIDITY]}
                 onUserInput={onLiquidityInput}
@@ -600,34 +643,28 @@ export default function RemoveLiquidity({
                 onCurrencySelect={handleSelectCurrencyB}
                 id="remove-liquidity-tokenb"
               />
-            </Box>
+            </PlainCard>
           )}
+
           {pair && (
             <AutoColumn gap="10px" style={{ marginTop: '16px' }}>
-              <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
-                {t('Prices')}
-              </Text>
-              <LightGreyCard>
-                <Flex justifyContent="space-between">
-                  <Text small color="textSubtle">
-                    1 {currencyA?.symbol} =
+              <PlainCard height="36px" style={{ display: 'flex', alignItems: 'center', padding: '0px 20px' }}>
+                <Flex justifyContent="flex-start">
+                  <Text fontSize="12px" bold small color="secondary">
+                    {t('Prices')}:&nbsp;
                   </Text>
-                  <Text small>
-                    {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
+
+                  <Text fontSize="12px" small color="white">
+                    1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
                   </Text>
-                </Flex>
-                <Flex justifyContent="space-between">
-                  <Text small color="textSubtle">
-                    1 {currencyB?.symbol} =
-                  </Text>
-                  <Text small>
-                    {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
+                  <Text fontSize="12px" small color="white" ml="24px">
+                    1 {currencyB?.symbol} = {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
                   </Text>
                 </Flex>
-              </LightGreyCard>
+              </PlainCard>
             </AutoColumn>
           )}
-          <Box position="relative" mt="16px">
+          <Box position="relative" mt="30px">
             {!account ? (
               <ConnectWalletButton />
             ) : (
@@ -642,9 +679,9 @@ export default function RemoveLiquidity({
                   {approval === ApprovalState.PENDING ? (
                     <Dots>{t('Enabling')}</Dots>
                   ) : approval === ApprovalState.APPROVED || signatureData !== null ? (
-                    t('Enabled')
+                    t('Approved')
                   ) : (
-                    t('Enable')
+                    t('Approve')
                   )}
                 </Button>
                 <Button
@@ -664,14 +701,13 @@ export default function RemoveLiquidity({
               </RowBetween>
             )}
           </Box>
+          {pair ? (
+            <AutoColumn style={{ marginTop: '1.25rem' }}>
+              <MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />
+            </AutoColumn>
+          ) : null}
         </CardBody>
       </AppBody>
-
-      {pair ? (
-        <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
-          <MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />
-        </AutoColumn>
-      ) : null}
     </Page>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { JSBI, Pair, Percent } from '@kaco/sdk';
-import { Button, Text, Card, CardBody, Flex, CardProps, AddIcon } from '@kaco/uikit';
+import { Button, Text, Flex, CardProps, AddIcon } from '@kaco/uikit';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTranslation } from 'contexts/Localization';
@@ -11,7 +11,7 @@ import { useTokenBalance } from '../../state/wallet/hooks';
 import { currencyId } from '../../utils/currencyId';
 import { unwrappedToken } from '../../utils/wrappedCurrency';
 
-import { LightCard } from '../Card';
+import { SolidCard } from '../Card';
 import { AutoColumn } from '../Layout/Column';
 import CurrencyLogo from '../Logo/CurrencyLogo';
 import { DoubleCurrencyLogo } from '../Logo';
@@ -62,65 +62,71 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
   return (
     <>
       {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, JSBI.BigInt(0)) ? (
-        <Card>
-          <CardBody>
-            <AutoColumn gap="16px">
+        <SolidCard>
+          <AutoColumn gap="16px">
+            <FixedHeightRow>
+              <RowFixed>
+                <Text color="#F1842C" bold>
+                  {t('LP tokens in your wallet')}
+                </Text>
+              </RowFixed>
+            </FixedHeightRow>
+            <FixedHeightRow onClick={() => setShowMore(!showMore)}>
+              <RowFixed>
+                <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin size={20} />
+                <Text fontSize="12px" small bold color="white">
+                  {currency0.symbol}-{currency1.symbol} LP
+                </Text>
+              </RowFixed>
+              <RowFixed>
+                <Text fontSize="12px" color="#1BD3D5">
+                  {userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}
+                </Text>
+              </RowFixed>
+            </FixedHeightRow>
+            <AutoColumn gap="4px">
               <FixedHeightRow>
-                <RowFixed>
-                  <Text color="secondary" bold>
-                    {t('LP tokens in your wallet')}
-                  </Text>
-                </RowFixed>
+                <Text fontSize="12px" color="secondary" small>
+                  {t('Share of Pool')}:
+                </Text>
+                <Text fontSize="12px" color="white">
+                  {poolTokenPercentage ? `${poolTokenPercentage.toFixed(6)}%` : '-'}
+                </Text>
               </FixedHeightRow>
-              <FixedHeightRow onClick={() => setShowMore(!showMore)}>
-                <RowFixed>
-                  <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin size={20} />
-                  <Text small color="textSubtle">
-                    {currency0.symbol}-{currency1.symbol} LP
-                  </Text>
-                </RowFixed>
-                <RowFixed>
-                  <Text>{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}</Text>
-                </RowFixed>
+              <FixedHeightRow>
+                <Text fontSize="12px" color="secondary" small>
+                  {t('Pooled %asset%', { asset: currency0.symbol })}:
+                </Text>
+                {token0Deposited ? (
+                  <RowFixed>
+                    <Text fontSize="12px" ml="6px" color="white">
+                      {token0Deposited?.toSignificant(6)}
+                    </Text>
+                  </RowFixed>
+                ) : (
+                  '-'
+                )}
               </FixedHeightRow>
-              <AutoColumn gap="4px">
-                <FixedHeightRow>
-                  <Text color="textSubtle" small>
-                    {t('Share of Pool')}:
-                  </Text>
-                  <Text>{poolTokenPercentage ? `${poolTokenPercentage.toFixed(6)}%` : '-'}</Text>
-                </FixedHeightRow>
-                <FixedHeightRow>
-                  <Text color="textSubtle" small>
-                    {t('Pooled %asset%', { asset: currency0.symbol })}:
-                  </Text>
-                  {token0Deposited ? (
-                    <RowFixed>
-                      <Text ml="6px">{token0Deposited?.toSignificant(6)}</Text>
-                    </RowFixed>
-                  ) : (
-                    '-'
-                  )}
-                </FixedHeightRow>
-                <FixedHeightRow>
-                  <Text color="textSubtle" small>
-                    {t('Pooled %asset%', { asset: currency1.symbol })}:
-                  </Text>
-                  {token1Deposited ? (
-                    <RowFixed>
-                      <Text ml="6px">{token1Deposited?.toSignificant(6)}</Text>
-                    </RowFixed>
-                  ) : (
-                    '-'
-                  )}
-                </FixedHeightRow>
-              </AutoColumn>
+              <FixedHeightRow>
+                <Text fontSize="12px" color="secondary" small>
+                  {t('Pooled %asset%', { asset: currency1.symbol })}:
+                </Text>
+                {token1Deposited ? (
+                  <RowFixed>
+                    <Text fontSize="12px" ml="6px" color="white">
+                      {token1Deposited?.toSignificant(6)}
+                    </Text>
+                  </RowFixed>
+                ) : (
+                  '-'
+                )}
+              </FixedHeightRow>
             </AutoColumn>
-          </CardBody>
-        </Card>
+          </AutoColumn>
+        </SolidCard>
       ) : (
-        <LightCard>
-          <Text fontSize="14px" style={{ textAlign: 'center' }}>
+        <SolidCard>
+          <Text fontSize="12px" style={{ textAlign: 'center' }}>
             <span role="img" aria-label="pancake-icon">
               🥞
             </span>{' '}
@@ -128,7 +134,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
               "By adding liquidity you'll earn 0.17% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
             )}
           </Text>
-        </LightCard>
+        </SolidCard>
       )}
     </>
   );

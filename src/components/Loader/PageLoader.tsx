@@ -1,6 +1,6 @@
+import Spinner from 'components/TransactionConfirmationModal/Spinner';
 import React from 'react';
 import styled from 'styled-components';
-import { Spinner } from '@kaco/uikit';
 import Page from '../Layout/Page';
 
 const Wrapper = styled(Page)`

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { Text, Flex, Modal, InjectedModalProps } from '@kaco/uikit';
-import { useAudioModeManager, useExpertModeManager, useUserSingleHopOnly } from 'state/user/hooks';
+import { useExpertModeManager, useUserSingleHopOnly } from 'state/user/hooks';
 import { useTranslation } from 'contexts/Localization';
 import { useSwapActionHandlers } from 'state/swap/hooks';
 import usePersistState from 'hooks/usePersistState';
@@ -9,13 +8,6 @@ import QuestionHelper from '../../QuestionHelper';
 import TransactionSettings from './TransactionSettings';
 import ExpertModal from './ExpertModal';
 import Toggle from './Toggle';
-
-// TODO: Temporary. Once uikit is merged with this style change, this can be removed.
-const PancakeToggleWrapper = styled.div`
-  .pancakes {
-    position: absolute;
-  }
-`;
 
 const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const [showConfirmExpertModal, setShowConfirmExpertModal] = useState(false);
