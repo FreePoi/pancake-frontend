@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import HomeBgPng from './components/home-bg.png';
 import BannerPng from './components/banner.svg';
@@ -12,12 +12,8 @@ import formatLocalisedCompactNumber, { getBalanceNumber } from 'utils/formatBala
 import { getCakeAddress } from 'utils/addressHelpers';
 import { KACO_LP_PID } from 'config/constants/farms';
 import isArchivedPid from 'utils/farmHelpers';
-import { ChainId } from '@kaco/sdk';
 import BigNumber from 'bignumber.js';
 import { Farm } from 'state/types';
-import { getFarmApr } from 'utils/apr';
-import { latinise } from 'utils/latinise';
-import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/CardActionsContainer';
 import Balance from 'components/Balance';
 
 const Home: React.FC<{ className?: string }> = ({ className }) => {
