@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { useWeb3React } from '@web3-react/core';
-import ThemeWhiteSvg from './imgs/theme-white.svg';
 import ConnectWalletButton from '../ConnectWalletButton';
 import CollapseSvg from './imgs/collapse.svg';
 import { useMatchBreakpoints } from '@kaco/uikit';
@@ -31,22 +30,18 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
           onClick={() => setCollapsed(!collapsed)}
         />
       )}
-      <div className="left">
-        <a target="_blank" rel="noreferrer" href="https://twitter.com/KACOFinance">
-          <TwitterIcon height="28px" />
-        </a>
-        <a target="_blank" rel="noreferrer" href="https://t.me/coinversationofficial">
-          <TelegramIcon height="28px" />
-        </a>
-      </div>
       <div className="right">
-        {/* <div className="theme-choice">
-          <img src={ThemeWhiteSvg} alt="" />
-        </div> */}
+        <div className="icons">
+          <a target="_blank" rel="noreferrer" href="https://twitter.com/KACOFinance">
+            <TwitterIcon height="28px" />
+          </a>
+          <a target="_blank" rel="noreferrer" href="https://t.me/coinversationofficial">
+            <TelegramIcon height="28px" />
+          </a>
+        </div>
         {account ? (
           <div className="account">
             <span>{account}</span>
-            <img src={ThemeWhiteSvg} alt="" />
           </div>
         ) : (
           <ConnectWalletButton scale="sm" />
@@ -61,35 +56,49 @@ export default styled(Header)`
   padding-right: 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    justify-content: space-between;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    justify-content: space-between;
+  }
+  /* 
+  ${({ theme }) => theme.mediaQueries.md} {
+    justify-content: flex-end;
+  } */
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    justify-content: flex-end;
+  }
   height: 72px;
   position: absolute;
   top: 0px;
   width: 100%;
 
-  > .left,
   > .right {
     display: flex;
     align-items: center;
-  }
-  > .left > a {
-    &:first-child {
-      margin-right: 16px;
-    }
-    &:hover {
-      svg {
-        fill: #00dbde;
+    > .icons {
+      display: flex;
+      align-items: center;
+      > a {
+        margin-right: 16px;
+        display: block;
+        width: 28px;
+        height: 28px;
+        border-radius: 14px;
+        &:hover {
+          svg {
+            width: 24px;
+            fill: #00dbde;
+          }
+        }
       }
     }
-    display: block;
-    width: 28px;
-    height: 28px;
-    background: #1f252a;
-    border-radius: 14px;
-  }
 
-  > .right {
-    .theme-choice {
+    > .theme-choice {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -115,7 +124,7 @@ export default styled(Header)`
       border: 1px solid #2f363b;
       border-radius: 12px;
       padding: 0px 16px;
-      max-width: 200px;
+      max-width: 150px;
       > span {
         text-overflow: ellipsis;
         overflow-x: hidden;

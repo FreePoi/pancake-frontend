@@ -3,18 +3,23 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { usePriceCakeBusd } from 'state/farms/hooks';
 import LogoPng from './imgs/logo.svg';
-import CollapseSvg from './imgs/collapse.svg';
-import FarmSvg from './imgs/icon_Farm_D.svg';
+import BgPng from './imgs/bg.png';
+// import FarmSvg from './imgs/icon_Farm_D.svg';
 import FarmNSvg from './imgs/icon_Farm_N.svg';
-import HomeSvg from './imgs/icon_home_D.svg';
+// import HomeSvg from './imgs/icon_home_D.svg';
 import HomeNSvg from './imgs/icon_home_N.svg';
+import UncollapsedSvg from './imgs/icon_zk.svg';
+import CollapsedSvg from './imgs/icon_sq.svg';
 // import InfoSvg from './imgs/icon_Info_D.svg';
 // import InfoNSvg from './imgs/icon_Info_N.svg';
 // import MintSvg from './imgs/icon_Mint_D.svg';
 // import MintNSvg from './imgs/icon_Mint_N.svg';
 // import PoolsSvg from './imgs/icon_Pools_D.svg';
 // import PoolsNSvg from './imgs/icon_Pools_N.svg';
-import TradeSvg from './imgs/icon_trade_D.svg';
+// import TradeSvg from './imgs/icon_trade_D.svg';
+import TradeSvg from '../svg/Trade';
+import FarmSvg from '../svg/Farm';
+import HomeSvg from '../svg/Home';
 import TradeNSvg from './imgs/icon_trade_N.svg';
 import Logo2Svg from './imgs/logo2_primary.svg';
 import Logo2DefaultSvg from './imgs/logo2_default.svg';
@@ -24,17 +29,17 @@ import { useMatchBreakpoints } from '@kaco/uikit';
 
 const menuItems: {
   text: string;
-  imgs: any[];
+  img: any;
   link: string;
 }[] = [
   {
     text: 'Home',
-    imgs: [HomeSvg, HomeNSvg],
+    img: HomeSvg,
     link: '/',
   },
   {
     text: 'Trade',
-    imgs: [TradeSvg, TradeNSvg],
+    img: TradeSvg,
     link: '/swap',
   },
   // {
@@ -44,7 +49,7 @@ const menuItems: {
   // },
   {
     text: 'Farm',
-    imgs: [FarmSvg, FarmNSvg],
+    img: FarmSvg,
     link: '/farms',
   },
   // {
@@ -59,10 +64,16 @@ const menuItems: {
   // },
 ];
 const Wrapper = styled.div<{ collapsed: boolean }>`
+  background: #1f252a;
   flex: 1;
   display: flex;
   flex-direction: column;
   > .body-container {
+    display: flex;
+    flex-direction: column;
+    background-image: url(${BgPng});
+    background-repeat: no-repeat;
+    background-size: cover;
     ${({ theme }) => theme.mediaQueries.xs} {
       padding-left: 0px;
     }
@@ -74,14 +85,15 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
     }
     flex: 1;
     transition: 0.15s padding;
-    background: #1f252a;
     > .content {
       position: relative;
       padding-top: 72px;
+      flex: 1;
     }
   }
 
   > .side {
+    overflow: hidden;
     z-index: 10;
     flex-direction: column;
     transition: 0.15s width;
@@ -90,15 +102,11 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
     top: 0px;
     bottom: 0px;
     display: flex;
-    background: linear-gradient(0deg, rgba(17, 66, 36, 0.1), rgba(64, 242, 244, 0.1));
-    /* ${({ theme }) => theme.mediaQueries.xs} {
-      background: linear-gradient(0deg, rgb(17, 66, 36), rgb(64, 242, 244));
-    }
-    ${({ theme }) => theme.mediaQueries.sm} {
-      background: linear-gradient(0deg, rgb(17, 66, 36), rgb(64, 242, 244));
-    } */
+    background: #11171b;
     ${({ theme }) => theme.mediaQueries.md} {
-      background: linear-gradient(0deg, rgba(17, 66, 36, 0.1), rgba(64, 242, 244, 0.1));
+      /* background: linear-gradient(0deg, #114228, #40f2f4);
+      */
+      background: linear-gradient(0deg, #11171b, #142a2f);
     }
 
     > img {
@@ -106,8 +114,8 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
       width: 20px;
       height: 20px;
       position: absolute;
-      right: ${(props) => (props.collapsed ? '-12px' : '-10px')};
-      top: 10px;
+      right: 10px;
+      top: 27px;
     }
     > .logo > img {
       height: 30px;
@@ -129,24 +137,30 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
         &:last-child {
           margin-bottom: 0px;
         }
-        &:hover {
-          background: #272e32;
-          color: #1bd3d5;
+        svg {
+          fill: white;
         }
+        /* svg:hover {
+          fill: #1bd3d5;
+        } */
+        /* &:hover {
+          color: #1bd3d5;
+          background: #272e32;
+        } */
         > span {
           margin-left: 12px;
         }
         > .icon-holder {
+          &:hover {
+            background: #1bd3d5;
+          }
           width: 32px;
           height: 32px;
+          border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           margin-left: 16px;
-          > img {
-            /* width: 32px;
-            height: 32px; */
-          }
         }
       }
     }
@@ -175,7 +189,6 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
     }
   }
 `;
-
 const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const cakePriceUsd = usePriceCakeBusd();
@@ -207,7 +220,7 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
     <Wrapper className={className} collapsed={collapsed}>
       <div className="side" style={{ width: collapsed ? sideCollapsedWidth : '200px' }}>
         <img
-          src={CollapseSvg}
+          src={collapsed ? CollapsedSvg : UncollapsedSvg}
           alt=""
           style={{ transform: collapsed ? 'scaleX(-1)' : '' }}
           onClick={() => setCollapsed((old) => !old)}
@@ -217,10 +230,15 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
         </div>
         <div className="nav">
           {menuItems.map((item) => (
-            <Link className="link" to={item.link} key={item.link}>
-              <div className="icon-holder">
-                <img src={item.imgs[collapsed ? 0 : 1]} alt="" />
-              </div>
+            <Link
+              className="link"
+              to={item.link}
+              key={item.link}
+              onClick={() => {
+                [isXs, isSm, isMd].some(Boolean) && setCollapsed(true);
+              }}
+            >
+              <div className="icon-holder">{item.img()}</div>
               {!collapsed && <span>{item.text}</span>}
             </Link>
           ))}
@@ -238,7 +256,7 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
       >
         <div className="content">
           <Header setCollapsed={setCollapsed} collapsed={collapsed} />
-          {children}
+          <div className="bg-holder">{children}</div>
         </div>
       </div>
     </Wrapper>

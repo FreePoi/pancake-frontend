@@ -92,6 +92,7 @@ const SlippageTabs = () => {
           <Button
             style={{
               height: '36px',
+              fontSize: '14px',
               color: 'white',
               background: userSlippageTolerance === 10 ? '#1BD3D5' : '#272E32',
               fontWeight: 'bold',
@@ -108,6 +109,7 @@ const SlippageTabs = () => {
           <Button
             style={{
               height: '36px',
+              fontSize: '14px',
               color: 'white',
               background: userSlippageTolerance === 50 ? '#1BD3D5' : '#272E32',
               fontWeight: 'bold',
@@ -126,6 +128,7 @@ const SlippageTabs = () => {
               height: '36px',
               background: userSlippageTolerance === 100 ? '#1BD3D5' : '#272E32',
               color: 'white',
+              fontSize: '14px',
               fontWeight: 'bold',
             }}
             mr="12px"
@@ -151,6 +154,7 @@ const SlippageTabs = () => {
                 color: 'white',
                 background: 'rgba(0,0,0,0)',
                 border: '0',
+                fontSize: '14px',
               }}
               scale="sm"
               placeholder={(userSlippageTolerance / 100).toFixed(2)}
@@ -162,7 +166,7 @@ const SlippageTabs = () => {
               isWarning={!slippageInputIsValid}
               isSuccess={![10, 50, 100].includes(userSlippageTolerance)}
             />
-            <Text color="#00DBDE" bold ml="2px">
+            <Text small color="#00DBDE" bold ml="2px">
               %
             </Text>
           </Flex>
