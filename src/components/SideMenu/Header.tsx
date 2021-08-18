@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { useWeb3React } from '@web3-react/core';
-import TwitterSvg from './imgs/twitter.svg';
-import FacebookSvg from './imgs/facebook.svg';
 import ThemeWhiteSvg from './imgs/theme-white.svg';
 import ConnectWalletButton from '../ConnectWalletButton';
 import CollapseSvg from './imgs/collapse.svg';
 import { useMatchBreakpoints } from '@kaco/uikit';
+import TwitterIcon from '../svg/Twitter';
+import TelegramIcon from '../svg/Telegram';
 
 export enum ThemeChoice {
   Dark,
@@ -32,11 +32,11 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
         />
       )}
       <div className="left">
-        <a href="https://www.twitter.com">
-          <img src={TwitterSvg} alt="" />
+        <a target="_blank" rel="noreferrer" href="https://twitter.com/KACOFinance">
+          <TwitterIcon height="28px" />
         </a>
-        <a href="https://www.facebook.com">
-          <img src={FacebookSvg} alt="" />
+        <a target="_blank" rel="noreferrer" href="https://t.me/coinversationofficial">
+          <TelegramIcon height="28px" />
         </a>
       </div>
       <div className="right">
@@ -75,6 +75,11 @@ export default styled(Header)`
   > .left > a {
     &:first-child {
       margin-right: 16px;
+    }
+    &:hover {
+      svg {
+        fill: #00dbde;
+      }
     }
     display: block;
     width: 28px;
