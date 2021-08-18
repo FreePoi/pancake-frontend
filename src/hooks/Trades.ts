@@ -32,11 +32,11 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
 
     return [...common, ...additionalA, ...additionalB];
   }, [chainId, tokenA, tokenB]);
-  useEffect(
-    () =>
-      console.log('[tokenA, tokenB]', [tokenA, tokenB], currencyB, chainId, currencyB instanceof Token, 'bases', bases),
-    [tokenA, tokenB, currencyA, chainId, currencyB, bases],
-  );
+  // useEffect(
+  //   () =>
+  //     console.log('[tokenA, tokenB]', [tokenA, tokenB], currencyB, chainId, currencyB instanceof Token, 'bases', bases),
+  //   [tokenA, tokenB, currencyA, chainId, currencyB, bases],
+  // );
   const basePairs: [Token, Token][] = useMemo(
     () => flatMap(bases, (base): [Token, Token][] => bases.map((otherBase) => [base, otherBase])),
     [bases],
@@ -75,37 +75,37 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
     [tokenA, tokenB, bases, basePairs, chainId],
   );
 
+  console.log('allPairCombinations', allPairCombinations);
   const allPairs = usePairs(allPairCombinations);
-  useEffect(
-    () =>
-      console.log(
-        'basePairs',
-        basePairs.map((p) => `${p[0].symbol}-${p[1].symbol}`),
-        'allPairCombinations',
-        allPairCombinations,
-        'allPairs',
-        allPairs,
-        allPairs
-          // filter out invalid pairs
-          .filter((result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1])),
-      ),
-    [basePairs, allPairCombinations, allPairs],
-  );
+  // useEffect(
+  //   () =>
+  //     console.log(
+  //       'basePairs',
+  //       basePairs.map((p) => `${p[0].symbol}-${p[1].symbol}`),
+  //       'allPairCombinations',
+  //       allPairCombinations,
+  //       'allPairs',
+  //       allPairs,
+  //       allPairs
+  //         // filter out invalid pairs
+  //         .filter((result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1])),
+  //     ),
+  //   [basePairs, allPairCombinations, allPairs],
+  // );
   // only pass along valid pairs, non-duplicated pairs
-  return useMemo(
-    () =>
-      Object.values(
-        allPairs
-          // filter out invalid pairs
-          .filter((result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1]))
-          // filter out duplicated pairs
-          .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
-            memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr;
-            return memo;
-          }, {}),
-      ),
-    [allPairs],
-  );
+  return useMemo(() => {
+    console.log('allPairs', allPairs);
+    return Object.values(
+      allPairs
+        // filter out invalid pairs
+        .filter((result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1]))
+        // filter out duplicated pairs
+        .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
+          memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr;
+          return memo;
+        }, {}),
+    );
+  }, [allPairs]);
 }
 
 const MAX_HOPS = 3;
@@ -123,7 +123,9 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
       console.log(
         'singleHopOnly',
         singleHopOnly,
+        'currencyAmountIn',
         currencyAmountIn,
+        'currencyOut',
         currencyOut,
         'allowedPairs',
         allowedPairs.map((p) => `${p.token0.symbol}-${p.token1.symbol}`),
@@ -133,6 +135,14 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
   return useMemo(() => {
     if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
       if (singleHopOnly) {
+        console.log(
+          'singleHopOnly',
+          singleHopOnly,
+          currencyAmountIn,
+          currencyOut,
+          'allowedPairs',
+          allowedPairs.map((p) => `${p.token0.symbol}-${p.token1.symbol}`),
+        );
         return (
           Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, { maxHops: 1, maxNumResults: 1 })[0] ??
           null
@@ -149,6 +159,7 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
           bestTradeSoFar = currentTrade;
         }
       }
+      console.log('MAX_HOPS', MAX_HOPS, 'bestTradeSoFar', bestTradeSoFar);
       return bestTradeSoFar;
     }
 

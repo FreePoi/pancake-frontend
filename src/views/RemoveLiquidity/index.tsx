@@ -267,7 +267,18 @@ export default function RemoveLiquidity({
     } else {
       throw new Error('Attempting to confirm without approval or a signature. Please contact support.');
     }
-
+    console.log(
+      'approval',
+      approval === ApprovalState.APPROVED,
+      oneCurrencyIsETH,
+      args,
+      methodNames,
+      currencyA,
+      currencyB,
+      ETHER,
+      'signatureData',
+      signatureData,
+    );
     const safeGasEstimates: (BigNumber | undefined)[] = await Promise.all(
       methodNames.map((methodName) =>
         router.estimateGas[methodName](...args)
@@ -359,7 +370,7 @@ export default function RemoveLiquidity({
               <Text fontSize="12px" bold>
                 {t('%assetA%/%assetB%', { assetA: currencyA?.symbol ?? '', assetB: currencyB?.symbol ?? '' })}
               </Text>
-              <Text fontSize="12px">{t('Burned')}</Text>
+              <Text fontSize="12px">&nbsp;{t('Burned')}</Text>
             </RowFixed>
             <RowFixed>
               <Text fontSize="12px" color="#F1842C">

@@ -35,16 +35,16 @@ export default function Pool() {
     liquidityTokens,
   );
 
-  console.log(
-    'trackedTokenPairs',
-    trackedTokenPairs,
-    'liquidityTokens',
-    liquidityTokens,
-    'tokenPairsWithLiquidityTokens',
-    tokenPairsWithLiquidityTokens,
-    'v2PairsBalances',
-    v2PairsBalances,
-  );
+  // console.log(
+  //   'trackedTokenPairs',
+  //   trackedTokenPairs,
+  //   'liquidityTokens',
+  //   liquidityTokens,
+  //   'tokenPairsWithLiquidityTokens',
+  //   tokenPairsWithLiquidityTokens,
+  //   'v2PairsBalances',
+  //   v2PairsBalances,
+  // );
   // fetch the reserves for all V2 pools in which the user has a balance
   const liquidityTokensWithBalances = useMemo(
     () =>

@@ -37,8 +37,19 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
   );
 
   const results = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'getReserves');
-
+  //0xb43c468F8d805B1cDd08d3ab04dC6FB699fA25cb
   return useMemo(() => {
+    results &&
+      console.log(
+        'useMultipleContractSingleData',
+        results,
+        'pairAddresses',
+        pairAddresses,
+        'tokens name',
+        tokens.map((t) => `${t[0]?.symbol}-${t[1]?.symbol}`),
+        'tokens address',
+        tokens.map((t) => `${t[0]?.address}-${t[1]?.address}`),
+      );
     return results.map((result, i) => {
       const { result: reserves, loading } = result;
       const tokenA = tokens[i][0];
@@ -54,7 +65,7 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
         new Pair(new TokenAmount(token0, reserve0.toString()), new TokenAmount(token1, reserve1.toString())),
       ];
     });
-  }, [results, tokens]);
+  }, [results, tokens, pairAddresses]);
 }
 
 export function usePair(tokenA?: Currency, tokenB?: Currency): [PairState, Pair | null] {

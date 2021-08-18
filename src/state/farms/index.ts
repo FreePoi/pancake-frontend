@@ -34,23 +34,23 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<Farm[], number[]>(
 
     // Add price helper farms
     const farmsWithPriceHelpers = farmsToFetch.concat([]);
-    console.log('farmsWithPriceHelpers------------', farmsWithPriceHelpers);
+    // console.log('farmsWithPriceHelpers------------', farmsWithPriceHelpers);
 
-    try {
-      const farms = await fetchFarms(farmsWithPriceHelpers);
-      const farmsWithPrices = await fetchFarmsPrices(farms);
-      console.log('farmsWithPrices------------', farmsWithPrices);
+    const farms = await fetchFarms(farmsWithPriceHelpers);
+    const farmsWithPrices = await fetchFarmsPrices(farms);
+    // console.log('farmsWithPrices------------', farmsWithPrices);
 
-      // Filter out price helper LP config farms
-      const farmsWithoutHelperLps = farmsWithPrices.filter((farm: Farm) => {
-        return farm.pid || farm.pid === 0;
-      });
+    // Filter out price helper LP config farms
+    const farmsWithoutHelperLps = farmsWithPrices.filter((farm: Farm) => {
+      return farm.pid || farm.pid === 0;
+    });
 
-      return farmsWithoutHelperLps;
-    } catch (e) {
-      console.log('eeeeeee', e);
-      return [];
-    }
+    return farmsWithoutHelperLps;
+    // try {
+    // } catch (e) {
+    //   console.log('eeeeeee', e);
+    //   return [];
+    // }
   },
 );
 

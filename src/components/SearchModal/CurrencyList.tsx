@@ -184,7 +184,7 @@ export default function CurrencyList({
           <ImportRow style={style} token={token} showImportView={showImportView} setImportToken={setImportToken} dim />
         );
       }
-      console.log('currency', currency);
+      // console.log('currency', currency);
       return (
         <CurrencyRow
           style={style}
@@ -209,7 +209,7 @@ export default function CurrencyList({
   );
 
   const itemKey = useCallback((index: number, data: any) => currencyKey(data[index]), []);
-  console.log('itemData', itemData);
+  // console.log('itemData', itemData);
   return (
     <FixedSizeList
       height={height}

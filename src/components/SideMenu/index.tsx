@@ -196,7 +196,6 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
   // }, [])
 
   useEffect(() => {
-    console.log('isXs, isSm, isMd', isXs, isSm, isMd, [isXs, isSm, isMd].some(Boolean));
     if ([isXs, isSm, isMd].some(Boolean)) {
       setCollapsed(true);
     } else {

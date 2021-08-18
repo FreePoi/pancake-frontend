@@ -92,7 +92,7 @@ export default function Swap({ history }: RouteComponentProps) {
   } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue);
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE;
   const trade = showWrap ? undefined : v2Trade;
-
+  console.log('trade', trade);
   const parsedAmounts = showWrap
     ? {
         [Field.INPUT]: parsedAmount,
@@ -151,7 +151,7 @@ export default function Swap({ history }: RouteComponentProps) {
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false);
-  console.log('showWrap', showWrap, 'trade', trade, 'currencies', currencies);
+  // console.log('showWrap', showWrap, 'trade', trade, 'currencies', currencies);
 
   // mark when a user has submitted an approval, reset onTokenSelection for input field
   useEffect(() => {

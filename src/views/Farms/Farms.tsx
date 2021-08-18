@@ -193,7 +193,7 @@ const Farms: React.FC = () => {
     }
   }, [chosenFarmsMemoized, observerIsSet]);
 
-  console.log('chosenFarmsMemoized', chosenFarmsMemoized);
+  // console.log('chosenFarmsMemoized', chosenFarmsMemoized);
   const rowData = chosenFarmsMemoized.map((farm) => {
     const { token, quoteToken } = farm;
     const tokenAddress = token.address;
