@@ -1,6 +1,6 @@
 import React, { FC, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { usePriceCakeBusd } from 'state/farms/hooks';
 import LogoPng from './imgs/logo.svg';
 import BgPng from './imgs/bg.png';
@@ -60,6 +60,39 @@ const menuItems: {
   //   link: '/info',
   // },
 ];
+
+const NavLink = styled(Link)<{ active: boolean }>`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-family: Microsoft YaHei;
+  color: #ffffff;
+  height: 48px;
+  margin-bottom: 4px;
+  &:last-child {
+    margin-bottom: 0px;
+  }
+  svg {
+    fill: white;
+  }
+  &:hover {
+    background: #272e32;
+  }
+  > span {
+    margin-left: 12px;
+  }
+  > .icon-holder {
+    ${(props) => (props.active ? 'background: #1bd3d5;' : '')}
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 16px;
+  }
+`;
+
 const Wrapper = styled.div<{ collapsed: boolean }>`
   background: #1f252a;
   flex: 1;
@@ -124,43 +157,6 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
     > .nav {
       flex: 1;
       margin-top: 20px;
-      > .link {
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        font-family: Microsoft YaHei;
-        color: #ffffff;
-        height: 48px;
-        margin-bottom: 4px;
-        &:last-child {
-          margin-bottom: 0px;
-        }
-        svg {
-          fill: white;
-        }
-        /* svg:hover {
-          fill: #1bd3d5;
-        } */
-        /* &:hover {
-          color: #1bd3d5;
-          background: #272e32;
-        } */
-        > span {
-          margin-left: 12px;
-        }
-        > .icon-holder {
-          &:hover {
-            background: #1bd3d5;
-          }
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-left: 16px;
-        }
-      }
     }
 
     > .account-info {
@@ -191,6 +187,7 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const cakePriceUsd = usePriceCakeBusd();
   const { isXs, isSm, isMd } = useMatchBreakpoints();
+  const { pathname } = useLocation();
 
   const sideCollapsedWidth = useMemo(() => {
     if ([isXs, isSm].some(Boolean)) {
@@ -198,13 +195,6 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
     }
     return '64px';
   }, [isXs, isSm]);
-
-  // const sideUncollapsedWidth = useMemo(() => {
-  //   if ([isXs, isSm].some(Boolean)) {
-  //     return '200px'
-  //   }
-  //   return '64px';
-  // }, [])
 
   useEffect(() => {
     if ([isXs, isSm, isMd].some(Boolean)) {
@@ -228,8 +218,8 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
         </div>
         <div className="nav">
           {menuItems.map((item) => (
-            <Link
-              className="link"
+            <NavLink
+              active={item.link === '/' ? pathname === item.link : pathname.startsWith(item.link)}
               to={item.link}
               key={item.link}
               onClick={() => {
@@ -238,7 +228,7 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
             >
               <div className="icon-holder">{item.img()}</div>
               {!collapsed && <span>{item.text}</span>}
-            </Link>
+            </NavLink>
           ))}
         </div>
         <div className="account-info">
