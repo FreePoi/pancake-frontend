@@ -103,11 +103,11 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   if (!account) {
     return (
       <ActionContainer>
-        <ActionTitles>
+        <div style={{ marginBottom: '0px', alignItems: 'center', display: 'flex' }}>
           <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
             {t('Start Farming')}
           </Text>
-        </ActionTitles>
+        </div>
         <ActionContent>
           <ConnectWalletButton width="100%" />
         </ActionContent>
@@ -129,6 +129,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
               {displayBalance()}
               {stakedBalance.gt(0) && lpPrice.gt(0) && (
                 <Balance
+                  ml="7px"
                   fontSize="12px"
                   color="textSubtle"
                   decimals={2}
@@ -142,15 +143,15 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
           <ActionContent>
             <IconButtonWrapper>
               <IconButton width="48px" variant="secondary" onClick={onPresentWithdraw} mr="6px">
-                <MinusIcon color="primary" width="14px" />
+                <MinusIcon color="primary" width="20px" />
               </IconButton>
               <IconButton
                 width="48px"
-                variant="secondary"
+                variant="primary"
                 onClick={onPresentDeposit}
                 disabled={['history', 'archived'].some((item) => location.pathname.includes(item))}
               >
-                <AddIcon color="primary" width="14px" />
+                <AddIcon color="white" width="20px" />
               </IconButton>
             </IconButtonWrapper>
           </ActionContent>

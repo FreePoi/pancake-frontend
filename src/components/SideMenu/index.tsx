@@ -5,9 +5,7 @@ import { usePriceCakeBusd } from 'state/farms/hooks';
 import LogoPng from './imgs/logo.svg';
 import BgPng from './imgs/bg.png';
 // import FarmSvg from './imgs/icon_Farm_D.svg';
-import FarmNSvg from './imgs/icon_Farm_N.svg';
 // import HomeSvg from './imgs/icon_home_D.svg';
-import HomeNSvg from './imgs/icon_home_N.svg';
 import UncollapsedSvg from './imgs/icon_zk.svg';
 import CollapsedSvg from './imgs/icon_sq.svg';
 // import InfoSvg from './imgs/icon_Info_D.svg';
@@ -20,7 +18,6 @@ import CollapsedSvg from './imgs/icon_sq.svg';
 import TradeSvg from '../svg/Trade';
 import FarmSvg from '../svg/Farm';
 import HomeSvg from '../svg/Home';
-import TradeNSvg from './imgs/icon_trade_N.svg';
 import Logo2Svg from './imgs/logo2_primary.svg';
 import Logo2DefaultSvg from './imgs/logo2_default.svg';
 import Header from './Header';
@@ -114,10 +111,11 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
       width: 20px;
       height: 20px;
       position: absolute;
-      right: 10px;
+      right: 22px;
       top: 27px;
     }
     > .logo > img {
+      visibility: ${(props) => (props.collapsed ? 'hidden' : 'visiable')};
       height: 30px;
       margin-left: 17px;
       margin-top: 22px;

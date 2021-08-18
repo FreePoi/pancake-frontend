@@ -45,6 +45,8 @@ export const ActionTitles = styled.div`
   > .balance {
     font-weight: bold;
     color: #1bd3d5;
+    display: flex;
+    align-items: center;
   }
 `;
 
@@ -55,7 +57,6 @@ export const ActionContent = styled.div`
 
   > button {
     height: 48px;
-    background: #1f373b;
     border-radius: 12px;
   }
 `;

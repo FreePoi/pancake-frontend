@@ -76,6 +76,7 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
     </div>
   );
 };
+const lg = `@media screen and (max-width: 1150px)`;
 
 export default styled(Home)`
   overflow: hidden;
@@ -104,19 +105,31 @@ export default styled(Home)`
       padding: 0px 80px;
     }
     > .banner {
-      flex-wrap: wrap;
-      flex-direction: column-reverse;
-      ${({ theme }) => theme.mediaQueries.lg} {
-        flex-wrap: no-wrap;
+      ${lg} {
+        flex-direction: column-reverse;
+        flex-wrap: wrap;
+      }
+      ${({ theme }) => theme.mediaQueries.md} {
+        /* flex-wrap: no-wrap;
         flex-direction: initial;
-        justify-content: center;
+        justify-content: center; */
+      }
+      ${({ theme }) => theme.mediaQueries.xl} {
+        justify-content: space-between;
       }
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 7px;
+
+      ${lg} {
+        margin-bottom: 30px;
+      }
       > .left {
-        text-align: center;
+        ${lg} {
+          text-align: center;
+        }
+        text-align: left;
         padding-left: 10px;
         margin-top: 30px;
         margin-bottom: 30px;
@@ -126,9 +139,13 @@ export default styled(Home)`
           margin-bottom: 0px;
         }
         h1 {
-          font-size: 40px;
+          font-size: 60px;
+
+          ${lg} {
+            font-size: 40px;
+            text-align: center;
+          }
           ${({ theme }) => theme.mediaQueries.md} {
-            font-size: 60px;
           }
           font-weight: bold;
           margin-bottom: 30px;

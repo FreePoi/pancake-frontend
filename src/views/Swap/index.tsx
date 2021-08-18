@@ -309,7 +309,7 @@ export default function Swap({ history }: RouteComponentProps) {
       <AppBody>
         <AppHeader title={t('Trade')} />
         <Wrapper id="swap-page">
-          <div>
+          <div style={{ paddingBottom: showWrap ? '20px' : '0px' }}>
             <CurrencyInputPanel
               focused={independentField === Field.INPUT}
               label={independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')}
@@ -369,7 +369,12 @@ export default function Swap({ history }: RouteComponentProps) {
             ) : null}
 
             {showWrap ? null : (
-              <AutoColumn gap="8px" style={{ padding: '20px 16px' }}>
+              <AutoColumn
+                gap="8px"
+                style={{
+                  padding: '20px 16px',
+                }}
+              >
                 {Boolean(trade) && (
                   <div className="trade-price" style={{ display: 'flex', justifyContent: 'center' }}>
                     <TradePrice

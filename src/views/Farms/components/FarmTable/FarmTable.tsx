@@ -78,8 +78,15 @@ const FarmTable: React.FC<ITableProps> = (props) => {
         <TableWrapper ref={tableWrapperEl}>
           <StyledTable>
             <TableBody>
-              {rows.map((row) => {
-                return <Row {...row.original} userDataReady={userDataReady} key={`table-row-${row.id}`} />;
+              {rows.map((row, index) => {
+                return (
+                  <Row
+                    {...row.original}
+                    isLast={index === rows.length - 1}
+                    userDataReady={userDataReady}
+                    key={`table-row-${row.id}`}
+                  />
+                );
               })}
             </TableBody>
           </StyledTable>

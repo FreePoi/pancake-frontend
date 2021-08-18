@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { useWeb3React } from '@web3-react/core';
 import ConnectWalletButton from '../ConnectWalletButton';
-import CollapseSvg from './imgs/collapse.svg';
 import { useMatchBreakpoints } from '@kaco/uikit';
 import TwitterIcon from '../svg/Twitter';
 import TelegramIcon from '../svg/Telegram';
+import UncollapsedSvg from './imgs/icon_sq.svg';
 
 export enum ThemeChoice {
   Dark,
@@ -24,7 +24,7 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
     <div className={className}>
       {(isXs || isSm) && (
         <img
-          src={CollapseSvg}
+          src={UncollapsedSvg}
           alt=""
           style={{ transform: collapsed ? 'scaleX(-1)' : '' }}
           onClick={() => setCollapsed(!collapsed)}
@@ -52,30 +52,23 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
 };
 
 export default styled(Header)`
-  padding-left: 41px;
+  padding-left: 20px;
   padding-right: 20px;
   display: flex;
   align-items: center;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    justify-content: space-between;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    justify-content: space-between;
-  }
-  /* 
-  ${({ theme }) => theme.mediaQueries.md} {
-    justify-content: flex-end;
-  } */
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    justify-content: flex-end;
-  }
+  justify-content: space-between;
   height: 72px;
   position: absolute;
   top: 0px;
   width: 100%;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    justify-content: flex-end;
+  }
+  > img {
+    width: 20px;
+    height: 20px;
+  }
 
   > .right {
     display: flex;
@@ -112,6 +105,9 @@ export default styled(Header)`
         height: 20px;
       }
     }
+    > .account::-webkit-scrollbar {
+      width: 0px;
+    }
     > .account {
       display: flex;
       align-items: center;
@@ -127,7 +123,7 @@ export default styled(Header)`
       max-width: 150px;
       > span {
         text-overflow: ellipsis;
-        overflow-x: hidden;
+        overflow: hidden;
       }
       > img {
         margin-left: 14px;

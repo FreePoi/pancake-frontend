@@ -27,6 +27,7 @@ export interface RowProps {
 
 interface RowPropsWithLoading extends RowProps {
   userDataReady: boolean;
+  isLast: boolean;
 }
 
 const cells = {
@@ -50,14 +51,13 @@ const CellInner = styled.div`
   }
 `;
 
-const StyledTr = styled.tr`
+const StyledTr = styled.tr<{ isLast: boolean }>`
   cursor: pointer;
-  /* border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder}; */
-  border-bottom: 1px solid #122124;
+  ${(props) => !props.isLast && 'border-bottom: 1px solid #122124;'}
 `;
 
 const EarnedMobileCell = styled.td`
-  padding: 16px 0 24px 16px;
+  /* padding: 16px 0 24px 16px; */
 `;
 
 const AprMobileCell = styled.td`
@@ -66,7 +66,7 @@ const AprMobileCell = styled.td`
 `;
 
 const FarmMobileCell = styled.td`
-  padding-top: 24px;
+  /* padding-top: 24px; */
 `;
 
 const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
@@ -84,16 +84,16 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
     setActionPanelExpanded(hasStakedAmount);
   }, [hasStakedAmount]);
 
-  const { isXl, isXs } = useMatchBreakpoints();
+  const { isXl, isXs, isSm } = useMatchBreakpoints();
 
   const isMobile = !isXl;
   const tableSchema = isMobile ? MobileColumnSchema : DesktopColumnSchema;
   const columnNames = tableSchema.map((column) => column.name);
-
+  console.log('isxs', isXs, isSm);
   const handleRenderRow = () => {
-    if (!isXs) {
+    if (!isXs && !isSm) {
       return (
-        <StyledTr onClick={toggleActionPanel}>
+        <StyledTr onClick={toggleActionPanel} isLast={props.isLast}>
           {Object.keys(props)
             .filter((key) => key !== 'multiplier')
             .map((key) => {
@@ -140,27 +140,27 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
     }
 
     return (
-      <StyledTr onClick={toggleActionPanel}>
+      <StyledTr onClick={toggleActionPanel} isLast={props.isLast}>
         <td>
-          <tr>
-            <FarmMobileCell>
-              <CellLayout>
-                <Farm {...props.farm} />
-              </CellLayout>
-            </FarmMobileCell>
-          </tr>
-          <tr>
-            <EarnedMobileCell>
-              <CellLayout label={t('Rewards')}>
-                <Earned {...props.earned} userDataReady={userDataReady} />
-              </CellLayout>
-            </EarnedMobileCell>
-            <AprMobileCell>
-              <CellLayout label={t('APR')}>
-                <Apr {...props.apr} hideButton />
-              </CellLayout>
-            </AprMobileCell>
-          </tr>
+          <FarmMobileCell>
+            <CellLayout>
+              <Farm {...props.farm} />
+            </CellLayout>
+          </FarmMobileCell>
+        </td>
+        <td>
+          <EarnedMobileCell>
+            <CellLayout label={t('Rewards')}>
+              <Earned {...props.earned} userDataReady={userDataReady} />
+            </CellLayout>
+          </EarnedMobileCell>
+        </td>
+        <td>
+          {/* <AprMobileCell>
+            <CellLayout label={t('APR')}>
+              <Apr {...props.apr} hideButton />
+            </CellLayout>
+          </AprMobileCell> */}
         </td>
         <td>
           <CellInner>

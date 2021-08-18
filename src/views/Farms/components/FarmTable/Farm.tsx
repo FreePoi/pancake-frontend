@@ -65,6 +65,7 @@ const Farm: React.FunctionComponent<FarmProps> = ({ token, quoteToken, label, pi
   //   return null;
   // };
 
+  console.log('token1', token, 'token2', quoteToken);
   return (
     <Container>
       <TokenWrapper>
