@@ -2487,10 +2487,10 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@kaco/uikit@^0.46.24":
-  version "0.46.24"
-  resolved "https://registry.npmjs.org/@kaco/uikit/-/uikit-0.46.24.tgz#93fc999faceb703329cf1a8bb967ec69c88a2cf5"
-  integrity sha512-GlG8cTm9Q5A6NYZobFK98VHOXvXXmrBcjFSqx01yD96s5LjoDyWE0Oy4oQIMbUfqe5TdBBlK2mZJ8ihV5mAL4w==
+"@kaco/uikit@^0.46.25":
+  version "0.46.25"
+  resolved "https://registry.npmjs.org/@kaco/uikit/-/uikit-0.46.25.tgz#de2ef8e3d0d14e051eb150457586ceb89544984e"
+  integrity sha512-laKwDVmrPfoBbv+XZ1bpGVx1RzHiJS+xUvdv+c0U2WfpVgyqBmPpUe2hAOGvR6Ln8TyiiSmfUYiB4S1/JAejcw==
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"

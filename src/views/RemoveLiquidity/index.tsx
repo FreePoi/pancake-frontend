@@ -114,7 +114,7 @@ export default function RemoveLiquidity({
       { name: 'verifyingContract', type: 'address' },
     ];
     const domain = {
-      name: 'Pancake LPs',
+      name: 'Kaco LPs',
       version: '1',
       chainId,
       verifyingContract: pair.liquidityToken.address,
@@ -155,6 +155,7 @@ export default function RemoveLiquidity({
         });
       })
       .catch((err) => {
+        // console.log('sign err', err);
         // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
         if (err?.code !== 4001) {
           approveCallback();
@@ -475,6 +476,18 @@ export default function RemoveLiquidity({
     true,
     true,
     'removeLiquidityModal',
+  );
+
+  console.log(
+    'currencyIdA, currencyIdB',
+    currencyIdA,
+    currencyIdB,
+    'tokenA, tokenB',
+    tokenA,
+    tokenB,
+    'currencyA, currencyB',
+    currencyA,
+    currencyB,
   );
 
   return (

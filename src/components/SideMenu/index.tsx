@@ -183,6 +183,7 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
     }
   }
 `;
+
 const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const cakePriceUsd = usePriceCakeBusd();
@@ -219,7 +220,13 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
         <div className="nav">
           {menuItems.map((item) => (
             <NavLink
-              active={item.link === '/' ? pathname === item.link : pathname.startsWith(item.link)}
+              active={
+                item.link === '/'
+                  ? pathname === item.link
+                  : ['/add', '/remove', '/liquidity'].find((p) => pathname.startsWith(p))
+                  ? item.link === '/swap'
+                  : pathname.startsWith(item.link)
+              }
               to={item.link}
               key={item.link}
               onClick={() => {

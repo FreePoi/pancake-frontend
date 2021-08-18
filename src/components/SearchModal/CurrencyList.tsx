@@ -4,7 +4,7 @@ import { Text } from '@kaco/uikit';
 import styled from 'styled-components';
 import { FixedSizeList } from 'react-window';
 import { wrappedCurrency } from 'utils/wrappedCurrency';
-import { LightGreyCard } from 'components/Card';
+import { ErrorCard } from 'components/Card';
 import QuestionHelper from 'components/QuestionHelper';
 import { useTranslation } from 'contexts/Localization';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
@@ -17,6 +17,7 @@ import { CurrencyLogo } from '../Logo';
 import CircleLoader from '../Loader/CircleLoader';
 import { isTokenOnList } from '../../utils';
 import ImportRow from './ImportRow';
+import ErrorSvg from './imgs/error.svg';
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : '';
@@ -164,9 +165,12 @@ export default function CurrencyList({
       if (index === breakIndex || !data) {
         return (
           <FixedContentRow style={style}>
-            <LightGreyCard padding="8px 12px" borderRadius="8px">
+            <ErrorCard padding="6px 10px">
               <RowBetween>
-                <Text small>{t('Expanded results from inactive Token Lists')}</Text>
+                <img style={{ width: '28px', height: '24px' }} src={ErrorSvg} alt="" />
+                <Text small color="secondary">
+                  {t('Expanded results from inactive Token Lists')}
+                </Text>
                 <QuestionHelper
                   text={t(
                     "Tokens from inactive lists. Import specific tokens below or click 'Manage' to activate more lists.",
@@ -174,7 +178,7 @@ export default function CurrencyList({
                   ml="4px"
                 />
               </RowBetween>
-            </LightGreyCard>
+            </ErrorCard>
           </FixedContentRow>
         );
       }
