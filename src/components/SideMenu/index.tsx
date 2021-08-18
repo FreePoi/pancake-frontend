@@ -2,7 +2,7 @@ import React, { FC, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { usePriceCakeBusd } from 'state/farms/hooks';
-import LogoPng from './imgs/logo.png';
+import LogoPng from './imgs/logo.svg';
 import CollapseSvg from './imgs/collapse.svg';
 import FarmSvg from './imgs/icon_Farm_D.svg';
 import FarmNSvg from './imgs/icon_Farm_N.svg';
