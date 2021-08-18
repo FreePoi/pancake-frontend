@@ -60,11 +60,6 @@ const EarnedMobileCell = styled.td`
   /* padding: 16px 0 24px 16px; */
 `;
 
-const AprMobileCell = styled.td`
-  padding-top: 16px;
-  padding-bottom: 24px;
-`;
-
 const FarmMobileCell = styled.td`
   /* padding-top: 24px; */
 `;

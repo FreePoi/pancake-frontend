@@ -6,12 +6,10 @@ import KacoInfoPng from './components/kaco-info-bg.png';
 import { useTranslation } from 'contexts/Localization';
 import { Text, Flex } from '@kaco/uikit';
 import { useMatchBreakpoints } from '@kaco/uikit';
-import { useMemo } from 'react';
 
 const Home: React.FC<{ className?: string }> = ({ className }) => {
   const { t } = useTranslation();
-  const { isXs, isSm, isMd } = useMatchBreakpoints();
-  const mb = useMemo(() => ([isXs, isSm].some(Boolean) ? '24px' : '35px'), [isXs, isSm]);
+  const { isXs, isSm } = useMatchBreakpoints();
 
   return (
     <div className={className}>
