@@ -1,12 +1,15 @@
 import tokens from './tokens';
 import { FarmConfig } from './types';
+export const KACO_LP_PID = 0;
+export const KACO_BNB_LP_PID = 1;
+export const BUSD_BNB_LP_PID = 2;
 
 const farms: FarmConfig[] = [
   /**
    * These 3 farms (PID 0, 1, 2) should always be at the top of the file.
    */
   {
-    pid: 0,
+    pid: KACO_LP_PID,
     lpSymbol: 'Kaco',
     lpAddresses: {
       97: '0x0bA819e30016Cf682C7795b44859148C65e62292',
@@ -16,7 +19,7 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
-    pid: 1,
+    pid: KACO_BNB_LP_PID,
     lpSymbol: 'Kaco-BNB LP',
     lpAddresses: {
       97: '0x4d6F0B03AEbFa48E185Ec4d6f7118994F0EedCD0',
@@ -26,7 +29,7 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.wbnb,
   },
   {
-    pid: 2,
+    pid: BUSD_BNB_LP_PID,
     lpSymbol: 'BUSD-BNB LP',
     lpAddresses: {
       97: '0x756f158A2C02246Bf00bbdB051729804F2efd9c7',

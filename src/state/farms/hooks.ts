@@ -9,6 +9,7 @@ import { farmsConfig } from 'config/constants';
 import useRefresh from 'hooks/useRefresh';
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, nonArchivedFarms } from '.';
 import { State, Farm, FarmsState } from '../types';
+import { BUSD_BNB_LP_PID, KACO_BNB_LP_PID } from 'config/constants/farms';
 
 export const usePollFarmsData = (includeArchive = false) => {
   const dispatch = useAppDispatch();
@@ -37,7 +38,7 @@ export const usePollCoreFarmData = () => {
   const { fastRefresh } = useRefresh();
 
   useEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync([1, 2]));
+    dispatch(fetchFarmsPublicDataAsync([KACO_BNB_LP_PID, BUSD_BNB_LP_PID]));
   }, [dispatch, fastRefresh]);
 };
 
@@ -94,12 +95,12 @@ export const useLpTokenPrice = (symbol: string) => {
 // /!\ Deprecated , use the BUSD hook in /hooks
 
 export const usePriceBnbBusd = (): BigNumber => {
-  const bnbBusdFarm = useFarmFromPid(2);
+  const bnbBusdFarm = useFarmFromPid(BUSD_BNB_LP_PID);
   return new BigNumber(bnbBusdFarm.quoteToken.busdPrice);
 };
 
 export const usePriceCakeBusd = (): BigNumber => {
-  const cakeBnbFarm = useFarmFromPid(1);
+  const cakeBnbFarm = useFarmFromPid(KACO_BNB_LP_PID);
 
   const cakePriceBusdAsString = cakeBnbFarm.token.busdPrice;
 

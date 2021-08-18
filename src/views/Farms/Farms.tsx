@@ -21,6 +21,7 @@ import Table from './components/FarmTable/FarmTable';
 import { RowProps } from './components/FarmTable/Row';
 import { DesktopColumnSchema, ViewMode } from './components/types';
 import FarmHeader from './components/FarmHeader';
+import { KACO_LP_PID } from 'config/constants/farms';
 
 // const StyledImage = styled(Image)`
 //   margin-left: auto;
@@ -62,9 +63,11 @@ const Farms: React.FC = () => {
 
   const [stakedOnly] = useUserFarmStakedOnly(isActive);
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid));
+  const activeFarms = farmsLP.filter(
+    (farm) => farm.pid !== KACO_LP_PID && farm.multiplier !== '0X' && !isArchivedPid(farm.pid),
+  );
   const inactiveFarms = farmsLP.filter(
-    (farm) => farm.pid !== 0 && farm.multiplier === '0X' && !isArchivedPid(farm.pid),
+    (farm) => farm.pid !== KACO_LP_PID && farm.multiplier === '0X' && !isArchivedPid(farm.pid),
   );
   const archivedFarms = farmsLP.filter((farm) => isArchivedPid(farm.pid));
 

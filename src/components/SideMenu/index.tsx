@@ -61,7 +61,7 @@ const menuItems: {
   // },
 ];
 
-const NavLink = styled(Link)<{ active: boolean }>`
+const NavLink = styled(Link)<{ active: 't' | 'f' }>`
   display: flex;
   align-items: center;
   font-size: 14px;
@@ -82,7 +82,7 @@ const NavLink = styled(Link)<{ active: boolean }>`
     margin-left: 12px;
   }
   > .icon-holder {
-    ${(props) => (props.active ? 'background: #1bd3d5;' : '')}
+    ${(props) => (props.active === 't' ? 'background: #1bd3d5;' : '')}
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -221,11 +221,15 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
           {menuItems.map((item) => (
             <NavLink
               active={
-                item.link === '/'
-                  ? pathname === item.link
-                  : ['/add', '/remove', '/liquidity'].find((p) => pathname.startsWith(p))
-                  ? item.link === '/swap'
-                  : pathname.startsWith(item.link)
+                (
+                  item.link === '/'
+                    ? pathname === item.link
+                    : ['/add', '/remove', '/liquidity'].find((p) => pathname.startsWith(p))
+                    ? item.link === '/swap'
+                    : pathname.startsWith(item.link)
+                )
+                  ? 't'
+                  : 'f'
               }
               to={item.link}
               key={item.link}

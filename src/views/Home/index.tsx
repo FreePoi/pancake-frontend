@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import HomeBgPng from './components/home-bg.png';
 import BannerPng from './components/banner.svg';
@@ -6,17 +6,58 @@ import KacoInfoPng from './components/kaco-info-bg.png';
 import { useTranslation } from 'contexts/Localization';
 import { Text, Flex } from '@kaco/uikit';
 import { useMatchBreakpoints } from '@kaco/uikit';
+import { useFarms, usePriceCakeBusd } from 'state/farms/hooks';
+import { useBurnedBalance, useTotalSupply } from 'hooks/useTokenBalance';
+import formatLocalisedCompactNumber, { getBalanceNumber } from 'utils/formatBalance';
+import { getCakeAddress } from 'utils/addressHelpers';
+import { KACO_LP_PID } from 'config/constants/farms';
+import isArchivedPid from 'utils/farmHelpers';
+import { ChainId } from '@kaco/sdk';
+import BigNumber from 'bignumber.js';
+import { Farm } from 'state/types';
+import { getFarmApr } from 'utils/apr';
+import { latinise } from 'utils/latinise';
+import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/CardActionsContainer';
+import Balance from 'components/Balance';
 
 const Home: React.FC<{ className?: string }> = ({ className }) => {
   const { t } = useTranslation();
   const { isXs, isSm } = useMatchBreakpoints();
+  const cakePriceUsd = usePriceCakeBusd();
+  const totalSupply = useTotalSupply();
+  const burnedBalance = getBalanceNumber(useBurnedBalance(getCakeAddress()));
+  const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0;
+  const cakePriceBusd = usePriceCakeBusd();
+  const mcap = cakePriceBusd.times(cakeSupply);
+  const mcapString = formatLocalisedCompactNumber(mcap.isNaN() ? 0 : mcap.toNumber());
+  const { data: farmsLP } = useFarms();
+  const activeFarms = farmsLP.filter(
+    (farm) => !(farm.pid !== KACO_LP_PID && farm.multiplier === '0X' && !isArchivedPid(farm.pid)),
+  );
 
+  const farmsWithStakedValue = useMemo(
+    () =>
+      activeFarms.reduce((all: BigNumber, farm: Farm) => {
+        if (!farm.lpTotalInQuoteToken || !farm.quoteToken.busdPrice) {
+          return all;
+        }
+        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice);
+
+        console.log('totalLiquidity', totalLiquidity.toFixed());
+        return totalLiquidity.plus(all);
+      }, new BigNumber(0)),
+    [activeFarms],
+  );
+
+  console.log('farmsWithStakedValue', farmsWithStakedValue.toFixed());
   return (
     <div className={className}>
       <div>
         <div className="banner">
           <div className="left">
-            <h1>$819,1220.11</h1>
+            <h1>
+              $<Balance value={farmsWithStakedValue.toNumber()} />
+            </h1>
             <span>{t('Liquidity')}</span>
           </div>
           <div className="right">
@@ -29,41 +70,41 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
           {[isXs, isSm].some(Boolean) ? (
             <>
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                KAC PRICE： $0.09
+                KAC PRICE： ${cakePriceUsd.isNaN() ? '0' : cakePriceUsd.toFixed(2)}
               </Text>
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                KAC Total：100000
+                KAC Total：{cakeSupply}
               </Text>
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                KAC Circulation：32425424
+                KAC Circulation：
               </Text>
 
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                KAC Burnt： 0
+                KAC Burnt：{burnedBalance.toFixed()}
               </Text>
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                KAC Market CAP： $100000
+                KAC Market CAP： ${mcapString}
               </Text>
             </>
           ) : (
             <>
               <Flex flexWrap="wrap">
                 <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                  KAC PRICE： $0.09
+                  KAC PRICE： ${cakePriceUsd.isNaN() ? '0' : cakePriceUsd.toFixed(2)}
                 </Text>
                 <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                  KAC Total：100000
+                  KAC Total：{cakeSupply}
                 </Text>
                 <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                  KAC Circulation：32425424
+                  KAC Circulation：
                 </Text>
               </Flex>
               <Flex>
                 <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                  KAC Burnt： 0
+                  KAC Burnt：{burnedBalance.toFixed()}
                 </Text>
                 <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                  KAC Market CAP： $100000
+                  KAC Market CAP： ${mcapString}
                 </Text>
                 <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color=""></Text>
               </Flex>
@@ -137,11 +178,19 @@ export default styled(Home)`
           margin-bottom: 0px;
         }
         h1 {
+          display: flex;
+          align-items: center;
           font-size: 60px;
-
+          > div > span {
+            font-size: 60px;
+            color: #1bd3d5;
+          }
           ${lg} {
             font-size: 40px;
             text-align: center;
+            > div > span {
+              font-size: 40px;
+            }
           }
           ${({ theme }) => theme.mediaQueries.md} {
           }
