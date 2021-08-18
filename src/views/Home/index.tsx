@@ -6,10 +6,12 @@ import KacoInfoPng from './components/kaco-info-bg.png';
 import { useTranslation } from 'contexts/Localization';
 import { Text, Flex } from '@kaco/uikit';
 import { useMatchBreakpoints } from '@kaco/uikit';
+import { useMemo } from 'react';
 
 const Home: React.FC<{ className?: string }> = ({ className }) => {
   const { t } = useTranslation();
   const { isXs, isSm, isMd } = useMatchBreakpoints();
+  const mb = useMemo(() => ([isXs, isSm].some(Boolean) ? '24px' : '35px'), [isXs, isSm]);
 
   return (
     <div className={className}>
@@ -28,20 +30,20 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
 
           {[isXs, isSm].some(Boolean) ? (
             <>
-              <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
+              <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
                 KAC PRICE： $0.09
               </Text>
-              <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
+              <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
                 KAC Total：100000
               </Text>
-              <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
+              <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
                 KAC Circulation：32425424
               </Text>
 
-              <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
+              <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
                 KAC Burnt： 0
               </Text>
-              <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
+              <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
                 KAC Market CAP： $100000
               </Text>
             </>
@@ -124,7 +126,10 @@ export default styled(Home)`
           margin-bottom: 0px;
         }
         h1 {
-          font-size: 60px;
+          font-size: 40px;
+          ${({ theme }) => theme.mediaQueries.md} {
+            font-size: 60px;
+          }
           font-weight: bold;
           margin-bottom: 30px;
         }
@@ -150,8 +155,12 @@ export default styled(Home)`
       /* border-radius: 20px; */
       padding: 48px 30px;
       > h3 {
-        margin-bottom: 51px;
-        font-size: 24px;
+        font-size: 18px;
+        margin-bottom: 35px;
+        ${({ theme }) => theme.mediaQueries.md} {
+          font-size: 24px;
+          margin-bottom: 51px;
+        }
         font-weight: bold;
         color: #1bd3d5;
       }
