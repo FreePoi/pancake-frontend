@@ -87,6 +87,10 @@ export const BLOCKED_ADDRESSES: string[] = [
   '0xA7e5d5A720f06526557c513402f2e6B5fA20b008',
   '0x8576aCC5C05D6Ce88f4e49bf65BdF0C62F91353C',
 ];
+export const FACTORY_ADDRESS = {
+  97: '0xd95D56A112D62DFc1e6F9bC2432d12b8e1B25d60',
+  56: '',
+};
 
 export { default as farmsConfig } from './farms';
 export { default as poolsConfig } from './pools';

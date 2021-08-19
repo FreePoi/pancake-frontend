@@ -58,20 +58,9 @@ const fetchFarm = async (farm: Farm): Promise<PublicFarmData> => {
   ];
   // console.log('fetchFarm', calls);
 
-  const a = await multicall(erc20, calls);
-  // console.log('aaaaaa', a);
-  const [tokenBalanceLP, quoteTokenBalanceLP, lpTokenBalanceMC, lpTotalSupply, tokenDecimals, quoteTokenDecimals] = a;
-  // console.log(
-  //   '[tokenBalanceLP, quoteTokenBalanceLP, lpTokenBalanceMC, lpTotalSupply, tokenDecimals, quoteTokenDecimals]',
-  //   [
-  //     new BigNumber(tokenBalanceLP)?.toFixed(),
-  //     new BigNumber(quoteTokenBalanceLP)?.toFixed(),
-  //     new BigNumber(lpTokenBalanceMC)?.toFixed(),
-  //     lpTotalSupply,
-  //     tokenDecimals,
-  //     quoteTokenDecimals,
-  //   ],
-  // );
+  const [tokenBalanceLP, quoteTokenBalanceLP, lpTokenBalanceMC, lpTotalSupply, tokenDecimals, quoteTokenDecimals] =
+    await multicall(erc20, calls);
+
   // Ratio in % of LP tokens that are staked in the MC, vs the total number in circulation
   const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply));
 
@@ -85,27 +74,7 @@ const fetchFarm = async (farm: Farm): Promise<PublicFarmData> => {
 
   // Total staked in LP, in quote token value
   const lpTotalInQuoteToken = quoteTokenAmountMc.times(new BigNumber(2));
-  // farm.pid === 1 &&
-  //   console.log(
-  //     'lpTotalInQuoteToken',
-  //     lpTotalInQuoteToken.toFixed(),
-  //     'quoteToken.busdPrice',
-  //     quoteToken.busdPrice,
-  //     'tokenBalanceLP',
-  //     new BigNumber(tokenBalanceLP).toString(),
-  //     'tokenDecimals',
-  //     tokenDecimals,
-  //     'quoteTokenAmountTotal',
-  //     quoteTokenAmountTotal.toFixed(),
-  //     'tokenAmountTotal',
-  //     tokenAmountTotal.toFixed(),
-  //     'pid',
-  //     pid,
-  //     'token.address',
-  //     token.address,
-  //     'lpAddress',
-  //     lpAddress,
-  //   );
+
   // Only make masterchef calls if farm has pid
   const [info, totalAllocPoint] =
     pid || pid === 0

@@ -6,6 +6,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React';
 
 import { useMultipleContractSingleData } from '../state/multicall/hooks';
 import { wrappedCurrency } from '../utils/wrappedCurrency';
+import multicall from 'utils/multicall';
 
 const PAIR_INTERFACE = new Interface(IUniswapV2PairABI);
 
@@ -14,6 +15,42 @@ export enum PairState {
   NOT_EXISTS,
   EXISTS,
   INVALID,
+}
+export async function getPairs(
+  currencies: [Currency | undefined, Currency | undefined][],
+): Promise<[PairState, Pair | null][]> {
+  const chainId = parseInt(process.env.REACT_APP_CHAIN_ID);
+
+  const tokens = currencies.map(([currencyA, currencyB]) => [
+    wrappedCurrency(currencyA, chainId),
+    wrappedCurrency(currencyB, chainId),
+  ]);
+
+  const pairAddresses = tokens.map(([tokenA, tokenB]) => {
+    return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB) : undefined;
+  });
+
+  const calls = pairAddresses.map((address) => ({
+    address: address,
+    name: 'getReserves',
+  }));
+
+  const results = await multicall(IUniswapV2PairABI, calls);
+  return results.map((result, i) => {
+    const { result: reserves, loading } = result;
+    const tokenA = tokens[i][0];
+    const tokenB = tokens[i][1];
+
+    if (loading) return [PairState.LOADING, null];
+    if (!tokenA || !tokenB || tokenA.equals(tokenB)) return [PairState.INVALID, null];
+    if (!reserves) return [PairState.NOT_EXISTS, null];
+    const { reserve0, reserve1 } = reserves;
+    const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA];
+    return [
+      PairState.EXISTS,
+      new Pair(new TokenAmount(token0, reserve0.toString()), new TokenAmount(token1, reserve1.toString())),
+    ];
+  });
 }
 
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {

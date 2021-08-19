@@ -74,7 +74,7 @@ const bottomLeftImage = {
   attributes: [
     { src: 'bottom-left', alt: 'KACO card' },
     { src: 'green', alt: 'Green KACO card with up arrow' },
-    { src: 'red', alt: 'Red Kaco card with down arrow' },
+    { src: 'red', alt: 'Red KAC card with down arrow' },
     { src: 'top-right', alt: 'KACO card' },
   ],
 };

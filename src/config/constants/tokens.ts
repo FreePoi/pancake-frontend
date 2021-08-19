@@ -1,20 +1,8 @@
 import { ChainId, Token } from '@kaco/sdk';
 
 export const Kaco: { [chainId: number]: Token } = {
-  [ChainId.MAINNET]: new Token(
-    ChainId.MAINNET,
-    '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
-    18,
-    'Kaco',
-    'KacoSwap Token',
-  ),
-  [ChainId.TESTNET]: new Token(
-    ChainId.TESTNET,
-    '0x0bA819e30016Cf682C7795b44859148C65e62292',
-    18,
-    'Kaco',
-    'KacoSwap Token',
-  ),
+  [ChainId.MAINNET]: new Token(ChainId.MAINNET, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'KAC', 'Kaco Token'),
+  [ChainId.TESTNET]: new Token(ChainId.TESTNET, '0x0bA819e30016Cf682C7795b44859148C65e62292', 18, 'KAC', 'Kaco Token'),
 };
 
 export const BUSD: { [chainId: number]: Token } = {
@@ -73,7 +61,7 @@ const tokens = {
     projectLink: 'https://www.binance.com/',
   },
   kaco: {
-    symbol: 'Kaco',
+    symbol: 'KAC',
     address: {
       56: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
       97: '0x0bA819e30016Cf682C7795b44859148C65e62292',
