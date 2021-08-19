@@ -15,9 +15,6 @@ import isArchivedPid from 'utils/farmHelpers';
 import BigNumber from 'bignumber.js';
 import { Farm } from 'state/types';
 import Balance from 'components/Balance';
-import { useTokenContract } from 'hooks/useContract';
-import { useSingleCallResult } from 'state/multicall/hooks';
-import { Kaco } from 'config/constants/tokens';
 import useCap from './hooks/useCap';
 
 const Home: React.FC<{ className?: string }> = ({ className }) => {
