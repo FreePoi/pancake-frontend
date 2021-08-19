@@ -15,11 +15,14 @@ import isArchivedPid from 'utils/farmHelpers';
 import BigNumber from 'bignumber.js';
 import { Farm } from 'state/types';
 import Balance from 'components/Balance';
+import { useTokenContract } from 'hooks/useContract';
+import { useSingleCallResult } from 'state/multicall/hooks';
+import { Kaco } from 'config/constants/tokens';
+import useCap from './hooks/useCap';
 
 const Home: React.FC<{ className?: string }> = ({ className }) => {
   const { t } = useTranslation();
   const { isXs, isSm } = useMatchBreakpoints();
-  const cakePriceUsd = usePriceCakeBusd();
   const totalSupply = useTotalSupply();
   const burnedBalance = getBalanceNumber(useBurnedBalance(getCakeAddress()));
   const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0;
@@ -31,6 +34,9 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
     (farm) => !(farm.pid !== KACO_LP_PID && farm.multiplier === '0X' && !isArchivedPid(farm.pid)),
   );
 
+  const cap = useCap();
+
+  // const totalSupply: BigNumber = useSingleCallResult(contract, 'totalSupply')?.result?.[0];
   const farmsWithStakedValue = useMemo(
     () =>
       activeFarms.reduce((all: BigNumber, farm: Farm) => {
@@ -45,7 +51,6 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
     [activeFarms],
   );
 
-  console.log('farmsWithStakedValue', farmsWithStakedValue.toFixed());
   return (
     <div className={className}>
       <div>
@@ -66,10 +71,10 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
           {[isXs, isSm].some(Boolean) ? (
             <>
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                KAC PRICE： ${cakePriceUsd.isNaN() ? '0' : cakePriceUsd.toFixed(2)}
+                KAC PRICE： ${cakePriceBusd.isNaN() ? '0' : cakePriceBusd.toFixed(2)}
               </Text>
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                KAC Total：{getBalanceNumber(totalSupply)}
+                KAC Total：{cap}
               </Text>
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
                 KAC Circulation：{cakeSupply}
@@ -86,13 +91,13 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
             <>
               <Flex flexWrap="wrap">
                 <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                  KAC PRICE： ${cakePriceUsd.isNaN() ? '0' : cakePriceUsd.toFixed(2)}
+                  KAC PRICE： ${cakePriceBusd.isNaN() ? '0' : cakePriceBusd.toFixed(2)}
                 </Text>
                 <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                  KAC Total：{cakeSupply}
+                  KAC Total：{cap}
                 </Text>
                 <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                  KAC Circulation：
+                  KAC Circulation：{cakeSupply}
                 </Text>
               </Flex>
               <Flex>
