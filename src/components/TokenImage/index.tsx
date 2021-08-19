@@ -15,8 +15,7 @@ interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc
 }
 
 const getImageUrlFromToken = (token: Token) => {
-  let address = getAddress(token.symbol === 'BNB' ? tokens.wbnb.address : token.address);
-  address = '0x0a3A21356793B49154Fd3BbE91CBc2A16c0457f5';
+  const address = getAddress(token.symbol === 'BNB' ? tokens.wbnb.address : token.address);
   return `/images/tokens/${address}.svg`;
 };
 
