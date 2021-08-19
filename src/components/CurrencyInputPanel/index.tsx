@@ -38,7 +38,10 @@ const InputPanel = styled.div<{ hideInput?: boolean; focused: boolean }>`
   background: #272e32;
   box-shadow: 0px 5px 13px 2px rgba(9, 2, 18, 0.3);
   border-radius: 16px;
-  padding: 10px 16px;
+  padding: 8px 10px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 10px 16px;
+  }
   color: white;
   /* &:active {
     > .currency {
@@ -50,10 +53,17 @@ const InputPanel = styled.div<{ hideInput?: boolean; focused: boolean }>`
     }
   } */
   > .currency {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     border: ${(props) => (props.focused ? '2px solid #1bd3d5' : '')};
     height: 72px;
-    padding: 10px 16px;
-    width: 136px;
+    padding: 8px;
+    ${({ theme }) => theme.mediaQueries.sm} {
+      padding: 10px 16px;
+    }
+    max-width: 136px;
+    width: 100%;
     background: #1f252a;
     border-radius: 16px;
     > .label {
@@ -83,7 +93,18 @@ const InputPanel = styled.div<{ hideInput?: boolean; focused: boolean }>`
       font-size: 12px;
       color: #9da6a6;
       margin-bottom: 4px;
-
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      > span {
+        @media screen and (max-width: 576px) {
+          display: inline-block;
+          width: 90px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
       > button {
         font-size: 12px;
         color: #00dbde;
@@ -184,12 +205,14 @@ export default function CurrencyInputPanel({
       <div className="number">
         {!hideInput && (
           <div className="label">
-            {account && !hideBalance && !!currency && selectedCurrencyBalance
-              ? t('Balance: %amount%', { amount: selectedCurrencyBalance?.toSignificant(6) ?? '' })
-              : '--'}
+            <span>
+              {account && !hideBalance && !!currency && selectedCurrencyBalance
+                ? t('Balance: %amount%', { amount: selectedCurrencyBalance?.toSignificant(6) ?? '' })
+                : '--'}
+            </span>
 
             {!hideInput && selectedCurrencyBalance && account && currency && showMaxButton && label !== 'To' && (
-              <Button onClick={onMax} scale="sm" variant="text" pr={0}>
+              <Button onClick={onMax} scale="sm" variant="text" pr={0} pl="8px">
                 MAX
               </Button>
             )}

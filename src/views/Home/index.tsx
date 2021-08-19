@@ -69,10 +69,10 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
                 KAC PRICE： ${cakePriceUsd.isNaN() ? '0' : cakePriceUsd.toFixed(2)}
               </Text>
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                KAC Total：{cakeSupply}
+                KAC Total：{getBalanceNumber(totalSupply)}
               </Text>
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                KAC Circulation：
+                KAC Circulation：{cakeSupply}
               </Text>
 
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
@@ -111,6 +111,7 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
     </div>
   );
 };
+
 const lg = `@media screen and (max-width: 1150px)`;
 
 export default styled(Home)`

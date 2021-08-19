@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { BigNumber } from '@ethersproject/bignumber';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '@kaco/sdk';
-import { Button, Text, Flex, AddIcon, CardBody, useModal } from '@kaco/uikit';
+import { Button, Text, Flex, AddIcon, CardBody, useModal, useMatchBreakpoints } from '@kaco/uikit';
 import { RouteComponentProps } from 'react-router-dom';
 import { useIsTransactionUnsupported } from 'hooks/Trades';
 import { useTranslation } from 'contexts/Localization';
@@ -46,6 +46,7 @@ export default function AddLiquidity({
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
   const { account, chainId, library } = useActiveWeb3React();
   const { t } = useTranslation();
+  const { isXs, isSm } = useMatchBreakpoints();
 
   const currencyA = useCurrency(currencyIdA);
   const currencyB = useCurrency(currencyIdB);
@@ -315,7 +316,7 @@ export default function AddLiquidity({
           )}
           backTo="/pool"
         />
-        <CardBody>
+        <CardBody style={{ padding: isXs || isSm ? '16px' : '24px' }}>
           <AutoColumn gap="20px">
             {noLiquidity && (
               <ColumnCenter>
