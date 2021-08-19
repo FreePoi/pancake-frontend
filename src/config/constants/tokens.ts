@@ -1,7 +1,7 @@
 import { ChainId, Token } from '@kaco/sdk';
 
 export const Kaco: { [chainId: number]: Token } = {
-  [ChainId.MAINNET]: new Token(ChainId.MAINNET, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'KAC', 'Kaco Token'),
+  [ChainId.MAINNET]: new Token(ChainId.MAINNET, '0xf96429A7aE52dA7d07E60BE95A3ece8B042016fB', 18, 'KAC', 'Kaco Token'),
   [ChainId.TESTNET]: new Token(ChainId.TESTNET, '0x0bA819e30016Cf682C7795b44859148C65e62292', 18, 'KAC', 'Kaco Token'),
 };
 
@@ -21,8 +21,7 @@ export const BUSD: { [chainId: number]: Token } = {
     'Binance USD',
   ),
 };
-export const WBNB = new Token(ChainId.TESTNET, '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd', 18, 'WBNB', 'Wrapped BNB');
-// export const WBNB = new Token(ChainId.MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'WBNB', 'Wrapped BNB')
+const chainId = parseInt(process.env.REACT_APP_CHAIN_ID);
 export const DAI = new Token(
   ChainId.MAINNET,
   '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3',
@@ -63,7 +62,7 @@ const tokens = {
   kaco: {
     symbol: 'KAC',
     address: {
-      56: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+      56: '0xf96429A7aE52dA7d07E60BE95A3ece8B042016fB',
       97: '0x0bA819e30016Cf682C7795b44859148C65e62292',
     },
     decimals: 18,
@@ -666,7 +665,7 @@ const tokens = {
   wbnb: {
     symbol: 'wBNB',
     address: {
-      56: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+      56: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
       97: '0xae13d989dac2f0debff460ac112a837c89baa7cd',
     },
     decimals: 18,
@@ -810,7 +809,7 @@ const tokens = {
   syrup: {
     symbol: 'SYRUP',
     address: {
-      56: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
+      56: '0xd95D56A112D62DFc1e6F9bC2432d12b8e1B25d60',
       97: '0x4b7349f116992EE73Cafe34d9Eaf3365f8192a9D',
     },
     decimals: 18,
@@ -1870,5 +1869,6 @@ const tokens = {
     projectLink: 'https://moonpot.com/',
   },
 };
+export const WBNB = new Token(chainId, tokens.wbnb.address[chainId], 18, 'WBNB', 'Wrapped BNB');
 
 export default tokens;

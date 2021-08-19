@@ -4,7 +4,7 @@ import { useTranslation } from 'contexts/Localization';
 import { LinkExternal, Text } from '@kaco/uikit';
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard';
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts';
-import { getAddress } from 'utils/addressHelpers';
+// import { getAddress } from 'utils/addressHelpers';
 // import { getBscScanLink } from 'utils';
 // import { CommunityTag, CoreTag, DualTag } from 'components/Tags';
 
@@ -152,9 +152,9 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
   });
-  const lpAddress = getAddress(farm.lpAddresses);
+  // const lpAddress = getAddress(farm.lpAddresses);
   // const bsc = getBscScanLink(lpAddress, 'address');
-  const info = `https://pancakeswap.info/pool/${lpAddress}`;
+  // const info = `https://pancakeswap.info/pool/${lpAddress}`;
 
   return (
     <Container expanded={expanded}>
@@ -166,7 +166,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
             </StyledLinkExternal>
           </StakeContainer>
         )}
-        <StyledLinkExternal href={info}>{t('See Pair Info')}</StyledLinkExternal>
+        {/* <StyledLinkExternal href={info}>{t('See Pair Info')}</StyledLinkExternal> */}
       </InfoContainer>
       <ValueContainer>
         <ValueWrapper>

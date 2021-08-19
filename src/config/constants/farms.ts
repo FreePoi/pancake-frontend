@@ -13,7 +13,7 @@ const farms: FarmConfig[] = [
     lpSymbol: 'KAC',
     lpAddresses: {
       97: '0x0bA819e30016Cf682C7795b44859148C65e62292',
-      56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+      56: '0xf96429A7aE52dA7d07E60BE95A3ece8B042016fB',
     },
     token: tokens.syrup,
     quoteToken: tokens.wbnb,

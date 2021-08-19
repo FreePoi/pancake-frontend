@@ -1,7 +1,7 @@
 import { ChainId, JSBI, Percent, Token, WETH } from '@kaco/sdk';
 import { BUSD, DAI, USDT, BTCB, Kaco, WBNB, UST, ETH, USDC } from './tokens';
 
-export const ROUTER_ADDRESS = '0x52B82fb107f293D0712D82B639127a9807C55458';
+export const ROUTER_ADDRESS = '0xB44A8AEb4805a5404a8d20A1294a61C95Ae6F256';
 
 // a list of tokens by chain
 type ChainTokenList = {
