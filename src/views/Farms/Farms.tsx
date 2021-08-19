@@ -63,9 +63,11 @@ const Farms: React.FC = () => {
 
   const [stakedOnly] = useUserFarmStakedOnly(isActive);
 
-  const activeFarms = farmsLP.filter(
-    (farm) => farm.pid !== KACO_LP_PID && farm.multiplier !== '0X' && !isArchivedPid(farm.pid),
-  );
+  // const activeFarms = farmsLP.filter(
+  //   (farm) => farm.pid !== KACO_LP_PID && farm.multiplier !== '0X' && !isArchivedPid(farm.pid),
+  // );
+
+  const activeFarms = farmsLP.filter((farm) => farm.pid !== KACO_LP_PID && !isArchivedPid(farm.pid));
   const inactiveFarms = farmsLP.filter(
     (farm) => farm.pid !== KACO_LP_PID && farm.multiplier === '0X' && !isArchivedPid(farm.pid),
   );

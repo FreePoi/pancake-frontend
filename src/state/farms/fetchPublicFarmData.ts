@@ -134,7 +134,7 @@ const fetchFarm = async (farm: Farm): Promise<PublicFarmData> => {
     lpTotalInQuoteToken: lpTotalInQuoteToken.toJSON(),
     tokenPriceVsQuote: quoteTokenAmountTotal.div(tokenAmountTotal).toJSON(),
     poolWeight: poolWeight.toJSON(),
-    multiplier: `${allocPoint.div(100).toString()}X`,
+    multiplier: `${allocPoint.toString()}X`,
   };
 };
 
