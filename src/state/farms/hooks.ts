@@ -103,7 +103,6 @@ export const usePriceCakeBusd = (): BigNumber => {
   const cakeBnbFarm = useFarmFromPid(KACO_BNB_LP_PID);
 
   const cakePriceBusdAsString = cakeBnbFarm.token.busdPrice;
-
   const cakePriceBusd = useMemo(() => {
     return new BigNumber(cakePriceBusdAsString);
   }, [cakePriceBusdAsString]);
