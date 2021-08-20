@@ -68,16 +68,6 @@ const fetchPairsData = async (addresses: string[]): Promise<PairsData> => {
       continue;
     }
 
-    console.log(
-      `pair ${i / 4}:`,
-      amount0.toString(),
-      amount1.toString(),
-      'addresse',
-      addresses[i / 4],
-      token0Address,
-      token1Address,
-    );
-
     countup[token0Address] = countup[token0Address] ? countup[token0Address].plus(amount0) : amount0;
     countup[token1Address] = countup[token1Address] ? countup[token1Address].plus(amount1) : amount1;
 
@@ -94,8 +84,6 @@ const fetchPairsData = async (addresses: string[]): Promise<PairsData> => {
       vs: amount1.div(amount0),
     };
   }
-
-  console.log('countup', new RealBigNumber(1).div(new RealBigNumber(0)).isFinite());
 
   return { countup, source: pairsMap };
 };
