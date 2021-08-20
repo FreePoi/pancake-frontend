@@ -68,6 +68,24 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  clv: {
+    symbol: 'CLV',
+    address: {
+      56: '0x09e889bb4d5b474f561db0491c38702f367a4e4d',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: '',
+  },
+  ksm: {
+    symbol: 'KSM',
+    address: {
+      56: '0x2aa69e8d25c045b659787bc1f03ce47a388db6e8',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: '',
+  },
   babycake: {
     symbol: 'BABYCAKE',
     address: {

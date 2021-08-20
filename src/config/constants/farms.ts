@@ -16,27 +16,27 @@ const farms: FarmConfig[] = [
       56: '0xf96429A7aE52dA7d07E60BE95A3ece8B042016fB',
     },
     token: tokens.syrup,
-    quoteToken: tokens.wbnb,
+    quoteToken: tokens.dot,
   },
   {
     pid: KACO_BNB_LP_PID,
     lpSymbol: 'KAC-BNB LP',
     lpAddresses: {
       97: '0x4d6F0B03AEbFa48E185Ec4d6f7118994F0EedCD0',
-      56: '0x4d6F0B03AEbFa48E185Ec4d6f7118994F0EedCD0',
+      56: '0x315f25cea80ac6c039b86e79ffc46ae6b2e30922',
     },
     token: tokens.kaco,
-    quoteToken: tokens.wbnb,
+    quoteToken: tokens.dot,
   },
   {
     pid: BUSD_BNB_LP_PID,
     lpSymbol: 'BUSD-BNB LP',
     lpAddresses: {
       97: '0x756f158A2C02246Bf00bbdB051729804F2efd9c7',
-      56: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
+      56: '0xa0f19146914e3C160897059ef8695BcD9fcf98b2',
     },
-    token: tokens.busd,
-    quoteToken: tokens.wbnb,
+    token: tokens.dot,
+    quoteToken: tokens.busd,
   },
   /**
    * V3 by order of release (some may be out of PID order due to multiplier boost)

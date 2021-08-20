@@ -19,6 +19,12 @@ function getPriceVsBusd(
       return false;
     }
 
+    console.log(
+      'quoteTokenAddress === busdAddress',
+      quoteTokenAddress === busdAddress,
+      quoteTokenAddress.slice(0, 5),
+      busdAddress,
+    );
     if (quoteTokenAddress === busdAddress) {
       priceVsBusdMap[tokenAddress] = pair.vs;
 
@@ -27,6 +33,14 @@ function getPriceVsBusd(
 
     const quoteVsBusdPrice =
       priceVsBusdMap[quoteTokenAddress] || getPriceVsBusd(quoteTokenAddress, source, priceVsBusdMap, tokenAddress);
+    console.log(
+      'quoteVsBusdPrice',
+      quoteVsBusdPrice.toFixed(5),
+      'tokenAddress',
+      tokenAddress.slice(0, 4),
+      'quoteTokenAddress',
+      quoteTokenAddress.slice(0, 6),
+    );
 
     if (quoteVsBusdPrice) {
       priceVsBusdMap[tokenAddress] = quoteVsBusdPrice.times(pair.vs);
@@ -37,6 +51,7 @@ function getPriceVsBusd(
     return false;
   });
 
+  console.log(`${tokenAddress.slice(0, 5)}`, priceVsBusdMap[tokenAddress].toFixed(5));
   return priceVsBusdMap[tokenAddress];
 }
 
