@@ -84,7 +84,7 @@ const fetchFarmsPrices = async (farms) => {
     const token = { ...farm.token, busdPrice: baseTokenPrice.toJSON() };
     const quoteToken = { ...farm.quoteToken, busdPrice: quoteTokenPrice.toJSON() };
 
-    // console.log(farm, quoteTokenFarm, 'farm, quoteTokenFarm');
+    console.log(farm, quoteTokenFarm, 'farm, quoteTokenFarm');
 
     return { ...farm, token, quoteToken };
   });

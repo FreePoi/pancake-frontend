@@ -20,7 +20,7 @@ const farms: FarmConfig[] = [
   },
   {
     pid: KACO_BNB_LP_PID,
-    lpSymbol: 'KAC-BNB LP',
+    lpSymbol: 'KAC-DOT LP',
     lpAddresses: {
       97: '0x4d6F0B03AEbFa48E185Ec4d6f7118994F0EedCD0',
       56: '0x315f25cea80ac6c039b86e79ffc46ae6b2e30922',
@@ -30,7 +30,7 @@ const farms: FarmConfig[] = [
   },
   {
     pid: BUSD_BNB_LP_PID,
-    lpSymbol: 'BUSD-BNB LP',
+    lpSymbol: 'DOT-BUSD LP',
     lpAddresses: {
       97: '0x756f158A2C02246Bf00bbdB051729804F2efd9c7',
       56: '0xa0f19146914e3C160897059ef8695BcD9fcf98b2',
