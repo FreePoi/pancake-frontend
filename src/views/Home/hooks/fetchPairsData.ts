@@ -1,13 +1,32 @@
+import { BIG_TEN } from './../../../utils/bigNumber';
 import { BigNumber } from '@ethersproject/bignumber';
+import RealBigNumber from 'bignumber.js';
 import ABI from 'config/abi/pair.json';
+import { BIG_ZERO } from 'utils/bigNumber';
 import multicall from 'utils/multicall';
 
-type LiquiditiesReserved = {
-  address: string;
-  reserved: BigNumber;
-}[];
+type PairAmount = {
+  tokenAmount: RealBigNumber;
+  quoteTokenAmount: RealBigNumber;
+  vs: RealBigNumber;
+};
 
-const fetchPairsData = async (addresses: string[]): Promise<LiquiditiesReserved> => {
+export type PairsMap = {
+  [key: string]: {
+    [key: string]: PairAmount;
+  };
+};
+
+type TokenAmountMap = {
+  [key: string]: RealBigNumber;
+};
+
+export type PairsData = {
+  source: PairsMap;
+  countup: TokenAmountMap;
+};
+
+const fetchPairsData = async (addresses: string[]): Promise<PairsData> => {
   const calls = addresses
     .map((address) => [
       {
@@ -22,29 +41,63 @@ const fetchPairsData = async (addresses: string[]): Promise<LiquiditiesReserved>
         address: address,
         name: 'token1',
       },
+      {
+        address: address,
+        name: 'decimals',
+      },
     ])
     .reduce((calls, curr) => calls.concat(curr), []);
 
   const results = await multicall(ABI, calls);
-  const map: {
-    [key: string]: BigNumber;
-  } = {};
-  for (let i = 0; i < results.length - 1; i += 3) {
-    const [amount0, amount1] = results[i + 0] as [BigNumber, BigNumber];
-    const token0Address = results[i + 1][0] as string;
-    const token1Address = results[i + 2][0] as string;
-    console.log(`pair ${i / 3}:`, amount0.toString(), amount1.toString(), token0Address, token1Address);
+  const countup: TokenAmountMap = {};
+  const pairsMap: PairsMap = {};
 
-    map[token0Address.toLowerCase()] = map[token0Address.toLowerCase()]
-      ? map[token0Address.toLowerCase()].add(amount0)
-      : amount0;
-    map[token1Address.toLowerCase()] = map[token1Address.toLowerCase()]
-      ? map[token1Address.toLowerCase()].add(amount1)
-      : amount1;
+  for (let i = 0; i < results.length - 1; i += 4) {
+    const [_amount0, _amount1] = results[i + 0] as [BigNumber, BigNumber];
+    const token0Address = (results[i + 1][0] as string).toLowerCase();
+    const token1Address = (results[i + 2][0] as string).toLowerCase();
+    const _decimals = results[i + 3][0] as BigNumber;
+
+    let [amount0, amount1] = [new RealBigNumber(_amount0.toString()), new RealBigNumber(_amount1.toString())];
+    const decimals = new RealBigNumber(BIG_TEN).pow(new RealBigNumber(_decimals.toString()));
+
+    amount0 = amount0.div(decimals);
+    amount1 = amount1.div(decimals);
+
+    if (!amount0.isGreaterThan(BIG_ZERO) || !amount1.isGreaterThan(BIG_ZERO)) {
+      continue;
+    }
+
+    console.log(
+      `pair ${i / 4}:`,
+      amount0.toString(),
+      amount1.toString(),
+      'addresse',
+      addresses[i / 4],
+      token0Address,
+      token1Address,
+    );
+
+    countup[token0Address] = countup[token0Address] ? countup[token0Address].plus(amount0) : amount0;
+    countup[token1Address] = countup[token1Address] ? countup[token1Address].plus(amount1) : amount1;
+
+    pairsMap[token0Address] = pairsMap[token0Address] || {};
+    pairsMap[token1Address] = pairsMap[token1Address] || {};
+    pairsMap[token0Address][token1Address] = pairsMap[token0Address][token1Address] || {
+      tokenAmount: amount0,
+      quoteTokenAmount: amount1,
+      vs: amount0.div(amount1),
+    };
+    pairsMap[token1Address][token0Address] = pairsMap[token1Address][token0Address] || {
+      tokenAmount: amount1,
+      quoteTokenAmount: amount0,
+      vs: amount1.div(amount0),
+    };
   }
 
-  console.log('map', map);
-  return Object.entries(map).map(([address, reserved]) => ({ address, reserved }));
+  console.log('countup', new RealBigNumber(1).div(new RealBigNumber(0)).isFinite());
+
+  return { countup, source: pairsMap };
 };
 
 export default fetchPairsData;

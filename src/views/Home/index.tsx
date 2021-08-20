@@ -5,25 +5,14 @@ import BannerPng from './components/banner.svg';
 import KacoInfoPng from './components/kaco-info-bg.png';
 import { useTranslation } from 'contexts/Localization';
 import { Text, Flex } from '@kaco/uikit';
-// import { ETHER } from '@kaco/sdk';
 import { useMatchBreakpoints } from '@kaco/uikit';
 import { usePriceCakeBusd } from 'state/farms/hooks';
 import { useBurnedBalance, useTotalSupply } from 'hooks/useTokenBalance';
 import formatLocalisedCompactNumber, { getBalanceNumber } from 'utils/formatBalance';
 import { getCakeAddress } from 'utils/addressHelpers';
-// import { KACO_LP_PID } from 'config/constants/farms';
-// import isArchivedPid from 'utils/farmHelpers';
-// import BigNumber from 'bignumber.js';
-// import { Farm } from 'state/types';
-// import Balance from 'components/Balance';
 import useCap from './hooks/useCap';
-// import usePairLength from './hooks/usePairsLength';
-// import { useEffect } from 'react';
-// import fetchPairsAddress from './hooks/fetchPairsAddress';
-// import usePairLength from './hooks/usePairsLength';
-// import fetchPairsData from './hooks/fetchPairsData';
-// import { getAllCommonPairs } from 'hooks/Trades';
-// import { Currency } from '@kaco/sdk';
+import useTotalLiquidity from './hooks/useTotalLiquidity';
+import Balance from 'components/Balance';
 
 const Home: React.FC<{ className?: string }> = ({ className }) => {
   const { t } = useTranslation();
@@ -34,44 +23,18 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
   const cakePriceBusd = usePriceCakeBusd();
   const mcap = cakePriceBusd.times(cakeSupply);
   const mcapString = formatLocalisedCompactNumber(mcap.isNaN() ? 0 : mcap.toNumber());
-  // const { data: farmsLP } = useFarms();
-  // const activeFarms = farmsLP.filter(
-  //   (farm) => !(farm.pid !== KACO_LP_PID && farm.multiplier === '0X' && !isArchivedPid(farm.pid)),
-  // );
 
   const cap = useCap();
-  // const pairsCount = usePairLength();
-  // useEffect(() => {
-  //   fetchPairsAddress(pairsCount)
-  //   .then(fetchPairsData)
-  //   .then((liquiditiesReserved) => liquiditiesReserved.map(lq => {
-  //       const allowedPairs = getAllCommonPairs(currencyAmountIn?.currency, ETHER);
-
-  //     }))
-  //     .catch(console.log);
-  // }, [pairsCount]);
-
-  // const totalSupply: BigNumber = useSingleCallResult(contract, 'totalSupply')?.result?.[0];
-  // const farmsWithStakedValue = useMemo(
-  //   () =>
-  //     activeFarms.reduce((all: BigNumber, farm: Farm) => {
-  //       if (!farm.lpTotalInQuoteToken || !farm.quoteToken.busdPrice) {
-  //         return all;
-  //       }
-  //       const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice);
-
-  //       console.log('totalLiquidity', totalLiquidity.toFixed());
-  //       return totalLiquidity.plus(all);
-  //     }, new BigNumber(0)),
-  //   [activeFarms],
-  // );
+  const totalLiquidity = useTotalLiquidity();
 
   return (
     <div className={className}>
       <div>
         <div className="banner">
           <div className="left">
-            <h1>{/* $<Balance value={farmsWithStakedValue.toNumber()} /> */}</h1>
+            <h1>
+              $<Balance value={totalLiquidity.toNumber()} />
+            </h1>
             <span>{t('Liquidity')}</span>
           </div>
           <div className="right">
