@@ -42,6 +42,16 @@ const farms: FarmConfig[] = [
   /**
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
+  {
+    pid: 3,
+    lpSymbol: 'KSM-KAC LP',
+    lpAddresses: {
+      97: '0x756f158A2C02246Bf00bbdB051729804F2efd9c7',
+      56: '0x23e6c98F69515cAb75352a31fED9994A67312B10',
+    },
+    token: tokens.ksm,
+    quoteToken: tokens.kaco,
+  },
 ];
 
 // const farms: FarmConfig[] = []
