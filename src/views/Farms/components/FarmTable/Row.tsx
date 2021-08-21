@@ -84,7 +84,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
   const isMobile = !isXl;
   const tableSchema = isMobile ? MobileColumnSchema : DesktopColumnSchema;
   const columnNames = tableSchema.map((column) => column.name);
-  console.log('isxs', isXs, isSm);
+
   const handleRenderRow = () => {
     if (!isXs && !isSm) {
       return (

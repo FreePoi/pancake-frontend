@@ -12,7 +12,6 @@ import IconSvg from '../svg/icon.svg';
 
 const Wrapper = styled.div`
   width: 100%;
-  max-width: 400px;
 `;
 const ConfirmedIcon = styled(ColumnCenter)`
   padding: 24px 0;
@@ -22,11 +21,13 @@ function ConfirmationPendingContent({ pendingText }: { pendingText: string }) {
   const { t } = useTranslation();
   return (
     <Wrapper>
-      <ConfirmedIcon>
+      <ConfirmedIcon style={{ padding: '0px 0px 24px 0px' }}>
         <Spinner />
       </ConfirmedIcon>
       <AutoColumn gap="12px" justify="center">
-        <Text fontSize="12px">{t('Waiting For Confirmation')}</Text>
+        <Text fontSize="12px" color="secondary">
+          {t('Waiting For Confirmation')}
+        </Text>
         <AutoColumn gap="12px" justify="center">
           <Text fontSize="12px" color="#1BD3D5" textAlign="center">
             {pendingText}
@@ -36,6 +37,8 @@ function ConfirmationPendingContent({ pendingText }: { pendingText: string }) {
           style={{
             color: '#F1842C',
             padding: '0px 30px',
+            marginBottom: '75px',
+            marginTop: '5px',
             background: '#272E32',
             borderRadius: '12px',
             justifyContent: 'center',
@@ -164,11 +167,11 @@ const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationMo
     onDismiss();
   }, [customOnDismiss, onDismiss]);
 
-  console.log('attemptingTxn', attemptingTxn);
+  console.log('attemptingTxn', attemptingTxn, pendingText);
   if (!chainId) return null;
 
   return (
-    <Modal style={{ border: '0' }} title={title} onDismiss={handleDismiss}>
+    <Modal style={{ border: '0', width: '500px' }} title={title} onDismiss={handleDismiss}>
       {attemptingTxn ? (
         <ConfirmationPendingContent pendingText={pendingText} />
       ) : hash ? (
