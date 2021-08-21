@@ -15,7 +15,7 @@
       "address": "0xf96429A7aE52dA7d07E60BE95A3ece8B042016fB",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xf96429A7aE52dA7d07E60BE95A3ece8B042016fB.svg"
+      "logoURI": "/images/tokens/0xf96429A7aE52dA7d07E60BE95A3ece8B042016fB.svg"
     },
     {
       "name": "BUSD Token",
@@ -23,7 +23,7 @@
       "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xe9e7cea3dedca5984780bafc599bd69add087d56.png"
+      "logoURI": "/images/tokens/0xe9e7cea3dedca5984780bafc599bd69add087d56.png"
     },
     {
       "name": "DOT Token",
@@ -31,7 +31,7 @@
       "address": "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402.svg"
+      "logoURI": "/images/tokens/0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402.svg"
     },
     {
       "name": "KSM Token",
@@ -39,7 +39,7 @@
       "address": "0x2aa69e8d25c045b659787bc1f03ce47a388db6e8",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x2aa69e8d25c045b659787bc1f03ce47a388db6e8.svg"
+      "logoURI": "/images/tokens/0x2aa69e8d25c045b659787bc1f03ce47a388db6e8.svg"
     },
     {
       "name": "Reef Token",
@@ -47,7 +47,7 @@
       "address": "0xf21768ccbc73ea5b6fd3c687208a7c2def2d966e",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xF21768cCBC73Ea5B6fd3C687208a7c2def2d966e.svg"
+      "logoURI": "/images/tokens/0xF21768cCBC73Ea5B6fd3C687208a7c2def2d966e.svg"
     },
     {
       "name": "LIT Token",
@@ -55,7 +55,7 @@
       "address": "0xb59490ab09a0f526cc7305822ac65f2ab12f9723",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xb59490aB09A0f526Cc7305822aC65f2Ab12f9723.svg"
+      "logoURI": "/images/tokens/0xb59490aB09A0f526Cc7305822aC65f2Ab12f9723.svg"
     },
     {
       "name": "CLV Token",
@@ -63,7 +63,7 @@
       "address": "0x09e889bb4d5b474f561db0491c38702f367a4e4d",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x09e889bb4d5b474f561db0491c38702f367a4e4d.svg"
+      "logoURI": "/images/tokens/0x09e889bb4d5b474f561db0491c38702f367a4e4d.svg"
     },
     {
       "name": "WBNB Token",
@@ -71,7 +71,7 @@
       "address": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c.png"
+      "logoURI": "/images/tokens/0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c.png"
     }
   ]
 }

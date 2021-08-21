@@ -1,3 +1,4 @@
+import { BASE_URL } from 'config';
 import React from 'react';
 import styled from 'styled-components';
 import useHttpLocations from '../../hooks/useHttpLocations';
@@ -19,7 +20,7 @@ export default function ListLogo({
   style?: React.CSSProperties;
   alt?: string;
 }) {
-  const srcs: string[] = useHttpLocations(logoURI);
-
+  const srcs: string[] = useHttpLocations(`${BASE_URL}${logoURI}`);
+  console.log(`${BASE_URL}${logoURI}`);
   return <StyledListLogo alt={alt} size={size} srcs={srcs} style={style} />;
 }
