@@ -146,6 +146,7 @@ export default function Swap({ history }: RouteComponentProps) {
   );
   const noRoute = !route;
 
+  console.log('trade', trade);
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage);
 

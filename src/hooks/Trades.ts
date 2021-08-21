@@ -2,7 +2,7 @@
 import { isTradeBetter } from 'utils/trades';
 import { Currency, CurrencyAmount, Pair, Token, Trade } from '@kaco/sdk';
 import flatMap from 'lodash/flatMap';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 
 import { useUserSingleHopOnly } from 'state/user/hooks';
@@ -12,74 +12,10 @@ import {
   BETTER_TRADE_LESS_HOPS_THRESHOLD,
   ADDITIONAL_BASES,
 } from '../config/constants';
-import { getPairs, PairState, usePairs } from './usePairs';
+import { PairState, usePairs } from './usePairs';
 import { wrappedCurrency } from '../utils/wrappedCurrency';
 
 import { useUnsupportedTokens } from './Tokens';
-
-export async function getAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Promise<Pair[]> {
-  const chainId = parseInt(process.env.REACT_APP_CHAIN_ID);
-
-  const [tokenA, tokenB] = chainId
-    ? [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
-    : [undefined, undefined];
-
-  const common = BASES_TO_CHECK_TRADES_AGAINST[chainId] ?? [];
-  const additionalA = tokenA ? ADDITIONAL_BASES[chainId]?.[tokenA.address] ?? [] : [];
-  const additionalB = tokenB ? ADDITIONAL_BASES[chainId]?.[tokenB.address] ?? [] : [];
-
-  const bases: Token[] = [...common, ...additionalA, ...additionalB];
-
-  const basePairs: [Token, Token][] = flatMap(bases, (base): [Token, Token][] =>
-    bases.map((otherBase) => [base, otherBase]),
-  );
-
-  const allPairCombinations: [Token, Token][] =
-    tokenA && tokenB
-      ? [
-          // the direct pair
-          [tokenA, tokenB],
-          // token A against all bases
-          ...bases.map((base): [Token, Token] => [tokenA, base]),
-          // token B against all bases
-          ...bases.map((base): [Token, Token] => [tokenB, base]),
-          // each base against all bases
-          ...basePairs,
-        ]
-          .filter((tokens): tokens is [Token, Token] => Boolean(tokens[0] && tokens[1]))
-          .filter(([t0, t1]) => t0.address !== t1.address)
-          .filter(([tokenA_, tokenB_]) => {
-            if (!chainId) return true;
-            const customBases = CUSTOM_BASES[chainId];
-
-            const customBasesA: Token[] | undefined = customBases?.[tokenA_.address];
-            const customBasesB: Token[] | undefined = customBases?.[tokenB_.address];
-
-            if (!customBasesA && !customBasesB) return true;
-
-            if (customBasesA && !customBasesA.find((base) => tokenB_.equals(base))) return false;
-            if (customBasesB && !customBasesB.find((base) => tokenA_.equals(base))) return false;
-
-            return true;
-          })
-      : [];
-
-  console.log('allPairCombinations', allPairCombinations);
-  const allPairs = await getPairs(allPairCombinations);
-
-  console.log('allPairs', allPairs);
-  // only pass along valid pairs, non-duplicated pairs
-  return Object.values(
-    allPairs
-      // filter out invalid pairs
-      .filter((result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1]))
-      // filter out duplicated pairs
-      .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
-        memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr;
-        return memo;
-      }, {}),
-  );
-}
 
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   const { chainId } = useActiveWeb3React();
@@ -96,11 +32,7 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
 
     return [...common, ...additionalA, ...additionalB];
   }, [chainId, tokenA, tokenB]);
-  // useEffect(
-  //   () =>
-  //     console.log('[tokenA, tokenB]', [tokenA, tokenB], currencyB, chainId, currencyB instanceof Token, 'bases', bases),
-  //   [tokenA, tokenB, currencyA, chainId, currencyB, bases],
-  // );
+
   const basePairs: [Token, Token][] = useMemo(
     () => flatMap(bases, (base): [Token, Token][] => bases.map((otherBase) => [base, otherBase])),
     [bases],
@@ -139,37 +71,23 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
     [tokenA, tokenB, bases, basePairs, chainId],
   );
 
-  console.log('allPairCombinations', allPairCombinations);
   const allPairs = usePairs(allPairCombinations);
-  // useEffect(
-  //   () =>
-  //     console.log(
-  //       'basePairs',
-  //       basePairs.map((p) => `${p[0].symbol}-${p[1].symbol}`),
-  //       'allPairCombinations',
-  //       allPairCombinations,
-  //       'allPairs',
-  //       allPairs,
-  //       allPairs
-  //         // filter out invalid pairs
-  //         .filter((result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1])),
-  //     ),
-  //   [basePairs, allPairCombinations, allPairs],
-  // );
+
   // only pass along valid pairs, non-duplicated pairs
-  return useMemo(() => {
-    console.log('allPairs', allPairs);
-    return Object.values(
-      allPairs
-        // filter out invalid pairs
-        .filter((result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1]))
-        // filter out duplicated pairs
-        .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
-          memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr;
-          return memo;
-        }, {}),
-    );
-  }, [allPairs]);
+  return useMemo(
+    () =>
+      Object.values(
+        allPairs
+          // filter out invalid pairs
+          .filter((result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1]))
+          // filter out duplicated pairs
+          .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
+            memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr;
+            return memo;
+          }, {}),
+      ),
+    [allPairs],
+  );
 }
 
 const MAX_HOPS = 3;
@@ -182,31 +100,9 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
 
   const [singleHopOnly] = useUserSingleHopOnly();
 
-  useEffect(
-    () =>
-      console.log(
-        'singleHopOnly',
-        singleHopOnly,
-        'currencyAmountIn',
-        currencyAmountIn,
-        'currencyOut',
-        currencyOut,
-        'allowedPairs',
-        allowedPairs.map((p) => `${p.token0.symbol}-${p.token1.symbol}`),
-      ),
-    [singleHopOnly, currencyAmountIn, currencyOut, allowedPairs],
-  );
   return useMemo(() => {
     if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
       if (singleHopOnly) {
-        console.log(
-          'singleHopOnly',
-          singleHopOnly,
-          currencyAmountIn,
-          currencyOut,
-          'allowedPairs',
-          allowedPairs.map((p) => `${p.token0.symbol}-${p.token1.symbol}`),
-        );
         return (
           Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, { maxHops: 1, maxNumResults: 1 })[0] ??
           null
@@ -223,7 +119,6 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
           bestTradeSoFar = currentTrade;
         }
       }
-      console.log('MAX_HOPS', MAX_HOPS, 'bestTradeSoFar', bestTradeSoFar);
       return bestTradeSoFar;
     }
 

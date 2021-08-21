@@ -1,58 +1,6 @@
 import { ChainId, Token } from '@kaco/sdk';
 
-export const Kaco: { [chainId: number]: Token } = {
-  [ChainId.MAINNET]: new Token(ChainId.MAINNET, '0xf96429A7aE52dA7d07E60BE95A3ece8B042016fB', 18, 'KAC', 'Kaco Token'),
-  [ChainId.TESTNET]: new Token(ChainId.TESTNET, '0x0bA819e30016Cf682C7795b44859148C65e62292', 18, 'KAC', 'Kaco Token'),
-};
-
-export const BUSD: { [chainId: number]: Token } = {
-  [ChainId.MAINNET]: new Token(
-    ChainId.MAINNET,
-    '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
-    18,
-    'BUSD',
-    'Binance USD',
-  ),
-  [ChainId.TESTNET]: new Token(
-    ChainId.TESTNET,
-    '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee',
-    18,
-    'BUSD',
-    'Binance USD',
-  ),
-};
 const chainId = parseInt(process.env.REACT_APP_CHAIN_ID);
-export const DAI = new Token(
-  ChainId.MAINNET,
-  '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3',
-  18,
-  'DAI',
-  'Dai Stablecoin',
-);
-export const USDT = new Token(ChainId.MAINNET, '0x55d398326f99059fF775485246999027B3197955', 18, 'USDT', 'Tether USD');
-// export const BTCB = new Token(ChainId.TESTNET, '0x6ce8da28e2f864420840cf74474eff5fd80e65b8', 18, 'BTCB', 'Binance BTC');
-export const BTCB = new Token(ChainId.MAINNET, '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c', 18, 'BTCB', 'Binance BTC');
-export const UST = new Token(
-  ChainId.MAINNET,
-  '0x23396cF899Ca06c4472205fC903bDB4de249D6fC',
-  18,
-  'UST',
-  'Wrapped UST Token',
-);
-export const ETH = new Token(
-  ChainId.MAINNET,
-  '0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
-  18,
-  'ETH',
-  'Binance-Peg Ethereum Token',
-);
-export const USDC = new Token(
-  ChainId.MAINNET,
-  '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
-  18,
-  'USDC',
-  'Binance-Peg USD Coin',
-);
 
 const tokens = {
   bnb: {
@@ -1887,6 +1835,87 @@ const tokens = {
     projectLink: 'https://moonpot.com/',
   },
 };
+
 export const WBNB = new Token(chainId, tokens.wbnb.address[chainId], 18, 'WBNB', 'Wrapped BNB');
 
+export const Kaco: { [chainId: number]: Token } = {
+  [ChainId.MAINNET]: new Token(ChainId.MAINNET, '0xf96429A7aE52dA7d07E60BE95A3ece8B042016fB', 18, 'KAC', 'Kaco Token'),
+  [ChainId.TESTNET]: new Token(ChainId.TESTNET, '0x0bA819e30016Cf682C7795b44859148C65e62292', 18, 'KAC', 'Kaco Token'),
+};
+
+export const BUSD: { [chainId: number]: Token } = {
+  [ChainId.MAINNET]: new Token(
+    ChainId.MAINNET,
+    '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
+    18,
+    'BUSD',
+    'Binance USD',
+  ),
+  [ChainId.TESTNET]: new Token(
+    ChainId.TESTNET,
+    '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee',
+    18,
+    'BUSD',
+    'Binance USD',
+  ),
+};
+
+export const DOT: { [chainId: number]: Token } = {
+  [ChainId.MAINNET]: new Token(ChainId.MAINNET, '0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402', 18, 'DOT', 'DOT Token'),
+  [ChainId.TESTNET]: new Token(ChainId.TESTNET, '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee', 18, 'DOT', 'FAKE DOT'),
+};
+
+export const KSM: { [chainId: number]: Token } = {
+  [ChainId.MAINNET]: new Token(ChainId.MAINNET, '0x2aa69e8d25c045b659787bc1f03ce47a388db6e8', 18, 'KSM', 'KSM Token'),
+  [ChainId.TESTNET]: new Token(ChainId.TESTNET, '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee', 18, 'KSM', 'FAKE KSM'),
+};
+
+export const DAI = new Token(
+  ChainId.MAINNET,
+  '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3',
+  18,
+  'DAI',
+  'Dai Stablecoin',
+);
+export const USDT = new Token(ChainId.MAINNET, '0x55d398326f99059fF775485246999027B3197955', 18, 'USDT', 'Tether USD');
+
+export const BTCB: { [chainId: number]: Token } = {
+  [ChainId.MAINNET]: new Token(
+    ChainId.MAINNET,
+    '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c',
+    18,
+    'BTCB',
+    'Binance BTC',
+  ),
+  [ChainId.TESTNET]: new Token(
+    ChainId.TESTNET,
+    '0x6ce8da28e2f864420840cf74474eff5fd80e65b8',
+    18,
+    'BTCB',
+    'Binance BTC',
+  ),
+};
+
+export const UST = new Token(
+  ChainId.MAINNET,
+  '0x23396cF899Ca06c4472205fC903bDB4de249D6fC',
+  18,
+  'UST',
+  'Wrapped UST Token',
+);
+
+export const ETH = new Token(
+  ChainId.MAINNET,
+  '0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
+  18,
+  'ETH',
+  'Binance-Peg Ethereum Token',
+);
+export const USDC = new Token(
+  ChainId.MAINNET,
+  '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
+  18,
+  'USDC',
+  'Binance-Peg USD Coin',
+);
 export default tokens;

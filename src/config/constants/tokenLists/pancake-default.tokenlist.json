@@ -15,7 +15,7 @@
       "address": "0xf96429A7aE52dA7d07E60BE95A3ece8B042016fB",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "http://localhost:3000/images/tokens/0xf96429A7aE52dA7d07E60BE95A3ece8B042016fB.svg"
+      "logoURI": "https://pancakeswap.finance/images/tokens/0xf96429A7aE52dA7d07E60BE95A3ece8B042016fB.svg"
     },
     {
       "name": "BUSD Token",
@@ -39,7 +39,7 @@
       "address": "0x2aa69e8d25c045b659787bc1f03ce47a388db6e8",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": ""
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x2aa69e8d25c045b659787bc1f03ce47a388db6e8.svg"
     },
     {
       "name": "Reef Token",
@@ -63,7 +63,7 @@
       "address": "0x09e889bb4d5b474f561db0491c38702f367a4e4d",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": ""
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x09e889bb4d5b474f561db0491c38702f367a4e4d.svg"
     },
     {
       "name": "WBNB Token",

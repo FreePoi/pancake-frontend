@@ -147,14 +147,15 @@ export function useDerivedSwapInfo(): {
 
   const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined);
   const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined);
-  // console.log(
-  //   'bestTradeExactOut',
-  //   bestTradeExactOut?.inputAmount.toFixed(),
-  //   bestTradeExactOut?.executionPrice.toFixed(),
-  //   'bestTradeExactIn',
-  //   bestTradeExactIn?.inputAmount.toFixed(),
-  //   bestTradeExactIn?.executionPrice.toFixed(),
-  // );
+
+  console.log(
+    'bestTradeExactOut',
+    bestTradeExactOut?.inputAmount.toFixed(),
+    bestTradeExactOut?.executionPrice.toFixed(),
+    'bestTradeExactIn',
+    bestTradeExactIn?.inputAmount.toFixed(),
+    bestTradeExactIn?.executionPrice.toFixed(),
+  );
 
   const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut;
 
