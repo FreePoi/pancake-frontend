@@ -6,7 +6,7 @@ import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber';
 import multicall from 'utils/multicall';
 import { Farm, SerializedBigNumber } from '../types';
 
-type PublicFarmData = {
+export type PublicFarmData = {
   tokenAmountMc: SerializedBigNumber;
   quoteTokenAmountMc: SerializedBigNumber;
   tokenAmountTotal: SerializedBigNumber;

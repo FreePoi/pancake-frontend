@@ -47,7 +47,7 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
           {[isXs, isSm].some(Boolean) ? (
             <>
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                KAC PRICE： ${cakePriceBusd.isNaN() ? '0' : cakePriceBusd.toFixed(2)}
+                KAC PRICE： ${cakePriceBusd.isNaN() ? '0' : cakePriceBusd.toFixed(4)}
               </Text>
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
                 KAC Total：{cap}

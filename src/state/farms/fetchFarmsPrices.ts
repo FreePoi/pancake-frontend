@@ -3,6 +3,7 @@ import { BIG_ONE, BIG_ZERO } from 'utils/bigNumber';
 import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers';
 import { Farm } from 'state/types';
 import { BUSD_BNB_LP_PID, FARM_QUOTE_QUOTE_TOKEN_SYMBOL } from 'config/constants/farms';
+import { PublicFarmData } from './fetchPublicFarmData';
 
 const getFarmFromTokenSymbol = (farms: Farm[], tokenSymbol: string, preferredQuoteTokens?: string[]): Farm => {
   const farmsWithTokenSymbol = farms.filter((farm) => farm.token.symbol === tokenSymbol);
@@ -37,6 +38,7 @@ const getFarmBaseTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: B
       ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd)
       : BIG_ZERO;
   }
+  console.log('244444444444444');
 
   if (quoteTokenFarm.quoteToken.symbol === 'BUSD') {
     const quoteTokenInBusd = quoteTokenFarm.tokenPriceVsQuote;
@@ -45,11 +47,13 @@ const getFarmBaseTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: B
       : BIG_ZERO;
   }
 
+  console.log('2555555555555');
   // Catch in case token does not have immediate or once-removed BUSD/wBNB quoteToken
   return BIG_ZERO;
 };
 
 const getFarmQuoteTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: BigNumber): BigNumber => {
+  console.log('getFarmQuoteTokenPrice', farm, quoteTokenFarm, bnbPriceBusd.toString());
   if (farm.quoteToken.symbol === 'BUSD') {
     return BIG_ONE;
   }
@@ -73,9 +77,9 @@ const getFarmQuoteTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: 
   return BIG_ZERO;
 };
 
-const fetchFarmsPrices = async (farms) => {
+const fetchFarmsPrices = async (farms: (Farm & PublicFarmData)[]) => {
   const bnbBusdFarm = farms.find((farm: Farm) => farm.pid === BUSD_BNB_LP_PID);
-  const bnbPriceBusd = bnbBusdFarm.tokenPriceVsQuote ? BIG_ONE.div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO;
+  const bnbPriceBusd = bnbBusdFarm.tokenPriceVsQuote ? new BigNumber(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO;
 
   const farmsWithPrices = farms.map((farm) => {
     const quoteTokenFarm = getFarmFromTokenSymbol(farms, farm.quoteToken.symbol);
@@ -84,7 +88,7 @@ const fetchFarmsPrices = async (farms) => {
     const token = { ...farm.token, busdPrice: baseTokenPrice.toJSON() };
     const quoteToken = { ...farm.quoteToken, busdPrice: quoteTokenPrice.toJSON() };
 
-    console.log('farm:', farm, 'quoteTokenFarm:', quoteTokenFarm);
+    // console.log('farm:', farm, 'quoteTokenFarm:', quoteTokenFarm, 'token', token, 'quoteToken', quoteToken);
 
     return { ...farm, token, quoteToken };
   });
