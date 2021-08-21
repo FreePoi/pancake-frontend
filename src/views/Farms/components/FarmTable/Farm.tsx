@@ -26,14 +26,12 @@ const Container = styled.div`
   > div {
     > .label {
       font-size: 16px;
-      font-family: Microsoft YaHei;
       font-weight: bold;
       color: #ffffff;
     }
     > .ratio {
       margin-top: 11px;
       font-size: 14px;
-      font-family: Microsoft YaHei;
       color: #9da6a6;
     }
   }

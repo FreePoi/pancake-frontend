@@ -65,7 +65,6 @@ const NavLink = styled(Link)<{ active: 't' | 'f' }>`
   display: flex;
   align-items: center;
   font-size: 14px;
-  font-family: Microsoft YaHei;
   color: #ffffff;
   height: 48px;
   margin-bottom: 4px;
@@ -169,7 +168,6 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
         display: flex;
         align-items: center;
         font-size: 14px;
-        font-family: Microsoft YaHei;
         font-weight: bold;
         color: #ffffff;
         > img {

@@ -112,7 +112,6 @@ export default styled(Header)`
       display: flex;
       align-items: center;
       font-size: 14px;
-      font-family: Microsoft YaHei;
       font-weight: bold;
       color: #ffffff;
       height: 36px;

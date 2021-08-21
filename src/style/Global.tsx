@@ -8,8 +8,15 @@ declare module 'styled-components' {
 }
 
 const GlobalStyle = createGlobalStyle`
+    
+  @font-face {
+    font-family: 'Microsoft sYaHei';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/ms-yahei.ttf);
+  }
   * {
-    font-family: Microsoft YaHei;
+    font-family: Microsoft sYaHei;
   }
   html {
     height: 100%;

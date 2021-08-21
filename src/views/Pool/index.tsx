@@ -35,16 +35,6 @@ export default function Pool() {
     liquidityTokens,
   );
 
-  // console.log(
-  //   'trackedTokenPairs',
-  //   trackedTokenPairs,
-  //   'liquidityTokens',
-  //   liquidityTokens,
-  //   'tokenPairsWithLiquidityTokens',
-  //   tokenPairsWithLiquidityTokens,
-  //   'v2PairsBalances',
-  //   v2PairsBalances,
-  // );
   // fetch the reserves for all V2 pools in which the user has a balance
   const liquidityTokensWithBalances = useMemo(
     () =>
@@ -61,6 +51,18 @@ export default function Pool() {
     v2Pairs?.some((V2Pair) => !V2Pair);
 
   const allV2PairsWithLiquidity = v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair));
+  console.log(
+    '\n',
+    'tokenPairsWithLiquidityTokens',
+    tokenPairsWithLiquidityTokens.map((p) => `${p.tokens[0].symbol}-${p.tokens[1].symbol}`),
+    'liquidityTokensWithBalances',
+    liquidityTokensWithBalances,
+    'v2pairs',
+    v2Pairs,
+    'allV2PairsWithLiquidity',
+    allV2PairsWithLiquidity,
+    '\n',
+  );
 
   const renderBody = () => {
     if (!account) {
