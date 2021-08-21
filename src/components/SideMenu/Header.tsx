@@ -2,10 +2,11 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { useWeb3React } from '@web3-react/core';
 import ConnectWalletButton from '../ConnectWalletButton';
-import { useMatchBreakpoints } from '@kaco/uikit';
+import { LogoutIcon, useMatchBreakpoints } from '@kaco/uikit';
 import TwitterIcon from '../svg/Twitter';
 import TelegramIcon from '../svg/Telegram';
 import UncollapsedSvg from './imgs/icon_sq.svg';
+import useAuth from 'hooks/useAuth';
 
 export enum ThemeChoice {
   Dark,
@@ -19,6 +20,7 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
 }) => {
   const { account } = useWeb3React();
   const { isXs, isSm } = useMatchBreakpoints();
+  const { logout } = useAuth();
 
   return (
     <div className={className}>
@@ -42,6 +44,7 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
         {account ? (
           <div className="account">
             <span>{account}</span>
+            <LogoutIcon onClick={logout} />
           </div>
         ) : (
           <ConnectWalletButton scale="sm" />
@@ -105,10 +108,14 @@ export default styled(Header)`
         height: 20px;
       }
     }
-    > .account::-webkit-scrollbar {
-      width: 0px;
-    }
+
     > .account {
+      > svg {
+        &:hover {
+          cursor: pointer;
+          fill: ${({ theme }) => theme.colors.failure};
+        }
+      }
       display: flex;
       align-items: center;
       font-size: 14px;

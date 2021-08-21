@@ -51,18 +51,6 @@ export default function Pool() {
     v2Pairs?.some((V2Pair) => !V2Pair);
 
   const allV2PairsWithLiquidity = v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair));
-  console.log(
-    '\n',
-    'tokenPairsWithLiquidityTokens',
-    tokenPairsWithLiquidityTokens.map((p) => `${p.tokens[0].symbol}-${p.tokens[1].symbol}`),
-    'liquidityTokensWithBalances',
-    liquidityTokensWithBalances,
-    'v2pairs',
-    v2Pairs,
-    'allV2PairsWithLiquidity',
-    allV2PairsWithLiquidity,
-    '\n',
-  );
 
   const renderBody = () => {
     if (!account) {
