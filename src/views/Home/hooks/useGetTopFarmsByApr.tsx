@@ -8,6 +8,7 @@ import BigNumber from 'bignumber.js';
 import { orderBy } from 'lodash';
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard';
 import { Farm } from 'state/types';
+import useKacPerBlock from 'views/Farms/hooks/useKacoPerBlock';
 
 enum FetchStatus {
   NOT_FETCHED = 'not-fetched',
@@ -22,6 +23,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
   const [fetchStatus, setFetchStatus] = useState(FetchStatus.NOT_FETCHED);
   const [topFarms, setTopFarms] = useState<FarmWithStakedValue[]>([null, null, null, null, null]);
   const cakePriceBusd = usePriceCakeBusd();
+  const kacPerBlock = useKacPerBlock();
 
   useEffect(() => {
     const fetchFarmData = async () => {
@@ -47,6 +49,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
       const farmsWithApr: FarmWithStakedValue[] = farmsWithPrices.map((farm) => {
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice);
         const { cakeRewardsApr, lpRewardsApr } = getFarmApr(
+          kacPerBlock,
           new BigNumber(farm.poolWeight),
           cakePriceBusd,
           totalLiquidity,

@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 import { BIG_ONE, BIG_ZERO } from 'utils/bigNumber';
 import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers';
 import { Farm } from 'state/types';
-import { BUSD_BNB_LP_PID } from 'config/constants/farms';
+import { BUSD_BNB_LP_PID, FARM_QUOTE_QUOTE_TOKEN_SYMBOL } from 'config/constants/farms';
 
 const getFarmFromTokenSymbol = (farms: Farm[], tokenSymbol: string, preferredQuoteTokens?: string[]): Farm => {
   const farmsWithTokenSymbol = farms.filter((farm) => farm.token.symbol === tokenSymbol);
@@ -17,7 +17,7 @@ const getFarmBaseTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: B
     return hasTokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : BIG_ZERO;
   }
 
-  if (farm.quoteToken.symbol === 'wBNB') {
+  if (farm.quoteToken.symbol === FARM_QUOTE_QUOTE_TOKEN_SYMBOL) {
     return hasTokenPriceVsQuote ? bnbPriceBusd.times(farm.tokenPriceVsQuote) : BIG_ZERO;
   }
 
@@ -31,7 +31,7 @@ const getFarmBaseTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: B
   // If the farm's quote token isn't BUSD or wBNB, we then use the quote token, of the original farm's quote token
   // i.e. for farm PNT - pBTC we use the pBTC farm's quote token - BNB, (pBTC - BNB)
   // from the BNB - pBTC price, we can calculate the PNT - BUSD price
-  if (quoteTokenFarm.quoteToken.symbol === 'wBNB') {
+  if (quoteTokenFarm.quoteToken.symbol === FARM_QUOTE_QUOTE_TOKEN_SYMBOL) {
     const quoteTokenInBusd = bnbPriceBusd.times(quoteTokenFarm.tokenPriceVsQuote);
     return hasTokenPriceVsQuote && quoteTokenInBusd
       ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd)
@@ -54,7 +54,7 @@ const getFarmQuoteTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: 
     return BIG_ONE;
   }
 
-  if (farm.quoteToken.symbol === 'wBNB') {
+  if (farm.quoteToken.symbol === FARM_QUOTE_QUOTE_TOKEN_SYMBOL) {
     return bnbPriceBusd;
   }
 
@@ -62,7 +62,7 @@ const getFarmQuoteTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: 
     return BIG_ZERO;
   }
 
-  if (quoteTokenFarm.quoteToken.symbol === 'wBNB') {
+  if (quoteTokenFarm.quoteToken.symbol === FARM_QUOTE_QUOTE_TOKEN_SYMBOL) {
     return quoteTokenFarm.tokenPriceVsQuote ? bnbPriceBusd.times(quoteTokenFarm.tokenPriceVsQuote) : BIG_ZERO;
   }
 
@@ -84,7 +84,7 @@ const fetchFarmsPrices = async (farms) => {
     const token = { ...farm.token, busdPrice: baseTokenPrice.toJSON() };
     const quoteToken = { ...farm.quoteToken, busdPrice: quoteTokenPrice.toJSON() };
 
-    console.log(farm, quoteTokenFarm, 'farm, quoteTokenFarm');
+    console.log('farm:', farm, 'quoteTokenFarm:', quoteTokenFarm);
 
     return { ...farm, token, quoteToken };
   });

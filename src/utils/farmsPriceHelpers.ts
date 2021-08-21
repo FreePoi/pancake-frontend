@@ -1,3 +1,4 @@
+import { FARM_QUOTE_QUOTE_TOKEN_SYMBOL } from 'config/constants/farms';
 import { Farm } from 'state/types';
 
 /**
@@ -6,7 +7,10 @@ import { Farm } from 'state/types';
  * @param preferredQuoteTokens Array of preferred quote tokens
  * @returns A preferred farm, if found - or the first element of the farms array
  */
-export const filterFarmsByQuoteToken = (farms: Farm[], preferredQuoteTokens: string[] = ['BUSD', 'wBNB']): Farm => {
+export const filterFarmsByQuoteToken = (
+  farms: Farm[],
+  preferredQuoteTokens: string[] = ['BUSD', FARM_QUOTE_QUOTE_TOKEN_SYMBOL],
+): Farm => {
   const preferredFarm = farms.find((farm) => {
     return preferredQuoteTokens.some((quoteToken) => {
       return farm.quoteToken.symbol === quoteToken;

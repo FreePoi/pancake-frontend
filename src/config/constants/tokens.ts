@@ -14,7 +14,7 @@ const tokens = {
       97: '0x0bA819e30016Cf682C7795b44859148C65e62292',
     },
     decimals: 18,
-    projectLink: 'https://pancakeswap.finance/',
+    projectLink: 'https://kaco.finance/',
   },
   clv: {
     symbol: 'CLV',
@@ -779,7 +779,7 @@ const tokens = {
       97: '0x4b7349f116992EE73Cafe34d9Eaf3365f8192a9D',
     },
     decimals: 18,
-    projectLink: 'https://pancakeswap.finance/',
+    projectLink: 'https://kaco.finance/',
   },
   bifi: {
     symbol: 'BIFI',

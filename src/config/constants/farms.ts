@@ -3,6 +3,7 @@ import { FarmConfig } from './types';
 export const KACO_LP_PID = 0;
 export const KACO_BNB_LP_PID = 1;
 export const BUSD_BNB_LP_PID = 2;
+export const FARM_QUOTE_QUOTE_TOKEN_SYMBOL = tokens.dot.symbol;
 
 const farms: FarmConfig[] = [
   /**

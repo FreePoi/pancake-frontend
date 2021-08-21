@@ -466,7 +466,7 @@ export default function RemoveLiquidity({
 
   const [onPresentRemoveLiquidity] = useModal(
     <TransactionConfirmationModal
-      title={t('You will receive')}
+      title={attemptingTxn ? t('Confirm Remove') : t('You will receive')}
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txHash || ''}

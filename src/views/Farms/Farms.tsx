@@ -22,6 +22,7 @@ import { RowProps } from './components/FarmTable/Row';
 import { DesktopColumnSchema, ViewMode } from './components/types';
 import FarmHeader from './components/FarmHeader';
 import { KACO_LP_PID } from 'config/constants/farms';
+import useKacPerBlock from './hooks/useKacoPerBlock';
 
 // const StyledImage = styled(Image)`
 //   margin-left: auto;
@@ -50,7 +51,7 @@ const Farms: React.FC = () => {
   const { account } = useWeb3React();
   const [sortOption] = useState('hot');
   const chosenFarmsLength = useRef(0);
-
+  const kacPerBlock = useKacPerBlock();
   const isArchived = pathname.includes('archived');
   const isInactive = pathname.includes('history');
   const isActive = !isInactive && !isArchived;
@@ -89,10 +90,16 @@ const Farms: React.FC = () => {
         }
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice);
         const { cakeRewardsApr, lpRewardsApr } = isActive
-          ? getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity, farm.lpAddresses[ChainId.MAINNET])
+          ? getFarmApr(
+              kacPerBlock,
+              new BigNumber(farm.poolWeight),
+              cakePrice,
+              totalLiquidity,
+              farm.lpAddresses[ChainId.MAINNET],
+            )
           : { cakeRewardsApr: 0, lpRewardsApr: 0 };
 
-        console.log('farm.lpTotalInQuoteToken', farm.lpTotalInQuoteToken, farm.quoteToken.busdPrice);
+        console.log('farm.lpTotalInQuoteToken', farm, farm.lpTotalInQuoteToken, farm.quoteToken.busdPrice);
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity };
       });
 
@@ -104,7 +111,7 @@ const Farms: React.FC = () => {
       }
       return farmsToDisplayWithAPR;
     },
-    [cakePrice, query, isActive],
+    [cakePrice, query, isActive, kacPerBlock],
   );
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -138,16 +145,6 @@ const Farms: React.FC = () => {
       }
     };
 
-    // console.log(
-    //   'stakedOnlyFarms',
-    //   stakedOnlyFarms,
-    //   'stakedArchivedFarms',
-    //   stakedArchivedFarms,
-    //   'activeFarms',
-    //   activeFarms,
-    //   'inactiveFarms',
-    //   inactiveFarms,
-    // );
     if (isActive) {
       chosenFarms = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms);
     }

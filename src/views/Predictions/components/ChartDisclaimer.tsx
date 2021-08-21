@@ -28,7 +28,7 @@ const ChartDisclaimer: React.FC<ChartDisclaimerProps> = ({ onSuccess, onDismiss 
         </Button>
         <Flex justifyContent="center" alignItems="center">
           <LinkExternal
-            href="https://docs.pancakeswap.finance/products/prediction/prediction-faq#what-are-you-using-for-your-price-feed"
+            href="https://docs.kaco.finance/products/prediction/prediction-faq#what-are-you-using-for-your-price-feed"
             external
           >
             {t('Learn More')}

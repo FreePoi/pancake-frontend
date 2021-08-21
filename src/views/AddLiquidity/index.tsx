@@ -292,7 +292,7 @@ export default function AddLiquidity({
 
   const [onPresentAddLiquidityModal] = useModal(
     <TransactionConfirmationModal
-      title={noLiquidity ? t('You are creating a pool') : t('You will receive')}
+      title={attemptingTxn ? t('Confirm Supply') : noLiquidity ? t('You are creating a pool') : t('You will receive')}
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txHash}
