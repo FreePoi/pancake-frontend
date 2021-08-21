@@ -46,11 +46,71 @@ const farms: FarmConfig[] = [
     pid: 3,
     lpSymbol: 'KSM-KAC LP',
     lpAddresses: {
-      97: '0x756f158A2C02246Bf00bbdB051729804F2efd9c7',
+      97: '',
       56: '0x23e6c98F69515cAb75352a31fED9994A67312B10',
     },
     token: tokens.ksm,
     quoteToken: tokens.kaco,
+  },
+  {
+    pid: 4,
+    lpSymbol: 'KSM-DOT LP',
+    lpAddresses: {
+      97: '',
+      56: '0xfb2cd96f40cac3e599c99b9da40ea8559a222c61',
+    },
+    token: tokens.ksm,
+    quoteToken: tokens.dot,
+  },
+  {
+    pid: 5,
+    lpSymbol: 'KSM-USDT LP',
+    lpAddresses: {
+      97: '',
+      56: '0x69115f09010c1a21aaa839eec7e14f6748e1334e',
+    },
+    token: tokens.ksm,
+    quoteToken: tokens.usdt,
+  },
+  {
+    pid: 6,
+    lpSymbol: 'KSM-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xe4cecfe8ed2c820e0d5a4815ee61f2848d77e762',
+    },
+    token: tokens.ksm,
+    quoteToken: tokens.bnb,
+  },
+  {
+    pid: 7,
+    lpSymbol: 'REEF-DOT LP',
+    lpAddresses: {
+      97: '',
+      56: '0x0fab3accf421238f8c96592178df0a908996acf6',
+    },
+    token: tokens.reef,
+    quoteToken: tokens.dot,
+  },
+  {
+    pid: 8,
+    lpSymbol: 'CLV-DOT LP',
+    lpAddresses: {
+      97: '',
+      56: '0x344dc8d3d62d9f00f48d6514433214f8db7ce38e',
+    },
+    token: tokens.clv,
+    quoteToken: tokens.dot,
+  },
+  {
+    pid: 9,
+    lpSymbol: 'LIT-DOT LP',
+    lpAddresses: {
+      97: '',
+      56: '0x632121b39e86d52dc91c5f1f5517bc417e88f0df',
+    },
+    token: tokens.lit,
+    quoteToken: tokens.dot,
   },
 ];
 
