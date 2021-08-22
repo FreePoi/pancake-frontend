@@ -93,7 +93,10 @@ const fetchFarmsPrices = async (farms: (Farm & PublicFarmData)[]) => {
     const token = { ...farm.token, busdPrice: baseTokenPrice.toJSON() };
     const quoteToken = { ...farm.quoteToken, busdPrice: quoteTokenPrice.toJSON() };
 
-    // console.log('farm:', farm, 'quoteTokenFarm:', quoteTokenFarm, 'token', token, 'quoteToken', quoteToken);
+    // console.log(
+    //   `token ${farm.token.symbol} vs:${farm.tokenPriceVsQuote.slice(0, 5)} price:${token.busdPrice.slice(0, 5)}`,
+    //   `token ${farm.quoteToken.symbol}: price-${quoteToken.busdPrice.slice(0, 5)}`,
+    // );
 
     return { ...farm, token, quoteToken };
   });
