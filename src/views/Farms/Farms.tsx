@@ -31,12 +31,15 @@ import useKacPerBlock from './hooks/useKacoPerBlock';
 // `;
 const NUMBER_OF_FARMS_VISIBLE = 12;
 
-const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
+const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number): string => {
   if (cakeRewardsApr && lpRewardsApr) {
     return (cakeRewardsApr + lpRewardsApr).toLocaleString('en-US', { maximumFractionDigits: 2 });
   }
   if (cakeRewardsApr) {
     return cakeRewardsApr.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  }
+  if (cakeRewardsApr === 0 && lpRewardsApr === 0) {
+    return '0';
   }
   return null;
 };
@@ -99,7 +102,6 @@ const Farms: React.FC = () => {
             )
           : { cakeRewardsApr: 0, lpRewardsApr: 0 };
 
-        console.log('farm.lpTotalInQuoteToken', farm, farm.lpTotalInQuoteToken, farm.quoteToken.busdPrice);
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity };
       });
 
@@ -196,7 +198,6 @@ const Farms: React.FC = () => {
     }
   }, [chosenFarmsMemoized, observerIsSet]);
 
-  // console.log('chosenFarmsMemoized', chosenFarmsMemoized);
   const rowData = chosenFarmsMemoized.map((farm) => {
     const { token, quoteToken } = farm;
     const tokenAddress = token.address;
