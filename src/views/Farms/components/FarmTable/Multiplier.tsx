@@ -5,6 +5,8 @@ import { useTranslation } from 'contexts/Localization';
 
 const ReferenceElement = styled.div`
   display: inline-block;
+
+  background: #272e32;
 `;
 
 export interface MultiplierProps {
@@ -32,12 +34,12 @@ const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) =>
   const displayMultiplier = multiplier ? multiplier.toLowerCase() : <Skeleton width={30} />;
   const { t } = useTranslation();
   const tooltipContent = (
-    <>
+    <div>
       {t('The multiplier represents the amount of KAC rewards each farm gets.')}
       <br />
       <br />
       {t('For example, if a 1x farm was getting 1 KAC per block, a 40x farm would be getting 40 KAC per block.')}
-    </>
+    </div>
   );
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, {
     placement: 'top-end',
