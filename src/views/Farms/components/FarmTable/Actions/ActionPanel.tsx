@@ -4,8 +4,8 @@ import { useTranslation } from 'contexts/Localization';
 import { LinkExternal, Text } from '@kaco/uikit';
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard';
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts';
-// import { getAddress } from 'utils/addressHelpers';
-// import { getBscScanLink } from 'utils';
+import { getAddress } from 'utils/addressHelpers';
+import { getBscScanLink } from 'utils';
 // import { CommunityTag, CoreTag, DualTag } from 'components/Tags';
 
 import HarvestAction from './HarvestAction';
@@ -152,8 +152,8 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
   });
-  // const lpAddress = getAddress(farm.lpAddresses);
-  // const bsc = getBscScanLink(lpAddress, 'address');
+  const lpAddress = getAddress(farm.lpAddresses);
+  const bsc = getBscScanLink(lpAddress, 'address');
   // const info = `https://pancakeswap.info/pool/${lpAddress}`;
 
   return (
@@ -162,10 +162,11 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
         {isActive && (
           <StakeContainer>
             <StyledLinkExternal href={`/add/${liquidityUrlPathParts}`}>
-              {t('Addd Liquidity', { symbol: lpLabel })}
+              {t('Add Liquidity', { symbol: lpLabel })}
             </StyledLinkExternal>
           </StakeContainer>
         )}
+        <StyledLinkExternal href={bsc}>{t('View Contract')}</StyledLinkExternal>
         {/* <StyledLinkExternal href={info}>{t('See Pair Info')}</StyledLinkExternal> */}
       </InfoContainer>
       <ValueContainer>
