@@ -23,6 +23,7 @@ import Logo2DefaultSvg from './imgs/logo2_default.svg';
 import Header from './Header';
 import { useEffect } from 'react';
 import { useMatchBreakpoints } from '@kaco/uikit';
+import DocSvg from './imgs/doc.svg';
 
 const menuItems: {
   text: string;
@@ -174,6 +175,9 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
           width: ${(props) => (props.collapsed ? '30px' : '18px')};
           height: ${(props) => (props.collapsed ? '30px' : '18px')};
         }
+        > img:last-child {
+          margin-left: 10px;
+        }
         > span {
           margin-left: 7px;
         }
@@ -244,6 +248,7 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
           <div className="balance">
             <img src={collapsed ? Logo2DefaultSvg : Logo2Svg} alt="" />
             {!collapsed && <span>${cakePriceUsd.isNaN() ? '0' : cakePriceUsd.toFixed(2)}</span>}
+            {!collapsed && <img src={DocSvg} alt="" />}
           </div>
         </div>
       </div>
