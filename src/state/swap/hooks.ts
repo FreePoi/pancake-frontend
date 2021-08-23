@@ -16,6 +16,7 @@ import { useCurrencyBalances } from '../wallet/hooks';
 import { Field, replaceSwapState, selectCurrency, setRecipient, switchCurrencies, typeInput } from './actions';
 import { SwapState } from './reducer';
 import { useUserSlippageTolerance } from '../user/hooks';
+import { DOT } from '../../config/constants/tokens';
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>((state) => state.swap);
@@ -217,14 +218,20 @@ export function useDerivedSwapInfo(): {
   };
 }
 
-function parseCurrencyFromURLParameter(urlParam: any): string {
+//return DOT if chainId present by default
+function parseCurrencyFromURLParameter(urlParam: any, chainId?: number): string {
   if (typeof urlParam === 'string') {
     const valid = isAddress(urlParam);
     if (valid) return valid;
     if (urlParam.toUpperCase() === 'BNB') return 'BNB';
     if (valid === false) return 'BNB';
   }
-  return 'BNB' ?? '';
+
+  if (chainId && DOT[chainId]) {
+    return DOT[chainId].address;
+  } else {
+    return 'BNB';
+  }
 }
 
 function parseTokenAmountURLParameter(urlParam: any): string {
@@ -247,10 +254,10 @@ function validatedRecipient(recipient: any): string | null {
   return null;
 }
 
-export function queryParametersToSwapState(parsedQs: ParsedQs): SwapState {
-  let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency);
-  let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency);
-  // console.log('input', parsedQs.inputCurrency, inputCurrency, outputCurrency)
+export function queryParametersToSwapState(parsedQs: ParsedQs, chainId?: number): SwapState {
+  let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency, chainId);
+  let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency, chainId);
+  // console.log('input', parsedQs.inputCurrency, inputCurrency, outputCurrency);
   if (inputCurrency === outputCurrency) {
     if (typeof parsedQs.outputCurrency === 'string') {
       inputCurrency = '';
@@ -287,9 +294,9 @@ export function useDefaultsFromURLSearch():
 
   useEffect(() => {
     if (!chainId) return;
-    const parsed = queryParametersToSwapState(parsedQs);
+    const parsed = queryParametersToSwapState(parsedQs, chainId);
 
-    // console.log('init', parsed[Field.INPUT].currencyId, parsed[Field.OUTPUT].currencyId, parsed.independentField)
+    // console.log('init', parsed[Field.INPUT].currencyId, parsed[Field.OUTPUT].currencyId, parsed.independentField);
     dispatch(
       replaceSwapState({
         typedValue: parsed.typedValue,
