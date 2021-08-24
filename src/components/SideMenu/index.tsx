@@ -175,9 +175,9 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
         > img {
           width: ${(props) => (props.collapsed ? '30px' : '18px')};
           height: ${(props) => (props.collapsed ? '30px' : '18px')};
-          > span {
-            margin-left: 7px;
-          }
+        }
+        > span {
+          margin-left: 7px;
         }
       }
       > .links {
