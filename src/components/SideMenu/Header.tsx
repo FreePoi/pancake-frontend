@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { useWeb3React } from '@web3-react/core';
 import ConnectWalletButton from '../ConnectWalletButton';
 import { LogoutIcon, useMatchBreakpoints } from '@kaco/uikit';
-import TwitterIcon from '../svg/Twitter';
-import TelegramIcon from '../svg/Telegram';
 import UncollapsedSvg from './imgs/icon_sq.svg';
 import useAuth from 'hooks/useAuth';
 
@@ -33,14 +31,14 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
         />
       )}
       <div className="right">
-        <div className="icons">
+        {/* <div className="icons">
           <a target="_blank" rel="noreferrer" href="https://twitter.com/KACOFinance">
             <TwitterIcon height="28px" />
           </a>
           <a target="_blank" rel="noreferrer" href="https://t.me/coinversationofficial">
             <TelegramIcon height="28px" />
           </a>
-        </div>
+        </div> */}
         {account ? (
           <div className="account">
             <span>{account}</span>

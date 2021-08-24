@@ -23,7 +23,9 @@ import Logo2DefaultSvg from './imgs/logo2_default.svg';
 import Header from './Header';
 import { useEffect } from 'react';
 import { useMatchBreakpoints } from '@kaco/uikit';
-import DocSvg from './imgs/doc.svg';
+import TwitterIcon from '../svg/Twitter';
+import TelegramIcon from '../svg/Telegram';
+import DocLink from './imgs/DocLink';
 
 const menuItems: {
   text: string;
@@ -161,11 +163,10 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
 
     > .account-info {
       border-top: 1px solid #272e32;
-      height: 90px;
+      height: 120px;
       > .balance {
-        justify-content: ${(props) => (props.collapsed ? 'center' : '')};
-        padding-top: ${(props) => (props.collapsed ? '11px' : '19px')};
-        padding-left: ${(props) => (props.collapsed ? '0px' : '31px')};
+        justify-content: center;
+        padding-top: 18px;
         display: flex;
         align-items: center;
         font-size: 14px;
@@ -174,12 +175,51 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
         > img {
           width: ${(props) => (props.collapsed ? '30px' : '18px')};
           height: ${(props) => (props.collapsed ? '30px' : '18px')};
+          > span {
+            margin-left: 7px;
+          }
         }
-        > img:last-child {
-          margin-left: 10px;
+      }
+      > .links {
+        padding-top: 16px;
+        padding-right: 45px;
+        padding-left: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        svg {
+          fill: white;
+          &:hover {
+            fill: #1bd3d5;
+          }
+          /* width: 28px;
+          height: 28px;
+          &:last-child {
+            max-width: 14px;
+            max-height: 14px;
+          } */
         }
-        > span {
-          margin-left: 7px;
+        > div {
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background-color: rgb(32, 49, 74);
+
+          > a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+          }
+          &:hover {
+            svg {
+              fill: #1bd3d5;
+            }
+            background: none;
+          }
         }
       }
     }
@@ -248,8 +288,29 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
           <div className="balance">
             <img src={collapsed ? Logo2DefaultSvg : Logo2Svg} alt="" />
             {!collapsed && <span>${cakePriceUsd.isNaN() ? '0' : cakePriceUsd.toFixed(2)}</span>}
-            {!collapsed && <img src={DocSvg} alt="" />}
           </div>
+          {!collapsed && (
+            <div className="links">
+              <a target="_blank" rel="noreferrer" href="https://twitter.com/KACOFinance">
+                <TwitterIcon
+                  style={{ position: 'relative', top: '-2px', right: '-2.5px', height: '24px', width: '24px' }}
+                />
+              </a>
+              <a target="_blank" rel="noreferrer" href="https://t.me/coinversationofficial">
+                <TelegramIcon style={{ height: '22px', width: '22px' }} />
+              </a>
+              <a target="_blank" rel="noreferrer" href="https://coinversationprotocol.gitbook.io/kaco-doc/">
+                <DocLink style={{ height: '16px', width: '16px' }} />
+              </a>
+              {/* <div>
+              </div>
+              <div>
+                </a>
+              </div> */}
+              {/* <div>
+              </div> */}
+            </div>
+          )}
         </div>
       </div>
       <div
