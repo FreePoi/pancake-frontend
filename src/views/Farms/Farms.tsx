@@ -102,6 +102,19 @@ const Farms: React.FC = () => {
             )
           : { cakeRewardsApr: 0, lpRewardsApr: 0 };
 
+        // console.log(
+        //   `${farm.token.symbol}-${farm.quoteToken.symbol}`,
+        //   'kacPerBlock',
+        //   kacPerBlock.toFixed(5),
+        //   'cakePrice',
+        //   cakePrice.toFixed(5),
+        //   'totalLiquidity',
+        //   totalLiquidity.toFixed(5),
+        //   'apr',
+        //   cakeRewardsApr,
+        //   'lpRewardsApr',
+        //   lpRewardsApr,
+        // );
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity };
       });
 

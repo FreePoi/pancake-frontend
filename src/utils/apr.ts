@@ -36,9 +36,18 @@ export const getFarmApr = (
   poolLiquidityUsd: BigNumber,
   farmAddress: string,
 ): { cakeRewardsApr: number; lpRewardsApr: number } => {
-  const yearlyCakeRewardAllocation = kacPerBlock.times(poolWeight);
+  const yearlyCakeRewardAllocation = kacPerBlock.times(BLOCKS_PER_YEAR).times(poolWeight);
   const cakeRewardsApr = yearlyCakeRewardAllocation.times(cakePriceUsd).div(poolLiquidityUsd).times(100);
   let cakeRewardsAprAsNumber = null;
+
+  // console.log(
+  //   'poolWeight',
+  //   poolWeight.toFixed(5),
+  //   'yearlyCakeRewardAllocation',
+  //   yearlyCakeRewardAllocation.toFixed(5),
+  //   'yearlyCakeRewardAllocation.times(cakePriceUsd).div(poolLiquidityUsd)',
+  //   yearlyCakeRewardAllocation.times(cakePriceUsd).div(poolLiquidityUsd).toFixed(5),
+  // );
   if (!cakeRewardsApr.isNaN() && cakeRewardsApr.isFinite()) {
     cakeRewardsAprAsNumber = cakeRewardsApr.toNumber();
   }
