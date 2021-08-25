@@ -112,6 +112,16 @@ const farms: FarmConfig[] = [
     token: tokens.lit,
     quoteToken: tokens.dot,
   },
+  {
+    pid: 10,
+    lpSymbol: 'NEAR-USDT LP',
+    lpAddresses: {
+      97: '',
+      56: '0x18510be7f66bc5cefe78e66df8cad428b289e8ba',
+    },
+    token: tokens.near,
+    quoteToken: tokens.usdt,
+  },
 ];
 
 export default farms;
