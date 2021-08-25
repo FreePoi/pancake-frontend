@@ -1834,6 +1834,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://moonpot.com/',
   },
+  near: {
+    symbol: 'NEAR',
+    address: {
+      56: '0x1fa4a73a3f0133f0025378af00236f3abdee5d63',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://near.org/',
+  },
 };
 
 export const WBNB = new Token(chainId, tokens.wbnb.address[chainId], 18, 'WBNB', 'Wrapped BNB');

@@ -80,6 +80,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "/images/tokens/0x55d398326f99059fF775485246999027B3197955.svg"
+    },
+    {
+      "name": "NEAR Protocol",
+      "symbol": "NEAR",
+      "address": "0x1Fa4a73a3F0133f0025378af00236f3aBDEE5D63",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "/images/tokens/0x1Fa4a73a3F0133f0025378af00236f3aBDEE5D63.svg"
     }
   ]
 }
