@@ -1837,7 +1837,7 @@ const tokens = {
   near: {
     symbol: 'NEAR',
     address: {
-      56: '0x1fa4a73a3f0133f0025378af00236f3abdee5d63',
+      56: '0x1Fa4a73a3F0133f0025378af00236f3aBDEE5D63',
       97: '',
     },
     decimals: 18,
