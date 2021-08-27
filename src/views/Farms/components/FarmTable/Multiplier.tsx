@@ -5,8 +5,6 @@ import { useTranslation } from 'contexts/Localization';
 
 const ReferenceElement = styled.div`
   display: inline-block;
-
-  background: #272e32;
 `;
 
 export interface MultiplierProps {

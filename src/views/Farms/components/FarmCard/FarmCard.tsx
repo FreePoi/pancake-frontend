@@ -16,6 +16,7 @@ import ApyButton from './ApyButton';
 
 export interface FarmWithStakedValue extends Farm {
   apr?: number;
+  apy?: number;
   lpRewardsApr?: number;
   liquidity?: BigNumber;
 }

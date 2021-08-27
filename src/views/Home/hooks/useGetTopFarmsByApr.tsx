@@ -48,7 +48,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
       const farmsWithPrices = farmsState.filter((farm) => farm.lpTotalInQuoteToken && farm.quoteToken.busdPrice);
       const farmsWithApr: FarmWithStakedValue[] = farmsWithPrices.map((farm) => {
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice);
-        const { cakeRewardsApr, lpRewardsApr } = getFarmApr(
+        const { kacRewardsApr: cakeRewardsApr, lpRewardsApr } = getFarmApr(
           kacPerBlock,
           new BigNumber(farm.poolWeight),
           cakePriceBusd,
@@ -65,7 +65,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
     if (fetchStatus === FetchStatus.SUCCESS && !topFarms[0]) {
       getTopFarmsByApr(farms);
     }
-  }, [setTopFarms, farms, fetchStatus, cakePriceBusd, topFarms]);
+  }, [setTopFarms, farms, fetchStatus, cakePriceBusd, topFarms, kacPerBlock]);
 
   return { topFarms };
 };
