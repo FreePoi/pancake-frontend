@@ -44,6 +44,19 @@ const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number): string =
   return null;
 };
 
+const getDisplayApy = (cakeRewardsApy?: number): string => {
+  if (cakeRewardsApy) {
+    return cakeRewardsApy.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  }
+  if (cakeRewardsApy) {
+    return cakeRewardsApy.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  }
+  if (cakeRewardsApy === 0) {
+    return '0';
+  }
+  return null;
+};
+
 const Farms: React.FC = () => {
   const { path } = useRouteMatch();
   const { pathname } = useLocation();
@@ -91,8 +104,9 @@ const Farms: React.FC = () => {
         if (!farm.lpTotalInQuoteToken || !farm.quoteToken.busdPrice) {
           return farm;
         }
+
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice);
-        const { cakeRewardsApr, lpRewardsApr } = isActive
+        const { kacRewardsApr, lpRewardsApr, kacRewardApy } = isActive
           ? getFarmApr(
               kacPerBlock,
               new BigNumber(farm.poolWeight),
@@ -100,7 +114,7 @@ const Farms: React.FC = () => {
               totalLiquidity,
               farm.lpAddresses[ChainId.MAINNET],
             )
-          : { cakeRewardsApr: 0, lpRewardsApr: 0 };
+          : { kacRewardsApr: 0, lpRewardsApr: 0, kacRewardApy: 0 };
 
         // console.log(
         //   `${farm.token.symbol}-${farm.quoteToken.symbol}`,
@@ -115,7 +129,7 @@ const Farms: React.FC = () => {
         //   'lpRewardsApr',
         //   lpRewardsApr,
         // );
-        return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity };
+        return { ...farm, apr: kacRewardsApr, lpRewardsApr, liquidity: totalLiquidity, apy: kacRewardApy };
       });
 
       if (query) {
@@ -220,13 +234,14 @@ const Farms: React.FC = () => {
 
     const row: RowProps = {
       apr: {
-        value: getDisplayApr(farm.apr, farm.lpRewardsApr),
+        apy: getDisplayApy(farm.apy),
+        apr: getDisplayApr(farm.apr, farm.lpRewardsApr),
         multiplier: farm.multiplier,
         lpLabel,
         tokenAddress,
         quoteTokenAddress,
         cakePrice,
-        originalValue: farm.apr,
+        originalValue: farm.apy,
       },
       farm: {
         label: lpLabel,
@@ -263,8 +278,8 @@ const Farms: React.FC = () => {
             case 'farm':
               return b.id - a.id;
             case 'apr':
-              if (a.original.apr.value && b.original.apr.value) {
-                return Number(a.original.apr.value) - Number(b.original.apr.value);
+              if (a.original.apr.apr && b.original.apr.apr) {
+                return Number(a.original.apr.apr) - Number(b.original.apr.apr);
               }
 
               return 0;

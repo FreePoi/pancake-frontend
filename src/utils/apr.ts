@@ -1,3 +1,4 @@
+import { BSC_BLOCK_TIME } from './../config/index';
 import BigNumber from 'bignumber.js';
 import { BLOCKS_PER_YEAR } from 'config';
 import lpAprs from 'config/constants/lpAprs.json';
@@ -25,26 +26,37 @@ export const getPoolApr = (
 /**
  * Get farm APR value in %
  * @param poolWeight allocationPoint / totalAllocationPoint
- * @param cakePriceUsd Cake price in USD
+ * @param kacPriceUsd Cake price in USD
  * @param poolLiquidityUsd Total pool liquidity in USD
  * @returns
  */
 export const getFarmApr = (
   kacPerBlock: BigNumber,
   poolWeight: BigNumber,
-  cakePriceUsd: BigNumber,
+  kacPriceUsd: BigNumber,
   poolLiquidityUsd: BigNumber,
   farmAddress: string,
-): { cakeRewardsApr: number; lpRewardsApr: number } => {
-  const yearlyCakeRewardAllocation = kacPerBlock.times(BLOCKS_PER_YEAR).times(poolWeight);
-  const cakeRewardsApr = yearlyCakeRewardAllocation.times(cakePriceUsd).div(poolLiquidityUsd).times(100);
-  let cakeRewardsAprAsNumber = null;
+): { kacRewardsApr: number; lpRewardsApr: number; kacRewardApy: number } => {
+  const BLOCKS_PER_DAY = new BigNumber((60 / BSC_BLOCK_TIME) * 60 * 24); // 10512000
+  const daylyKacRewardAllocation = kacPerBlock.times(BLOCKS_PER_DAY).times(poolWeight);
+  const kacRewardsDaylyApr = daylyKacRewardAllocation.times(kacPriceUsd).div(poolLiquidityUsd);
+  const kacRewardsApy = kacRewardsDaylyApr.plus(new BigNumber(1)).pow(new BigNumber(365));
 
-  if (!cakeRewardsApr.isNaN() && cakeRewardsApr.isFinite()) {
-    cakeRewardsAprAsNumber = cakeRewardsApr.toNumber();
+  const yearlyKacRewardAllocation = kacPerBlock.times(BLOCKS_PER_YEAR).times(poolWeight);
+  const kacRewardsApr = yearlyKacRewardAllocation.times(kacPriceUsd).div(poolLiquidityUsd).times(100);
+  let kacRewardsAprAsNumber = null;
+  let kacRewardsApyAsNumber = null;
+
+  if (!kacRewardsApr.isNaN() && kacRewardsApr.isFinite()) {
+    kacRewardsAprAsNumber = kacRewardsApr.toNumber();
   }
+  if (!kacRewardsApy.isNaN() && kacRewardsApy.isFinite()) {
+    kacRewardsApyAsNumber = kacRewardsApy.toNumber();
+  }
+
   const lpRewardsApr = lpAprs[farmAddress?.toLocaleLowerCase()] ?? 0;
-  return { cakeRewardsApr: cakeRewardsAprAsNumber, lpRewardsApr };
+
+  return { kacRewardsApr: kacRewardsAprAsNumber, lpRewardsApr, kacRewardApy: kacRewardsApyAsNumber };
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
