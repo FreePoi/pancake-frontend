@@ -37,10 +37,10 @@ export const getFarmApr = (
   poolLiquidityUsd: BigNumber,
   farmAddress: string,
 ): { kacRewardsApr: number; lpRewardsApr: number; kacRewardApy: number } => {
-  const BLOCKS_PER_DAY = new BigNumber((60 / BSC_BLOCK_TIME) * 60 * 24); // 10512000
+  const BLOCKS_PER_DAY = new BigNumber((60 / BSC_BLOCK_TIME) * 60 * 24);
   const daylyKacRewardAllocation = kacPerBlock.times(BLOCKS_PER_DAY).times(poolWeight);
   const kacRewardsDaylyApr = daylyKacRewardAllocation.times(kacPriceUsd).div(poolLiquidityUsd);
-  const kacRewardsApy = kacRewardsDaylyApr.plus(new BigNumber(1)).pow(new BigNumber(365));
+  const kacRewardsApy = kacRewardsDaylyApr.plus(new BigNumber(1)).pow(new BigNumber(365)).times(100);
 
   const yearlyKacRewardAllocation = kacPerBlock.times(BLOCKS_PER_YEAR).times(poolWeight);
   const kacRewardsApr = yearlyKacRewardAllocation.times(kacPriceUsd).div(poolLiquidityUsd).times(100);
