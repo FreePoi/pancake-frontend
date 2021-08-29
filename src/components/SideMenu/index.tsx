@@ -302,13 +302,6 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
               <a target="_blank" rel="noreferrer" href="https://coinversationprotocol.gitbook.io/kaco-doc/">
                 <DocLink style={{ height: '16px', width: '16px' }} />
               </a>
-              {/* <div>
-              </div>
-              <div>
-                </a>
-              </div> */}
-              {/* <div>
-              </div> */}
             </div>
           )}
         </div>
