@@ -37,7 +37,7 @@ function getPriceVsBusd(
     return false;
   });
 
-  console.log(`${tokenAddress.slice(0, 5)}`, priceVsBusdMap[tokenAddress].toFixed(5));
+  // console.log(`${tokenAddress.slice(0, 5)}`, priceVsBusdMap[tokenAddress].toFixed(5));
   return priceVsBusdMap[tokenAddress];
 }
 
