@@ -8,7 +8,7 @@ const FarmHeader: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <div className={className}>
       <img src={LogoPng} alt="" />
-      <div>{t('There are various farming opportunities available at KAC Farms')}</div>
+      <div>{t('Happy Farming :)')}</div>
     </div>
   );
 };
