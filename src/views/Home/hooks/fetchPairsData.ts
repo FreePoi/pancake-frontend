@@ -27,7 +27,7 @@ export type PairsData = {
 };
 
 const fetchPairsData = async (addresses: string[]): Promise<PairsData> => {
-  console.log('addresses', addresses);
+  // console.log('addresses', addresses);
   const calls = addresses
     .map((address) => [
       {

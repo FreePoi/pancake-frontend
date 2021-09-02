@@ -171,7 +171,6 @@ const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationMo
     onDismiss();
   }, [customOnDismiss, onDismiss]);
 
-  console.log('attemptingTxn', attemptingTxn, pendingText);
   if (!chainId) return null;
 
   return (
