@@ -88,6 +88,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "/images/tokens/0x1Fa4a73a3F0133f0025378af00236f3aBDEE5D63.svg"
+    },
+    {
+      "name": "PolkastarterToken",
+      "symbol": "POLS",
+      "address": "0x7e624FA0E1c4AbFD309cC15719b7E2580887f570",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "/images/tokens/0x7e624FA0E1c4AbFD309cC15719b7E2580887f570.svg"
     }
   ]
 }
