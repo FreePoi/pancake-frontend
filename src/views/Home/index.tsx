@@ -53,7 +53,7 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
                 KAC Total：{cap}
               </Text>
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                KAC Circulation：{cakeSupply}
+                KAC Circulation：{cakeSupply.toFixed()}
               </Text>
 
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
@@ -73,7 +73,7 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
                   KAC Total：{cap}
                 </Text>
                 <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                  KAC Circulation：{cakeSupply}
+                  KAC Circulation：{cakeSupply.toFixed()}
                 </Text>
               </Flex>
               <Flex>
