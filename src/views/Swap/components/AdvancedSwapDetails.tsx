@@ -59,9 +59,9 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
                 <Text color="#9da6a6" mb="12px">
                   For each trade a 0.25% fee is paid
                 </Text>
-                <Text color="#9da6a6">- 0.17% to LP token holders</Text>
-                <Text color="#9da6a6">- 0.03% to the Treasury</Text>
-                <Text color="#9da6a6">- 0.05% towards CAKE buyback and burn</Text>
+                <Text color="#9da6a6">- 0.1875% to LP token holders</Text>
+                <Text color="#9da6a6">- 0.03125% to the Treasury</Text>
+                <Text color="#9da6a6">- 0.03125% towards KAC buyback and burn</Text>
               </>
             }
             ml="4px"

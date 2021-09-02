@@ -312,7 +312,7 @@ export default function AddLiquidity({
           title={t('Add Liquidity')}
           subtitle={t('Add liquidity to receive LP tokens')}
           helper={t(
-            'Liquidity providers earn a 0.17% trading fee on all trades made for that token pair, proportional to their share of the liquidity pool.',
+            'Liquidity providers earn a 0.1875% trading fee on all trades made for that token pair, proportional to their share of the liquidity pool.',
           )}
           backTo="/pool"
         />
