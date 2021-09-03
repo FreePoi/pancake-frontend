@@ -505,11 +505,11 @@ export default function RemoveLiquidity({
                   max={100}
                   value={innerLiquidityPercentage}
                   onValueChanged={(value) => setInnerLiquidityPercentage(Math.ceil(value))}
-                  mb="16px"
                 />
                 <Flex flexWrap="wrap" justifyContent="space-evenly">
                   <Button
                     style={{
+                      marginTop: '16px',
                       color: innerLiquidityPercentage === 25 ? 'white' : '#1BD3D5',
                       background: innerLiquidityPercentage === 25 ? '#1BD3D5' : '#1F252A',
                       borderRadius: '12px',
@@ -522,6 +522,7 @@ export default function RemoveLiquidity({
                   </Button>
                   <Button
                     style={{
+                      marginTop: '16px',
                       color: innerLiquidityPercentage === 50 ? 'white' : '#1BD3D5',
                       background: innerLiquidityPercentage === 50 ? '#1BD3D5' : '#1F252A',
                       borderRadius: '12px',
@@ -534,6 +535,7 @@ export default function RemoveLiquidity({
                   </Button>
                   <Button
                     style={{
+                      marginTop: '16px',
                       color: innerLiquidityPercentage === 75 ? 'white' : '#1BD3D5',
                       background: innerLiquidityPercentage === 75 ? '#1BD3D5' : '#1F252A',
                       borderRadius: '12px',
@@ -546,6 +548,7 @@ export default function RemoveLiquidity({
                   </Button>
                   <Button
                     style={{
+                      marginTop: '16px',
                       color: innerLiquidityPercentage === 100 ? 'white' : '#1BD3D5',
                       background: innerLiquidityPercentage === 100 ? '#1BD3D5' : '#1F252A',
                       borderRadius: '12px',
@@ -664,7 +667,7 @@ export default function RemoveLiquidity({
 
           {pair && (
             <AutoColumn gap="10px" style={{ marginTop: '16px' }}>
-              <PlainCard height="36px" style={{ display: 'flex', alignItems: 'center', padding: '0px 20px' }}>
+              <PlainCard style={{ display: 'flex', alignItems: 'center', padding: '15px 20px' }}>
                 <Flex justifyContent="flex-start">
                   <Text fontSize="12px" bold small color="secondary">
                     {t('Prices')}:&nbsp;
