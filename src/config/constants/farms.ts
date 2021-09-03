@@ -132,16 +132,16 @@ const farms: FarmConfig[] = [
     token: tokens.usdt,
     quoteToken: tokens.busd,
   },
-  {
-    pid: 12,
-    lpSymbol: 'POLS-DOT LP',
-    lpAddresses: {
-      97: '',
-      56: '0x382cb2ee90cb4e717f12fe0091dfc22dee881470',
-    },
-    token: tokens.pols,
-    quoteToken: tokens.dot,
-  },
+  // {
+  //   pid: 13,
+  //   lpSymbol: 'POLS-DOT LP',
+  //   lpAddresses: {
+  //     97: '',
+  //     56: '0x382cb2ee90cb4e717f12fe0091dfc22dee881470',
+  //   },
+  //   token: tokens.pols,
+  //   quoteToken: tokens.dot,
+  // },
 ];
 
 export default farms;
