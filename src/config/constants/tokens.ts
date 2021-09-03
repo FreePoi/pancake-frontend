@@ -1843,7 +1843,7 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://near.org/',
   },
-  POLS: {
+  pols: {
     symbol: 'POLS',
     address: {
       56: '0x7e624FA0E1c4AbFD309cC15719b7E2580887f570',
