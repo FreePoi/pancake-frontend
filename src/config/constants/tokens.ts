@@ -1852,6 +1852,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.polkastarter.com/',
   },
+  pha: {
+    symbol: 'PHA',
+    address: {
+      56: '0x0112e557d400474717056C4e6D40eDD846F38351',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://phala.network/',
+  },
 };
 
 export const WBNB = new Token(chainId, tokens.wbnb.address[chainId], 18, 'WBNB', 'Wrapped BNB');
