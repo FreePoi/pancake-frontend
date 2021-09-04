@@ -123,16 +123,6 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.usdt,
   },
   {
-    pid: 11,
-    lpSymbol: 'USDT-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0xd56414bdb4de22ced7698a5cb8e83741574ffe15',
-    },
-    token: tokens.usdt,
-    quoteToken: tokens.busd,
-  },
-  {
     pid: 13,
     lpSymbol: 'POLS-DOT LP',
     lpAddresses: {
@@ -141,6 +131,16 @@ const farms: FarmConfig[] = [
     },
     token: tokens.pols,
     quoteToken: tokens.dot,
+  },
+  {
+    pid: 11,
+    lpSymbol: 'USDT-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xd56414bdb4de22ced7698a5cb8e83741574ffe15',
+    },
+    token: tokens.usdt,
+    quoteToken: tokens.busd,
   },
 ];
 
