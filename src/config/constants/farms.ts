@@ -83,6 +83,16 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.ksm,
   },
   {
+    pid: 13,
+    lpSymbol: 'POLS-DOT LP',
+    lpAddresses: {
+      97: '',
+      56: '0x382cb2ee90cb4e717f12fe0091dfc22dee881470',
+    },
+    token: tokens.pols,
+    quoteToken: tokens.dot,
+  },
+  {
     pid: 7,
     lpSymbol: 'REEF-DOT LP',
     lpAddresses: {
@@ -121,16 +131,6 @@ const farms: FarmConfig[] = [
     },
     token: tokens.near,
     quoteToken: tokens.usdt,
-  },
-  {
-    pid: 13,
-    lpSymbol: 'POLS-DOT LP',
-    lpAddresses: {
-      97: '',
-      56: '0x382cb2ee90cb4e717f12fe0091dfc22dee881470',
-    },
-    token: tokens.pols,
-    quoteToken: tokens.dot,
   },
   {
     pid: 11,
