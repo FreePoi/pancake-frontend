@@ -8,8 +8,9 @@ import BgPng from './imgs/bg.png';
 // import HomeSvg from './imgs/icon_home_D.svg';
 import UncollapsedSvg from './imgs/icon_zk.svg';
 import CollapsedSvg from './imgs/icon_sq.svg';
-// import InfoSvg from './imgs/icon_Info_D.svg';
-// import InfoNSvg from './imgs/icon_Info_N.svg';
+import InfoSvg from './imgs/icon_Info_D.svg';
+import InfoNSvg from './imgs/icon_Info_N.svg';
+import collapseSvg from './imgs/collapse.svg';
 // import MintSvg from './imgs/icon_Mint_D.svg';
 // import MintNSvg from './imgs/icon_Mint_N.svg';
 // import PoolsSvg from './imgs/icon_Pools_D.svg';
@@ -26,43 +27,6 @@ import { useMatchBreakpoints } from '@kaco/uikit';
 import TwitterIcon from '../svg/Twitter';
 import TelegramIcon from '../svg/Telegram';
 import DocLink from './imgs/DocLink';
-
-const menuItems: {
-  text: string;
-  img: any;
-  link: string;
-}[] = [
-  {
-    text: 'Home',
-    img: HomeSvg,
-    link: '/',
-  },
-  {
-    text: 'Trade',
-    img: TradeSvg,
-    link: '/swap',
-  },
-  // {
-  //   text: 'Mint',
-  //   imgs: [MintSvg, MintNSvg],
-  //   link: '/mint',
-  // },
-  {
-    text: 'Farm',
-    img: FarmSvg,
-    link: '/farms',
-  },
-  // {
-  //   text: 'Pools',
-  //   imgs: [PoolsSvg, PoolsNSvg],
-  //   link: '/pools',
-  // },
-  // {
-  //   text: 'Info',
-  //   imgs: [InfoSvg, InfoNSvg],
-  //   link: '/info',
-  // },
-];
 
 const NavLink = styled(Link)<{ active: 't' | 'f' }>`
   display: flex;
@@ -159,6 +123,15 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
     > .nav {
       flex: 1;
       margin-top: 20px;
+
+      .sub-menu {
+        background-color: #12171a;
+        padding-left: 60px;
+        > a:hover {
+          background: none;
+          color: #1bd3d5;
+        }
+      }
     }
 
     > .account-info {
@@ -231,6 +204,55 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
   const cakePriceUsd = usePriceCakeBusd();
   const { isXs, isSm, isMd } = useMatchBreakpoints();
   const { pathname } = useLocation();
+  const [menuItems, setMenuItems] = useState<
+    {
+      text: string;
+      img: any;
+      link?: string;
+      collapsed?: boolean;
+      children?: { text: string; link: string }[] | undefined;
+    }[]
+  >([
+    {
+      text: 'Home',
+      img: HomeSvg,
+      link: '/',
+    },
+    {
+      text: 'Trade',
+      img: TradeSvg,
+      link: '/swap',
+    },
+    // {
+    //   text: 'Mint',
+    //   imgs: [MintSvg, MintNSvg],
+    //   link: '/mint',
+    // },
+    {
+      text: 'Farm',
+      img: FarmSvg,
+      link: '/farms',
+    },
+    {
+      text: 'NFT',
+      img: FarmSvg,
+      collapsed: false,
+      children: [
+        { text: 'Markets', link: '/nft/pools' },
+        { text: 'My Wallet', link: '/nft/wallet' },
+      ],
+    },
+    // {
+    //   text: 'Pools',
+    //   imgs: [PoolsSvg, PoolsNSvg],
+    //   link: '/pools',
+    // },
+    // {
+    //   text: 'Info',
+    //   imgs: [InfoSvg, InfoNSvg],
+    //   link: '/info',
+    // },
+  ]);
 
   const sideCollapsedWidth = useMemo(() => {
     if ([isXs, isSm].some(Boolean)) {
@@ -260,28 +282,63 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
           <img src={collapsed ? Logo2Svg : LogoPng} alt="" />
         </div>
         <div className="nav">
-          {menuItems.map((item) => (
-            <NavLink
-              active={
-                (
-                  item.link === '/'
-                    ? pathname === item.link
-                    : ['/add', '/remove', '/liquidity'].find((p) => pathname.startsWith(p))
-                    ? item.link === '/swap'
-                    : pathname.startsWith(item.link)
-                )
-                  ? 't'
-                  : 'f'
-              }
-              to={item.link}
-              key={item.link}
-              onClick={() => {
-                [isXs, isSm, isMd].some(Boolean) && setCollapsed(true);
-              }}
-            >
-              <div className="icon-holder">{item.img()}</div>
-              {!collapsed && <span>{item.text}</span>}
-            </NavLink>
+          {menuItems.map((item, index) => (
+            <>
+              <NavLink
+                active={
+                  (
+                    item.link === '/'
+                      ? pathname === item.link
+                      : ['/add', '/remove', '/liquidity'].find((p) => pathname.startsWith(p))
+                      ? item.link === '/swap'
+                      : pathname.startsWith(item.link)
+                  )
+                    ? 't'
+                    : 'f'
+                }
+                to={item.link}
+                key={item.link}
+                onClick={() => {
+                  if (item.children?.length) {
+                    setMenuItems([
+                      ...menuItems.slice(0, index),
+                      { ...item, collapsed: !item.collapsed },
+                      ...menuItems.slice(index + 1),
+                    ]);
+
+                    return;
+                  }
+                  [isXs, isSm, isMd].some(Boolean) && setCollapsed(true);
+                }}
+              >
+                <div className="icon-holder">{item.img()}</div>
+                {!collapsed && <span>{item.text}</span>}
+                {item.children?.length && <img src={collapseSvg} alt="" />}
+              </NavLink>
+              {item.children?.length && !item.collapsed && (
+                <div className="sub-menu">
+                  {item.children.map((menu) => (
+                    <NavLink
+                      active={
+                        (
+                          menu.link === '/'
+                            ? pathname === menu.link
+                            : ['/add', '/remove', '/liquidity'].find((p) => pathname.startsWith(p))
+                            ? menu.link === '/swap'
+                            : pathname.startsWith(menu.link)
+                        )
+                          ? 't'
+                          : 'f'
+                      }
+                      to={menu.link}
+                      key={menu.link}
+                    >
+                      {menu.text}
+                    </NavLink>
+                  ))}
+                </div>
+              )}
+            </>
           ))}
         </div>
         <div className="account-info">

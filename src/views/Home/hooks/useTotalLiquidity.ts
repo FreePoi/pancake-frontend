@@ -1,3 +1,4 @@
+import farms from 'config/constants/farms';
 import BigNumber from 'bignumber.js';
 import fetchPairsData, { PairsData, PairsMap } from './fetchPairsData';
 import usePairLength from './usePairsLength';
@@ -37,11 +38,25 @@ function getPriceVsBusd(
     return false;
   });
 
-  // console.log(`${tokenAddress.slice(0, 5)}`, priceVsBusdMap[tokenAddress].toFixed(5));
+  console.log(`${tokenAddress.slice(0, 5)}`, priceVsBusdMap[tokenAddress].toFixed(5));
   return priceVsBusdMap[tokenAddress];
 }
 
 function countup({ countup, source }: PairsData): BigNumber {
+  Object.entries(countup).map(([address, amount]) =>
+    console.log(
+      `${
+        farms.find((farm) => farm.token.address[56].toLowerCase() === address)?.token.symbol ||
+        farms.find((farm) => farm.quoteToken.address[56].toLowerCase() === address)?.quoteToken.symbol ||
+        address.slice(0, 5)
+      }-${amount.toFixed(4)}`,
+    ),
+  );
+  // console.log(
+  //   'countup',
+  //   'source',
+  //   source,
+  // );
   const priceVsBusdMap: { [key: string]: BigNumber } = {};
 
   Object.keys(source).forEach((tokenAddress) => getPriceVsBusd(tokenAddress, source, priceVsBusdMap));
