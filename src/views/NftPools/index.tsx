@@ -1,26 +1,28 @@
 import React, { FC, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { useTranslation } from 'contexts/Localization';
 import Page from 'components/Layout/Page';
-import { useMatchBreakpoints } from '@kaco/uikit';
+import { useMatchBreakpoints, Text, Flex } from '@kaco/uikit';
+import Row from './Row';
 
 const PoolList = styled.div`
   border-radius: 16px;
   overflow: hidden;
   background-color: #1f373b;
 
+  > table {
+    width: 100%;
+  }
   > div {
     > .line {
       background-color: #1f373b;
+      height: 88px;
     }
     > .more {
-      overflow: hidden;
-      background-color: #122124;
     }
   }
 `;
 
-interface Pool {
+export interface Pool {
   poolName: string;
   fragmentName: string;
   nftCount: number;
@@ -32,15 +34,7 @@ interface Pool {
 const pools: Pool[] = [
   {
     poolName: 'BabySwap NFB',
-    fragmentName: '',
-    nftCount: 300,
-    liquidity: 192344,
-    floorPrice: 202.11,
-    changeDay7: 444422,
-  },
-  {
-    poolName: 'BabySwap NFB',
-    fragmentName: '',
+    fragmentName: 'BabySwap 100',
     nftCount: 300,
     liquidity: 192344,
     floorPrice: 202.11,
@@ -48,7 +42,7 @@ const pools: Pool[] = [
   },
   {
     poolName: 'ALPACA FIANCE',
-    fragmentName: '',
+    fragmentName: 'Alpaca 600',
     nftCount: 300,
     liquidity: 192344,
     floorPrice: 202.11,
@@ -72,23 +66,6 @@ const pools: Pool[] = [
   },
 ];
 
-const PoolItem: FC<{ pool: Pool; simpleMode: boolean }> = ({ pool, simpleMode }) => {
-  const [collapsed, setCollapsed] = useState(false);
-
-  return (
-    <div key={pool.poolName}>
-      <div className="line" onClick={() => setCollapsed((old) => !old)}>
-        line
-      </div>
-      {
-        <div style={{ transition: 'height 0.1s', height: simpleMode && !collapsed ? '100px' : '0px' }} className="more">
-          more
-        </div>
-      }
-    </div>
-  );
-};
-
 const NftPools: FC = () => {
   const { isXs, isSm } = useMatchBreakpoints();
 
@@ -97,9 +74,11 @@ const NftPools: FC = () => {
   return (
     <Page>
       <PoolList>
-        {pools.map((pool) => (
-          <PoolItem key={pool.poolName} pool={pool} simpleMode={true} />
-        ))}
+        <table>
+          {pools.map((pool) => (
+            <Row key={pool.poolName} pool={pool} simpleMode={simpleMode} />
+          ))}
+        </table>
       </PoolList>
     </Page>
   );
