@@ -11,11 +11,13 @@ const StyledTr = styled.tr`
   td > .link {
     visibility: hidden;
   }
+
   ${({ theme }) => theme.mediaQueries.md} {
     &:hover {
       background-color: #122124;
       td > .link {
         visibility: visible;
+        cursor: pointer;
       }
     }
   }

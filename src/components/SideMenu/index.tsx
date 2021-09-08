@@ -299,16 +299,15 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
                 to={item.link}
                 key={item.link}
                 onClick={() => {
+                  [isXs, isSm, isMd].some(Boolean) && setCollapsed(true);
+
                   if (item.children?.length) {
                     setMenuItems([
                       ...menuItems.slice(0, index),
                       { ...item, collapsed: !item.collapsed },
                       ...menuItems.slice(index + 1),
                     ]);
-
-                    return;
                   }
-                  [isXs, isSm, isMd].some(Boolean) && setCollapsed(true);
                 }}
               >
                 <div className="icon-holder">{item.img()}</div>
@@ -332,6 +331,9 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
                       }
                       to={menu.link}
                       key={menu.link}
+                      onClick={() => {
+                        [isXs, isSm, isMd].some(Boolean) && setCollapsed(true);
+                      }}
                     >
                       {menu.text}
                     </NavLink>
