@@ -46,6 +46,7 @@ const AddLiquidity = lazy(() => import('./views/AddLiquidity'));
 const Liquidity = lazy(() => import('./views/Pool'));
 const PoolFinder = lazy(() => import('./views/PoolFinder'));
 const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'));
+const NftPools = lazy(() => import('./views/NftPools'));
 
 // This config is required for number formatting
 BigNumber.config({
@@ -84,8 +85,11 @@ const App: React.FC = () => {
             <Route path="/ifo">
               <Ifos />
             </Route>
-            <Route path="/collectibles">
+            {/* <Route path="/collectibles">
               <Collectibles />
+            </Route> */}
+            <Route exact path="/nft/pools">
+              <NftPools />
             </Route>
             <Route exact path="/teams">
               <Teams />
@@ -138,9 +142,9 @@ const App: React.FC = () => {
             <Route path="/syrup">
               <Redirect to="/pools" />
             </Route>
-            <Route path="/nft">
+            {/* <Route path="/nft">
               <Redirect to="/collectibles" />
-            </Route>
+            </Route> */}
 
             {/* 404 */}
             <Route component={NotFound} />
