@@ -48,6 +48,8 @@ const PoolFinder = lazy(() => import('./views/PoolFinder'));
 const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'));
 const NftPools = lazy(() => import('./views/NftPools'));
 const NftPool = lazy(() => import('./views/NftPool'));
+const NftMint = lazy(() => import('./views/NftWallet/Mint'));
+const NftBurn = lazy(() => import('./views/NftWallet/Burn'));
 
 // This config is required for number formatting
 BigNumber.config({
@@ -94,6 +96,15 @@ const App: React.FC = () => {
             </Route>
             <Route path="/nft/pool/:pool">
               <NftPool />
+            </Route>
+            <Route path="/nft/wallet/burn">
+              <NftBurn />
+            </Route>
+            <Route path="/nft/wallet/mint">
+              <NftMint />
+            </Route>
+            <Route exact path="/nft/wallet">
+              <NftBurn />
             </Route>
             {/* <Route exact path="/teams">
               <Teams />
