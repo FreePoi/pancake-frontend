@@ -47,6 +47,7 @@ const Liquidity = lazy(() => import('./views/Pool'));
 const PoolFinder = lazy(() => import('./views/PoolFinder'));
 const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'));
 const NftPools = lazy(() => import('./views/NftPools'));
+const NftPool = lazy(() => import('./views/NftPool'));
 
 // This config is required for number formatting
 BigNumber.config({
@@ -70,28 +71,31 @@ const App: React.FC = () => {
             <Route path="/" exact>
               <Home />
             </Route>
-            <Route exact path="/farms/auction">
+            {/* <Route exact path="/farms/auction">
               <FarmAuction />
-            </Route>
+            </Route> */}
             <Route path="/farms">
               <Farms />
             </Route>
-            <Route path="/pools">
+            {/* <Route path="/pools">
               <Pools />
-            </Route>
-            <Route path="/lottery">
+            </Route> */}
+            {/* <Route path="/lottery">
               <Lottery />
-            </Route>
-            <Route path="/ifo">
+            </Route> */}
+            {/* <Route path="/ifo">
               <Ifos />
-            </Route>
+            </Route> */}
             {/* <Route path="/collectibles">
               <Collectibles />
             </Route> */}
             <Route exact path="/nft/pools">
               <NftPools />
             </Route>
-            <Route exact path="/teams">
+            <Route path="/nft/pool/:pool">
+              <NftPool />
+            </Route>
+            {/* <Route exact path="/teams">
               <Teams />
             </Route>
             <Route path="/teams/:id">
@@ -114,7 +118,7 @@ const App: React.FC = () => {
             </Route>
             <Route path="/voting/proposal/:id">
               <Proposal />
-            </Route>
+            </Route> */}
 
             {/* Using this format because these components use routes injected props. We need to rework them with hooks */}
             <Route exact strict path="/swap" component={Swap} />

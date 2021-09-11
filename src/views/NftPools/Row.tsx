@@ -1,4 +1,7 @@
 import { FC, useState } from 'react';
+
+import { Link } from 'react-router-dom';
+
 import { Pool } from './index';
 import { Text, Flex } from '@kaco/uikit';
 import styled from 'styled-components';
@@ -45,7 +48,7 @@ const PoolName_: FC<{ poolName: string; fragmentName: string; className?: string
         <img src={LogoSvg} alt="" />
       </div>
       <div>
-        <Text bold fontSize="16px" mb={{ md: '7px', xs: '4px' }}>
+        <Text bold fontSize="16px" mb={{ xs: '4px', md: '7px' }}>
           {poolName}
         </Text>
         <Text>{fragmentName}</Text>
@@ -117,7 +120,9 @@ const Row: FC<{ pool: Pool; simpleMode: boolean }> = ({ pool, simpleMode }) => {
               <TitledItem title="7 Days Change" value={pool.changeDay7} />
             </td>
             <td>
-              <div className="link">LINK</div>
+              <div className="link">
+                <Link to={`/nft/pool/a`}>LINK</Link>
+              </div>
             </td>
           </>
         )}
