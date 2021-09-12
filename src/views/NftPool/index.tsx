@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useContext } from 'react';
 import { useMatchBreakpoints, Flex, Text, Grid } from '@kaco/uikit';
 import styled from 'styled-components';
 import Page from 'components/Layout/Page';
@@ -6,7 +6,7 @@ import HeaderBgSvg from './img/header-bg.svg';
 import LogoSvg from '../NftPools/svg/demo.svg';
 import Nft from './components/Nft';
 import ShopCart from './components/ShopCart';
-import { NftProvider } from './providers/nft.provider';
+import { NftProvider, NftContext } from './providers/nft.provider';
 
 export interface Pool {
   poolName: string;
@@ -139,16 +139,13 @@ const PoolHeader = styled(PoolHeader_)`
 `;
 
 const Pools_: FC<{ className?: string }> = ({ className }) => {
+  const items = ['1234', '1235', '1236', '1237', '1238', '1239', '1240', '1241'];
+
   return (
     <Grid gridGap={{ xs: '4px', md: '16px' }} className={className}>
-      <Nft nft="1234" />
-      <Nft nft="1235" />
-      <Nft nft="1236" />
-      <Nft nft="1237" />
-      <Nft nft="1238" />
-      <Nft nft="1239" />
-      <Nft nft="1240" />
-      <Nft nft="1241" />
+      {items.map((item) => (
+        <Nft nft={item} key={item} />
+      ))}
     </Grid>
   );
 };
@@ -172,18 +169,20 @@ const Pools = styled(Pools_)`
 `;
 
 const NftPool: FC<{ className?: string }> = ({ className }) => {
+  const { items } = useContext(NftContext);
+
   return (
-    <NftProvider>
+    <>
       <Page className={className}>
         <PoolHeader />
         <Pools />
       </Page>
-      <ShopCart />
-    </NftProvider>
+      {items.length && <ShopCart />}
+    </>
   );
 };
 
-export default styled(NftPool)`
+const NFTPool = styled(NftPool)`
   padding-top: 20px;
   padding-bottom: 40px;
   .empty {
@@ -191,3 +190,9 @@ export default styled(NftPool)`
     width: 100%;
   }
 `;
+
+export default () => (
+  <NftProvider>
+    <NFTPool />
+  </NftProvider>
+);
