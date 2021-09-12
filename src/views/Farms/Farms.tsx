@@ -14,7 +14,6 @@ import { getFarmApr } from 'utils/apr';
 import { orderBy } from 'lodash';
 import isArchivedPid from 'utils/farmHelpers';
 import { latinise } from 'utils/latinise';
-import { useUserFarmStakedOnly } from 'state/user/hooks';
 import Loading from 'components/Loading';
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard';
 import Table from './components/FarmTable/FarmTable';
@@ -71,6 +70,8 @@ const Farms: React.FC = () => {
   const isArchived = pathname.includes('archived');
   const isInactive = pathname.includes('history');
   const isActive = !isInactive && !isArchived;
+  const [stakedOnly, setStakedOnly] = useState(false);
+  const [filter, setFilter] = useState<string>('');
 
   usePollFarmsData(isArchived);
 
@@ -78,17 +79,20 @@ const Farms: React.FC = () => {
   // Connected users should see loading indicator until first userData has loaded
   const userDataReady = !account || (!!account && userDataLoaded);
 
-  const [stakedOnly] = useUserFarmStakedOnly(isActive);
-
   // const activeFarms = farmsLP.filter(
   //   (farm) => farm.pid !== KACO_LP_PID && farm.multiplier !== '0X' && !isArchivedPid(farm.pid),
   // );
+  const filtedFarmsLP = farmsLP.filter(
+    (farm) =>
+      farm.token.symbol.toLowerCase().includes(filter.toLowerCase()) ||
+      farm.quoteToken.symbol.toLowerCase().includes(filter.toLowerCase()),
+  );
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== KACO_LP_PID && !isArchivedPid(farm.pid));
-  const inactiveFarms = farmsLP.filter(
+  const activeFarms = filtedFarmsLP.filter((farm) => farm.pid !== KACO_LP_PID && !isArchivedPid(farm.pid));
+  const inactiveFarms = filtedFarmsLP.filter(
     (farm) => farm.pid !== KACO_LP_PID && farm.multiplier === '0X' && !isArchivedPid(farm.pid),
   );
-  const archivedFarms = farmsLP.filter((farm) => isArchivedPid(farm.pid));
+  const archivedFarms = filtedFarmsLP.filter((farm) => isArchivedPid(farm.pid));
 
   const stakedOnlyFarms = activeFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
@@ -340,7 +344,12 @@ const Farms: React.FC = () => {
   return (
     <div style={{ background: 'rgba(0,0,0,0)' }}>
       <Page>
-        <FarmHeader />
+        <FarmHeader
+          stakedOnly={stakedOnly}
+          filter={filter}
+          onFilterChange={setFilter}
+          onStakedOnlyChange={setStakedOnly}
+        />
         {renderContent()}
         {account && !userDataLoaded && stakedOnly && (
           <Flex justifyContent="center">

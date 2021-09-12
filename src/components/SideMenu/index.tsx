@@ -15,14 +15,15 @@ import CollapsedSvg from './imgs/icon_sq.svg';
 // import PoolsSvg from './imgs/icon_Pools_D.svg';
 // import PoolsNSvg from './imgs/icon_Pools_N.svg';
 // import TradeSvg from './imgs/icon_trade_D.svg';
+import CertikSvg from './imgs/certik.svg';
+import GalaxySvg from './imgs/galaxy.svg';
 import TradeSvg from '../svg/Trade';
 import FarmSvg from '../svg/Farm';
 import HomeSvg from '../svg/Home';
-import Logo2Svg from './imgs/logo2_primary.svg';
-import Logo2DefaultSvg from './imgs/logo2_default.svg';
+import LogoSvg from './imgs/icon_logo.svg';
 import Header from './Header';
 import { useEffect } from 'react';
-import { useMatchBreakpoints } from '@kaco/uikit';
+import { Flex, Text, useMatchBreakpoints } from '@kaco/uikit';
 import TwitterIcon from '../svg/Twitter';
 import TelegramIcon from '../svg/Telegram';
 import DocLink from './imgs/DocLink';
@@ -143,8 +144,8 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
 
     > img {
       cursor: pointer;
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
       position: absolute;
       right: 22px;
       top: 27px;
@@ -163,41 +164,34 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
 
     > .account-info {
       border-top: 1px solid #272e32;
-      height: 120px;
+      height: 212px;
+      padding: ${(props) => (props.collapsed ? '0px 18px' : '0px 20px')};
+
       > .balance {
-        justify-content: center;
-        padding-top: 18px;
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        font-weight: bold;
-        color: #ffffff;
+        height: 56px;
         > img {
-          width: ${(props) => (props.collapsed ? '30px' : '18px')};
-          height: ${(props) => (props.collapsed ? '30px' : '18px')};
-        }
-        > span {
-          margin-left: 7px;
+          width: 28px;
+          height: 28px;
         }
       }
       > .links {
+        position: relative;
+        left: -6px;
         padding-top: 16px;
-        padding-right: 45px;
-        padding-left: 40px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        flex-wrap: wrap;
+        > a {
+          margin-right: ${(props) => (props.collapsed ? '0px' : '16px')};
+          &:last-child {
+            margin-right: 0px;
+          }
+        }
         svg {
           fill: white;
           &:hover {
             fill: #1bd3d5;
           }
-          /* width: 28px;
-          height: 28px;
-          &:last-child {
-            max-width: 14px;
-            max-height: 14px;
-          } */
         }
         > div {
           cursor: pointer;
@@ -219,6 +213,14 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
               fill: #1bd3d5;
             }
             background: none;
+          }
+        }
+      }
+      > .links-collapsed {
+        svg {
+          fill: white;
+          &:hover {
+            fill: #1bd3d5;
           }
         }
       }
@@ -250,14 +252,9 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
   return (
     <Wrapper className={className} collapsed={collapsed}>
       <div className="side" style={{ width: collapsed ? sideCollapsedWidth : '200px' }}>
-        <img
-          src={collapsed ? CollapsedSvg : UncollapsedSvg}
-          alt=""
-          style={{ transform: collapsed ? 'scaleX(-1)' : '' }}
-          onClick={() => setCollapsed((old) => !old)}
-        />
+        <img src={collapsed ? CollapsedSvg : UncollapsedSvg} alt="" onClick={() => setCollapsed((old) => !old)} />
         <div className="logo">
-          <img src={collapsed ? Logo2Svg : LogoPng} alt="" />
+          <img src={LogoPng} alt="" />
         </div>
         <div className="nav">
           {menuItems.map((item) => (
@@ -285,10 +282,14 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
           ))}
         </div>
         <div className="account-info">
-          <div className="balance">
-            <img src={collapsed ? Logo2DefaultSvg : Logo2Svg} alt="" />
-            {!collapsed && <span>${cakePriceUsd.isNaN() ? '0' : cakePriceUsd.toFixed(2)}</span>}
-          </div>
+          <Flex className="balance" alignItems="center">
+            <img src={LogoSvg} alt="" />
+            {!collapsed && (
+              <Text color="#1BD3D5" bold fontSize="16px" ml="10px">
+                ${cakePriceUsd.isNaN() ? '0' : cakePriceUsd.toFixed(2)}
+              </Text>
+            )}
+          </Flex>
           {!collapsed && (
             <div className="links">
               <a target="_blank" rel="noreferrer" href="https://twitter.com/KACOFinance">
@@ -303,6 +304,57 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
                 <DocLink style={{ height: '16px', width: '16px' }} />
               </a>
             </div>
+          )}
+          {collapsed && (
+            <div
+              className="links-collapsed"
+              style={{ marginTop: '6px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+            >
+              <a
+                style={{ position: 'relative', left: '-1px' }}
+                target="_blank"
+                rel="noreferrer"
+                href="https://twitter.com/KACOFinance"
+              >
+                <TwitterIcon style={{ height: '24px', width: '24px' }} />
+              </a>
+              <a
+                style={{ marginTop: '12px' }}
+                target="_blank"
+                rel="noreferrer"
+                href="https://t.me/coinversationofficial"
+              >
+                <TelegramIcon style={{ height: '22px', width: '22px' }} />
+              </a>
+              <a
+                style={{ marginTop: '18px' }}
+                target="_blank"
+                rel="noreferrer"
+                href="https://coinversationprotocol.gitbook.io/kaco-doc/"
+              >
+                <DocLink style={{ height: '16px', width: '16px' }} />
+              </a>
+            </div>
+          )}
+          {!collapsed && (
+            <>
+              <Flex alignItems="center" mt="21px">
+                <Text fontSize="12px" mr="14px">
+                  Receive NFT
+                </Text>
+                <a target="_blank" rel="noreferrer" href="https://galaxy.eco/KACO">
+                  <img src={GalaxySvg} alt="" />
+                </a>
+              </Flex>
+              <Flex alignItems="center" mt="21px">
+                <Text fontSize="12px" mr="14px">
+                  FAudited By
+                </Text>
+                <a target="_blank" rel="noreferrer" href="https://www.certik.org/projects/coinversation">
+                  <img src={CertikSvg} alt="" />
+                </a>
+              </Flex>
+            </>
           )}
         </div>
       </div>
