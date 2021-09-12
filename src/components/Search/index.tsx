@@ -16,6 +16,7 @@ const Wrapper = styled.div<{ focused: boolean }>`
   > input {
     flex: 1;
     background: #122124;
+    border-width: 0px;
   }
 `;
 
