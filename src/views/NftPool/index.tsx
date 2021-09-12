@@ -5,6 +5,8 @@ import Page from 'components/Layout/Page';
 import HeaderBgSvg from './img/header-bg.svg';
 import LogoSvg from '../NftPools/svg/demo.svg';
 import Nft from './components/Nft';
+import ShopCart from './components/ShopCart';
+import { NftProvider } from './providers/nft.provider';
 
 export interface Pool {
   poolName: string;
@@ -60,6 +62,8 @@ const PoolHeader = styled(PoolHeader_)`
   background-repeat: no-repeat;
   position: relative;
   border-radius: 24px;
+  top: 39px;
+  z-index: 1;
 
   > div {
     height: 100%;
@@ -137,14 +141,14 @@ const PoolHeader = styled(PoolHeader_)`
 const Pools_: FC<{ className?: string }> = ({ className }) => {
   return (
     <Grid gridGap={{ xs: '4px', md: '16px' }} className={className}>
-      <Nft nft="d" />
-      <Nft nft="d" />
-      <Nft nft="d" />
-      <Nft nft="d" />
-      <Nft nft="d" />
-      <Nft nft="d" />
-      <Nft nft="d" />
-      <Nft nft="d" />
+      <Nft nft="1234" />
+      <Nft nft="1235" />
+      <Nft nft="1236" />
+      <Nft nft="1237" />
+      <Nft nft="1238" />
+      <Nft nft="1239" />
+      <Nft nft="1240" />
+      <Nft nft="1241" />
     </Grid>
   );
 };
@@ -153,7 +157,7 @@ const Pools = styled(Pools_)`
   background: #122124;
   border-radius: 24px;
   position: relative;
-  top: -39px;
+  z-index: 2;
   padding: 20px;
   grid-template-columns: 1fr;
   justify-items: center;
@@ -167,13 +171,23 @@ const Pools = styled(Pools_)`
   }
 `;
 
-const NftPool: FC = () => {
+const NftPool: FC<{ className?: string }> = ({ className }) => {
   return (
-    <Page>
-      <PoolHeader />
-      <Pools />
-    </Page>
+    <NftProvider>
+      <Page className={className}>
+        <PoolHeader />
+        <Pools />
+      </Page>
+      <ShopCart />
+    </NftProvider>
   );
 };
 
-export default NftPool;
+export default styled(NftPool)`
+  padding-top: 20px;
+  padding-bottom: 40px;
+  .empty {
+    height: 201px;
+    width: 100%;
+  }
+`;

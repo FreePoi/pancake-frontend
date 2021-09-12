@@ -237,6 +237,7 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
       text: 'NFT',
       img: FarmSvg,
       collapsed: false,
+      link: '/nft/pools/',
       children: [
         { text: 'Markets', link: '/nft/pools' },
         { text: 'My Wallet', link: '/nft/wallet' },
@@ -283,7 +284,7 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
         </div>
         <div className="nav">
           {menuItems.map((item, index) => (
-            <>
+            <div key={index}>
               <NavLink
                 active={
                   (
@@ -340,7 +341,7 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
                   ))}
                 </div>
               )}
-            </>
+            </div>
           ))}
         </div>
         <div className="account-info">

@@ -75,9 +75,11 @@ const NftPools: FC = () => {
     <Page>
       <PoolList>
         <table>
-          {pools.map((pool) => (
-            <Row key={pool.poolName} pool={pool} simpleMode={simpleMode} />
-          ))}
+          <tbody>
+            {pools.map((pool) => (
+              <Row key={pool.poolName} pool={pool} simpleMode={simpleMode} />
+            ))}
+          </tbody>
         </table>
       </PoolList>
     </Page>

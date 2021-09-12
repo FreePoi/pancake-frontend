@@ -1,19 +1,26 @@
-import React, { FC } from 'react';
+import React, { FC, useContext, useMemo } from 'react';
 import styled from 'styled-components';
 import NFTSVG from '../img/nft.png';
 import { Button, useMatchBreakpoints, Flex, Text, Grid } from '@kaco/uikit';
+import { NftContext, NftProvider } from '../providers/nft.provider';
 
 const Nft: FC<{ className?: string; nft: string }> = ({ className, nft }) => {
+  const { add, remove, items } = useContext(NftContext);
+  const added = useMemo(() => !!items?.find((item) => item === nft), [items, nft]);
+
+  console.log('items', items);
+
   return (
     <div className={className}>
       <div className="show">
         <img src={NFTSVG} alt="" />
       </div>
       <Text fontSize="18px" bold mb={{ xs: '16px', md: '24px' }} mt={{ xs: '16px', md: '24px' }}>
-        Kaco#0451
+        Kaco#{nft}
       </Text>
-      <Button height="40px" width="180px" variant="secondary">
-        Buy +
+      <Button height="40px" width="180px" variant="secondary" onClick={() => !added && add(nft)}>
+        {/* <Button height="40px" width="180px" variant="secondary"> */}
+        {added ? 'Added' : 'Buy +'}
       </Button>
     </div>
   );
