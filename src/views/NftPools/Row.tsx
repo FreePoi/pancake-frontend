@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { Pool } from './index';
 import { Text, Flex } from '@kaco/uikit';
@@ -19,6 +19,7 @@ const StyledTr = styled.tr`
     &:hover {
       background-color: #122124;
       td > .link {
+        color: #1bd3d5;
         visibility: visible;
         cursor: pointer;
       }
@@ -93,10 +94,11 @@ const TitledItem = styled(TitledItem_)``;
 
 const Row: FC<{ pool: Pool; simpleMode: boolean }> = ({ pool, simpleMode }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const history = useHistory();
 
   return (
     <>
-      <StyledTr onClick={() => setCollapsed((old) => !old)}>
+      <StyledTr onClick={() => setCollapsed((old) => !old)} onClickCapture={() => history.push('/nft/pool/kaco')}>
         <td>
           <PoolName poolName={pool.poolName} fragmentName={pool.fragmentName} />
         </td>
@@ -120,9 +122,7 @@ const Row: FC<{ pool: Pool; simpleMode: boolean }> = ({ pool, simpleMode }) => {
               <TitledItem title="7 Days Change" value={pool.changeDay7} />
             </td>
             <td>
-              <div className="link">
-                <Link to={`/nft/pool/a`}>LINK</Link>
-              </div>
+              <div className="link">Link</div>
             </td>
           </>
         )}

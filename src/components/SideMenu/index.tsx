@@ -8,8 +8,8 @@ import BgPng from './imgs/bg.png';
 // import HomeSvg from './imgs/icon_home_D.svg';
 import UncollapsedSvg from './imgs/icon_zk.svg';
 import CollapsedSvg from './imgs/icon_sq.svg';
-import InfoSvg from './imgs/icon_Info_D.svg';
-import InfoNSvg from './imgs/icon_Info_N.svg';
+// import InfoSvg from './imgs/icon_Info_D.svg';
+// import InfoNSvg from './imgs/icon_Info_N.svg';
 import collapseSvg from './imgs/collapse.svg';
 // import MintSvg from './imgs/icon_Mint_D.svg';
 // import MintNSvg from './imgs/icon_Mint_N.svg';
@@ -18,6 +18,7 @@ import collapseSvg from './imgs/collapse.svg';
 // import TradeSvg from './imgs/icon_trade_D.svg';
 import TradeSvg from '../svg/Trade';
 import FarmSvg from '../svg/Farm';
+import NftSvg from '../svg/Nft';
 import HomeSvg from '../svg/Home';
 import Logo2Svg from './imgs/logo2_primary.svg';
 import Logo2DefaultSvg from './imgs/logo2_default.svg';
@@ -235,7 +236,7 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
     },
     {
       text: 'NFT',
-      img: FarmSvg,
+      img: NftSvg,
       collapsed: false,
       link: '/nft/pools/',
       children: [

@@ -1,7 +1,6 @@
-import BigNumber from 'bignumber.js';
-import React, { useCallback, useMemo, useState } from 'react';
+import React from 'react';
 import { Text, Flex, Button, Modal, InjectedModalProps } from '@kaco/uikit';
-import { ModalActions, ModalInput } from 'components/Modal';
+import { ModalActions } from 'components/Modal';
 import { useTranslation } from 'contexts/Localization';
 import MintSvg from '../img/mint.svg';
 import NFTSVG from '../../NftPool/img/nft.png';

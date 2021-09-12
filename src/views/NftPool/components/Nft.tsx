@@ -1,11 +1,11 @@
 import React, { FC, useContext, useMemo } from 'react';
 import styled from 'styled-components';
 import NFTSVG from '../img/nft.png';
-import { Button, useMatchBreakpoints, Flex, Text, Grid } from '@kaco/uikit';
-import { NftContext, NftProvider } from '../providers/nft.provider';
+import { Button, Text } from '@kaco/uikit';
+import { NftContext } from '../providers/nft.provider';
 
 const Nft: FC<{ className?: string; nft: string }> = ({ className, nft }) => {
-  const { add, remove, items } = useContext(NftContext);
+  const { add, items } = useContext(NftContext);
   const added = useMemo(() => !!items.find((item) => item === nft), [items, nft]);
 
   console.log('items', items);

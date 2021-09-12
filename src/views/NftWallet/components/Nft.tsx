@@ -1,7 +1,7 @@
-import React, { FC, useContext, useMemo } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import NFTSVG from '../../NftPool/img/nft.png';
-import { Button, useMatchBreakpoints, Flex, Text, Grid, useModal } from '@kaco/uikit';
+import { Button, Text, useModal } from '@kaco/uikit';
 import MintModal from './MintModal';
 
 const Nft: FC<{ className?: string; nft: string }> = ({ className, nft }) => {

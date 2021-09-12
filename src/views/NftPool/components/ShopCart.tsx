@@ -1,7 +1,7 @@
 import React, { FC, useContext, useState } from 'react';
 import styled from 'styled-components';
-import { Button, useMatchBreakpoints, Flex, Text, Grid } from '@kaco/uikit';
-import { NftContext, NftProvider } from '../providers/nft.provider';
+import { Button, Text, Grid } from '@kaco/uikit';
+import { NftContext } from '../providers/nft.provider';
 import NFTSVG from '../img/nft.png';
 import RemoveSVG from '../img/remove.svg';
 
@@ -29,7 +29,7 @@ const Item: FC<{ className?: string; item: string }> = ({ className, item }) => 
 };
 
 const ShopCart: FC<{ className?: string }> = ({ className }) => {
-  const { remove, items } = useContext(NftContext);
+  const { items } = useContext(NftContext);
 
   return (
     <div className={className}>

@@ -1,5 +1,5 @@
 import React, { FC, useContext } from 'react';
-import { useMatchBreakpoints, Flex, Text, Grid } from '@kaco/uikit';
+import { Flex, Text, Grid } from '@kaco/uikit';
 import styled from 'styled-components';
 import Page from 'components/Layout/Page';
 import HeaderBgSvg from './img/header-bg.svg';
@@ -18,8 +18,6 @@ export interface Pool {
 }
 
 const PoolHeader_: FC<{ className?: string }> = ({ className }) => {
-  const { isXs, isSm } = useMatchBreakpoints();
-
   return (
     <div className={className}>
       <div>
@@ -191,6 +189,7 @@ const NFTPool = styled(NftPool)`
   }
 `;
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default () => (
   <NftProvider>
     <NFTPool />

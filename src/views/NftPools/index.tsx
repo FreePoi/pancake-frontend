@@ -1,14 +1,18 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo } from 'react';
 import styled from 'styled-components';
 import Page from 'components/Layout/Page';
 import { useMatchBreakpoints, Text, Flex } from '@kaco/uikit';
 import Row from './Row';
+import AnimalSvg from './svg/animal.png';
+import MarketPng from './svg/market.png';
+import Search from './components/Search';
 
 const PoolList = styled.div`
   border-radius: 16px;
   overflow: hidden;
   background-color: #1f373b;
-
+  z-index: 2;
+  position: relative;
   > table {
     width: 100%;
   }
@@ -73,6 +77,25 @@ const NftPools: FC = () => {
 
   return (
     <Page>
+      <Flex justifyContent="space-between">
+        <div className="left">
+          <img src={MarketPng} alt="" />
+          <Text color="#1BD3D5" bold fontSize="20px" mt="23px" mb="40px">
+            Trade, Swap, Fractionalized Your NFTS
+          </Text>
+          <Search />
+        </div>
+        <div
+          className="right"
+          style={{ background: `url(${AnimalSvg})`, height: '221px', width: '247px', marginRight: '89px' }}
+        >
+          {/* <img
+            src={AnimalSvg} \
+            alt=""\
+            style={{ position: 'relative', bottom: '-80px', zIndex: 0, paddingRight: '89px' }}
+          /> */}
+        </div>
+      </Flex>
       <PoolList>
         <table>
           <tbody>
