@@ -22,14 +22,7 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
 
   return (
     <div className={className}>
-      {(isXs || isSm) && (
-        <img
-          src={UncollapsedSvg}
-          alt=""
-          style={{ transform: collapsed ? 'scaleX(-1)' : '' }}
-          onClick={() => setCollapsed(!collapsed)}
-        />
-      )}
+      {(isXs || isSm) && <img src={UncollapsedSvg} alt="" onClick={() => setCollapsed(!collapsed)} />}
       <div className="right">
         {/* <div className="icons">
           <a target="_blank" rel="noreferrer" href="https://twitter.com/KACOFinance">

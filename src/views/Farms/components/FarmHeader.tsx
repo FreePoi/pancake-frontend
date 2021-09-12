@@ -1,28 +1,61 @@
+import { Text, Flex } from '@kaco/uikit';
 import { useTranslation } from 'contexts/Localization';
 import React from 'react';
 import styled from 'styled-components';
 import LogoPng from './farm.svg';
+import Toggle from 'components/Menu/GlobalSettings/Toggle';
+import Search from 'components/Search';
 
-const FarmHeader: React.FC<{ className?: string }> = ({ className }) => {
+const FarmHeader: React.FC<{
+  className?: string;
+  filter: string;
+  stakedOnly: boolean;
+  onStakedOnlyChange: (now: boolean) => void;
+  onFilterChange: (now: string) => void;
+}> = ({ className, onStakedOnlyChange, filter, onFilterChange, stakedOnly }) => {
   const { t } = useTranslation();
+
   return (
-    <div className={className}>
-      <img src={LogoPng} alt="" />
-      <div>{t('Happy Farming :)')}</div>
-    </div>
+    <Flex className={className} justifyContent="space-between">
+      <div className="left">
+        <img src={LogoPng} alt="" />
+        <Text color="#1BD3D5" fontSize="20px" bold>
+          {t('There are various farming opportunities available at Kaco Farms')}
+        </Text>
+      </div>
+      <div className="right">
+        <Flex alignItems="center" mb="16px" justifyContent="flex-end">
+          <Text color="textSubtle" mr="12px" bold>
+            {t('Staked only')}
+          </Text>
+          <Toggle checked={stakedOnly} onChange={() => onStakedOnlyChange(!stakedOnly)} />
+        </Flex>
+        <Search value={filter} onChange={onFilterChange} />
+      </div>
+    </Flex>
   );
 };
 
 export default styled(FarmHeader)`
   padding-top: 11px;
-  text-align: center;
-  > img {
-    height: 88px;
+  margin-bottom: 44px;
+  flex-wrap: wrap;
+  > .left {
+    max-width: 404px;
+    > img {
+      height: 90px;
+      margin-bottom: 20px;
+    }
+    margin-bottom: 25px;
+    ${({ theme }) => theme.mediaQueries.sm} {
+      margin-bottom: 0px;
+    }
   }
-  > div {
-    font-size: 12px;
-    color: #1bd3d5;
-    margin-top: 14px;
-    margin-bottom: 43px;
+  > .right {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    flex: 1;
+    max-width: 360px;
   }
 `;
