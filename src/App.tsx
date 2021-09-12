@@ -103,9 +103,6 @@ const App: React.FC = () => {
             <Route path="/nft/wallet/mint">
               <NftMint />
             </Route>
-            <Route exact path="/nft/wallet">
-              <NftBurn />
-            </Route>
             {/* <Route exact path="/teams">
               <Teams />
             </Route>
@@ -148,6 +145,9 @@ const App: React.FC = () => {
             <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
 
             {/* Redirect */}
+            <Route path="/nft/wallet">
+              <Redirect to="/nft/wallet/mint" />
+            </Route>
             <Route path="/pool">
               <Redirect to="/liquidity" />
             </Route>

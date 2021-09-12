@@ -1,9 +1,12 @@
 import Page from './Page';
 import { FC } from 'react';
-import { Button, Grid, Text, Flex } from '@kaco/uikit';
+import { Button, Grid, Text, Flex, useModal } from '@kaco/uikit';
 import styled from 'styled-components';
+import BurnModal from './components/BurnModal';
 
 const Burn: FC<{ className?: string }> = ({ className }) => {
+  const [onMint] = useModal(<BurnModal />);
+
   return (
     <Page>
       <div className={className}>
@@ -11,7 +14,7 @@ const Burn: FC<{ className?: string }> = ({ className }) => {
           NFT100
         </Text>
         <Grid gridGap={{ xs: '4px', md: '16px' }} className="nfts">
-          <Flex className="fragment">
+          <Flex className="fragment" onClick={onMint}>
             <div className="logo"></div>
             <Flex flex="1" justifyContent="space-between" alignItems="center">
               <div className="">
@@ -26,7 +29,7 @@ const Burn: FC<{ className?: string }> = ({ className }) => {
             </Flex>
           </Flex>
 
-          <Flex className="fragment">
+          <Flex className="fragment" onClick={onMint}>
             <div className="logo"></div>
             <Flex flex="1" justifyContent="space-between" alignItems="center">
               <div className="">
@@ -40,7 +43,7 @@ const Burn: FC<{ className?: string }> = ({ className }) => {
               <Button variant="secondary">Burn</Button>
             </Flex>
           </Flex>
-          <Flex className="fragment">
+          <Flex className="fragment" onClick={onMint}>
             <div className="logo"></div>
             <Flex flex="1" justifyContent="space-between" alignItems="center">
               <div className="">
@@ -54,7 +57,7 @@ const Burn: FC<{ className?: string }> = ({ className }) => {
               <Button variant="secondary">Burn</Button>
             </Flex>
           </Flex>
-          <Flex className="fragment">
+          <Flex className="fragment" onClick={onMint}>
             <div className="logo"></div>
             <Flex flex="1" justifyContent="space-between" alignItems="center">
               <div className="">
@@ -68,7 +71,7 @@ const Burn: FC<{ className?: string }> = ({ className }) => {
               <Button variant="secondary">Burn</Button>
             </Flex>
           </Flex>
-          <Flex className="fragment">
+          <Flex className="fragment" onClick={onMint}>
             <div className="logo"></div>
             <Flex flex="1" justifyContent="space-between" alignItems="center">
               <div className="">

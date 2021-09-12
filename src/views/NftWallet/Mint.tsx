@@ -2,7 +2,7 @@ import Page from './Page';
 import { FC } from 'react';
 import styled from 'styled-components';
 import { Grid, Text } from '@kaco/uikit';
-import Nft from 'views/NftPool/components/Nft';
+import Nft from './components/Nft';
 
 const NftsGroupByPool_: FC<{ className?: string; title: string }> = ({ className, title }) => {
   return (
