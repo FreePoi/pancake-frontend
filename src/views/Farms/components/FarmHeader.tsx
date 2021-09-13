@@ -19,9 +19,9 @@ const FarmHeader: React.FC<{
     <Flex className={className} justifyContent="space-between">
       <div className="left">
         <img src={LogoPng} alt="" />
-        <Text color="#1BD3D5" fontSize="20px" bold>
-          {t('There are various farming opportunities available at Kaco Farms')}
-        </Text>
+        {/* <Text color="#1BD3D5" fontSize="20px">
+          {t('Happy Farming :)')}
+        </Text> */}
       </div>
       <div className="right">
         <Flex alignItems="center" mb="16px" justifyContent="flex-end">
