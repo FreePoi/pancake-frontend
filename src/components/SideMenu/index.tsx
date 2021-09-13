@@ -339,17 +339,21 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
           {!collapsed && (
             <>
               <Flex alignItems="center" mt="21px">
-                <Text fontSize="12px" mr="14px">
-                  Receive NFT
-                </Text>
+                <a target="_blank" rel="noreferrer" href="https://galaxy.eco/KACO">
+                  <Text fontSize="12px" mr="14px">
+                    Receive NFT
+                  </Text>
+                </a>
                 <a target="_blank" rel="noreferrer" href="https://galaxy.eco/KACO">
                   <img src={GalaxySvg} alt="" />
                 </a>
               </Flex>
               <Flex alignItems="center" mt="21px">
-                <Text fontSize="12px" mr="14px">
-                  FAudited By
-                </Text>
+                <a target="_blank" rel="noreferrer" href="https://www.certik.org/projects/coinversation">
+                  <Text fontSize="12px" mr="14px">
+                    Audited By
+                  </Text>
+                </a>
                 <a target="_blank" rel="noreferrer" href="https://www.certik.org/projects/coinversation">
                   <img src={CertikSvg} alt="" />
                 </a>
