@@ -85,20 +85,20 @@ const fetchPairsData = async (addresses: string[]): Promise<PairsData> => {
       vs: amount0.div(amount1),
     };
 
-    // console.log(
-    //   addresses[i / 4],
-    //   // `${addresses[i / 4].slice(0, 5)}`,
-    //   'token0Address',
-    //   token0Address,
-    //   'token1Address',
-    //   token1Address,
-    //   'amount0, amount1',
-    //   amount0.toFixed(5),
-    //   amount1.toFixed(5),
-    //   'vs',
-    //   amount1.div(amount0).toFixed(6),
-    //   amount0.div(amount1).toFixed(6),
-    // );
+    console.log(
+      addresses[i / 4],
+      // `${addresses[i / 4].slice(0, 5)}`,
+      'token0Address',
+      token0Address,
+      'token1Address',
+      token1Address,
+      'amount0, amount1',
+      amount0.toFixed(5),
+      amount1.toFixed(5),
+      'vs',
+      amount1.div(amount0).toFixed(6),
+      amount0.div(amount1).toFixed(6),
+    );
   }
 
   return { countup, source: pairsMap };
