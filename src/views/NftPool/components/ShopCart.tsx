@@ -5,7 +5,7 @@ import { NftContext } from '../providers/nft.provider';
 import NFTSVG from '../img/nft.png';
 import RemoveSVG from '../img/remove.svg';
 
-const Item: FC<{ className?: string; item: string }> = ({ className, item }) => {
+const Item: FC<{ className?: string; item: number }> = ({ className, item }) => {
   const { remove } = useContext(NftContext);
   const [isHover, setIsHover] = useState(false);
 

@@ -94,7 +94,7 @@ const App: React.FC = () => {
             <Route exact path="/nft/pools">
               <NftPools />
             </Route>
-            <Route path="/nft/pool/:pool">
+            <Route path="/nft/pool/:pairAddress">
               <NftPool />
             </Route>
             <Route path="/nft/wallet/burn">

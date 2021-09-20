@@ -1,12 +1,14 @@
-import React, { FC, useContext } from 'react';
-import { Flex, Text, Grid } from '@kaco/uikit';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router';
+import { Grid } from '@kaco/uikit';
 import styled from 'styled-components';
 import Page from 'components/Layout/Page';
-import HeaderBgSvg from './img/header-bg.svg';
-import LogoSvg from '../NftPools/svg/demo.svg';
 import Nft from './components/Nft';
 import ShopCart from './components/ShopCart';
+import { PoolHeader } from './components/Header';
 import { NftProvider, NftContext } from './providers/nft.provider';
+import { chainId } from 'views/NftPools/hooks/useNftPools';
+import { NFT_PAIRS } from 'config/constants/nft';
 
 export interface Pool {
   poolName: string;
@@ -17,138 +19,101 @@ export interface Pool {
   changeDay7: number;
 }
 
-const PoolHeader_: FC<{ className?: string }> = ({ className }) => {
-  return (
-    <div className={className}>
-      <div>
-        <img className="pool-logo" src={LogoSvg} alt="" />
-        <h1>KACO NFT POOL</h1>
-        <Flex className="pool-info">
-          <div className="info">
-            <Text fontSize="20px" bold mb="4px">
-              300
-            </Text>
-            <Text fontSize="12px">NFT In Pool</Text>
-          </div>
-          <div className="info">
-            <Text fontSize="20px" bold mb="4px">
-              0.89 BNB
-            </Text>
-            <Text fontSize="12px">NFT Price</Text>
-          </div>
-          <div className="info second-line">
-            <Text fontSize="20px" bold mb="4px">
-              $234,129.98
-            </Text>
-            <Text fontSize="12px">Liquidity</Text>
-          </div>
-          <div className="info second-line">
-            <Text fontSize="20px" bold mb="4px">
-              120,000
-            </Text>
-            <Text fontSize="12px">KKaco Supply</Text>
-          </div>
-        </Flex>
-      </div>
-    </div>
-  );
-};
-
-const PoolHeader = styled(PoolHeader_)`
-  background-image: url(${HeaderBgSvg});
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  position: relative;
-  border-radius: 24px;
-  top: 39px;
-  z-index: 1;
-
-  > div {
-    height: 100%;
-    width: 100%;
-    padding: 0px 20px 39px 20px;
-    ${({ theme }) => theme.mediaQueries.md} {
-      padding: 0px 40px 39px 40px;
-    }
-
-    background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 24px;
-    > .pool-logo {
-      position: absolute;
-      left: 20px;
-      top: -15px;
-      width: 50px;
-      height: 50px;
-
-      ${({ theme }) => theme.mediaQueries.md} {
-        left: 40px;
-        top: -40px;
-        width: 120px;
-        height: 120px;
-      }
-    }
-
-    > h1 {
-      color: #1bd3d5;
-      padding: 19px 0px 0px 66px;
-      font-size: 24px;
-
-      ${({ theme }) => theme.mediaQueries.md} {
-        font-size: 32px;
-        padding: 29px 0px 0px 146px;
-      }
-    }
-
-    > .pool-info {
-      width: 100%;
-      flex-wrap: wrap;
-      margin-top: 30px;
-      padding: 10px 30px;
-      margin-bottom: 30px;
-      background: #238485;
-      border-radius: 12px;
-      justify-content: space-between;
-      > .info {
-        width: 50%;
-      }
-      ${({ theme }) => theme.mediaQueries.md} {
-        > .info {
-          width: auto;
-        }
-      }
-
-      > .second-line {
-        margin-top: 20px;
-      }
-
-      ${({ theme }) => theme.mediaQueries.md} {
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        align-items: center;
-        margin-top: 40px;
-        width: 67.5%;
-        min-width: 600px;
-        min-width: 550px;
-        > .second-line {
-          margin-top: 0px;
-        }
-      }
-    }
-  }
-`;
+export interface NFT {
+  id: number;
+  balance: number;
+  uri: string;
+  image: string;
+  name: string;
+}
 
 const Pools_: FC<{ className?: string }> = ({ className }) => {
-  const items = ['1234', '1235', '1236', '1237', '1238', '1239', '1240', '1241'];
+  const [items, setItems] = useState<NFT[]>([]);
+  const { pairAddress } = useParams<{ pairAddress: string }>();
+  const pair = useMemo(
+    () => NFT_PAIRS.find((pair) => pair[chainId].address.toLocaleLowerCase() === pairAddress.toLocaleLowerCase()),
+    [pairAddress],
+  );
+  console.log(
+    'process.env.COVALENT_KEY',
+    process.env.REACT_APP_COVALENT_KEY,
+    'NFT_PAIRS',
+    NFT_PAIRS,
+    pairAddress,
+    pair,
+  );
+
+  useEffect(() => {
+    const apiUrl = `https://api.covalenthq.com/v1/${chainId}/address/${pairAddress}/balances_v2/?key=${process.env.REACT_APP_COVALENT_KEY}&nft=true`;
+
+    if (!pair) {
+      return;
+    }
+
+    fetch(apiUrl).then(async (data) => {
+      const covalentData: {
+        data: {
+          items:
+            | {
+                balance: string;
+                contract_address: string;
+                contract_name: string;
+                contract_ticker_symbol: string;
+                nft_data?: {
+                  token_balance: string;
+                  token_id: string;
+                  token_url: string;
+                  external_data: {
+                    image: string;
+                    image_256: string;
+                    image_512: string;
+                    image_1024: string;
+                    name: string;
+                  };
+                }[];
+              }[];
+        } | null;
+        error: boolean;
+        error_code: number | null;
+        error_message: string | null;
+      } = await data.json();
+
+      console.log('covalentData', covalentData);
+
+      if (!covalentData.data || covalentData.error) {
+        return;
+      }
+
+      const nfts: NFT[] = covalentData.data.items
+        .filter(
+          (token) =>
+            token.nft_data &&
+            token.contract_address.toLocaleLowerCase() === pair[chainId].nftAddress.toLocaleLowerCase(),
+        )
+        .reduce((nfts, curr) => nfts.concat(curr.nft_data), [])
+        .map((nft) => ({
+          id: parseInt(nft.token_id),
+          balance: parseInt(nft.token_balance),
+          uri: nft.token_url,
+          image: nft.external_data.image,
+          name: nft.external_data.name,
+        }));
+
+      console.log('sssssssssss', nfts);
+      setItems([...nfts]);
+    });
+  }, [pairAddress, pair]);
 
   return (
     <Grid gridGap={{ xs: '4px', md: '16px' }} className={className}>
-      {items.map((item) => (
-        <Nft nft={item} key={item} />
+      {items.map((item, index) => (
+        <Nft nft={item} key={index} />
       ))}
     </Grid>
   );
 };
 
-const Pools = styled(Pools_)`
+const GoodsInPool = styled(Pools_)`
   background: #122124;
   border-radius: 24px;
   position: relative;
@@ -173,9 +138,9 @@ const NftPool: FC<{ className?: string }> = ({ className }) => {
     <>
       <Page className={className}>
         <PoolHeader />
-        <Pools />
+        <GoodsInPool />
       </Page>
-      {items.length && <ShopCart />}
+      {!!items.length && <ShopCart />}
     </>
   );
 };

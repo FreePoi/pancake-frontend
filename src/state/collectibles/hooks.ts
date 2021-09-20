@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state';
-import Nfts from 'config/constants/nfts';
+import Nfts from 'config/constants/_nfts';
 import { State } from '../types';
 import { fetchWalletNfts } from './index';
 

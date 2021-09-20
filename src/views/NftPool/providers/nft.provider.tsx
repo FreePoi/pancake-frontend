@@ -1,9 +1,9 @@
 import React, { Context, useCallback, useEffect, useState } from 'react';
 
 interface NftContextProps {
-  items: string[];
-  add: (id: string) => void;
-  remove: (id: string) => void;
+  items: number[];
+  add: (id: number) => void;
+  remove: (id: number) => void;
 }
 
 const NFTShopChart = 'nft-shop-chart';
@@ -11,11 +11,11 @@ const NFTShopChart = 'nft-shop-chart';
 export const NftContext: Context<NftContextProps> = React.createContext({} as unknown as NftContextProps);
 
 export const NftProvider = React.memo(({ children }: { children: React.ReactNode }): React.ReactElement => {
-  const [items, setItems] = useState<string[]>([]);
+  const [items, setItems] = useState<number[]>([]);
 
   useEffect(() => {
     try {
-      const items = (JSON.parse(localStorage.getItem(NFTShopChart)) as string[]) || [];
+      const items = (JSON.parse(localStorage.getItem(NFTShopChart)) as number[]) || [];
 
       console.log('itemsssssssssss', items);
 
@@ -23,7 +23,7 @@ export const NftProvider = React.memo(({ children }: { children: React.ReactNode
     } catch (e) {}
   }, []);
 
-  const add = useCallback((id: string) => {
+  const add = useCallback((id: number) => {
     setItems((items) => {
       if (items.find((item) => item === id)) {
         return items;
@@ -33,7 +33,7 @@ export const NftProvider = React.memo(({ children }: { children: React.ReactNode
     });
   }, []);
 
-  const remove = useCallback((id: string) => {
+  const remove = useCallback((id: number) => {
     setItems((items) => {
       const index = items.findIndex((item) => item === id);
       if (index === -1) {

@@ -8,7 +8,7 @@ import { DEFAULT_TOKEN_DECIMAL } from 'config';
 import { useCake, useBunnyFactory } from 'hooks/useContract';
 import { Nft } from 'config/constants/types';
 import useHasCakeBalance from 'hooks/useHasCakeBalance';
-import nftList from 'config/constants/nfts';
+import nftList from 'config/constants/_nfts';
 import SelectionCard from '../components/SelectionCard';
 import NextStepButton from '../components/NextStepButton';
 import ApproveConfirmButtons from '../components/ApproveConfirmButtons';

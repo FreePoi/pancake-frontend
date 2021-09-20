@@ -5,7 +5,7 @@ import { Modal, Text, Button, Flex, InjectedModalProps } from '@kaco/uikit';
 import history from 'routerHistory';
 import { delay } from 'lodash';
 import { useTranslation } from 'contexts/Localization';
-import nftList from 'config/constants/nfts';
+import nftList from 'config/constants/_nfts';
 import { Nft } from 'config/constants/types';
 import { useProfile } from 'state/profile/hooks';
 import { Profile } from 'state/types';

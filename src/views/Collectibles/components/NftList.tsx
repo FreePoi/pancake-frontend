@@ -1,7 +1,7 @@
 import React from 'react';
 import orderBy from 'lodash/orderBy';
 import { useWeb3React } from '@web3-react/core';
-import nfts from 'config/constants/nfts';
+import nfts from 'config/constants/_nfts';
 import { useAppDispatch } from 'state';
 import { fetchWalletNfts } from 'state/collectibles';
 import { useGetCollectibles } from 'state/collectibles/hooks';

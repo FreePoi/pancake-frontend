@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { CollectiblesState } from 'state/types';
-import { nftSources } from 'config/constants/nfts';
+import { nftSources } from 'config/constants/_nfts';
 import { NftType } from 'config/constants/types';
 import { getAddress } from 'utils/addressHelpers';
 import { getErc721Contract } from 'utils/contractHelpers';

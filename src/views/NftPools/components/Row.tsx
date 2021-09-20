@@ -1,12 +1,12 @@
 import { FC, useState } from 'react';
-
 import { useHistory } from 'react-router-dom';
 
-import { Pool } from './index';
-import { Text, Flex } from '@kaco/uikit';
 import styled from 'styled-components';
-import LogoSvg from './svg/demo.svg';
-import { RowBetween } from '../../components/Layout/Row';
+import { Text, Flex } from '@kaco/uikit';
+
+import LogoSvg from '../svg/demo.svg';
+import { RowBetween } from '../../../components/Layout/Row';
+import { NftPair } from '../hooks/useNftPools';
 
 const StyledTr = styled.tr`
   border-bottom: 1px solid #122124;
@@ -92,34 +92,37 @@ const TitledItem_: FC<{ title: string; value: string | number }> = ({ title, val
 };
 const TitledItem = styled(TitledItem_)``;
 
-const Row: FC<{ pool: Pool; simpleMode: boolean }> = ({ pool, simpleMode }) => {
+const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) => {
   const [collapsed, setCollapsed] = useState(false);
   const history = useHistory();
 
   return (
     <>
-      <StyledTr onClick={() => setCollapsed((old) => !old)} onClickCapture={() => history.push('/nft/pool/kaco')}>
+      <StyledTr
+        onClick={() => setCollapsed((old) => !old)}
+        onClickCapture={() => history.push(`/nft/pool/${pair.pairAddres}`)}
+      >
         <td>
-          <PoolName poolName={pool.poolName} fragmentName={pool.fragmentName} />
+          <PoolName poolName={pair.name} fragmentName={pair.symbol} />
         </td>
         {!simpleMode && (
           <>
             <td>
-              <TitledItem title="NFT IN Pool" value={pool.nftCount} />
+              <TitledItem title="NFT IN Pool" value={pair.supply} />
             </td>
             <td>
-              <TitledItem title="Liquidity" value={pool.liquidity} />
+              <TitledItem title="Liquidity" value={0} />
             </td>
           </>
         )}
         <td>
-          <TitledItem title="Floor Price" value={pool.floorPrice} />
+          <TitledItem title="Floor Price" value={0} />
         </td>
 
         {!simpleMode && (
           <>
             <td>
-              <TitledItem title="7 Days Change" value={pool.changeDay7} />
+              <TitledItem title="7 Days Change" value={0} />
             </td>
             <td>
               <div className="link">Link</div>
@@ -147,15 +150,15 @@ const Row: FC<{ pool: Pool; simpleMode: boolean }> = ({ pool, simpleMode }) => {
             >
               <RowBetween padding="12px">
                 <Text fontSize="12px">NFT IN Pool</Text>
-                <Text color="white">{pool.nftCount}</Text>
+                <Text color="white">{pair.supply}</Text>
               </RowBetween>
               <RowBetween padding="12px">
                 <Text fontSize="12px">Liquidity</Text>
-                <Text color="white">{pool.liquidity}</Text>
+                <Text color="white">{0}</Text>
               </RowBetween>
               <RowBetween padding="12px">
                 <Text fontSize="12px">7 Days Change</Text>
-                <Text color="white">{pool.changeDay7}</Text>
+                <Text color="white">{0}</Text>
               </RowBetween>
             </div>
           </td>

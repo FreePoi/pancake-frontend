@@ -2,10 +2,11 @@ import React, { FC, useMemo } from 'react';
 import styled from 'styled-components';
 import Page from 'components/Layout/Page';
 import { useMatchBreakpoints, Text, Flex } from '@kaco/uikit';
-import Row from './Row';
+import Row from './components/Row';
 import AnimalSvg from './svg/animal.png';
 import MarketPng from './svg/market.png';
 import Search from './components/Search';
+import { useNftPairs } from './hooks/useNftPools';
 
 const PoolList = styled.div`
   border-radius: 16px;
@@ -35,43 +36,44 @@ export interface Pool {
   changeDay7: number;
 }
 
-const pools: Pool[] = [
-  {
-    poolName: 'BabySwap NFB',
-    fragmentName: 'BabySwap 100',
-    nftCount: 300,
-    liquidity: 192344,
-    floorPrice: 202.11,
-    changeDay7: 444422,
-  },
-  {
-    poolName: 'ALPACA FIANCE',
-    fragmentName: 'Alpaca 600',
-    nftCount: 300,
-    liquidity: 192344,
-    floorPrice: 202.11,
-    changeDay7: 444422,
-  },
-  {
-    poolName: 'KACO FINANCE',
-    fragmentName: 'Kaco 300',
-    nftCount: 300,
-    liquidity: 192344,
-    floorPrice: 202.11,
-    changeDay7: 444422,
-  },
-  {
-    poolName: 'Memenopoly',
-    fragmentName: 'Memenopoly 100',
-    nftCount: 300,
-    liquidity: 192344,
-    floorPrice: 202.11,
-    changeDay7: 444422,
-  },
-];
+// const pools: Pool[] = [
+//   {
+//     poolName: 'BabySwap NFB',
+//     fragmentName: 'BabySwap 100',
+//     nftCount: 300,
+//     liquidity: 192344,
+//     floorPrice: 202.11,
+//     changeDay7: 444422,
+//   },
+//   {
+//     poolName: 'ALPACA FIANCE',
+//     fragmentName: 'Alpaca 600',
+//     nftCount: 300,
+//     liquidity: 192344,
+//     floorPrice: 202.11,
+//     changeDay7: 444422,
+//   },
+//   {
+//     poolName: 'KACO FINANCE',
+//     fragmentName: 'Kaco 300',
+//     nftCount: 300,
+//     liquidity: 192344,
+//     floorPrice: 202.11,
+//     changeDay7: 444422,
+//   },
+//   {
+//     poolName: 'Memenopoly',
+//     fragmentName: 'Memenopoly 100',
+//     nftCount: 300,
+//     liquidity: 192344,
+//     floorPrice: 202.11,
+//     changeDay7: 444422,
+//   },
+// ];
 
 const NftPools: FC = () => {
   const { isXs, isSm } = useMatchBreakpoints();
+  const pairs = useNftPairs();
 
   const simpleMode = useMemo(() => isXs || isSm, [isXs, isSm]);
 
@@ -99,8 +101,8 @@ const NftPools: FC = () => {
       <PoolList>
         <table>
           <tbody>
-            {pools.map((pool) => (
-              <Row key={pool.poolName} pool={pool} simpleMode={simpleMode} />
+            {pairs.map((pair) => (
+              <Row key={pair.pairAddres} pair={pair} simpleMode={simpleMode} />
             ))}
           </tbody>
         </table>
