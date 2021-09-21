@@ -93,7 +93,6 @@ function CurrencySearch({
     [audioPlay, onCurrencySelect],
   );
 
-  // console.log('all', allTokens, 'filteredSortedTokens', filteredSortedTokens);
   // manage focus on modal show
   const inputRef = useRef<HTMLInputElement>();
 

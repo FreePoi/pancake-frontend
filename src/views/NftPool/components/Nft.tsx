@@ -8,8 +8,6 @@ const Nft: FC<{ className?: string; nft: NFT }> = ({ className, nft }) => {
   const { add, items } = useContext(NftContext);
   const added = useMemo(() => !!items.find((item) => item === nft.id), [items, nft]);
 
-  console.log('items', items);
-
   return (
     <div className={className}>
       <div className="show">

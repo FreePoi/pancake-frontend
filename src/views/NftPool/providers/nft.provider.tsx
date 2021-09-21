@@ -17,8 +17,6 @@ export const NftProvider = React.memo(({ children }: { children: React.ReactNode
     try {
       const items = (JSON.parse(localStorage.getItem(NFTShopChart)) as number[]) || [];
 
-      console.log('itemsssssssssss', items);
-
       setItems(items);
     } catch (e) {}
   }, []);

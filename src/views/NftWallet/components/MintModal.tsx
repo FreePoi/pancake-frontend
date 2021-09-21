@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Text, Flex, Button, Modal, InjectedModalProps } from '@kaco/uikit';
 import { ModalActions } from 'components/Modal';
 import { useTranslation } from 'contexts/Localization';
 import MintSvg from '../img/mint.svg';
 import { NFT } from 'views/NftPool';
 import { NftPair } from 'views/NftPools/hooks/useNftPools';
+import { useContract } from 'hooks/useContract';
+import Erc721 from 'config/abi/erc-721.json';
+import Erc1155 from 'config/abi/ERC1155.json';
+import useActiveWeb3React from 'hooks/useActiveWeb3React';
+import { NFT_TYPE } from 'config/constants/nft';
 
 interface Props extends InjectedModalProps {
   nft: NFT;
@@ -13,6 +18,31 @@ interface Props extends InjectedModalProps {
 
 const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
   const { t } = useTranslation();
+  const contract = useContract(pair.nftAddress, pair.type === NFT_TYPE.NFT721 ? Erc721 : Erc1155);
+  const { account } = useActiveWeb3React();
+
+  const onMint = useCallback(() => {
+    console.log('contract', Object.keys(contract), contract);
+    console.log('pair', pair, 'nft', nft);
+    if (!account || !contract.safeTransferFrom) {
+      return;
+    }
+
+    let mint: Promise<any>;
+    if (pair.type === NFT_TYPE.NFT721) {
+      mint = contract.safeTransferFrom(account, pair.pairAddres, nft.id);
+    } else {
+      mint = contract.safeTransferFrom(account, pair.pairAddres, nft.id, 1);
+    }
+
+    mint.then(
+      (s) => {
+        console.log('succ', s);
+        onDismiss();
+      },
+      (e) => console.log('e', e),
+    );
+  }, [contract, pair, account, nft, onDismiss]);
 
   return (
     <Modal maxWidth="400px" width="100%" title={t('Mint')} onDismiss={onDismiss}>
@@ -62,7 +92,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
         </Flex>
       </div>
       <ModalActions>
-        <Button onClick={onDismiss} width="100%">
+        <Button onClick={onMint} width="100%">
           {t('Confirm')}
         </Button>
       </ModalActions>

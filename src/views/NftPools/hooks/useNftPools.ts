@@ -1,15 +1,11 @@
-import { NFT_FACTORY } from '../../../config/constants/nft';
 import { useEffect, useState } from 'react';
+import type { BigNumber } from '@ethersproject/bignumber';
 import NFT100FactoryAbi from 'config/abi/NFT100Factory.json';
+import { NFT_FACTORY, NFT_TYPE } from 'config/constants/nft';
 import multicall from 'utils/multicall';
 import { useContract } from 'hooks/useContract';
-import type { BigNumber } from '@ethersproject/bignumber';
 
 export const chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10);
-enum NFT_TYPE {
-  NFT721 = 721,
-  NFT1155 = 1155,
-}
 
 export interface NftPair {
   pairAddres: string;
