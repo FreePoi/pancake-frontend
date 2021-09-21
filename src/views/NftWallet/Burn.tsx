@@ -10,10 +10,13 @@ import Erc20 from 'config/abi/erc20.json';
 import { BigNumber } from '@ethersproject/bignumber';
 
 const Burn: FC<{ className?: string }> = ({ className }) => {
-  const [onMint] = useModal(<BurnModal />);
   const pairs = useNftPairs();
   const { account } = useWeb3React();
   const [balancesOfNft100, setBalancesOfNft100] = useState<(NftPair & { balance: number })[]>([]);
+  const [nft100Index, setNft100Index] = useState(-1);
+  const [onMint] = useModal(
+    <BurnModal pair={balancesOfNft100[nft100Index]} balance={balancesOfNft100[nft100Index]?.balance} />,
+  );
 
   useEffect(() => {
     if (!account) {
@@ -60,8 +63,15 @@ const Burn: FC<{ className?: string }> = ({ className }) => {
           NFT100
         </Text>
         <Grid gridGap={{ xs: '4px', md: '16px' }} className="nfts">
-          {balancesOfNft100.map((balance) => (
-            <Flex className="fragment" onClick={onMint} key={balance.pairAddres}>
+          {balancesOfNft100.map((balance, index) => (
+            <Flex
+              className="fragment"
+              onClick={() => {
+                setNft100Index(index);
+                onMint();
+              }}
+              key={balance.pairAddres}
+            >
               <div className="logo"></div>
               <Flex flex="1" justifyContent="space-between" alignItems="center">
                 <div className="">

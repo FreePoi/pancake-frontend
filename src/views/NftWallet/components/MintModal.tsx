@@ -5,11 +5,9 @@ import { useTranslation } from 'contexts/Localization';
 import MintSvg from '../img/mint.svg';
 import { NFT } from 'views/NftPool';
 import { NftPair } from 'views/NftPools/hooks/useNftPools';
-import { useContract } from 'hooks/useContract';
-import Erc721 from 'config/abi/erc-721.json';
-import Erc1155 from 'config/abi/ERC1155.json';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { NFT_TYPE } from 'config/constants/nft';
+import { useNft100Contract } from '../hooks/useNft100Contract';
 
 interface Props extends InjectedModalProps {
   nft: NFT;
@@ -18,13 +16,13 @@ interface Props extends InjectedModalProps {
 
 const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
   const { t } = useTranslation();
-  const contract = useContract(pair.nftAddress, pair.type === NFT_TYPE.NFT721 ? Erc721 : Erc1155);
   const { account } = useActiveWeb3React();
+  const contract = useNft100Contract(pair);
 
   const onMint = useCallback(() => {
     console.log('contract', Object.keys(contract), contract);
     console.log('pair', pair, 'nft', nft);
-    if (!account || !contract.safeTransferFrom) {
+    if (!account) {
       return;
     }
 
@@ -37,7 +35,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
 
     mint.then(
       (s) => {
-        console.log('succ', s);
+        alert('success');
         onDismiss();
       },
       (e) => console.log('e', e),
