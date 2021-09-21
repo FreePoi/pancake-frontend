@@ -1,24 +1,28 @@
 import Page from './Page';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Grid, Text } from '@kaco/uikit';
 import Nft from './components/Nft';
+import { fetchAllTokens, filterNft } from 'views/NftPool/util/fetchNft';
+import { NFT } from 'views/NftPool';
+import { useWeb3React } from '@web3-react/core';
+import { NftPair, useNftPairs } from 'views/NftPools/hooks/useNftPools';
 
-const NftsGroupByPool_: FC<{ className?: string; title: string }> = ({ className, title }) => {
+const NftsGroupByPool_: FC<{
+  className?: string;
+  title: string;
+  pair: NftPair;
+  nfts: NFT[];
+}> = ({ className, title, nfts, pair }) => {
   return (
     <div className={className}>
       <Text bold color="white" mb="20px" fontSize="20px">
         {title}
       </Text>
       <Grid gridGap={{ xs: '4px', md: '16px' }} className="nfts">
-        <Nft nft="d" />
-        <Nft nft="d" />
-        <Nft nft="d" />
-        <Nft nft="d" />
-        <Nft nft="d" />
-        <Nft nft="d" />
-        <Nft nft="d" />
-        <Nft nft="d" />
+        {nfts.map((nft) => (
+          <Nft nft={nft} key={nft.id} pair={pair} />
+        ))}
       </Grid>
     </div>
   );
@@ -44,10 +48,27 @@ const NftsGroupByPool = styled(NftsGroupByPool_)`
 `;
 
 const Mint: FC<{ className?: string }> = ({ className }) => {
+  const [pools, setPools] = useState<({ nfts: NFT[] } & NftPair)[]>([]);
+  const { account } = useWeb3React();
+  const pairs = useNftPairs();
+
+  useEffect(() => {
+    if (!account || !pairs || !pairs.length) {
+      return;
+    }
+
+    fetchAllTokens(account).then((items) => {
+      const pools = pairs.map((pair) => ({ ...pair, nfts: filterNft(items, pair.nftAddress) }));
+
+      setPools(pools);
+    });
+  }, [account, pairs]);
+
   return (
     <Page className={className}>
-      <NftsGroupByPool title="Alpaca FinceAlpaca Fince" />
-      <NftsGroupByPool title="Pancake Swap" />
+      {pools.map((pair, index) => (
+        <NftsGroupByPool title={pair.name} nfts={pair.nfts} key={index} pair={pairs[index]} />
+      ))}
     </Page>
   );
 };

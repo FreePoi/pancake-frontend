@@ -1,19 +1,20 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import NFTSVG from '../../NftPool/img/nft.png';
 import { Button, Text, useModal } from '@kaco/uikit';
 import MintModal from './MintModal';
+import { NFT } from 'views/NftPool';
+import { NftPair } from 'views/NftPools/hooks/useNftPools';
 
-const Nft: FC<{ className?: string; nft: string }> = ({ className, nft }) => {
-  const [onMint] = useModal(<MintModal />);
+const Nft: FC<{ className?: string; nft: NFT; pair: NftPair }> = ({ className, nft, pair }) => {
+  const [onMint] = useModal(<MintModal nft={nft} pair={pair} />);
 
   return (
     <div className={className}>
       <div className="show">
-        <img src={NFTSVG} alt="" />
+        <img src={nft.image} alt="" />
       </div>
       <Text fontSize="18px" bold mb={{ xs: '16px', md: '24px' }} mt={{ xs: '16px', md: '24px' }}>
-        Kaco#{nft}
+        {nft.name}#{nft.id}
       </Text>
       <Button height="40px" width="180px" variant={'secondary'} onClick={onMint}>
         Mint

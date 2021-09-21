@@ -3,11 +3,15 @@ import { Text, Flex, Button, Modal, InjectedModalProps } from '@kaco/uikit';
 import { ModalActions } from 'components/Modal';
 import { useTranslation } from 'contexts/Localization';
 import MintSvg from '../img/mint.svg';
-import NFTSVG from '../../NftPool/img/nft.png';
+import { NFT } from 'views/NftPool';
+import { NftPair } from 'views/NftPools/hooks/useNftPools';
 
-interface Props extends InjectedModalProps {}
+interface Props extends InjectedModalProps {
+  nft: NFT;
+  pair: NftPair;
+}
 
-const MintModal: React.FC<Props> = ({ onDismiss }) => {
+const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
   const { t } = useTranslation();
 
   return (
@@ -21,9 +25,9 @@ const MintModal: React.FC<Props> = ({ onDismiss }) => {
             alignItems: 'center',
           }}
         >
-          <img src={NFTSVG} alt="" style={{ width: '69px', height: '69px' }} />
+          <img src={nft.image} alt="" style={{ width: '69px', height: '69px' }} />
           <Text bold fontSize="20px" color="white" ml="30px">
-            Alpaca#82912
+            {nft.name}#{nft.id}
           </Text>
         </Flex>
         <Flex justifyContent="center">
@@ -49,7 +53,7 @@ const MintModal: React.FC<Props> = ({ onDismiss }) => {
           />
           <Flex ml="30px" flexDirection="column" justifyContent="center">
             <Text bold fontSize="20px" color="white">
-              KAlpaca
+              {pair.symbol}
             </Text>
             <Text fontSize="12px" color="#1BD3D5">
               Quantity 100

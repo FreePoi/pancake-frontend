@@ -9,6 +9,7 @@ import { PoolHeader } from './components/Header';
 import { NftProvider, NftContext } from './providers/nft.provider';
 import { chainId } from 'views/NftPools/hooks/useNftPools';
 import { NFT_PAIRS } from 'config/constants/nft';
+import { fetchNfts } from './util/fetchNft';
 
 export interface Pool {
   poolName: string;
@@ -34,74 +35,13 @@ const Pools_: FC<{ className?: string }> = ({ className }) => {
     () => NFT_PAIRS.find((pair) => pair[chainId].address.toLocaleLowerCase() === pairAddress.toLocaleLowerCase()),
     [pairAddress],
   );
-  console.log(
-    'process.env.COVALENT_KEY',
-    process.env.REACT_APP_COVALENT_KEY,
-    'NFT_PAIRS',
-    NFT_PAIRS,
-    pairAddress,
-    pair,
-  );
 
   useEffect(() => {
-    const apiUrl = `https://api.covalenthq.com/v1/${chainId}/address/${pairAddress}/balances_v2/?key=${process.env.REACT_APP_COVALENT_KEY}&nft=true`;
-
     if (!pair) {
       return;
     }
 
-    fetch(apiUrl).then(async (data) => {
-      const covalentData: {
-        data: {
-          items:
-            | {
-                balance: string;
-                contract_address: string;
-                contract_name: string;
-                contract_ticker_symbol: string;
-                nft_data?: {
-                  token_balance: string;
-                  token_id: string;
-                  token_url: string;
-                  external_data: {
-                    image: string;
-                    image_256: string;
-                    image_512: string;
-                    image_1024: string;
-                    name: string;
-                  };
-                }[];
-              }[];
-        } | null;
-        error: boolean;
-        error_code: number | null;
-        error_message: string | null;
-      } = await data.json();
-
-      console.log('covalentData', covalentData);
-
-      if (!covalentData.data || covalentData.error) {
-        return;
-      }
-
-      const nfts: NFT[] = covalentData.data.items
-        .filter(
-          (token) =>
-            token.nft_data &&
-            token.contract_address.toLocaleLowerCase() === pair[chainId].nftAddress.toLocaleLowerCase(),
-        )
-        .reduce((nfts, curr) => nfts.concat(curr.nft_data), [])
-        .map((nft) => ({
-          id: parseInt(nft.token_id),
-          balance: parseInt(nft.token_balance),
-          uri: nft.token_url,
-          image: nft.external_data.image,
-          name: nft.external_data.name,
-        }));
-
-      console.log('sssssssssss', nfts);
-      setItems([...nfts]);
-    });
+    fetchNfts(pair[chainId].nftAddress, pairAddress).then(setItems);
   }, [pairAddress, pair]);
 
   return (
