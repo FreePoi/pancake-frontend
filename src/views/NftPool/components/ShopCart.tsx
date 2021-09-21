@@ -1,52 +1,89 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Button, Text, Grid } from '@kaco/uikit';
 import { NftContext } from '../providers/nft.provider';
-import NFTSVG from '../img/nft.png';
 import RemoveSVG from '../img/remove.svg';
+import { NFT } from '..';
+import { useContract } from 'hooks/useContract';
+import Nft100Abi from 'config/abi/NFT100Pair721.json';
+import useActiveWeb3React from 'hooks/useActiveWeb3React';
 
-const Item: FC<{ className?: string; item: number }> = ({ className, item }) => {
+const Item: FC<{ className?: string; item: NFT; floorPrice: number; symbol: string }> = ({
+  className,
+  item,
+  floorPrice,
+  symbol,
+}) => {
   const { remove } = useContext(NftContext);
   const [isHover, setIsHover] = useState(false);
 
   return (
     <div className="item">
       <div className="show" onMouseOver={() => setIsHover(true)} onMouseOut={() => setIsHover(false)}>
-        <img src={NFTSVG} alt="" />
+        <img src={item.image} alt="" />
         <div className="mask" style={{ opacity: isHover ? '1' : '0' }} onClick={() => remove(item)}>
           <img src={RemoveSVG} alt="" />
         </div>
       </div>
       <Text color="white" bold fontSize="12px" mt="14px" mb="12px">
-        {isHover ? 't' : 'f'}
-        Kaco#{item}
+        {item.name}#{item.id}
       </Text>
       <Text color="#1BD3D5" bold fontSize="12px">
-        0.00819BNB
+        {floorPrice}
+        {symbol}
       </Text>
     </div>
   );
 };
 
-const ShopCart: FC<{ className?: string }> = ({ className }) => {
+const ShopCart: FC<{ className?: string; floorPrice: number; symbol: string; pairAddres: string }> = ({
+  className,
+  floorPrice,
+  symbol,
+  pairAddres,
+}) => {
   const { items } = useContext(NftContext);
+  const contract = useContract(pairAddres, Nft100Abi);
+  const { account } = useActiveWeb3React();
+
+  const onBuy = useCallback(() => {
+    if (!account || !contract) {
+      return;
+    }
+
+    const burn = contract.withdraw(
+      items.map((item) => item.id),
+      items.map(() => 1),
+      account,
+    );
+
+    burn.then(
+      (s) => {
+        alert('success');
+      },
+      (e) => {
+        alert('failed');
+        console.log('e', e);
+      },
+    );
+  }, [contract, account, items]);
 
   return (
     <div className={className}>
       <div>
         <Grid gridGap={{ xs: '16px', md: '31px' }} className="items">
           {items.map((item) => (
-            <Item item={item} key={item} />
+            <Item item={item} key={item.id} floorPrice={floorPrice} symbol={symbol} />
           ))}
         </Grid>
         <div className="right">
           <Text color="#1BD3D5" bold fontSize="28px">
-            0.02391BNB
+            {items.length * floorPrice} {symbol}
           </Text>
           <Text color="white" bold fontSize="12px" textAlign="right" mt="13px" mb="17px">
             Total Cost
           </Text>
-          <Button>Buy</Button>
+          <Button onClick={onBuy}>Buy</Button>
         </div>
       </div>
     </div>

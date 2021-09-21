@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Grid } from '@kaco/uikit';
 import styled from 'styled-components';
@@ -28,21 +28,20 @@ export interface NFT {
   name: string;
 }
 
-const Pools_: FC<{ className?: string }> = ({ className }) => {
+const Pools_: FC<{
+  className?: string;
+  nftAddress: string;
+  pairAddress: string;
+}> = ({ className, nftAddress, pairAddress }) => {
   const [items, setItems] = useState<NFT[]>([]);
-  const { pairAddress } = useParams<{ pairAddress: string }>();
-  const pair = useMemo(
-    () => NFT_PAIRS.find((pair) => pair[chainId].address.toLocaleLowerCase() === pairAddress.toLocaleLowerCase()),
-    [pairAddress],
-  );
 
   useEffect(() => {
-    if (!pair) {
+    if (!nftAddress || !pairAddress) {
       return;
     }
 
-    fetchNfts(pair[chainId].nftAddress, pairAddress).then(setItems);
-  }, [pairAddress, pair]);
+    fetchNfts(nftAddress, pairAddress).then(setItems);
+  }, [pairAddress, nftAddress]);
 
   return (
     <Grid gridGap={{ xs: '4px', md: '16px' }} className={className}>
@@ -73,14 +72,19 @@ const GoodsInPool = styled(Pools_)`
 
 const NftPool: FC<{ className?: string }> = ({ className }) => {
   const { items } = useContext(NftContext);
+  const { pairAddress } = useParams<{ pairAddress: string }>();
+  const index = NFT_PAIRS.findIndex(
+    (pair) => pair[chainId].address.toLocaleLowerCase() === pairAddress.toLocaleLowerCase(),
+  );
+  const pair = NFT_PAIRS[index]?.[chainId];
 
   return (
     <>
       <Page className={className}>
-        <PoolHeader />
-        <GoodsInPool />
+        <PoolHeader pairIndex={index} floorPrice={0.1} />
+        <GoodsInPool pairAddress={pairAddress} nftAddress={pair.nftAddress} />
       </Page>
-      {!!items.length && <ShopCart />}
+      {!!items.length && <ShopCart floorPrice={0.1} symbol="BUSD" pairAddres={pair.address} />}
     </>
   );
 };

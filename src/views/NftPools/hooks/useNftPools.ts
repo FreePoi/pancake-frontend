@@ -36,6 +36,27 @@ const fetchNftPairs = async (count: number): Promise<NftPair[]> => {
   }));
 };
 
+const fetchNftPair = async (index: number): Promise<NftPair> => {
+  const calls = [
+    {
+      address: NFT_FACTORY[chainId],
+      name: 'getPairByIndex',
+      params: [index],
+    },
+  ];
+
+  const [info] = (await multicall(NFT100FactoryAbi, calls)) as [string, string, BigNumber, string, string, BigNumber][];
+  console.log('info', info);
+
+  return {
+    pairAddres: info[0],
+    nftAddress: info[1],
+    type: info[2].toNumber(),
+    name: info[3],
+    symbol: info[4],
+    supply: info[5].toNumber(),
+  };
+};
 export const useNftPairs = () => {
   const [pools, setPools] = useState<NftPair[]>([]);
   const contract = useContract(NFT_FACTORY[chainId], NFT100FactoryAbi);
@@ -49,4 +70,14 @@ export const useNftPairs = () => {
   }, [contract]);
 
   return pools;
+};
+
+export const useNftPair = (index: number) => {
+  const [pool, setPool] = useState<NftPair>();
+
+  useEffect(() => {
+    fetchNftPair(index).then(setPool);
+  }, [index]);
+
+  return pool;
 };

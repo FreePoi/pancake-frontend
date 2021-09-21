@@ -3,6 +3,7 @@ import { Flex, Text } from '@kaco/uikit';
 import styled from 'styled-components';
 import HeaderBgSvg from '../img/header-bg.svg';
 import LogoSvg from '../../NftPools/svg/demo.svg';
+import { useNftPair } from 'views/NftPools/hooks/useNftPools';
 
 export interface Pool {
   poolName: string;
@@ -13,28 +14,35 @@ export interface Pool {
   changeDay7: number;
 }
 
-const PoolHeader_: FC<{ className?: string }> = ({ className }) => {
+const PoolHeader_: FC<{ className?: string; pairIndex: number; floorPrice: number }> = ({
+  className,
+  pairIndex,
+  floorPrice,
+}) => {
+  const pair = useNftPair(pairIndex);
+
+  console.log('pairsdfasdfasd', pair);
   return (
     <div className={className}>
       <div>
         <img className="pool-logo" src={LogoSvg} alt="" />
-        <h1>KACO NFT POOL</h1>
+        <h1>{pair?.name}</h1>
         <Flex className="pool-info">
           <div className="info">
             <Text fontSize="20px" bold mb="4px">
-              300
+              {pair?.supply}
             </Text>
             <Text fontSize="12px">NFT In Pool</Text>
           </div>
           <div className="info">
             <Text fontSize="20px" bold mb="4px">
-              0.89 BNB
+              {floorPrice} BUSD
             </Text>
             <Text fontSize="12px">NFT Price</Text>
           </div>
           <div className="info second-line">
             <Text fontSize="20px" bold mb="4px">
-              $234,129.98
+              {floorPrice * pair?.supply} BUSD
             </Text>
             <Text fontSize="12px">Liquidity</Text>
           </div>

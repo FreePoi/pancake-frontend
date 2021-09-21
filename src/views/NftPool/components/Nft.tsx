@@ -6,7 +6,7 @@ import { NFT } from '../index';
 
 const Nft: FC<{ className?: string; nft: NFT }> = ({ className, nft }) => {
   const { add, items } = useContext(NftContext);
-  const added = useMemo(() => !!items.find((item) => item === nft.id), [items, nft]);
+  const added = useMemo(() => !!items.find((item) => item.id === nft.id), [items, nft]);
 
   return (
     <div className={className}>
@@ -16,7 +16,7 @@ const Nft: FC<{ className?: string; nft: NFT }> = ({ className, nft }) => {
       <Text fontSize="18px" bold mb={{ xs: '16px', md: '24px' }} mt={{ xs: '16px', md: '24px' }}>
         {nft.name}#{nft.id}
       </Text>
-      <Button height="40px" width="180px" variant={added ? 'text' : 'secondary'} onClick={() => !added && add(nft.id)}>
+      <Button height="40px" width="180px" variant={added ? 'text' : 'secondary'} onClick={() => !added && add(nft)}>
         {/* <Button height="40px" width="180px" variant="secondary"> */}
         {added ? 'Added' : 'Buy +'}
       </Button>
