@@ -27,50 +27,6 @@ const PoolList = styled.div`
   }
 `;
 
-export interface Pool {
-  poolName: string;
-  fragmentName: string;
-  nftCount: number;
-  liquidity: number;
-  floorPrice: number;
-  changeDay7: number;
-}
-
-// const pools: Pool[] = [
-//   {
-//     poolName: 'BabySwap NFB',
-//     fragmentName: 'BabySwap 100',
-//     nftCount: 300,
-//     liquidity: 192344,
-//     floorPrice: 202.11,
-//     changeDay7: 444422,
-//   },
-//   {
-//     poolName: 'ALPACA FIANCE',
-//     fragmentName: 'Alpaca 600',
-//     nftCount: 300,
-//     liquidity: 192344,
-//     floorPrice: 202.11,
-//     changeDay7: 444422,
-//   },
-//   {
-//     poolName: 'KACO FINANCE',
-//     fragmentName: 'Kaco 300',
-//     nftCount: 300,
-//     liquidity: 192344,
-//     floorPrice: 202.11,
-//     changeDay7: 444422,
-//   },
-//   {
-//     poolName: 'Memenopoly',
-//     fragmentName: 'Memenopoly 100',
-//     nftCount: 300,
-//     liquidity: 192344,
-//     floorPrice: 202.11,
-//     changeDay7: 444422,
-//   },
-// ];
-
 const NftPools: FC = () => {
   const { isXs, isSm } = useMatchBreakpoints();
   const pairs = useNftPairs();

@@ -29,8 +29,8 @@ export async function fetchNfts(nftAddress: string, pairAddress: string) {
   return nfts;
 }
 
-export async function fetchAllTokens(pairAddress: string) {
-  const apiUrl = `https://api.covalenthq.com/v1/${chainId}/address/${pairAddress}/balances_v2/?key=${process.env.REACT_APP_COVALENT_KEY}&nft=true`;
+export async function fetchAllTokens(account: string) {
+  const apiUrl = `https://api.covalenthq.com/v1/${chainId}/address/${account}/balances_v2/?key=${process.env.REACT_APP_COVALENT_KEY}&nft=true`;
 
   const data = await fetch(apiUrl);
 

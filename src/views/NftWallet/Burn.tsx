@@ -1,11 +1,57 @@
 import Page from './Page';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Button, Grid, Text, Flex, useModal } from '@kaco/uikit';
 import styled from 'styled-components';
 import BurnModal from './components/BurnModal';
+import { NftPair, useNftPairs } from 'views/NftPools/hooks/useNftPools';
+import { useWeb3React } from '@web3-react/core';
+import multicall from 'utils/multicall';
+import Erc20 from 'config/abi/erc20.json';
+import { BigNumber } from '@ethersproject/bignumber';
 
 const Burn: FC<{ className?: string }> = ({ className }) => {
   const [onMint] = useModal(<BurnModal />);
+  const pairs = useNftPairs();
+  const { account } = useWeb3React();
+  const [balancesOfNft100, setBalancesOfNft100] = useState<(NftPair & { balance: number })[]>([]);
+
+  useEffect(() => {
+    if (!account) {
+      return;
+    }
+
+    const calls = pairs
+      .map((pair) => [
+        {
+          address: pair.pairAddres,
+          name: 'balanceOf',
+          params: [account],
+        },
+        {
+          address: pair.pairAddres,
+          name: 'decimals',
+        },
+      ])
+      .reduce((calls, curr) => calls.concat(curr), []);
+
+    multicall(Erc20, calls).then((results: any[]) => {
+      const balancesOfNft100 = [];
+
+      for (let i = 0; i < results.length - 1; i += 2) {
+        const balance: BigNumber = results[i][0];
+        const decimals = results[i + 1][0];
+        const balanceNumber = balance.div(BigNumber.from(10).pow(BigNumber.from(decimals))).toNumber();
+
+        console.log('balance', balanceNumber);
+
+        balancesOfNft100.push({ ...pairs[i], balance: balanceNumber });
+      }
+
+      console.log('balancesOfNft100', balancesOfNft100);
+
+      setBalancesOfNft100(balancesOfNft100);
+    });
+  }, [account, pairs]);
 
   return (
     <Page>
@@ -14,77 +60,22 @@ const Burn: FC<{ className?: string }> = ({ className }) => {
           NFT100
         </Text>
         <Grid gridGap={{ xs: '4px', md: '16px' }} className="nfts">
-          <Flex className="fragment" onClick={onMint}>
-            <div className="logo"></div>
-            <Flex flex="1" justifyContent="space-between" alignItems="center">
-              <div className="">
-                <Text color="#1BD3D5" bold fontSize="20px">
-                  300
-                </Text>
-                <Text color="white" bold>
-                  KAlpaca
-                </Text>
-              </div>
-              <Button variant="secondary">Burn</Button>
+          {balancesOfNft100.map((balance) => (
+            <Flex className="fragment" onClick={onMint} key={balance.pairAddres}>
+              <div className="logo"></div>
+              <Flex flex="1" justifyContent="space-between" alignItems="center">
+                <div className="">
+                  <Text color="#1BD3D5" bold fontSize="20px">
+                    {balance.balance}
+                  </Text>
+                  <Text color="white" bold>
+                    {balance.symbol}
+                  </Text>
+                </div>
+                <Button variant="secondary">Burn</Button>
+              </Flex>
             </Flex>
-          </Flex>
-
-          <Flex className="fragment" onClick={onMint}>
-            <div className="logo"></div>
-            <Flex flex="1" justifyContent="space-between" alignItems="center">
-              <div className="">
-                <Text color="#1BD3D5" bold fontSize="20px">
-                  300
-                </Text>
-                <Text color="white" bold>
-                  KAlpaca
-                </Text>
-              </div>
-              <Button variant="secondary">Burn</Button>
-            </Flex>
-          </Flex>
-          <Flex className="fragment" onClick={onMint}>
-            <div className="logo"></div>
-            <Flex flex="1" justifyContent="space-between" alignItems="center">
-              <div className="">
-                <Text color="#1BD3D5" bold fontSize="20px">
-                  300
-                </Text>
-                <Text color="white" bold>
-                  KAlpaca
-                </Text>
-              </div>
-              <Button variant="secondary">Burn</Button>
-            </Flex>
-          </Flex>
-          <Flex className="fragment" onClick={onMint}>
-            <div className="logo"></div>
-            <Flex flex="1" justifyContent="space-between" alignItems="center">
-              <div className="">
-                <Text color="#1BD3D5" bold fontSize="20px">
-                  300
-                </Text>
-                <Text color="white" bold>
-                  KAlpaca
-                </Text>
-              </div>
-              <Button variant="secondary">Burn</Button>
-            </Flex>
-          </Flex>
-          <Flex className="fragment" onClick={onMint}>
-            <div className="logo"></div>
-            <Flex flex="1" justifyContent="space-between" alignItems="center">
-              <div className="">
-                <Text color="#1BD3D5" bold fontSize="20px">
-                  300
-                </Text>
-                <Text color="white" bold>
-                  KAlpaca
-                </Text>
-              </div>
-              <Button variant="secondary">Burn</Button>
-            </Flex>
-          </Flex>
+          ))}
         </Grid>
       </div>
     </Page>
