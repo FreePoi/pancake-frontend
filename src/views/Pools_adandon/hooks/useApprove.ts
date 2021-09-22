@@ -44,7 +44,7 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
   return { handleApprove, requestedApproval };
 };
 
-// Approve CAKE auto pool
+// Approve KAC auto pool
 export const useVaultApprove = (setLastUpdated: () => void) => {
   const [requestedApproval, setRequestedApproval] = useState(false);
   const { t } = useTranslation();
@@ -57,7 +57,7 @@ export const useVaultApprove = (setLastUpdated: () => void) => {
     setRequestedApproval(true);
     const receipt = await tx.wait();
     if (receipt.status) {
-      toastSuccess(t('Contract Enabled'), t('You can now stake in the %symbol% vault!', { symbol: 'CAKE' }));
+      toastSuccess(t('Contract Enabled'), t('You can now stake in the %symbol% vault!', { symbol: 'KAC' }));
       setLastUpdated();
       setRequestedApproval(false);
     } else {

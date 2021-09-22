@@ -50,7 +50,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryData: LotteryRound; lotteryId: 
           <Balance
             fontSize="14px"
             color="textSubtle"
-            unit=" CAKE"
+            unit=" KAC"
             value={getBalanceNumber(lotteryData?.amountCollectedInCake)}
             decimals={0}
           />

@@ -210,11 +210,11 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
   return (
     <Container expanded={actionPanelExpanded}>
       <InfoContainer>
-        <StakeContainer>
+        {/* <StakeContainer>
           <StyledLinkExternal href={`https://pancakeswap.info/token/${getAddress(earningToken.address)}`}>
             {t('See Token Info')}
           </StyledLinkExternal>
-        </StakeContainer>
+        </StakeContainer> */}
         <StakeContainer>
           <StyledLinkExternal href={earningToken.projectLink}> {t('View Project Site')}</StyledLinkExternal>
         </StakeContainer>
@@ -280,7 +280,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
       <ActionContainer style={{ justifyContent: 'space-between' }}>
         {showSubtitle && (
           <Text mt="4px" mb="16px" color="textSubtle">
-            {isAutoVault ? t('Automatic restaking') : `${t('Earn')} CAKE ${t('Stake').toLocaleLowerCase()} CAKE`}
+            {isAutoVault ? t('Automatic restaking') : `${t('Earn')} KAC ${t('Stake').toLocaleLowerCase()} CAKE`}
           </Text>
         )}
         <HarvestAction {...pool} userDataReady={userDataReady} />

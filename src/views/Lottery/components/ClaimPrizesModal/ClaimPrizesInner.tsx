@@ -89,7 +89,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
       if (receipt.status) {
         toastSuccess(
           t('Prizes Collected!'),
-          t('Your CAKE prizes for round %lotteryId% have been sent to your wallet', { lotteryId }),
+          t('Your KAC prizes for round %lotteryId% have been sent to your wallet', { lotteryId }),
         );
         setPendingTx(false);
         handleProgressToNextClaim();
@@ -151,7 +151,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
       setPendingTx(false);
       toastSuccess(
         t('Prizes Collected!'),
-        t('Your CAKE prizes for round %lotteryId% have been sent to your wallet', { lotteryId }),
+        t('Your KAC prizes for round %lotteryId% have been sent to your wallet', { lotteryId }),
       );
       handleProgressToNextClaim();
     }

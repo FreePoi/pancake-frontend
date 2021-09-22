@@ -15,10 +15,10 @@ export const BASE_BSC_SCAN_URLS = {
 };
 
 // CAKE_PER_BLOCK details
-// 40 CAKE is minted per block
-// 20 CAKE per block is sent to Burn pool (A farm just for burning cake)
-// 10 CAKE per block goes to CAKE syrup pool
-// 9 CAKE per block goes to Yield farms and lottery
+// 40 KAC is minted per block
+// 20 KAC per block is sent to Burn pool (A farm just for burning cake)
+// 10 KAC per block goes to KAC syrup pool
+// 9 KAC per block goes to Yield farms and lottery
 // CAKE_PER_BLOCK in config/index.ts = 40 as we only change the amount sent to the burn pool which is effectively a farm.
 // CAKE/Block in src/views/Home/components/CakeDataRow.tsx = 19 (40 - Amount sent to burn pool)
 export const CAKE_PER_BLOCK = new BigNumber(40);
