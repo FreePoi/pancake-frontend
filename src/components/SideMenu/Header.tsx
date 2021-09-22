@@ -122,7 +122,7 @@ export default styled(Header)`
       > svg {
         &:hover {
           cursor: pointer;
-          fill: ${({ theme }) => theme.colors.failure};
+          fill: #1fc7d4;
         }
       }
       display: flex;
