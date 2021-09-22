@@ -37,7 +37,10 @@ const ExpandedWrapper = styled(Flex)`
     width: 14px;
   }
 `;
-
+const ReferenceElement = styled.div`
+  display: inline-block;
+  padding-left: 5px;
+`;
 const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   const { t } = useTranslation();
   const { currentBlock } = useBlock();
@@ -99,9 +102,9 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           {totalStaked && totalStaked.gte(0) ? (
             <>
               <Balance small value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
-              <span ref={totalStakedTargetRef}>
+              <ReferenceElement ref={totalStakedTargetRef}>
                 <HelpIcon color="textSubtle" width="20px" ml="6px" mt="4px" />
-              </span>
+              </ReferenceElement>
             </>
           ) : (
             <Skeleton width="90px" height="21px" />

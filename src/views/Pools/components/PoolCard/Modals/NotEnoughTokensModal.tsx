@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'contexts/Localization';
 import styled from 'styled-components';
-import { Modal, Text, Button, OpenNewIcon, Link } from '@kaco/uikit';
-import useTheme from 'hooks/useTheme';
+import { Text, Button, OpenNewIcon, Link } from '@kaco/uikit';
+import Modal from 'components/Modal/Modal';
 
 interface NotEnoughTokensModalProps {
   tokenSymbol: string;
@@ -15,14 +15,9 @@ const StyledLink = styled(Link)`
 
 const NotEnoughTokensModal: React.FC<NotEnoughTokensModalProps> = ({ tokenSymbol, onDismiss }) => {
   const { t } = useTranslation();
-  const { theme } = useTheme();
 
   return (
-    <Modal
-      title={t('%symbol% required', { symbol: tokenSymbol })}
-      onDismiss={onDismiss}
-      headerBackground={theme.colors.gradients.cardHeader}
-    >
+    <Modal title={t('%symbol% required', { symbol: tokenSymbol })} onDismiss={onDismiss}>
       <Text color="failure" bold>
         {t('Insufficient %symbol% balance', { symbol: tokenSymbol })}
       </Text>

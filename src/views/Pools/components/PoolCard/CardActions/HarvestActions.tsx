@@ -45,7 +45,6 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
       isCompoundPool={isCompoundPool}
     />,
   );
-
   return (
     <Flex justifyContent="space-between" alignItems="center" mb="16px">
       <Flex flexDirection="column">

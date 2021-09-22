@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Modal,
   Text,
   Button,
   Heading,
@@ -12,12 +11,12 @@ import {
   useTooltip,
 } from '@kaco/uikit';
 import { useTranslation } from 'contexts/Localization';
-import useTheme from 'hooks/useTheme';
 import useToast from 'hooks/useToast';
 import { Token } from 'config/constants/types';
 import { formatNumber } from 'utils/formatBalance';
 import useHarvestPool from '../../../hooks/useHarvestPool';
 import useStakePool from '../../../hooks/useStakePool';
+import Modal from 'components/Modal/Modal';
 
 interface CollectModalProps {
   formattedBalance: string;
@@ -41,7 +40,6 @@ const CollectModal: React.FC<CollectModalProps> = ({
   onDismiss,
 }) => {
   const { t } = useTranslation();
-  const { theme } = useTheme();
   const { toastSuccess, toastError } = useToast();
   const { onReward } = useHarvestPool(sousId, isBnbPool);
   const { onStake } = useStakePool(sousId, isBnbPool);
@@ -91,11 +89,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
   };
 
   return (
-    <Modal
-      title={`${earningToken.symbol} ${isCompoundPool ? t('Collect') : t('Harvest')}`}
-      onDismiss={onDismiss}
-      headerBackground={theme.colors.gradients.cardHeader}
-    >
+    <Modal title={`${earningToken.symbol} ${isCompoundPool ? t('Collect') : t('Harvest')}`} onDismiss={onDismiss}>
       {isCompoundPool && (
         <Flex justifyContent="center" alignItems="center" mb="24px">
           <ButtonMenu
@@ -115,7 +109,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
       )}
 
       <Flex justifyContent="space-between" alignItems="center" mb="24px">
-        <Text>{shouldCompound ? t('Compounding') : t('Harvesting')}:</Text>
+        <Text>{shouldCompound ? t('Compounding') : t('Harvesting')}</Text>
         <Flex flexDirection="column">
           <Heading>
             {formattedBalance} {earningToken.symbol}
@@ -125,18 +119,21 @@ const CollectModal: React.FC<CollectModalProps> = ({
           )}
         </Flex>
       </Flex>
-
-      <Button
-        mt="8px"
-        onClick={handleHarvestConfirm}
-        isLoading={pendingTx}
-        endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
-      >
-        {pendingTx ? t('Confirming') : t('Confirm')}
-      </Button>
-      <Button variant="text" onClick={onDismiss} pb="0px">
-        {t('Close Window')}
-      </Button>
+      <Flex alignItems="center" justifyContent="center" mb="8px" mt="30px">
+        <Button minWidth="150px" variant="secondary" onClick={onDismiss} ml="8px" mr="8px">
+          {t('Cancel')}
+        </Button>
+        <Button
+          ml="10px"
+          mr="10px"
+          minWidth="150px"
+          onClick={handleHarvestConfirm}
+          isLoading={pendingTx}
+          endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+        >
+          {pendingTx ? t('Confirming') : t('Confirm')}
+        </Button>
+      </Flex>
     </Modal>
   );
 };

@@ -24,7 +24,10 @@ const Divider = styled.div`
   margin: 16px auto;
   width: 100%;
 `;
-
+const ReferenceElement = styled.div`
+  display: inline-block;
+  padding-left: 5px;
+`;
 const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }) => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
@@ -123,9 +126,9 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
         <Text fontSize="16px" bold color="textSubtle" mr="4px">
           {t('What’s this?')}
         </Text>
-        <span ref={targetRef}>
+        <ReferenceElement ref={targetRef}>
           <HelpIcon color="textSubtle" />
-        </span>
+        </ReferenceElement>
       </Flex>
     </Modal>
   );

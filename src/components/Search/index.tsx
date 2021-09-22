@@ -20,10 +20,11 @@ const Wrapper = styled.div<{ focused: boolean }>`
   }
 `;
 
-const Search: FC<{ className?: string; value: string; onChange: (now: string) => void }> = ({
+const Search: FC<{ className?: string; value: string; onChange: (now: string) => void; placeholder: string }> = ({
   className,
   value,
   onChange,
+  placeholder,
 }) => {
   const [focused, setFocused] = useState(false);
 
@@ -35,6 +36,7 @@ const Search: FC<{ className?: string; value: string; onChange: (now: string) =>
         onBlur={() => setFocused(false)}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
       />
     </Wrapper>
   );

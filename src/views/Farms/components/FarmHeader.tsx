@@ -30,7 +30,7 @@ const FarmHeader: React.FC<{
           </Text>
           <Toggle checked={stakedOnly} onChange={() => onStakedOnlyChange(!stakedOnly)} />
         </Flex>
-        <Search value={filter} onChange={onFilterChange} />
+        <Search value={filter} onChange={onFilterChange} placeholder="Search Farm" />
       </div>
     </Flex>
   );

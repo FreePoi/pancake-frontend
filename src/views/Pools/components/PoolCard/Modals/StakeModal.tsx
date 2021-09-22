@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon, Link } from '@kaco/uikit';
+import { Text, Flex, Button, BalanceInput, AutoRenewIcon, Link } from '@kaco/uikit';
 import { useTranslation } from 'contexts/Localization';
-import useTheme from 'hooks/useTheme';
 import useToast from 'hooks/useToast';
 import BigNumber from 'bignumber.js';
-import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance';
+import { getFullDisplayBalance, getDecimalAmount } from 'utils/formatBalance';
 import { Pool } from 'state/types';
-import { getAddress } from 'utils/addressHelpers';
-import PercentageButton from './PercentageButton';
 import useStakePool from '../../../hooks/useStakePool';
 import useUnstakePool from '../../../hooks/useUnstakePool';
+import Modal from 'components/Modal/Modal';
 
 interface StakeModalProps {
   isBnbPool: boolean;
@@ -20,11 +18,31 @@ interface StakeModalProps {
   isRemovingStake?: boolean;
   onDismiss?: () => void;
 }
-
+const StyledBorder = styled.div`
+  background: #272e32;
+  border-radius: 16px;
+  padding: 20px;
+`;
 const StyledLink = styled(Link)`
   width: 100%;
+  display: block;
+  text-align: center;
+  margin-top: 15px;
 `;
-
+const StyledBalanceInput = styled(BalanceInput)`
+  background: transparent;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+`;
+const StyledRadio = styled.div`
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: #1bd3d5;
+  border-radius: 50%;
+`;
 const StakeModal: React.FC<StakeModalProps> = ({
   isBnbPool,
   pool,
@@ -35,22 +53,18 @@ const StakeModal: React.FC<StakeModalProps> = ({
 }) => {
   const { sousId, stakingToken, userData, stakingLimit, earningToken } = pool;
   const { t } = useTranslation();
-  const { theme } = useTheme();
   const { onStake } = useStakePool(sousId, isBnbPool);
   const { onUnstake } = useUnstakePool(sousId, pool.enableEmergencyWithdraw);
   const { toastSuccess, toastError } = useToast();
   const [pendingTx, setPendingTx] = useState(false);
   const [stakeAmount, setStakeAmount] = useState('');
   const [hasReachedStakeLimit, setHasReachedStakedLimit] = useState(false);
-  const [percent, setPercent] = useState(0);
   const getCalculatedStakingLimit = () => {
     if (isRemovingStake) {
       return userData.stakedBalance;
     }
     return stakingLimit.gt(0) && stakingTokenBalance.gt(stakingLimit) ? stakingLimit : stakingTokenBalance;
   };
-
-  const usdValueStaked = stakeAmount && formatNumber(new BigNumber(stakeAmount).times(stakingTokenPrice).toNumber());
 
   useEffect(() => {
     if (stakingLimit.gt(0) && !isRemovingStake) {
@@ -60,13 +74,6 @@ const StakeModal: React.FC<StakeModalProps> = ({
   }, [stakeAmount, stakingLimit, userData, stakingToken, isRemovingStake, setHasReachedStakedLimit]);
 
   const handleStakeInputChange = (input: string) => {
-    if (input) {
-      const convertedInput = getDecimalAmount(new BigNumber(input), stakingToken.decimals);
-      const percentage = Math.floor(convertedInput.dividedBy(getCalculatedStakingLimit()).multipliedBy(100).toNumber());
-      setPercent(Math.min(percentage, 100));
-    } else {
-      setPercent(0);
-    }
     setStakeAmount(input);
   };
 
@@ -78,7 +85,6 @@ const StakeModal: React.FC<StakeModalProps> = ({
     } else {
       setStakeAmount('');
     }
-    setPercent(sliderPercent);
   };
 
   const handleConfirmClick = async () => {
@@ -121,9 +127,12 @@ const StakeModal: React.FC<StakeModalProps> = ({
 
   return (
     <Modal
-      title={isRemovingStake ? t('Unstake') : t('Stake in Pool')}
+      title={
+        isRemovingStake
+          ? t('Unstake %symbol%', { symbol: stakingToken.symbol })
+          : t('Stake %symbol%', { symbol: stakingToken.symbol })
+      }
       onDismiss={onDismiss}
-      headerBackground={theme.colors.gradients.cardHeader}
     >
       {stakingLimit.gt(0) && !isRemovingStake && (
         <Text color="secondary" bold mb="24px" style={{ textAlign: 'center' }} fontSize="16px">
@@ -133,27 +142,37 @@ const StakeModal: React.FC<StakeModalProps> = ({
           })}
         </Text>
       )}
-      <Flex alignItems="center" justifyContent="space-between" mb="8px">
-        <Text bold>{isRemovingStake ? t('Unstake') : t('Stake')}:</Text>
-        <Flex alignItems="center" minWidth="70px">
-          <Image
-            src={`/images/tokens/${getAddress(stakingToken.address)}.png`}
-            width={24}
-            height={24}
-            alt={stakingToken.symbol}
-          />
-          <Text ml="4px" bold>
-            {stakingToken.symbol}
-          </Text>
+      <StyledBorder>
+        <Flex alignItems="center" justifyContent="space-between" mb="8px">
+          <Text bold>{isRemovingStake ? t('Unstake') : t('Stake')}</Text>
+          <Flex>
+            <Text color="textSubtle" fontSize="12px" bold>
+              {t('Balance: %balance%', {
+                balance: getFullDisplayBalance(getCalculatedStakingLimit(), stakingToken.decimals),
+              })}
+            </Text>
+            <Text bold color="primary" ml="12px" fontSize="12px" onClick={() => handleChangePercent(100)}>
+              {t('Max')}
+            </Text>
+          </Flex>
         </Flex>
-      </Flex>
-      <BalanceInput
-        value={stakeAmount}
-        onUserInput={handleStakeInputChange}
-        currencyValue={stakingTokenPrice !== 0 && `~${usdValueStaked || 0} USD`}
-        isWarning={hasReachedStakeLimit}
-        decimals={stakingToken.decimals}
-      />
+        <Flex alignItems="center" justifyContent="space-between">
+          <Flex alignItems="center">
+            <StyledRadio />
+            <Text bold ml="20px" fontSize="16px">
+              {stakingToken.symbol}
+            </Text>
+          </Flex>
+          <StyledBalanceInput
+            value={stakeAmount}
+            onUserInput={handleStakeInputChange}
+            // currencyValue={stakingTokenPrice !== 0 && `~${usdValueStaked || 0} USD`}
+            isWarning={hasReachedStakeLimit}
+            decimals={stakingToken.decimals}
+            background="#272E32"
+          />
+        </Flex>
+      </StyledBorder>
       {hasReachedStakeLimit && (
         <Text color="failure" fontSize="12px" style={{ textAlign: 'right' }} mt="4px">
           {t('Maximum total stake: %amount% %token%', {
@@ -162,40 +181,25 @@ const StakeModal: React.FC<StakeModalProps> = ({
           })}
         </Text>
       )}
-      <Text ml="auto" color="textSubtle" fontSize="12px" mb="8px">
-        {t('Balance: %balance%', {
-          balance: getFullDisplayBalance(getCalculatedStakingLimit(), stakingToken.decimals),
-        })}
-      </Text>
-      <Slider
-        min={0}
-        max={100}
-        value={percent}
-        onValueChanged={handleChangePercent}
-        name="stake"
-        valueLabel={`${percent}%`}
-        step={1}
-      />
-      <Flex alignItems="center" justifyContent="space-between" mt="8px">
-        <PercentageButton onClick={() => handleChangePercent(25)}>25%</PercentageButton>
-        <PercentageButton onClick={() => handleChangePercent(50)}>50%</PercentageButton>
-        <PercentageButton onClick={() => handleChangePercent(75)}>75%</PercentageButton>
-        <PercentageButton onClick={() => handleChangePercent(100)}>{t('Max')}</PercentageButton>
+      <Flex alignItems="center" justifyContent="center" mb="8px" mt="30px">
+        <Button minWidth="150px" variant="secondary" onClick={onDismiss} ml="8px" mr="8px">
+          {t('Cancel')}
+        </Button>
+        <Button
+          ml="10px"
+          mr="10px"
+          minWidth="150px"
+          isLoading={pendingTx}
+          endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+          onClick={handleConfirmClick}
+          disabled={!stakeAmount || parseFloat(stakeAmount) === 0 || hasReachedStakeLimit}
+        >
+          {pendingTx ? t('Confirming') : t('Confirm')}
+        </Button>
       </Flex>
-      <Button
-        isLoading={pendingTx}
-        endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
-        onClick={handleConfirmClick}
-        disabled={!stakeAmount || parseFloat(stakeAmount) === 0 || hasReachedStakeLimit}
-        mt="24px"
-      >
-        {pendingTx ? t('Confirming') : t('Confirm')}
-      </Button>
       {!isRemovingStake && (
         <StyledLink external href="/swap">
-          <Button width="100%" mt="8px" variant="secondary">
-            {t('Get %symbol%', { symbol: stakingToken.symbol })}
-          </Button>
+          {t('To Buy %symbol%', { symbol: stakingToken.symbol })}
         </StyledLink>
       )}
     </Modal>

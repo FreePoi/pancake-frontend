@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Modal, Text, Flex, Image, Button, Slider, BalanceInput, AutoRenewIcon } from '@kaco/uikit';
+import { Text, Flex, Button, BalanceInput, AutoRenewIcon } from '@kaco/uikit';
 import { useTranslation } from 'contexts/Localization';
 import { useWeb3React } from '@web3-react/core';
 import { useAppDispatch } from 'state';
-import { BIG_TEN } from 'utils/bigNumber';
 import { usePriceCakeBusd } from 'state/farms/hooks';
 import { useCakeVault } from 'state/pools/hooks';
 import { useCakeVaultContract } from 'hooks/useContract';
-import useTheme from 'hooks/useTheme';
 import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer';
 import BigNumber from 'bignumber.js';
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance';
 import useToast from 'hooks/useToast';
 import { fetchCakeVaultUserData } from 'state/pools';
 import { Pool } from 'state/types';
-import { getAddress } from 'utils/addressHelpers';
+import Modal from 'components/Modal/Modal';
 import { convertCakeToShares } from '../../helpers';
 import FeeSummary from './FeeSummary';
 
@@ -25,10 +22,6 @@ interface VaultStakeModalProps {
   isRemovingStake?: boolean;
   onDismiss?: () => void;
 }
-
-const StyledButton = styled(Button)`
-  flex-grow: 1;
-`;
 
 const callOptions = {
   gasLimit: 380000,
@@ -44,24 +37,15 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
     pricePerFullShare,
   } = useCakeVault();
   const { t } = useTranslation();
-  const { theme } = useTheme();
   const { toastSuccess, toastError } = useToast();
   const [pendingTx, setPendingTx] = useState(false);
   const [stakeAmount, setStakeAmount] = useState('');
-  const [percent, setPercent] = useState(0);
   const { hasUnstakingFee } = useWithdrawalFeeTimer(parseInt(lastDepositedTime, 10), userShares);
   const cakePriceBusd = usePriceCakeBusd();
   const usdValueStaked =
     cakePriceBusd.gt(0) && stakeAmount ? formatNumber(new BigNumber(stakeAmount).times(cakePriceBusd).toNumber()) : '';
 
   const handleStakeInputChange = (input: string) => {
-    if (input) {
-      const convertedInput = new BigNumber(input).multipliedBy(BIG_TEN.pow(stakingToken.decimals));
-      const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber());
-      setPercent(percentage > 100 ? 100 : percentage);
-    } else {
-      setPercent(0);
-    }
     setStakeAmount(input);
   };
 
@@ -73,7 +57,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
     } else {
       setStakeAmount('');
     }
-    setPercent(sliderPercent);
   };
 
   const handleWithdrawal = async (convertedStakeAmount: BigNumber) => {
@@ -148,56 +131,29 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({ pool, stakingMax, isR
   };
 
   return (
-    <Modal
-      title={isRemovingStake ? t('Unstake') : t('Stake in Pool')}
-      onDismiss={onDismiss}
-      headerBackground={theme.colors.gradients.cardHeader}
-    >
+    <Modal title={isRemovingStake ? t('Unstake') : t('Stake in Pool')} onDismiss={onDismiss}>
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
-        <Text bold>{isRemovingStake ? t('Unstake') : t('Stake')}:</Text>
-        <Flex alignItems="center" minWidth="70px">
-          <Image
-            src={`/images/tokens/${getAddress(stakingToken.address)}.png`}
-            width={24}
-            height={24}
-            alt={stakingToken.symbol}
-          />
-          <Text ml="4px" bold>
-            {stakingToken.symbol}
+        <Text bold>{isRemovingStake ? t('Unstake') : t('Stake')}</Text>
+        <div>
+          <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
+            {t('Balance: %balance%', { balance: getFullDisplayBalance(stakingMax, stakingToken.decimals) })}
           </Text>
-        </Flex>
+          <Text color="#1BD3D5" onClick={() => handleChangePercent(100)}>
+            {t('Max')}
+          </Text>
+        </div>
       </Flex>
-      <BalanceInput
-        value={stakeAmount}
-        onUserInput={handleStakeInputChange}
-        currencyValue={cakePriceBusd.gt(0) && `~${usdValueStaked || 0} USD`}
-        decimals={stakingToken.decimals}
-      />
-      <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
-        {t('Balance: %balance%', { balance: getFullDisplayBalance(stakingMax, stakingToken.decimals) })}
-      </Text>
-      <Slider
-        min={0}
-        max={100}
-        value={percent}
-        onValueChanged={handleChangePercent}
-        name="stake"
-        valueLabel={`${percent}%`}
-        step={1}
-      />
-      <Flex alignItems="center" justifyContent="space-between" mt="8px">
-        <StyledButton scale="xs" mx="2px" p="4px 16px" variant="tertiary" onClick={() => handleChangePercent(25)}>
-          25%
-        </StyledButton>
-        <StyledButton scale="xs" mx="2px" p="4px 16px" variant="tertiary" onClick={() => handleChangePercent(50)}>
-          50%
-        </StyledButton>
-        <StyledButton scale="xs" mx="2px" p="4px 16px" variant="tertiary" onClick={() => handleChangePercent(75)}>
-          75%
-        </StyledButton>
-        <StyledButton scale="xs" mx="2px" p="4px 16px" variant="tertiary" onClick={() => handleChangePercent(100)}>
-          {t('Max')}
-        </StyledButton>
+      <Flex alignItems="center" justifyContent="space-between" mb="8px">
+        <div>
+          <i className="radio"></i>
+          <Text bold>{stakingToken.symbol}</Text>
+        </div>
+        <BalanceInput
+          value={stakeAmount}
+          onUserInput={handleStakeInputChange}
+          currencyValue={cakePriceBusd.gt(0) && `~${usdValueStaked || 0} USD`}
+          decimals={stakingToken.decimals}
+        />
       </Flex>
       {isRemovingStake && hasUnstakingFee && (
         <FeeSummary stakingTokenSymbol={stakingToken.symbol} stakeAmount={stakeAmount} />

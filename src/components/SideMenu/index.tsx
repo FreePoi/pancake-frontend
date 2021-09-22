@@ -20,6 +20,8 @@ import GalaxySvg from './imgs/galaxy.svg';
 import TradeSvg from '../svg/Trade';
 import FarmSvg from '../svg/Farm';
 import HomeSvg from '../svg/Home';
+import PoolsSvg from '../svg/PoolsSvg';
+// import InfoSvg from '../svg/InfoSvg';
 import LogoSvg from './imgs/icon_logo.svg';
 import Header from './Header';
 import { useEffect } from 'react';
@@ -53,14 +55,14 @@ const menuItems: {
     img: FarmSvg,
     link: '/farms',
   },
-  // {
-  //   text: 'Pools',
-  //   imgs: [PoolsSvg, PoolsNSvg],
-  //   link: '/pools',
-  // },
+  {
+    text: 'Pools',
+    img: PoolsSvg,
+    link: '/pools',
+  },
   // {
   //   text: 'Info',
-  //   imgs: [InfoSvg, InfoNSvg],
+  //   img: InfoSvg,
   //   link: '/info',
   // },
 ];
@@ -69,23 +71,21 @@ const NavLink = styled(Link)<{ active: 't' | 'f' }>`
   display: flex;
   align-items: center;
   font-size: 14px;
-  color: #ffffff;
+  ${(props) => (props.active === 't' ? 'color: #1bd3d5;' : '  color: #ffffff;')}
   height: 48px;
   margin-bottom: 4px;
+  transition: all 0.3s ease;
+  font-weight: bolder;
   &:last-child {
     margin-bottom: 0px;
   }
   svg {
     fill: white;
   }
-  &:hover {
-    background: #272e32;
-  }
   > span {
     margin-left: 12px;
   }
   > .icon-holder {
-    ${(props) => (props.active === 't' ? 'background: #1bd3d5;' : '')}
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -93,6 +93,9 @@ const NavLink = styled(Link)<{ active: 't' | 'f' }>`
     align-items: center;
     justify-content: center;
     margin-left: 16px;
+    svg {
+      ${(props) => (props.active === 't' ? 'fill: #1bd3d5;' : '')}
+    }
   }
 `;
 
@@ -144,16 +147,16 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
 
     > img {
       cursor: pointer;
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
       position: absolute;
-      right: 22px;
+      left: 20px;
       top: 27px;
     }
     > .logo > img {
       visibility: ${(props) => (props.collapsed ? 'hidden' : 'visiable')};
       height: 30px;
-      margin-left: 17px;
+      margin-left: 54px;
       margin-top: 22px;
       margin-bottom: 20px;
     }
