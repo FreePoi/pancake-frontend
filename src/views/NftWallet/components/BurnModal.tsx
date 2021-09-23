@@ -8,6 +8,8 @@ import { fetchNfts } from 'views/NftPool/util/fetchNft';
 import { NFT } from 'views/NftPool';
 import { useContract } from 'hooks/useContract';
 import Nft100Abi from 'config/abi/NFT100Pair721.json';
+// import PageLoader from 'components/Loader/PageLoader';
+import Select from 'components/KacoSelect/KacoSelect';
 
 interface Props extends InjectedModalProps {
   pair: NftPair | undefined;
@@ -30,6 +32,7 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
   const { t } = useTranslation();
   const { account } = useActiveWeb3React();
   const [nfts, setNfts] = useState<NFT[]>([]);
+  // const [fetching, setFetching] = useState(true);
   const contract = useContract(pair?.pairAddress, Nft100Abi);
 
   console.log('pair', pair);
@@ -38,7 +41,9 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
       return;
     }
 
-    fetchNfts(pair.nftAddress, pair.pairAddress).then(setNfts, () => {});
+    // setFetching(true);
+    fetchNfts(pair.nftAddress, pair.pairAddress).then(setNfts, (e) => console.log('eee', e));
+    // .finally(() => setFetching(false));
   }, [pair]);
 
   const onBurn = useCallback(
@@ -60,10 +65,27 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
     [contract, account, onDismiss],
   );
 
-  console.log('nfts', nfts, pair);
-
   return (
-    <Modal maxWidth="400px" width="100%" title={t('KAlpaca Pool')} onDismiss={onDismiss}>
+    <Modal maxWidth="400px" width="100%" title={t(pair?.name || '')} onDismiss={onDismiss}>
+      <Flex justifyContent="center">
+        <Select
+          options={[
+            {
+              label: t('xxxx'),
+              value: 'xxxx',
+            },
+            {
+              label: t('zzzz'),
+              value: 'zzzz',
+            },
+            {
+              label: t('yyyy'),
+              value: 'yyyy',
+            },
+          ]}
+        />
+      </Flex>
+
       <Flex justifyContent="space-between">
         {nfts.map((nft) => (
           <Card key={nft.id}>
@@ -86,4 +108,4 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
   );
 };
 
-export default BurnModal;
+export default React.memo(BurnModal);

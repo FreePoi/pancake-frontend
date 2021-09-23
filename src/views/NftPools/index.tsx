@@ -7,6 +7,7 @@ import AnimalSvg from './svg/animal.png';
 import MarketPng from './svg/market.png';
 import { useNftPairs } from './hooks/useNftPools';
 import Search from 'components/Search';
+import PageLoader from 'components/Loader/PageLoader';
 
 const Header = styled(Flex)`
   justify-content: space-between;
@@ -48,7 +49,6 @@ const NftPools: FC = () => {
   const { isXs, isSm } = useMatchBreakpoints();
   const pairs = useNftPairs();
   const [filter, setFilter] = useState<string>('');
-
   const simpleMode = useMemo(() => isXs || isSm, [isXs, isSm]);
 
   return (
@@ -66,15 +66,19 @@ const NftPools: FC = () => {
           style={{ background: `url(${AnimalSvg})`, height: '221px', width: '247px', marginRight: '89px' }}
         ></div>
       </Header>
-      <PoolList>
-        <table>
-          <tbody>
-            {pairs.map((pair) => (
-              <Row key={pair.pairAddress} pair={pair} simpleMode={simpleMode} />
-            ))}
-          </tbody>
-        </table>
-      </PoolList>
+      {!pairs.length ? (
+        <PageLoader />
+      ) : (
+        <PoolList>
+          <table>
+            <tbody>
+              {pairs.map((pair) => (
+                <Row key={pair.pairAddress} pair={pair} simpleMode={simpleMode} />
+              ))}
+            </tbody>
+          </table>
+        </PoolList>
+      )}
     </Page>
   );
 };

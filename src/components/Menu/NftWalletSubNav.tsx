@@ -8,6 +8,10 @@ const StyledNav = styled.nav`
   margin-bottom: 40px;
   display: flex;
   justify-content: center;
+
+  > div {
+    background-color: #122124;
+  }
 `;
 
 const getActiveIndex = (pathname: string): number => {
@@ -20,14 +24,29 @@ const getActiveIndex = (pathname: string): number => {
 const Nav = () => {
   const location = useLocation();
   const { t } = useTranslation();
+  const activeIndex = getActiveIndex(location.pathname);
 
   return (
     <StyledNav>
-      <ButtonMenu activeIndex={getActiveIndex(location.pathname)} scale="sm" variant="subtle">
-        <ButtonMenuItem width="112px" id="swap-nav-link" to="/nft/wallet/mint" as={Link}>
+      <ButtonMenu py="6px" activeIndex={activeIndex} scale="sm" variant="subtle">
+        <ButtonMenuItem
+          style={activeIndex === 0 ? { color: '#1BD3D5', background: '#1F373B' } : { color: 'white' }}
+          width="112px"
+          height="44px"
+          id="swap-nav-link"
+          to="/nft/wallet/mint"
+          as={Link}
+        >
           {t('MINT')}
         </ButtonMenuItem>
-        <ButtonMenuItem width="112px" id="pool-nav-link" to="/nft/wallet/burn" as={Link}>
+        <ButtonMenuItem
+          style={activeIndex === 1 ? { color: '#1BD3D5', background: '#1F373B' } : { color: 'white' }}
+          height="44px"
+          width="112px"
+          id="pool-nav-link"
+          to="/nft/wallet/burn"
+          as={Link}
+        >
           {t('BURN')}
         </ButtonMenuItem>
       </ButtonMenu>

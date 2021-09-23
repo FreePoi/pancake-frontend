@@ -121,7 +121,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
         </ButtonMenu>
       </StyledNav>
       {activeIndex === 0 ? (
-        <div>
+        <div style={{ maxWidth: '400px' }}>
           <Flex
             style={{
               padding: '13px 14px',
@@ -167,7 +167,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
           </Flex>
         </div>
       ) : (
-        <div>
+        <div style={{ maxWidth: '400px' }}>
           <div
             style={{
               padding: '13px 14px',
@@ -214,7 +214,9 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
               </Button>
               <Button
                 onClick={() => {
-                  setLockTime((old) => old + 1);
+                  if (lockdays < 30) {
+                    setLockTime((old) => old + 1);
+                  }
                 }}
               >
                 +
@@ -251,6 +253,9 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
               </Text>
             </Flex>
           </Flex>
+          <Text textAlign="center" color="#F1842C" fontSize="12px" bold px="36px">
+            The default is 3% handling fee, add 1 day to increase 0.01% handling fee
+          </Text>
         </div>
       )}
       <ModalActions>

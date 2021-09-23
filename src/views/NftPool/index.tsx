@@ -1,6 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Grid } from '@kaco/uikit';
+import { Flex, Grid, Text } from '@kaco/uikit';
 import styled from 'styled-components';
 import Page from 'components/Layout/Page';
 import Nft from './components/Nft';
@@ -13,6 +13,8 @@ import { fetchNfts } from './util/fetchNft';
 import NFT100Pair721 from 'config/abi/NFT100Pair721.json';
 import { useContract } from 'hooks/useContract';
 import PageLoader from 'components/Loader/PageLoader';
+import { useTranslation } from 'contexts/Localization';
+import Select from 'components/KacoSelect/KacoSelect';
 
 export interface Pool {
   poolName: string;
@@ -37,8 +39,9 @@ const Pools_: FC<{
   pairAddress?: string;
 }> = ({ className, nftAddress, pairAddress }) => {
   const [items, setItems] = useState<NFT[]>([]);
-  const [fetching, setFetching] = useState(false);
+  const [fetching, setFetching] = useState(true);
   const contract = useContract('0x3Ff2e308012460583ff1519bd504E940A46270C6', NFT100Pair721);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!nftAddress || !pairAddress) {
@@ -66,30 +69,58 @@ const Pools_: FC<{
   }
 
   return (
-    <Grid gridGap="10px" className={className}>
-      {items.map((item, index) => (
-        <Nft isLocked={!!(index % 2)} nft={item} key={index} />
-      ))}
-    </Grid>
+    <div className={className}>
+      <Flex alignItems="center" mb="30px">
+        <Text color="#9DA6A6" fontSize="12px" mr="12px">
+          sort:
+        </Text>
+        <Select
+          options={[
+            {
+              label: t('xxxx'),
+              value: 'xxxx',
+            },
+            {
+              label: t('zzzz'),
+              value: 'zzzz',
+            },
+            {
+              label: t('yyyy'),
+              value: 'yyyy',
+            },
+          ]}
+        />
+      </Flex>
+      <Grid gridGap="10px" className="pools">
+        {items.map((item, index) => (
+          <Nft isLocked={!!(index % 2)} nft={item} key={index} />
+        ))}
+      </Grid>
+    </div>
   );
 };
 
 const GoodsInPool = styled(Pools_)`
   background: #122124;
   border-radius: 24px;
-  position: relative;
   z-index: 2;
+  position: relative;
   padding: 20px;
-  grid-template-columns: 1fr;
-  justify-items: center;
-
   ${({ theme }) => theme.mediaQueries.md} {
     grid-template-columns: 1fr 1fr 1fr;
     padding: 40px;
   }
+  > .pools {
+    grid-template-columns: 1fr;
+    justify-items: center;
 
-  @media screen and (min-width: 1165px) {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    ${({ theme }) => theme.mediaQueries.md} {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    @media screen and (min-width: 1165px) {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
   }
 `;
 
@@ -113,10 +144,8 @@ const NftPool: FC<{ className?: string }> = ({ className }) => {
 };
 
 const NFTPool = styled(NftPool)`
-  padding-top: 20px;
-  padding-bottom: 40px;
   width: 100%;
-  padding: 0px;
+  padding: 20px 0px 40px 0px;
   max-width: 1006px;
 `;
 

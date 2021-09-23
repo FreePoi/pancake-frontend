@@ -30,7 +30,7 @@ const PoolHeader_: FC<{ className?: string; pairIndex: number; floorPrice: numbe
         <Flex className="pool-info">
           <div className="info">
             <Text fontSize="18px" bold mb="4px">
-              {pair?.supply}
+              {pair?.supply || 0}
             </Text>
             <Text fontSize="12px">NFT In Pool</Text>
           </div>
@@ -93,6 +93,7 @@ export const PoolHeader = styled(PoolHeader_)`
     }
 
     > h1 {
+      height: 43px;
       color: #1bd3d5;
       padding: 19px 0px 0px 66px;
       font-size: 24px;

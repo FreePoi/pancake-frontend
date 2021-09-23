@@ -24,10 +24,12 @@ export async function fetchNfts(nftAddress: string, pairAddress: string) {
   const items = await fetchAllTokens(pairAddress);
   const nfts: NFT[] = filterNft(items, nftAddress);
 
+  console.log('items', items, 'fnts', nfts, nftAddress);
   return nfts;
 }
 
 // ckey_4eb246f7c62c4ffdb379460cd21
+// ckey_12045efc624e428fb454b1a6957
 export async function fetchAllTokens(account: string) {
   const apiUrl = `https://api.covalenthq.com/v1/${chainId}/address/${account}/balances_v2/?key=${'ckey_12045efc624e428fb454b1a6957'}&nft=true`;
 

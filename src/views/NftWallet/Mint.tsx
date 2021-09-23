@@ -52,7 +52,7 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
   const [pools, setPools] = useState<({ nfts: NFT[] } & NftPair)[]>([]);
   const { account } = useWeb3React();
   const pairs = useNftPairs();
-  const [fetching, setFetching] = useState(false);
+  const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
     if (!account || !pairs || !pairs.length) {
@@ -63,7 +63,9 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
     setFetching(true);
     fetchAllTokens(account)
       .then((items) => {
-        const pools = pairs.map((pair) => ({ ...pair, nfts: filterNft(items, pair.nftAddress) }));
+        const pools = pairs
+          .map((pair) => ({ ...pair, nfts: filterNft(items, pair.nftAddress) }))
+          .filter((pair) => pair.nfts.length);
 
         setPools(pools);
       }, console.error)
