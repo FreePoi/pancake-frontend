@@ -26,33 +26,30 @@ const Burn: FC<{ className?: string }> = ({ className }) => {
     const calls = pairs
       .map((pair) => [
         {
-          address: pair.pairAddres,
+          address: pair.pairAddress,
           name: 'balanceOf',
           params: [account],
         },
         {
-          address: pair.pairAddres,
+          address: pair.pairAddress,
           name: 'decimals',
         },
       ])
       .reduce((calls, curr) => calls.concat(curr), []);
 
     multicall(Erc20, calls).then((results: any[]) => {
-      const balancesOfNft100 = [];
+      const balancesOfNft100: (NftPair & { balance: number })[] = [];
+      const step = 2;
 
-      for (let i = 0; i < results.length - 1; i += 2) {
+      for (let i = 0; i < results.length - 1; i += step) {
         const balance: BigNumber = results[i][0];
         const decimals = results[i + 1][0];
         const balanceNumber = balance.div(BigNumber.from(10).pow(BigNumber.from(decimals))).toNumber();
 
-        console.log('balance', balanceNumber);
-
-        balancesOfNft100.push({ ...pairs[i], balance: balanceNumber });
+        balancesOfNft100.push({ ...pairs[i / step], balance: balanceNumber });
       }
 
-      console.log('balancesOfNft100', balancesOfNft100);
-
-      setBalancesOfNft100(balancesOfNft100);
+      setBalancesOfNft100(balancesOfNft100.filter((balance) => balance.balance));
     });
   }, [account, pairs]);
 
@@ -70,7 +67,7 @@ const Burn: FC<{ className?: string }> = ({ className }) => {
                 setNft100Index(index);
                 onMint();
               }}
-              key={balance.pairAddres}
+              key={balance.pairAddress}
             >
               <div className="logo"></div>
               <Flex flex="1" justifyContent="space-between" alignItems="center">

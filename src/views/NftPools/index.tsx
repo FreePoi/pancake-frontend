@@ -58,7 +58,7 @@ const NftPools: FC = () => {
         <table>
           <tbody>
             {pairs.map((pair) => (
-              <Row key={pair.pairAddres} pair={pair} simpleMode={simpleMode} />
+              <Row key={pair.pairAddress} pair={pair} simpleMode={simpleMode} />
             ))}
           </tbody>
         </table>

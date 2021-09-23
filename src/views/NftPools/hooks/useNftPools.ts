@@ -4,11 +4,12 @@ import NFT100FactoryAbi from 'config/abi/NFT100Factory.json';
 import { NFT_FACTORY, NFT_TYPE } from 'config/constants/nft';
 import multicall from 'utils/multicall';
 import { useContract } from 'hooks/useContract';
+import _ from 'lodash';
 
 export const chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10);
 
 export interface NftPair {
-  pairAddres: string;
+  pairAddress: string;
   nftAddress: string;
   type: NFT_TYPE;
   name: string;
@@ -24,10 +25,9 @@ const fetchNftPairs = async (count: number): Promise<NftPair[]> => {
   }));
 
   const infos = (await multicall(NFT100FactoryAbi, calls)) as [string, string, BigNumber, string, string, BigNumber][];
-  console.log('infos', infos);
 
   return infos.map((info) => ({
-    pairAddres: info[0],
+    pairAddress: info[0],
     nftAddress: info[1],
     type: info[2].toNumber(),
     name: info[3],
@@ -49,7 +49,7 @@ const fetchNftPair = async (index: number): Promise<NftPair> => {
   console.log('info', info);
 
   return {
-    pairAddres: info[0],
+    pairAddress: info[0],
     nftAddress: info[1],
     type: info[2].toNumber(),
     name: info[3],
@@ -60,12 +60,15 @@ const fetchNftPair = async (index: number): Promise<NftPair> => {
 export const useNftPairs = () => {
   const [pools, setPools] = useState<NftPair[]>([]);
   const contract = useContract(NFT_FACTORY[chainId], NFT100FactoryAbi);
+  console.log('useNftPairs');
 
   useEffect(() => {
+    console.log('useNftPairs effect', contract);
     contract.counter().then(async (counter) => {
       const pairs = await fetchNftPairs(counter.toNumber());
+      console.log('useNftPairs contract.counter');
 
-      setPools(pairs);
+      setPools((oldPairs) => (_.isEqual(oldPairs, pairs) ? oldPairs : pairs));
     }, console.error);
   }, [contract]);
 

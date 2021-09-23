@@ -7,6 +7,7 @@ import { fetchAllTokens, filterNft } from 'views/NftPool/util/fetchNft';
 import { NFT } from 'views/NftPool';
 import { useWeb3React } from '@web3-react/core';
 import { NftPair, useNftPairs } from 'views/NftPools/hooks/useNftPools';
+import PageLoader from 'components/Loader/PageLoader';
 
 const NftsGroupByPool_: FC<{
   className?: string;
@@ -51,24 +52,31 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
   const [pools, setPools] = useState<({ nfts: NFT[] } & NftPair)[]>([]);
   const { account } = useWeb3React();
   const pairs = useNftPairs();
+  const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
     if (!account || !pairs || !pairs.length) {
       return;
     }
 
-    fetchAllTokens(account).then((items) => {
-      const pools = pairs.map((pair) => ({ ...pair, nfts: filterNft(items, pair.nftAddress) }));
+    console.log('fetchAllTokens');
+    setFetching(true);
+    fetchAllTokens(account)
+      .then((items) => {
+        const pools = pairs.map((pair) => ({ ...pair, nfts: filterNft(items, pair.nftAddress) }));
 
-      setPools(pools);
-    });
+        setPools(pools);
+      }, console.error)
+      .finally(() => setFetching(false));
   }, [account, pairs]);
 
   return (
     <Page className={className}>
-      {pools.map((pair, index) => (
-        <NftsGroupByPool title={pair.name} nfts={pair.nfts} key={index} pair={pairs[index]} />
-      ))}
+      {fetching && <PageLoader />}
+      {!fetching &&
+        pools.map((pair, index) => (
+          <NftsGroupByPool title={pair.name} nfts={pair.nfts} key={index} pair={pairs[index]} />
+        ))}
     </Page>
   );
 };

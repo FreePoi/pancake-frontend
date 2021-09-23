@@ -100,7 +100,7 @@ const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) =
     <>
       <StyledTr
         onClick={() => setCollapsed((old) => !old)}
-        onClickCapture={() => history.push(`/nft/pool/${pair.pairAddres}`)}
+        onClickCapture={() => history.push(`/nft/pool/${pair.pairAddress}`)}
       >
         <td>
           <PoolName poolName={pair.name} fragmentName={pair.symbol} />

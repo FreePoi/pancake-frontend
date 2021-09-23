@@ -7,6 +7,7 @@ import { NFT } from '..';
 import { useContract } from 'hooks/useContract';
 import Nft100Abi from 'config/abi/NFT100Pair721.json';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
+import { formatFloat } from '../util/format';
 
 const Item: FC<{ className?: string; item: NFT; floorPrice: number; symbol: string }> = ({
   className,
@@ -78,7 +79,7 @@ const ShopCart: FC<{ className?: string; floorPrice: number; symbol: string; pai
         </Grid>
         <div className="right">
           <Text color="#1BD3D5" bold fontSize="28px">
-            {items.length * floorPrice} {symbol}
+            {formatFloat(items.length * floorPrice)} {symbol}
           </Text>
           <Text color="white" bold fontSize="12px" textAlign="right" mt="13px" mb="17px">
             Total Cost

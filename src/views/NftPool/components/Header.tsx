@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import HeaderBgSvg from '../img/header-bg.svg';
 import LogoSvg from '../../NftPools/svg/demo.svg';
 import { useNftPair } from 'views/NftPools/hooks/useNftPools';
+import { formatFloat } from '../util/format';
 
 export interface Pool {
   poolName: string;
@@ -21,7 +22,6 @@ const PoolHeader_: FC<{ className?: string; pairIndex: number; floorPrice: numbe
 }) => {
   const pair = useNftPair(pairIndex);
 
-  console.log('pairsdfasdfasd', pair);
   return (
     <div className={className}>
       <div>
@@ -36,13 +36,13 @@ const PoolHeader_: FC<{ className?: string; pairIndex: number; floorPrice: numbe
           </div>
           <div className="info">
             <Text fontSize="20px" bold mb="4px">
-              {floorPrice} BUSD
+              {formatFloat(floorPrice)} BUSD
             </Text>
             <Text fontSize="12px">NFT Price</Text>
           </div>
           <div className="info second-line">
             <Text fontSize="20px" bold mb="4px">
-              {floorPrice * pair?.supply} BUSD
+              {formatFloat(floorPrice * (pair?.supply || 0))} BUSD
             </Text>
             <Text fontSize="12px">Liquidity</Text>
           </div>

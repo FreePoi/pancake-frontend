@@ -10,6 +10,8 @@ import { NftProvider, NftContext } from './providers/nft.provider';
 import { chainId } from 'views/NftPools/hooks/useNftPools';
 import { NFT_PAIRS } from 'config/constants/nft';
 import { fetchNfts } from './util/fetchNft';
+import multicall from 'utils/multicall';
+import NFT100Pair1155Abi from 'config/abi/NFT100Pair1155.json';
 
 export interface Pool {
   poolName: string;
@@ -30,8 +32,8 @@ export interface NFT {
 
 const Pools_: FC<{
   className?: string;
-  nftAddress: string;
-  pairAddress: string;
+  nftAddress?: string;
+  pairAddress?: string;
 }> = ({ className, nftAddress, pairAddress }) => {
   const [items, setItems] = useState<NFT[]>([]);
 
@@ -42,6 +44,23 @@ const Pools_: FC<{
 
     fetchNfts(nftAddress, pairAddress).then(setItems);
   }, [pairAddress, nftAddress]);
+
+  useEffect(() => {
+    if (!pairAddress) {
+      return;
+    }
+
+    const calls = [
+      {
+        address: pairAddress,
+        name: 'getLockInfos',
+      },
+    ];
+
+    multicall(NFT100Pair1155Abi, calls).then(([[[ids, values]]]) => {
+      console.log('ids', ids, values);
+    });
+  }, [pairAddress]);
 
   return (
     <Grid gridGap={{ xs: '4px', md: '16px' }} className={className}>

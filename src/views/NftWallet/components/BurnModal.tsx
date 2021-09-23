@@ -30,7 +30,7 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
   const { t } = useTranslation();
   const { account } = useActiveWeb3React();
   const [nfts, setNfts] = useState<NFT[]>([]);
-  const contract = useContract(pair?.pairAddres, Nft100Abi);
+  const contract = useContract(pair?.pairAddress, Nft100Abi);
 
   console.log('pair', pair);
   useEffect(() => {
@@ -38,7 +38,7 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
       return;
     }
 
-    fetchNfts(pair.nftAddress, pair.pairAddres).then(setNfts, () => {});
+    fetchNfts(pair.nftAddress, pair.pairAddress).then(setNfts, () => {});
   }, [pair]);
 
   const onBurn = useCallback(
