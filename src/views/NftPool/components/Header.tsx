@@ -29,26 +29,26 @@ const PoolHeader_: FC<{ className?: string; pairIndex: number; floorPrice: numbe
         <h1>{pair?.name}</h1>
         <Flex className="pool-info">
           <div className="info">
-            <Text fontSize="20px" bold mb="4px">
+            <Text fontSize="18px" bold mb="4px">
               {pair?.supply}
             </Text>
             <Text fontSize="12px">NFT In Pool</Text>
           </div>
           <div className="info">
-            <Text fontSize="20px" bold mb="4px">
+            <Text fontSize="18px" bold mb="4px">
               {formatFloat(floorPrice)} BUSD
             </Text>
             <Text fontSize="12px">NFT Price</Text>
           </div>
           <div className="info second-line">
-            <Text fontSize="20px" bold mb="4px">
+            <Text fontSize="18px" bold mb="4px">
               {formatFloat(floorPrice * (pair?.supply || 0))} BUSD
             </Text>
             <Text fontSize="12px">Liquidity</Text>
           </div>
           <div className="info second-line">
-            <Text fontSize="20px" bold mb="4px">
-              120,000
+            <Text fontSize="18px" bold mb="4px">
+              0
             </Text>
             <Text fontSize="12px">KKaco Supply</Text>
           </div>
@@ -85,10 +85,10 @@ export const PoolHeader = styled(PoolHeader_)`
       height: 50px;
 
       ${({ theme }) => theme.mediaQueries.md} {
-        left: 40px;
-        top: -40px;
-        width: 120px;
-        height: 120px;
+        left: 44px;
+        top: -24px;
+        width: 96px;
+        height: 96px;
       }
     }
 
@@ -96,9 +96,10 @@ export const PoolHeader = styled(PoolHeader_)`
       color: #1bd3d5;
       padding: 19px 0px 0px 66px;
       font-size: 24px;
+      font-weight: bold;
 
       ${({ theme }) => theme.mediaQueries.md} {
-        font-size: 32px;
+        font-size: 26px;
         padding: 29px 0px 0px 146px;
       }
     }

@@ -1,12 +1,29 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import Page from 'components/Layout/Page';
 import { useMatchBreakpoints, Text, Flex } from '@kaco/uikit';
 import Row from './components/Row';
 import AnimalSvg from './svg/animal.png';
 import MarketPng from './svg/market.png';
-import Search from './components/Search';
 import { useNftPairs } from './hooks/useNftPools';
+import Search from 'components/Search';
+
+const Header = styled(Flex)`
+  justify-content: space-between;
+
+  > .left {
+    margin-bottom: 20px;
+    ${({ theme }) => theme.mediaQueries.md} {
+      margin-bottom: 0px;
+    }
+  }
+  > .right {
+    display: none;
+    ${({ theme }) => theme.mediaQueries.md} {
+      display: block;
+    }
+  }
+`;
 
 const PoolList = styled.div`
   border-radius: 16px;
@@ -30,30 +47,25 @@ const PoolList = styled.div`
 const NftPools: FC = () => {
   const { isXs, isSm } = useMatchBreakpoints();
   const pairs = useNftPairs();
+  const [filter, setFilter] = useState<string>('');
 
   const simpleMode = useMemo(() => isXs || isSm, [isXs, isSm]);
 
   return (
     <Page>
-      <Flex justifyContent="space-between">
+      <Header>
         <div className="left">
           <img src={MarketPng} alt="" />
           <Text color="#1BD3D5" bold fontSize="20px" mt="23px" mb="40px">
             Trade, Swap, Fractionalized Your NFTS
           </Text>
-          <Search />
+          <Search value={filter} onChange={setFilter} />
         </div>
         <div
           className="right"
           style={{ background: `url(${AnimalSvg})`, height: '221px', width: '247px', marginRight: '89px' }}
-        >
-          {/* <img
-            src={AnimalSvg} \
-            alt=""\
-            style={{ position: 'relative', bottom: '-80px', zIndex: 0, paddingRight: '89px' }}
-          /> */}
-        </div>
-      </Flex>
+        ></div>
+      </Header>
       <PoolList>
         <table>
           <tbody>

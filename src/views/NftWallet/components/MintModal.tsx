@@ -15,6 +15,33 @@ import Erc1155 from 'config/abi/ERC1155.json';
 import * as ethers from 'ethers';
 import { simpleRpcProvider } from 'utils/providers';
 
+// const AbiCoder = ethers.utils.AbiCoder;
+// const ADDRESS_PREFIX = '41';
+
+//types:参数类型列表，如果函数有多个返回值，列表中类型的顺序应该符合定义的顺序
+//output: 解码前的数据
+//ignoreMethodHash：对函数返回值解码，ignoreMethodHash填写false，如果是对gettransactionbyid结果中的data字段解码时，ignoreMethodHash填写true
+
+// async function decodeParams(types, output, ignoreMethodHash) {
+//   if (!output || typeof output === 'boolean') {
+//     ignoreMethodHash = output;
+//     output = types;
+//   }
+
+//   if (ignoreMethodHash && output.replace(/^0x/, '').length % 64 === 8)
+//     output = '0x' + output.replace(/^0x/, '').substring(8);
+
+//   const abiCoder = new AbiCoder();
+
+//   if (output.replace(/^0x/, '').length % 64)
+//     throw new Error('The encoded string is not valid. Its length must be a multiple of 64.');
+//   return abiCoder.decode(types, output).reduce((obj, arg, index) => {
+//     if (types[index] == 'address') arg = ADDRESS_PREFIX + arg.substr(2).toLowerCase();
+//     obj.push(arg);
+//     return obj;
+//   }, []);
+// }
+
 const StyledNav = styled.nav`
   margin-bottom: 40px;
   display: flex;
@@ -24,6 +51,7 @@ interface Props extends InjectedModalProps {
   nft: NFT;
   pair: NftPair;
 }
+
 const BLOCKS_ONE_DAY = (3600 * 24) / 3;
 
 const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
@@ -32,6 +60,12 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
   const contract = useContract(pair?.nftAddress, pair?.type === NFT_TYPE.NFT721 ? Erc721 : Erc1155);
   const [activeIndex, setActiveIndex] = useState(0);
   const [lockdays, setLockTime] = useState(10);
+  // '0xda9760c77805ea7257aed5968769e79d2f4151e2da9760c77805ea7257aed5968769e79d2f4151e2c4ddc3'
+  // const data =
+  //   '0xb88d4fde000000000000000000000000da9760c77805ea7257aed5968769e79d2f4151e20000000000000000000000003ff2e308012460583ff1519bd504e940a46270c600000000000000000000000000000000000000000000000000000000000000140000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000002bda9760c77805ea7257aed5968769e79d2f4151e2da9760c77805ea7257aed5968769e79d2f4151e2c4ddc3000000000000000000000000000000000000000000';
+  // decodeParams(['address', 'address', 'uint256', 'bytes'], data, true).then((result) =>
+  //   console.log('xxxxxxxxx', result, result[2].toString()),
+  // );
 
   const onMint = useCallback(async () => {
     if (!account) {
@@ -40,26 +74,22 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
 
     let mint: Promise<any>;
     const blockNumber = await simpleRpcProvider.getBlockNumber();
-    // console.log(activeIndex, lockdays, 'lockTime', pair.type, 'blockNumber', blockNumber);
     const data = ethers.utils.solidityPack(
       ['address', 'address', 'uint24'],
       [account, account, lockdays * BLOCKS_ONE_DAY + blockNumber],
     );
-
     mint = contract.safeTransferFrom(account, pair.pairAddress, nft.id, data);
 
-    console.log('data', data);
+    console.log('data', data, 'blockNumber', blockNumber);
     if (activeIndex === 0) {
       if (pair.type === NFT_TYPE.NFT721) {
-        mint = contract.safeTransferFrom(account, pair.pairAddress, nft.id, []);
+        mint = contract.safeTransferFrom(account, pair.pairAddress, nft.id, '0x');
       } else {
-        mint = contract.safeTransferFrom(account, pair.pairAddress, [nft.id], [1], []);
+        mint = contract.safeTransferFrom(account, pair.pairAddress, [nft.id], [1], '0x');
       }
     } else {
       if (pair.type === NFT_TYPE.NFT721) {
-        console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
         mint = contract.safeTransferFrom(account, pair.pairAddress, nft.id, data);
-        console.log('mint', mint);
       } else {
         mint = contract.safeTransferFrom(account, pair.pairAddress, [nft.id], [1], data);
       }
@@ -75,8 +105,8 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
   }, [contract, pair, account, nft, onDismiss, activeIndex, lockdays]);
 
   return (
-    <Modal maxWidth="400px" width="100%" title={t('Mint')} onDismiss={onDismiss}>
-      <StyledNav>
+    <Modal style={{ position: 'relative' }} maxWidth="400px" width="100%" title={null} onDismiss={onDismiss}>
+      <StyledNav style={{ position: 'absolute', top: '20px' }}>
         <ButtonMenu activeIndex={activeIndex} variant="subtle">
           <ButtonMenuItem>
             <Text width="100%" onClick={() => setActiveIndex(0)}>

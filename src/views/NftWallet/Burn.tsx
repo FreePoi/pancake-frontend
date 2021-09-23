@@ -93,7 +93,11 @@ export default styled(Burn)`
   width: 100%;
   background: #122124;
   border-radius: 24px;
-  padding: 30px 40px;
+  padding: 15px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 30px 40px;
+  }
 
   > .nfts {
     grid-template-columns: 1fr;
@@ -107,11 +111,16 @@ export default styled(Burn)`
     }
 
     > .fragment {
-      width: 450px;
+      width: 100%;
+      padding: 12px 15px;
+
+      ${({ theme }) => theme.mediaQueries.md} {
+        width: 450px;
+        padding: 18px 30px;
+      }
       height: 88px;
       background: #1f373b;
       border-radius: 16px;
-      padding: 18px 30px;
       align-items: center;
 
       > .logo {

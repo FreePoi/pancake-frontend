@@ -10,8 +10,9 @@ import { NftProvider, NftContext } from './providers/nft.provider';
 import { chainId } from 'views/NftPools/hooks/useNftPools';
 import { NFT_PAIRS } from 'config/constants/nft';
 import { fetchNfts } from './util/fetchNft';
-import multicall from 'utils/multicall';
-import NFT100Pair1155Abi from 'config/abi/NFT100Pair1155.json';
+import NFT100Pair721 from 'config/abi/NFT100Pair721.json';
+import { useContract } from 'hooks/useContract';
+import PageLoader from 'components/Loader/PageLoader';
 
 export interface Pool {
   poolName: string;
@@ -36,36 +37,38 @@ const Pools_: FC<{
   pairAddress?: string;
 }> = ({ className, nftAddress, pairAddress }) => {
   const [items, setItems] = useState<NFT[]>([]);
+  const [fetching, setFetching] = useState(false);
+  const contract = useContract('0x3Ff2e308012460583ff1519bd504E940A46270C6', NFT100Pair721);
 
   useEffect(() => {
     if (!nftAddress || !pairAddress) {
       return;
     }
 
-    fetchNfts(nftAddress, pairAddress).then(setItems);
+    setFetching(true);
+    fetchNfts(nftAddress, pairAddress)
+      .then(setItems)
+      .finally(() => setFetching(false));
   }, [pairAddress, nftAddress]);
 
   useEffect(() => {
-    if (!pairAddress) {
+    if (!contract) {
       return;
     }
 
-    const calls = [
-      {
-        address: pairAddress,
-        name: 'getLockInfos',
-      },
-    ];
+    contract.getLockInfos().then((r) => {
+      console.log('ids', r);
+    }, console.log);
+  }, [contract]);
 
-    multicall(NFT100Pair1155Abi, calls).then(([[[ids, values]]]) => {
-      console.log('ids', ids, values);
-    });
-  }, [pairAddress]);
+  if (fetching) {
+    return <PageLoader />;
+  }
 
   return (
-    <Grid gridGap={{ xs: '4px', md: '16px' }} className={className}>
+    <Grid gridGap="10px" className={className}>
       {items.map((item, index) => (
-        <Nft nft={item} key={index} />
+        <Nft isLocked={!!(index % 2)} nft={item} key={index} />
       ))}
     </Grid>
   );
@@ -81,11 +84,12 @@ const GoodsInPool = styled(Pools_)`
   justify-items: center;
 
   ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     padding: 40px;
   }
+
   @media screen and (min-width: 1165px) {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 `;
 
@@ -111,10 +115,9 @@ const NftPool: FC<{ className?: string }> = ({ className }) => {
 const NFTPool = styled(NftPool)`
   padding-top: 20px;
   padding-bottom: 40px;
-  .empty {
-    height: 201px;
-    width: 100%;
-  }
+  width: 100%;
+  padding: 0px;
+  max-width: 1006px;
 `;
 
 // eslint-disable-next-line import/no-anonymous-default-export
