@@ -20,10 +20,11 @@ const Wrapper = styled.div<{ focused: boolean }>`
   }
 `;
 
-const Search: FC<{ className?: string; value: string; onChange: (now: string) => void }> = ({
+const Search: FC<{ className?: string; value: string; onChange: (now: string) => void; placeholder?: string }> = ({
   className,
   value,
   onChange,
+  placeholder,
 }) => {
   const [focused, setFocused] = useState(false);
 
@@ -31,6 +32,7 @@ const Search: FC<{ className?: string; value: string; onChange: (now: string) =>
     <Wrapper tabIndex={1} className={className} focused={focused}>
       <img src={SearchSvg} alt="" />
       <Input
+        placeholder={placeholder}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         value={value}

@@ -8,6 +8,7 @@ import { NFT } from 'views/NftPool/components/GoodsInPool';
 import { useWeb3React } from '@web3-react/core';
 import { NftPair, useNftPairs } from 'views/NftPools/hooks/useNftPools';
 import PageLoader from 'components/Loader/PageLoader';
+import NoBalance from './components/NoBalance';
 
 const NftsGroupByPool_: FC<{
   className?: string;
@@ -20,7 +21,7 @@ const NftsGroupByPool_: FC<{
       <Text bold color="white" mb="20px" fontSize="20px">
         {title}
       </Text>
-      <Grid gridGap={{ xs: '4px', md: '16px' }} className="nfts">
+      <Grid gridGap={{ xs: '4px', md: '10px' }} className="nfts">
         {nfts.map((nft) => (
           <Nft nft={nft} key={nft.id} pair={pair} />
         ))}
@@ -43,7 +44,7 @@ const NftsGroupByPool = styled(NftsGroupByPool_)`
       grid-template-columns: 1fr 1fr;
     }
     @media screen and (min-width: 1165px) {
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
     }
   }
 `;
@@ -74,15 +75,20 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
 
   return (
     <Page className={className}>
-      {fetching && <PageLoader />}
-      {!fetching &&
+      {fetching ? (
+        <PageLoader />
+      ) : !pools.length ? (
+        <NoBalance />
+      ) : (
         pools.map((pair, index) => (
           <NftsGroupByPool title={pair.name} nfts={pair.nfts} key={index} pair={pools[index]} />
-        ))}
+        ))
+      )}
     </Page>
   );
 };
 
 export default styled(Mint)`
   width: 100%;
+  min-height: 0px;
 `;

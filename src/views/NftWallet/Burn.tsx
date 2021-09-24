@@ -9,6 +9,7 @@ import multicall from 'utils/multicall';
 import Erc20 from 'config/abi/erc20.json';
 import { BigNumber } from '@ethersproject/bignumber';
 import PageLoader from 'components/Loader/PageLoader';
+import NoBalance from './components/NoBalance';
 
 const Burn: FC<{ className?: string }> = ({ className }) => {
   const pairs = useNftPairs();
@@ -61,9 +62,12 @@ const Burn: FC<{ className?: string }> = ({ className }) => {
   }, [account, pairs]);
 
   return (
-    <Page>
-      {fetching && <PageLoader />}
-      {!fetching && (
+    <Page style={{ minHeight: '0px' }}>
+      {fetching ? (
+        <PageLoader />
+      ) : !balancesOfNft100.length ? (
+        <NoBalance />
+      ) : (
         <div className={className}>
           <Text bold color="white" mb="20px" fontSize="20px">
             NFT100

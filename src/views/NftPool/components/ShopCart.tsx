@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
-import { Button, Text, Grid } from '@kaco/uikit';
+import { Button, Text, Grid, Flex, useMatchBreakpoints } from '@kaco/uikit';
 import { NftContext } from '../providers/nft.provider';
 import RemoveSVG from '../img/remove.svg';
 import { NFT } from './GoodsInPool';
@@ -46,6 +46,7 @@ const ShopCart: FC<{ className?: string; floorPrice: number; symbol: string; pai
   const { items } = useContext(NftContext);
   const contract = useContract(pairAddres, Nft100Abi);
   const { account } = useActiveWeb3React();
+  const { isXs, isSm, isMd } = useMatchBreakpoints();
 
   const onBuy = useCallback(() => {
     if (!account || !contract) {
@@ -71,22 +72,35 @@ const ShopCart: FC<{ className?: string; floorPrice: number; symbol: string; pai
 
   return (
     <div className={className}>
-      <div>
+      <Flex>
         <Grid gridGap={{ xs: '16px', md: '31px' }} className="items">
           {items.map((item) => (
             <Item item={item} key={item.id} floorPrice={floorPrice} symbol={symbol} />
           ))}
         </Grid>
-        <div className="right">
-          <Text color="#1BD3D5" bold fontSize="28px">
+        <Flex className="right">
+          <Text className="price" color="#1BD3D5" bold>
             {formatFloat(items.length * floorPrice)} {symbol}
           </Text>
-          <Text color="white" bold fontSize="12px" textAlign="right" mt="13px" mb="17px">
-            Total Cost
-          </Text>
-          <Button onClick={onBuy}>Buy</Button>
-        </div>
-      </div>
+          {isXs || isSm || isMd ? (
+            <Flex alignItems="flex-end">
+              <Text className="tip" color="white" bold fontSize="12px" textAlign="right">
+                Total Cost
+              </Text>
+              <Button onClick={onBuy}>Buy</Button>
+            </Flex>
+          ) : (
+            <>
+              <Text className="tip-desktop" color="white" bold fontSize="12px" textAlign="right">
+                Total Cost
+              </Text>
+              <Button maxWidth="136px" width="100%" onClick={onBuy}>
+                Buy
+              </Button>
+            </>
+          )}
+        </Flex>
+      </Flex>
     </div>
   );
 };
@@ -97,9 +111,9 @@ export default styled(ShopCart)`
   bottom: 20px;
   z-index: 10;
   > div {
+    flex-wrap: wrap;
     margin: 0px auto;
-    max-width: 1286px;
-    display: flex;
+    max-width: 1086px;
     justify-content: space-between;
     padding: 20px;
     background: #1f373b;
@@ -108,8 +122,10 @@ export default styled(ShopCart)`
     border-radius: 24px;
 
     > .items {
+      padding-right: 5px;
       max-height: 328px;
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
       grid-template-columns: 136px 136px 136px 136px;
 
       /* display: flex;
@@ -130,6 +146,7 @@ export default styled(ShopCart)`
             height: 136px;
           }
           > .mask {
+            border-radius: 8px;
             transition: opacity 0.2s linear;
             cursor: pointer;
             display: flex;
@@ -148,11 +165,36 @@ export default styled(ShopCart)`
     }
 
     > .right {
-      padding-left: 180px;
-      padding-right: 21px;
+      margin-top: 10px;
+      flex: 1;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+
+      ${({ theme }) => theme.mediaQueries.md} {
+        flex-direction: column;
+        max-width: 404px;
+        padding-right: 21px;
+        justify-content: flex-end;
+        > .price {
+          font-size: 28px;
+        }
+        > .tip-desktop {
+          margin-bottom: 17px;
+          margin-top: 13px;
+        }
+      }
+
+      > .price {
+        font-size: 22px;
+        align-items: flex-end;
+      }
+
+      > div > .tip {
+        margin-bottom: 5px;
+        margin-right: 15px;
+      }
     }
   }
 `;

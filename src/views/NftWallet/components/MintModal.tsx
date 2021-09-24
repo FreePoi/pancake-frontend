@@ -70,18 +70,14 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
   }, [contract, pair, account, nft, onDismiss, activeIndex, lockdays]);
 
   return (
-    <Modal style={{ position: 'relative' }} maxWidth="400px" width="100%" title={null} onDismiss={onDismiss}>
+    <Modal style={{ position: 'relative', maxWidth: '400px', width: '100%' }} title={null} onDismiss={onDismiss}>
       <StyledNav style={{ position: 'absolute', top: '20px' }}>
-        <ButtonMenu activeIndex={activeIndex} variant="subtle">
+        <ButtonMenu activeIndex={activeIndex} variant="subtle" onItemClick={setActiveIndex}>
           <ButtonMenuItem>
-            <Text width="100%" onClick={() => setActiveIndex(0)}>
-              {t('Mint')}
-            </Text>
+            <Text width="100%">{t('Mint')}</Text>
           </ButtonMenuItem>
           <ButtonMenuItem>
-            <Text width="100%" onClick={() => setActiveIndex(1)}>
-              {t('Lock Mint')}
-            </Text>
+            <Text width="100%">{t('Lock Mint')}</Text>
           </ButtonMenuItem>
         </ButtonMenu>
       </StyledNav>

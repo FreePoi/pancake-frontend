@@ -24,24 +24,34 @@ const Nft: FC<{ className?: string; nft: NFT; pair: NftPair }> = ({ className, n
 };
 
 export default styled(Nft)`
-  width: 100%;
-  min-width: 268px;
-  max-width: 298px;
-  height: 415px;
+  width: 300px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 224px;
+  }
   background: #122124;
   border: 2px solid #1e3337;
   border-radius: 12px;
-  padding: 10px;
+  padding: 12px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   > .show {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 278px;
-    background: radial-gradient(circle, #2a6c6e, #43238c);
+    height: 300px;
+    ${({ theme }) => theme.mediaQueries.sm} {
+      height: 200px;
+    }
+    width: 100%;
+    background: #1b383e;
+    /* background: radial-gradient(circle, #2a6c6e, #43238c); */
     border-radius: 8px;
     img {
-      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
     }
   }
 `;
