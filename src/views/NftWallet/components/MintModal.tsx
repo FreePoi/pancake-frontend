@@ -78,9 +78,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
       ['address', 'address', 'uint24'],
       [account, account, lockdays * BLOCKS_ONE_DAY + blockNumber],
     );
-    mint = contract.safeTransferFrom(account, pair.pairAddress, nft.id, data);
 
-    console.log('data', data, 'blockNumber', blockNumber);
     if (activeIndex === 0) {
       if (pair.type === NFT_TYPE.NFT721) {
         mint = contract.safeTransferFrom(account, pair.pairAddress, nft.id, '0x');

@@ -1,23 +1,79 @@
-import React, { FC, useContext, useMemo } from 'react';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Button, Flex, Text } from '@kaco/uikit';
 import { NftContext } from '../providers/nft.provider';
 import { NFT } from '../index';
 import LockSvg from '../img/lock.svg';
+import { simpleRpcProvider } from 'utils/providers';
+import useActiveWeb3React from 'hooks/useActiveWeb3React';
 
-const Nft: FC<{ className?: string; nft: NFT; isLocked: boolean }> = ({ className, nft, isLocked }) => {
+const BLOCK_INTERVAL = 3;
+
+function getLastDate(
+  until: number,
+  now: number,
+): {
+  days: number;
+  hours: number;
+  mins: number;
+  secs: number;
+} {
+  if (now >= until) {
+    return {
+      days: 0,
+      hours: 0,
+      mins: 0,
+      secs: 0,
+    };
+  }
+
+  const all = (until - now) * BLOCK_INTERVAL;
+  const m = 60;
+  const h = 3600;
+  const d = h * 24;
+  const daysR = all % d;
+  const hoursR = daysR % h;
+  const minsR = hoursR % m;
+
+  return {
+    days: (all - daysR) / d,
+    hours: (daysR - hoursR) / h,
+    mins: (hoursR - minsR) / m,
+    secs: minsR,
+  };
+}
+
+const Nft: FC<{ className?: string; nft: NFT; lockInfo: { lastBlock: number; unlocker: string } | undefined }> = ({
+  className,
+  nft,
+  lockInfo,
+}) => {
   const { add, items } = useContext(NftContext);
+  const [now, setNow] = useState(0);
+  const { account } = useActiveWeb3React();
   const added = useMemo(() => !!items.find((item) => item.id === nft.id), [items, nft]);
+  const nowDate:
+    | {
+        days: number;
+        hours: number;
+        mins: number;
+        secs: number;
+      }
+    | undefined = useMemo(() => lockInfo && getLastDate(lockInfo.lastBlock, now), [lockInfo, now]);
+
+  useEffect(() => {
+    simpleRpcProvider.getBlockNumber().then(setNow);
+  }, []);
 
   return (
     <div className={className}>
       <div className="show">
         <img src={nft.image} alt="" />
-        {isLocked && (
+        {lockInfo && (
           <Flex className="locked">
             <div>
               <Text fontSize="20px" bold color="#1BD3D5">
-                48
+                {nowDate.days}
               </Text>
               <Text fontSize="12px" color="#1BD3D5">
                 Days
@@ -25,7 +81,7 @@ const Nft: FC<{ className?: string; nft: NFT; isLocked: boolean }> = ({ classNam
             </div>
             <div>
               <Text fontSize="20px" bold color="#1BD3D5">
-                04
+                {nowDate.hours}
               </Text>
               <Text fontSize="12px" color="#1BD3D5">
                 Hrs
@@ -33,7 +89,7 @@ const Nft: FC<{ className?: string; nft: NFT; isLocked: boolean }> = ({ classNam
             </div>
             <div>
               <Text fontSize="20px" bold color="#1BD3D5">
-                26
+                {nowDate.mins}
               </Text>
               <Text fontSize="12px" color="#1BD3D5">
                 Mins
@@ -41,7 +97,7 @@ const Nft: FC<{ className?: string; nft: NFT; isLocked: boolean }> = ({ classNam
             </div>
             <div>
               <Text fontSize="20px" bold color="#1BD3D5">
-                23
+                {nowDate.secs}
               </Text>
               <Text fontSize="12px" color="#1BD3D5">
                 Secs
@@ -53,12 +109,12 @@ const Nft: FC<{ className?: string; nft: NFT; isLocked: boolean }> = ({ classNam
       <Text fontSize="16px" style={{ flex: '1' }} bold mb={{ xs: '16px', md: '24px' }} mt={{ xs: '16px', md: '24px' }}>
         {nft.name}#{nft.id}
       </Text>
-      {isLocked ? (
+      {lockInfo && account.toLowerCase() !== lockInfo.unlocker.toLowerCase() ? (
         <img src={LockSvg} alt="" />
       ) : (
         <Button height="32px" width="120px" variant={added ? 'text' : 'secondary'} onClick={() => !added && add(nft)}>
           {/* <Button height="40px" width="180px" variant="secondary"> */}
-          {added ? 'Added' : 'Buy +'}
+          {added ? 'Added' : account.toLowerCase() === lockInfo?.unlocker.toLowerCase() ? 'withdraw' : 'Buy +'}
         </Button>
       )}
     </div>

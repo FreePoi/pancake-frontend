@@ -15,6 +15,7 @@ import { useContract } from 'hooks/useContract';
 import PageLoader from 'components/Loader/PageLoader';
 import { useTranslation } from 'contexts/Localization';
 import Select from 'components/KacoSelect/KacoSelect';
+import _ from 'lodash';
 
 export interface Pool {
   poolName: string;
@@ -40,8 +41,9 @@ const Pools_: FC<{
 }> = ({ className, nftAddress, pairAddress }) => {
   const [items, setItems] = useState<NFT[]>([]);
   const [fetching, setFetching] = useState(true);
-  const contract = useContract('0x3Ff2e308012460583ff1519bd504E940A46270C6', NFT100Pair721);
+  const contract = useContract(pairAddress, NFT100Pair721);
   const { t } = useTranslation();
+  const [locksInfo, setLocksInfo] = useState<{ [key: number]: { lastBlock: number; unlocker: string } }>([]);
 
   useEffect(() => {
     if (!nftAddress || !pairAddress) {
@@ -59,11 +61,27 @@ const Pools_: FC<{
       return;
     }
 
-    contract.getLockInfos().then((r) => {
-      console.log('ids', r);
+    contract.getLockInfos().then(([ids, locksInfo]: [string[], [number, string][]]) => {
+      console.log(
+        'ids',
+        ids.map((id) => id.toString()),
+        locksInfo.map((info) => `${info[0]} - ${info[1]}`),
+      );
+
+      const locks = ids.reduce((all: { [key: number]: { lastBlock: number; unlocker: string } }, id, index) => {
+        all[id] = {
+          lastBlock: locksInfo[index][0],
+          unlocker: locksInfo[index][1],
+        };
+
+        return all;
+      }, {});
+
+      setLocksInfo((old) => (_.isEqual(old, locks) ? old : locks));
     }, console.log);
   }, [contract]);
 
+  console.log(locksInfo);
   if (fetching) {
     return <PageLoader />;
   }
@@ -93,7 +111,7 @@ const Pools_: FC<{
       </Flex>
       <Grid gridGap="10px" className="pools">
         {items.map((item, index) => (
-          <Nft isLocked={!!(index % 2)} nft={item} key={index} />
+          <Nft nft={item} key={index} lockInfo={locksInfo[item.id]} />
         ))}
       </Grid>
     </div>

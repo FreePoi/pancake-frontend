@@ -77,7 +77,7 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
       {fetching && <PageLoader />}
       {!fetching &&
         pools.map((pair, index) => (
-          <NftsGroupByPool title={pair.name} nfts={pair.nfts} key={index} pair={pairs[index]} />
+          <NftsGroupByPool title={pair.name} nfts={pair.nfts} key={index} pair={pools[index]} />
         ))}
     </Page>
   );
