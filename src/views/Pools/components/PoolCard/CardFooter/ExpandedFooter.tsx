@@ -80,7 +80,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
       return getBalanceNumber(totalCakeInVault, stakingToken.decimals);
     }
     if (isManualCakePool) {
-      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked).minus(totalCakeInVault);
+      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked);
       return getBalanceNumber(manualCakeTotalMinusAutoVault, stakingToken.decimals);
     }
     return getBalanceNumber(totalStaked, stakingToken.decimals);
