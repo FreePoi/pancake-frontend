@@ -109,12 +109,12 @@ const Nft: FC<{ className?: string; nft: NFT; lockInfo: { lastBlock: number; unl
       <Text fontSize="16px" style={{ flex: '1' }} bold mb={{ xs: '16px', md: '24px' }} mt={{ xs: '16px', md: '24px' }}>
         {nft.name}#{nft.id}
       </Text>
-      {lockInfo && account.toLowerCase() !== lockInfo.unlocker.toLowerCase() ? (
+      {lockInfo && account?.toLowerCase() !== lockInfo.unlocker.toLowerCase() ? (
         <img src={LockSvg} alt="" />
       ) : (
         <Button height="32px" width="120px" variant={added ? 'text' : 'secondary'} onClick={() => !added && add(nft)}>
           {/* <Button height="40px" width="180px" variant="secondary"> */}
-          {added ? 'Added' : account.toLowerCase() === lockInfo?.unlocker.toLowerCase() ? 'withdraw' : 'Buy +'}
+          {added ? 'Added' : account?.toLowerCase() === lockInfo?.unlocker.toLowerCase() ? 'withdraw' : 'Buy +'}
         </Button>
       )}
     </div>
