@@ -1,5 +1,5 @@
 import React, { Context, useCallback, useState } from 'react';
-import { NFT } from '../index';
+import { NFT } from '../components/GoodsInPool';
 
 interface NftContextProps {
   items: NFT[];

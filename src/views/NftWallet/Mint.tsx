@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Grid, Text } from '@kaco/uikit';
 import Nft from './components/Nft';
 import { fetchAllTokens, filterNft } from 'views/NftPool/util/fetchNft';
-import { NFT } from 'views/NftPool';
+import { NFT } from 'views/NftPool/components/GoodsInPool';
 import { useWeb3React } from '@web3-react/core';
 import { NftPair, useNftPairs } from 'views/NftPools/hooks/useNftPools';
 import PageLoader from 'components/Loader/PageLoader';

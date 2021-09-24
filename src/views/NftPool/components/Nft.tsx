@@ -2,12 +2,11 @@ import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Button, Flex, Text } from '@kaco/uikit';
 import { NftContext } from '../providers/nft.provider';
-import { NFT } from '../index';
+import { LockInfo, NFT } from './GoodsInPool';
 import LockSvg from '../img/lock.svg';
 import { simpleRpcProvider } from 'utils/providers';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
-
-const BLOCK_INTERVAL = 3;
+import { BLOCK_INTERVAL } from 'config/constants/nft';
 
 function getLastDate(
   until: number,
@@ -43,11 +42,7 @@ function getLastDate(
   };
 }
 
-const Nft: FC<{ className?: string; nft: NFT; lockInfo: { lastBlock: number; unlocker: string } | undefined }> = ({
-  className,
-  nft,
-  lockInfo,
-}) => {
+const Nft: FC<{ className?: string; nft: NFT; lockInfo: LockInfo | undefined }> = ({ className, nft, lockInfo }) => {
   const { add, items } = useContext(NftContext);
   const [now, setNow] = useState(0);
   const { account } = useActiveWeb3React();
@@ -113,7 +108,6 @@ const Nft: FC<{ className?: string; nft: NFT; lockInfo: { lastBlock: number; unl
         <img src={LockSvg} alt="" />
       ) : (
         <Button height="32px" width="120px" variant={added ? 'text' : 'secondary'} onClick={() => !added && add(nft)}>
-          {/* <Button height="40px" width="180px" variant="secondary"> */}
           {added ? 'Added' : account?.toLowerCase() === lockInfo?.unlocker.toLowerCase() ? 'withdraw' : 'Buy +'}
         </Button>
       )}

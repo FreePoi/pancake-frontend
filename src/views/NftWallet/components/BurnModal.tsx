@@ -5,7 +5,7 @@ import { useTranslation } from 'contexts/Localization';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { NftPair } from 'views/NftPools/hooks/useNftPools';
 import { fetchNfts } from 'views/NftPool/util/fetchNft';
-import { NFT } from 'views/NftPool';
+import { NFT } from 'views/NftPool/components/GoodsInPool';
 import { useContract } from 'hooks/useContract';
 import Nft100Abi from 'config/abi/NFT100Pair721.json';
 // import PageLoader from 'components/Loader/PageLoader';

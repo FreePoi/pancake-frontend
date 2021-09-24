@@ -1,4 +1,4 @@
-import { NFT } from '../index';
+import { NFT } from '../components/GoodsInPool';
 import { chainId } from 'views/NftPools/hooks/useNftPools';
 
 interface CovalentTokenItem {

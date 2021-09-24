@@ -46,7 +46,6 @@ const fetchNftPair = async (index: number): Promise<NftPair> => {
   ];
 
   const [info] = (await multicall(NFT100FactoryAbi, calls)) as [string, string, BigNumber, string, string, BigNumber][];
-  console.log('info', info);
 
   return {
     pairAddress: info[0],
@@ -57,30 +56,28 @@ const fetchNftPair = async (index: number): Promise<NftPair> => {
     supply: info[5].toNumber(),
   };
 };
+
 export const useNftPairs = () => {
-  const [pools, setPools] = useState<NftPair[]>([]);
+  const [pairs, setPairs] = useState<NftPair[]>([]);
   const contract = useContract(NFT_FACTORY[chainId], NFT100FactoryAbi);
-  console.log('useNftPairs');
 
   useEffect(() => {
-    console.log('useNftPairs effect', contract);
     contract.counter().then(async (counter) => {
       const pairs = await fetchNftPairs(counter.toNumber());
-      console.log('useNftPairs contract.counter');
 
-      setPools((oldPairs) => (_.isEqual(oldPairs, pairs) ? oldPairs : pairs));
+      setPairs((oldPairs) => (_.isEqual(oldPairs, pairs) ? oldPairs : pairs));
     }, console.error);
   }, [contract]);
 
-  return pools;
+  return pairs;
 };
 
-export const useNftPair = (index: number) => {
-  const [pool, setPool] = useState<NftPair>();
+export const useNftPair = (index: number): NftPair => {
+  const [pair, setPair] = useState<NftPair>();
 
   useEffect(() => {
-    fetchNftPair(index).then(setPool);
+    fetchNftPair(index).then(setPair);
   }, [index]);
 
-  return pool;
+  return pair;
 };

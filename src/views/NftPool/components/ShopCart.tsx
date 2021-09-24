@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Button, Text, Grid } from '@kaco/uikit';
 import { NftContext } from '../providers/nft.provider';
 import RemoveSVG from '../img/remove.svg';
-import { NFT } from '..';
+import { NFT } from './GoodsInPool';
 import { useContract } from 'hooks/useContract';
 import Nft100Abi from 'config/abi/NFT100Pair721.json';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
