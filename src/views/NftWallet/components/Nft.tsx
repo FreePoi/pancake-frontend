@@ -13,7 +13,7 @@ const Nft: FC<{ className?: string; nft: NFT; pair: NftPair }> = ({ className, n
       <div className="show">
         <img src={nft.image} alt="" />
       </div>
-      <Text fontSize="18px" bold mb={{ xs: '16px', md: '24px' }} mt={{ xs: '16px', md: '24px' }}>
+      <Text style={{ flex: '1' }} fontSize="18px" bold mb={{ xs: '16px', md: '24px' }} mt={{ xs: '16px', md: '24px' }}>
         {nft.name}#{nft.id}
       </Text>
       <Button height="40px" width="180px" variant={'secondary'} onClick={onMint}>
