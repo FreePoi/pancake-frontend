@@ -94,7 +94,6 @@ const LockTime: FC<{ className?: string; lockInfo: LockInfo | undefined }> = ({ 
 
 export default styled(LockTime)`
   width: 100%;
-  padding: 0px 31px;
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 0px 11px;
   }
@@ -103,7 +102,9 @@ export default styled(LockTime)`
   > div {
     width: 40px;
     height: 68px;
-    background: #1f373b;
+    ${({ theme }) => theme.mediaQueries.sm} {
+      background: #1f373b;
+    }
     border-radius: 12px;
     display: flex;
     flex-direction: column;

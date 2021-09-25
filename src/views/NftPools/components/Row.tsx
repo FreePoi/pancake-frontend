@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -93,15 +93,11 @@ const TitledItem_: FC<{ title: string; value: string | number }> = ({ title, val
 const TitledItem = styled(TitledItem_)``;
 
 const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) => {
-  const [collapsed, setCollapsed] = useState(false);
   const history = useHistory();
 
   return (
     <>
-      <StyledTr
-        onClick={() => setCollapsed((old) => !old)}
-        onClickCapture={() => history.push(`/nft/pool/${pair.pairAddress}`)}
-      >
+      <StyledTr onClickCapture={() => history.push(`/nft/pool/${pair.pairAddress}`)}>
         <td>
           <PoolName poolName={pair.name} fragmentName={pair.symbol} />
         </td>
@@ -137,26 +133,25 @@ const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) =
             style={{
               overflow: 'hidden',
               transition: 'height 0.1s',
-              height: simpleMode && !collapsed ? '144px' : '0px',
             }}
             colSpan={6}
           >
             <div
               style={{
+                padding: '10px 0px',
                 overflow: 'hidden',
                 transition: 'height 0.1s',
-                height: simpleMode && !collapsed ? '144px' : '0px',
               }}
             >
-              <RowBetween padding="12px">
+              <RowBetween padding="8px 12px">
                 <Text fontSize="12px">NFT IN Pool</Text>
                 <Text color="white">{pair.supply}</Text>
               </RowBetween>
-              <RowBetween padding="12px">
+              <RowBetween padding="8px 12px">
                 <Text fontSize="12px">Liquidity</Text>
                 <Text color="white">{0}</Text>
               </RowBetween>
-              <RowBetween padding="12px">
+              <RowBetween padding="8px 12px">
                 <Text fontSize="12px">7 Days Change</Text>
                 <Text color="white">{0}</Text>
               </RowBetween>

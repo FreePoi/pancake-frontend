@@ -32,16 +32,20 @@ const NftsGroupByPool_: FC<{
 
 const NftsGroupByPool = styled(NftsGroupByPool_)`
   width: 100%;
-  background: #122124;
   border-radius: 24px;
-  padding: 30px 40px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    background: #122124;
+    padding: 30px 40px;
+  }
 
   > .nfts {
-    grid-template-columns: 1fr;
-    justify-items: center;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
 
     ${({ theme }) => theme.mediaQueries.md} {
       grid-template-columns: 1fr 1fr;
+      justify-items: center;
     }
     @media screen and (min-width: 1165px) {
       grid-template-columns: 1fr 1fr 1fr 1fr;

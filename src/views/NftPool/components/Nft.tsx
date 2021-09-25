@@ -23,7 +23,7 @@ const Nft: FC<{ className?: string; nft: NFT; lockInfo: LockInfo | undefined }> 
           </div>
         )}
       </div>
-      <Text fontSize="16px" style={{ flex: '1' }} bold mb={{ xs: '16px', md: '24px' }} mt={{ xs: '16px', md: '24px' }}>
+      <Text fontSize="16px" style={{ flex: '1' }} bold mb={{ xs: '12px', md: '24px' }} mt={{ xs: '12px', md: '24px' }}>
         {nft.name}#{nft.id}
       </Text>
       {lockInfo && account?.toLowerCase() !== lockInfo.unlocker.toLowerCase() ? (
@@ -40,13 +40,14 @@ const Nft: FC<{ className?: string; nft: NFT; lockInfo: LockInfo | undefined }> 
 export default styled(Nft)`
   max-width: 300px;
   width: 100%;
+  padding: 6px;
   ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 12px;
     width: 224px;
   }
   background: #122124;
   border: 2px solid #1e3337;
   border-radius: 12px;
-  padding: 12px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -56,7 +57,6 @@ export default styled(Nft)`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 300px;
     ${({ theme }) => theme.mediaQueries.sm} {
       height: 200px;
     }
@@ -70,6 +70,7 @@ export default styled(Nft)`
     }
 
     > .locked {
+      border-radius: 8px;
       display: flex;
       align-items: center;
       position: absolute;

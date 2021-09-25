@@ -94,17 +94,16 @@ const Pools_: FC<{
 };
 
 export const GoodsInPool = styled(Pools_)`
-  background: #122124;
   border-radius: 24px;
   z-index: 2;
   position: relative;
-  padding: 20px;
+  padding-top: 30px;
   ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-columns: 1fr 1fr 1fr;
+    background: #122124;
     padding: 40px;
   }
   > .pools {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     justify-items: center;
 
     ${({ theme }) => theme.mediaQueries.md} {

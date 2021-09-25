@@ -15,7 +15,26 @@ const Header = styled(Flex)`
 
   > .left {
     margin-bottom: 20px;
+    > .banner {
+      text-align: center;
+      margin-top: 30px;
+      > img {
+        width: 80%;
+      }
+      ${({ theme }) => theme.mediaQueries.md} {
+        > img {
+          width: 100%;
+        }
+      }
+    }
+
+    > .text {
+      text-align: center;
+    }
     ${({ theme }) => theme.mediaQueries.md} {
+      > .text {
+        text-align: left;
+      }
     }
   }
   > .right {
@@ -55,8 +74,10 @@ const NftPools: FC = () => {
     <Page>
       <Header>
         <div className="left">
-          <img src={MarketSvg} alt="" />
-          <Text color="#1BD3D5" bold fontSize="20px" mt="23px" mb="40px">
+          <div className="banner">
+            <img src={MarketSvg} alt="" />
+          </div>
+          <Text className="text" color="#1BD3D5" bold fontSize="20px" mt="23px" mb="40px">
             Trade, Swap, Fractionalized Your NFTS
           </Text>
           <Search placeholder="Search NFT" value={filter} onChange={setFilter} />

@@ -27,8 +27,6 @@ const NftPool: FC<{ className?: string }> = ({ className }) => {
 
 const NFTPool = styled(NftPool)`
   width: 100%;
-  padding-top: 20px;
-  padding-top: 40px;
   max-width: 1054px;
 `;
 

@@ -64,13 +64,16 @@ export const PoolHeader = styled(PoolHeader_)`
   background-repeat: no-repeat;
   position: relative;
   border-radius: 24px;
-  top: 39px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    top: 39px;
+  }
+
   z-index: 1;
 
   > div {
     height: 100%;
     width: 100%;
-    padding: 0px 20px 39px 20px;
+    padding: 0px 20px 20px 20px;
     ${({ theme }) => theme.mediaQueries.md} {
       padding: 0px 40px 39px 40px;
     }
@@ -110,7 +113,6 @@ export const PoolHeader = styled(PoolHeader_)`
       flex-wrap: wrap;
       margin-top: 30px;
       padding: 10px 30px;
-      margin-bottom: 30px;
       background: #238485;
       border-radius: 12px;
       justify-content: space-between;
@@ -118,6 +120,7 @@ export const PoolHeader = styled(PoolHeader_)`
         width: 50%;
       }
       ${({ theme }) => theme.mediaQueries.md} {
+        margin-bottom: 30px;
         > .info {
           width: auto;
         }

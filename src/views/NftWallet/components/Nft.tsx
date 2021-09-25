@@ -13,10 +13,10 @@ const Nft: FC<{ className?: string; nft: NFT; pair: NftPair }> = ({ className, n
       <div className="show">
         <img src={nft.image} alt="" />
       </div>
-      <Text style={{ flex: '1' }} fontSize="18px" bold mb={{ xs: '16px', md: '24px' }} mt={{ xs: '16px', md: '24px' }}>
+      <Text className="text" style={{ flex: '1' }} bold mb={{ xs: '16px', md: '24px' }} mt={{ xs: '16px', md: '24px' }}>
         {nft.name}#{nft.id}
       </Text>
-      <Button height="40px" width="180px" variant={'secondary'} onClick={onMint}>
+      <Button height="40px" variant={'secondary'} onClick={onMint}>
         Mint
       </Button>
     </div>
@@ -24,7 +24,6 @@ const Nft: FC<{ className?: string; nft: NFT; pair: NftPair }> = ({ className, n
 };
 
 export default styled(Nft)`
-  max-width: 300px;
   width: 100%;
   ${({ theme }) => theme.mediaQueries.sm} {
     width: 224px;
@@ -37,12 +36,25 @@ export default styled(Nft)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  > button {
+    font-size: 14px;
+    ${({ theme }) => theme.mediaQueries.md} {
+      font-size: 16px;
+      width: 180px;
+    }
+  }
+  > .text {
+    font-size: 16px;
+
+    ${({ theme }) => theme.mediaQueries.md} {
+      font-size: 18px;
+    }
+  }
   > .show {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 300px;
     ${({ theme }) => theme.mediaQueries.sm} {
       height: 200px;
     }
