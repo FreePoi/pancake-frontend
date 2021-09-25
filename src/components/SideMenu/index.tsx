@@ -47,8 +47,15 @@ const NavLink = styled(Link)<{ active: 't' | 'f' }>`
   svg {
     fill: white;
   }
-  > span {
-    margin-left: 12px;
+  > .text {
+    flex: 1;
+    justify-content: space-between;
+    padding-right: 37px;
+    align-items: center;
+
+    > span {
+      margin-left: 12px;
+    }
   }
   > .icon-holder {
     width: 32px;
@@ -337,6 +344,8 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
                       ? pathname === item.link
                       : ['/add', '/remove', '/liquidity'].find((p) => pathname.startsWith(p))
                       ? item.link === '/swap'
+                      : ['/nft/pools', '/nft/wallet/mint', '/nft/wallet/burn'].find((p) => pathname.startsWith(p))
+                      ? item.link === '/nft/pools/'
                       : pathname.startsWith(item.link)
                   )
                     ? 't'
@@ -357,10 +366,16 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
                 }}
               >
                 <div className="icon-holder">{item.img()}</div>
-                {!collapsed && <span>{item.text}</span>}
-                {item.children?.length && <img src={collapseSvg} alt="" />}
+                {!collapsed && (
+                  <Flex className="text">
+                    {<span>{item.text}</span>}
+                    {item.children?.length && (
+                      <img style={{ transform: item.collapsed ? '' : 'scaleY(-1)' }} src={collapseSvg} alt="" />
+                    )}
+                  </Flex>
+                )}
               </NavLink>
-              {item.children?.length && !item.collapsed && (
+              {!collapsed && item.children?.length && !item.collapsed && (
                 <div className="sub-menu">
                   {item.children.map((menu) => (
                     <NavLink
