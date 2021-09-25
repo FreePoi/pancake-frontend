@@ -539,7 +539,7 @@
   "This pool’s rewards aren’t compounded automatically, so we show APR": "لا يتم تجميع مكافآت هذا التجمُّع تلقائيًا؛ لذا فإننا نعرض معدل الفائدة السنوية المئوية.",
   "Auto": "تلقائي",
   "Manual": "يدوي",
-  "Earn CAKE, stake KAC": "اربح CAKE، ارهن KAC",
+  "Earn KAC, stake KAC": "اربح CAKE، ارهن KAC",
   "This bounty is given as a reward for providing a service to other users.": "يتم منح هذه الجائزة كمكافأة على تقديم خدمة للآخرين.",
   "Whenever you successfully claim the bounty, you’re also helping out by activating the Auto KAC Pool’s compounding function for everyone.": "عندما تطالب بالجائزة بنجاح، فأنت تساعد أيضًا في تنشيط وظيفة التجميع التلقائية لتجمُّع KAC للجميع.",
   "Auto-Compound Bounty: %fee%% of all Auto KAC pool users pending yield": "جائزة التجميع التلقائي: %fee%% من جميع مستخدمي تجمُّع KAC التلقائي الذين ينتظرون العائد.",

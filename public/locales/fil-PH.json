@@ -539,7 +539,7 @@
   "This pool’s rewards aren’t compounded automatically, so we show APR": "Ang mga gantimpala ng pool na ito ay hindi awtomatikong ma-compound, kaya ipinapakita namin ang APR",
   "Auto": "Auto",
   "Manual": "Manual",
-  "Earn CAKE, stake KAC": "Kumita ng CAKE, mag-stake ng KAC",
+  "Earn KAC, stake KAC": "Kumita ng CAKE, mag-stake ng KAC",
   "This bounty is given as a reward for providing a service to other users.": "Ang bounty na ito ay ibinibigay bilang isang gantimpala para sa pagbibigay ng isang serbisyo sa iba pang mga user.",
   "Whenever you successfully claim the bounty, you’re also helping out by activating the Auto KAC Pool’s compounding function for everyone.": "Tuwing matagumpay mong naangkin ang bounty, tumutulong ka rin sa pamamagitan ng pagiging-aktibo ng pagpapaandar ng pag-compound ng Auto KAC Pool para sa lahat.",
   "Auto-Compound Bounty: %fee%% of all Auto KAC pool users pending yield": "Auto-Compound na Bounty: %fee%% ng lahat ng mga Auto KAC pool user nakabinbin na inani",

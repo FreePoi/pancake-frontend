@@ -539,7 +539,7 @@
   "This pool’s rewards aren’t compounded automatically, so we show APR": "இக்குளத்தின் வெகுமதிகள் தானாக ஒன்றுகூட்டப்படுவதில்லை, எனவே நாங்கள் APR-ஐ காட்டுகிறோம்",
   "Auto": "தானி",
   "Manual": "கைமுறை",
-  "Earn CAKE, stake KAC": "KAC ஈட்டுக, KAC ஸ்டேக் செய்க",
+  "Earn KAC, stake KAC": "KAC ஈட்டுக, KAC ஸ்டேக் செய்க",
   "This bounty is given as a reward for providing a service to other users.": "இந்த பவுண்டி, மற்ற பயனர்களுக்கு சேவை வழங்குவதற்காக வெகுமதியாக கொடுக்கப்படுகிறது.",
   "Whenever you successfully claim the bounty, you’re also helping out by activating the Auto KAC Pool’s compounding function for everyone.": "நீங்கள் வெற்றிகரமாக பவுண்டியை கிளைம் செய்யும் போதெல்லாம், தானி KAC குளத்தின் ஒன்றுகூட்டல் செயல்பாட்டைச் செயல்படுத்துவதன் மூலம் அனைவருக்கும் உதவுகிறீர்கள்.",
   "Auto-Compound Bounty: %fee%% of all Auto KAC pool users pending yield": "தானி-ஒன்றுகூட்டல் பவுண்டி: மகசூல் நிலுவையிலுள்ள எல்லா KAC குளத்தின் %fee%%",

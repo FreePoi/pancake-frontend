@@ -539,7 +539,7 @@
   "This pool’s rewards aren’t compounded automatically, so we show APR": "Ebben az összevont alapban jutalmat nem halmozzák, ezért az APR-t mutatjuk",
   "Auto": "Auto",
   "Manual": "Manuális",
-  "Earn CAKE, stake KAC": "Keress CAKE-et, tegyél fel tétként CAKE-et",
+  "Earn KAC, stake KAC": "Keress CAKE-et, tegyél fel tétként CAKE-et",
   "This bounty is given as a reward for providing a service to other users.": "Ezt az bónuszt azok kapják jutalmul, akik más felhasználóknak nyújtanak szolgáltatást.",
   "Whenever you successfully claim the bounty, you’re also helping out by activating the Auto KAC Pool’s compounding function for everyone.": "Valahányszor sikeresen igényli az bónuszt, az Auto KAC érdekközösség kamatos-kamat funkciójának aktiválásával mindenkinek segítséget nyújt.",
   "Auto-Compound Bounty: %fee%% of all Auto KAC pool users pending yield": "Automatikus kamatos-kamat bónusz: Az összes Auto KAC összevont alap felhasználó %fee% díja a hozam függvényében",

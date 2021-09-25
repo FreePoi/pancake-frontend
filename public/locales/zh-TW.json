@@ -539,7 +539,7 @@
   "This pool’s rewards aren’t compounded automatically, so we show APR": "此資金池的獎勵不會自動計算複利，因此我們顯示 APR",
   "Auto": "自動",
   "Manual": "手動",
-  "Earn CAKE, stake KAC": "賺取 CAKE，質押 KAC",
+  "Earn KAC, stake KAC": "賺取 CAKE，質押 KAC",
   "This bounty is given as a reward for providing a service to other users.": "賞金是作為向其他使用者提供服務的獎勵。",
   "Whenever you successfully claim the bounty, you’re also helping out by activating the Auto KAC Pool’s compounding function for everyone.": "每次您成功領取賞金時，您還可以透過為每個人啟動自動計算 KAC 資金池複利的功能來提供幫助。",
   "Auto-Compound Bounty: %fee%% of all Auto KAC pool users pending yield": "自動計算複利賞金：所有 Auto KAC 資金池使用者待定收益的 %fee%%",

@@ -41,7 +41,7 @@ const StyledCardHeader: React.FC<{
       return t('Automatic restaking');
     }
     if (isCakePool) {
-      return t('Earn CAKE, stake KAC');
+      return t('Earn KAC, stake KAC');
     }
     return t('Stake %symbol%', { symbol: stakingToken.symbol });
   };

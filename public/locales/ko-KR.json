@@ -539,7 +539,7 @@
   "This pool’s rewards aren’t compounded automatically, so we show APR": "이 풀의 리워드는 자동으로 혼합되지 않으므로, APR이 표시됩니다.",
   "Auto": "자동",
   "Manual": "수동",
-  "Earn CAKE, stake KAC": "KAC 획득, KAC 예치",
+  "Earn KAC, stake KAC": "KAC 획득, KAC 예치",
   "This bounty is given as a reward for providing a service to other users.": "이 바운티는 다른 사용자에게 서비스를 제공하기 위한 리워드로 주어집니다.",
   "Whenever you successfully claim the bounty, you’re also helping out by activating the Auto KAC Pool’s compounding function for everyone.": "바운티를 성공적으로 클레임할 때마다, 모두를 위해 자동 KAC 풀의 혼합 기능을 활성화하여 도움을 줄 수도 있습니다.",
   "Auto-Compound Bounty: %fee%% of all Auto KAC pool users pending yield": "자동 혼합 바운티: 모든 자동 KAC 풀 사용자의 %fee%%가 일드 대기 중입니다.",

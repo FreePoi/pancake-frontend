@@ -539,7 +539,7 @@
   "This pool’s rewards aren’t compounded automatically, so we show APR": "Bu havuzun ödülleri otomatik olarak bileştirilmedi, bu yüzden APR gösteriyoruz",
   "Auto": "Otomatik",
   "Manual": "Manuel",
-  "Earn CAKE, stake KAC": "KAC kazanın, KAC stake edin",
+  "Earn KAC, stake KAC": "KAC kazanın, KAC stake edin",
   "This bounty is given as a reward for providing a service to other users.": "Bu ikramiye, başka kullanıcılara bir hizmet sunulduğu için bir ödül olarak verilir.",
   "Whenever you successfully claim the bounty, you’re also helping out by activating the Auto KAC Pool’s compounding function for everyone.": "İkramiyeyi başarılı bir şekilde her aldığınızda, herkes için Otomatik KAC Havuzu bileştirme fonksiyonunu tetikleyerek de yardımcı oluyorsunuz.",
   "Auto-Compound Bounty: %fee%% of all Auto KAC pool users pending yield": "Otomatik Bileştirme İkramiyesi: tüm Otomatik KAC havuzu kullanıcılarından %%fee% hasat bekliyor",

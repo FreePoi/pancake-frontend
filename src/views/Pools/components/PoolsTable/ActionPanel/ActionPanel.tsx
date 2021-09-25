@@ -280,7 +280,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({
       <ActionContainer style={{ justifyContent: 'space-between' }}>
         {showSubtitle && (
           <Text mt="4px" mb="16px" color="textSubtle">
-            {isAutoVault ? t('Automatic restaking') : `${t('Earn')} KAC ${t('Stake').toLocaleLowerCase()} CAKE`}
+            {isAutoVault ? t('Automatic restaking') : `${t('Earn')} KAC ${t('Stake').toLocaleLowerCase()} KAC`}
           </Text>
         )}
         <HarvestAction {...pool} userDataReady={userDataReady} />

@@ -539,7 +539,7 @@
   "This pool’s rewards aren’t compounded automatically, so we show APR": "Hadiah pool ini tidak digabungkan secara otomatis, sehingga APR yang diperlihatkan",
   "Auto": "Otomatis",
   "Manual": "Manual",
-  "Earn CAKE, stake KAC": "Hasilkan CAKE, tumpuk KAC",
+  "Earn KAC, stake KAC": "Hasilkan CAKE, tumpuk KAC",
   "This bounty is given as a reward for providing a service to other users.": "Imbalan ini diberikan sebagai hadiah karena menyediakan layanan untuk pengguna lain.",
   "Whenever you successfully claim the bounty, you’re also helping out by activating the Auto KAC Pool’s compounding function for everyone.": "Kapan pun Anda berhasil mengeklaim imbalan, Anda juga membantu dengan mengaktifkan fungsi penggabungan Pool KAC Otomatis untuk semua orang.",
   "Auto-Compound Bounty: %fee%% of all Auto KAC pool users pending yield": "Imbalan Penggabungan Otomatis: %fee%% dari semua hasil tertunda pengguna pool KAC Otomatis",

@@ -539,7 +539,7 @@
   "This pool’s rewards aren’t compounded automatically, so we show APR": "As recompensas deste pool não são compostas automaticamente, por isso mostramos a APR",
   "Auto": "Automático",
   "Manual": "Manual",
-  "Earn CAKE, stake KAC": "Ganhe CAKE, acumule KAC",
+  "Earn KAC, stake KAC": "Ganhe CAKE, acumule KAC",
   "This bounty is given as a reward for providing a service to other users.": "Este prémio é dado como recompensa pela prestação de um serviço a outros utilizadores.",
   "Whenever you successfully claim the bounty, you’re also helping out by activating the Auto KAC Pool’s compounding function for everyone.": "Sempre que reclama a recompensa com sucesso, está também a ajudar, ativando a função de composição do Auto KAC Pool para todos.",
   "Auto-Compound Bounty: %fee%% of all Auto KAC pool users pending yield": "Recompensa Auto-Composta: %fee%% de todos os utilizadores do pool Auto KAC pendentes de rendimento",

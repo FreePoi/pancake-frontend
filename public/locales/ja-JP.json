@@ -539,7 +539,7 @@
   "This pool’s rewards aren’t compounded automatically, so we show APR": "このプールの報酬は自動的には複利運用されないので、APRを表示しています。",
   "Auto": "自動",
   "Manual": "手動",
-  "Earn CAKE, stake KAC": "CAKEを獲得して、CAKEをステーキング",
+  "Earn KAC, stake KAC": "CAKEを獲得して、CAKEをステーキング",
   "This bounty is given as a reward for providing a service to other users.": "この賞金は、他のユーザーにサービスを提供した報酬として付与されます。",
   "Whenever you successfully claim the bounty, you’re also helping out by activating the Auto KAC Pool’s compounding function for everyone.": "あなたが正常に賞金を請求するたびに、あなたのおかげで、すべての人の自動CAKEプール複利運用の機能が有効化されます。",
   "Auto-Compound Bounty: %fee%% of all Auto KAC pool users pending yield": "自動複利運用賞金：利回りを保留しているすべての自動CAKEプールユーザーの%fee%%",

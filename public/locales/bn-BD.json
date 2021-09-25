@@ -539,7 +539,7 @@
   "This pool’s rewards aren’t compounded automatically, so we show APR": "এই পুলের পুরস্কারগুলি নিজে নিজে নিজেই কম্পাউন্ড হয় না, তাই আমরা APR দেখায়।",
   "Auto": "অটো",
   "Manual": "ম্যানুয়াল",
-  "Earn CAKE, stake KAC": "KAC উপার্জন করুন, KAC স্টেক করুন",
+  "Earn KAC, stake KAC": "KAC উপার্জন করুন, KAC স্টেক করুন",
   "This bounty is given as a reward for providing a service to other users.": "এই বাউন্টিটি অন্য ব্যবহারকারীদের জন্য পরিষেবা সরবরাহ করার পুরস্কার হিসাবে দেওয়া হয়।",
   "Whenever you successfully claim the bounty, you’re also helping out by activating the Auto KAC Pool’s compounding function for everyone.": "যখনই আপনি সফলভাবে বাউন্টির দাবি করেবেন, তখনই আপনি প্রত্যেকের জন্য অটো KAC পুলের কম্পাউন্ড ফাংশনটি সক্রিয় করে সহায়তা করবেন।",
   "Auto-Compound Bounty: %fee%% of all Auto KAC pool users pending yield": "অটো-কম্পাউন্ড বাউন্টি: অটো KAC পুল ব্যবহারকারীদের বাকি থাকা ভাগের %fee%%",
