@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -94,10 +94,14 @@ const TitledItem = styled(TitledItem_)``;
 
 const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) => {
   const history = useHistory();
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
     <>
-      <StyledTr onClickCapture={() => history.push(`/nft/pool/${pair.pairAddress}`)}>
+      <StyledTr
+        onClick={() => setCollapsed((old) => !old)}
+        onClickCapture={() => history.push(`/nft/pool/${pair.pairAddress}`)}
+      >
         <td>
           <PoolName poolName={pair.name} fragmentName={pair.symbol} />
         </td>
@@ -133,14 +137,16 @@ const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) =
             style={{
               overflow: 'hidden',
               transition: 'height 0.1s',
+              height: simpleMode && !collapsed ? '130px' : '0px',
             }}
             colSpan={6}
           >
             <div
               style={{
-                padding: '10px 0px',
+                padding: simpleMode && !collapsed ? '10px 0px' : '0px',
                 overflow: 'hidden',
                 transition: 'height 0.1s',
+                height: simpleMode && !collapsed ? '130px' : '0px',
               }}
             >
               <RowBetween padding="8px 12px">

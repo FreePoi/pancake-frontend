@@ -51,11 +51,11 @@ const FarmsPoolsRow = () => {
 
   const getPoolText = (pool: Pool) => {
     if (pool.isAutoVault) {
-      return t('Auto CAKE');
+      return t('Auto KAC');
     }
 
     if (pool.sousId === 0) {
-      return t('Manual CAKE');
+      return t('Earn KAC');
     }
 
     return t('Stake %stakingSymbol% - Earn %earningSymbol%', {

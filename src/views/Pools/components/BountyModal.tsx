@@ -24,7 +24,10 @@ const Divider = styled.div`
   margin: 16px auto;
   width: 100%;
 `;
-
+const ReferenceElement = styled.div`
+  display: inline-block;
+  padding-left: 5px;
+`;
 const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }) => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
@@ -61,7 +64,7 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
       const tx = await cakeVaultContract.harvest({ gasLimit: 300000 });
       const receipt = await tx.wait();
       if (receipt.status) {
-        toastSuccess(t('Bounty collected!'), t('CAKE bounty has been sent to your wallet.'));
+        toastSuccess(t('Bounty collected!'), t('KAC bounty has been sent to your wallet.'));
         setPendingTx(false);
         onDismiss();
       }
@@ -77,7 +80,7 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
       <Flex alignItems="flex-start" justifyContent="space-between">
         <Text>{t('You’ll claim')}</Text>
         <Flex flexDirection="column">
-          <Balance bold value={cakeBountyToDisplay} decimals={7} unit=" CAKE" />
+          <Balance bold value={cakeBountyToDisplay} decimals={7} unit=" KAC" />
           <Text fontSize="12px" color="textSubtle">
             <Balance
               fontSize="12px"
@@ -95,7 +98,7 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
         <Text fontSize="14px" color="textSubtle">
           {t('Pool total pending yield')}
         </Text>
-        <Balance color="textSubtle" value={totalYieldToDisplay} unit=" CAKE" />
+        <Balance color="textSubtle" value={totalYieldToDisplay} unit=" KAC" />
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" mb="24px">
         <Text fontSize="14px" color="textSubtle">
@@ -123,9 +126,9 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
         <Text fontSize="16px" bold color="textSubtle" mr="4px">
           {t('What’s this?')}
         </Text>
-        <span ref={targetRef}>
+        <ReferenceElement ref={targetRef}>
           <HelpIcon color="textSubtle" />
-        </span>
+        </ReferenceElement>
       </Flex>
     </Modal>
   );

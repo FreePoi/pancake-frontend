@@ -2,10 +2,11 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { useWeb3React } from '@web3-react/core';
 import ConnectWalletButton from '../ConnectWalletButton';
+// import { LogoutIcon, useMatchBreakpoints, useModal } from '@kaco/uikit';
 import { LogoutIcon, useMatchBreakpoints } from '@kaco/uikit';
 import UncollapsedSvg from './imgs/icon_sq.svg';
 import useAuth from 'hooks/useAuth';
-
+// import ClaimModal from './Modals/ClaimModal';
 export enum ThemeChoice {
   Dark,
   White,
@@ -20,10 +21,16 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
   const { isXs, isSm } = useMatchBreakpoints();
   const { logout } = useAuth();
 
+  // const [onPresentClaim] = useModal(<ClaimModal />);
   return (
     <div className={className}>
       {(isXs || isSm) && <img src={UncollapsedSvg} alt="" onClick={() => setCollapsed(!collapsed)} />}
       <div className="right">
+        {/* {account ? (
+          <div className="claim_kac" onClick={onPresentClaim}>
+            Claim KAC
+          </div>
+        ) : null} */}
         {/* <div className="icons">
           <a target="_blank" rel="noreferrer" href="https://twitter.com/KACOFinance">
             <TwitterIcon height="28px" />
@@ -99,12 +106,23 @@ export default styled(Header)`
         height: 20px;
       }
     }
-
+    .claim_kac {
+      padding: 0px 30px;
+      height: 32px;
+      line-height: 32px;
+      font-size: 14px;
+      color: #fff;
+      background: linear-gradient(90deg, #1bd3d5, #d755d9, #ec9b5a);
+      border-radius: 12px;
+      font-weight: bold;
+      margin-right: 12px;
+      cursor: pointer;
+    }
     > .account {
       > svg {
         &:hover {
           cursor: pointer;
-          fill: ${({ theme }) => theme.colors.failure};
+          fill: #1fc7d4;
         }
       }
       display: flex;

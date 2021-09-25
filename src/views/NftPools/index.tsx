@@ -71,7 +71,7 @@ const NftPools: FC = () => {
   const simpleMode = useMemo(() => isXs || isSm, [isXs, isSm]);
 
   return (
-    <Page>
+    <Page style={{ maxWidth: '1054px' }}>
       <Header>
         <div className="left">
           <div className="banner">

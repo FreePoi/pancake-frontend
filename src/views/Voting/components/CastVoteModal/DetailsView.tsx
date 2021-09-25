@@ -50,7 +50,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" mb="4px">
         <Text color="textSubtle" fontSize="16px">
-          {t('Manual KACO Pool')}
+          {t('Earn KACO Pool')}
         </Text>
         <Text textAlign="right">{cakePoolBalance.toFormat(3)}</Text>
       </Flex>

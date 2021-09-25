@@ -9,28 +9,43 @@ import EarningsCell from './Cells/EarningsCell';
 import AprCell from './Cells/AprCell';
 import TotalStakedCell from './Cells/TotalStakedCell';
 import EndsInCell from './Cells/EndsInCell';
-import ExpandActionCell from './Cells/ExpandActionCell';
+import Details from './Cells/ExpandActionCell';
 import ActionPanel from './ActionPanel/ActionPanel';
+import CellLayout from './Cells/CellLayout';
+import { useTranslation } from 'contexts/Localization';
 
 interface PoolRowProps {
   pool: Pool;
   account: string;
-  userDataLoaded: boolean;
+  userDataReady: boolean;
+  isLast: boolean;
 }
 
-const StyledRow = styled.div`
-  background-color: transparent;
-  display: flex;
+const StyledTr = styled.tr<{ isLast: boolean }>`
   cursor: pointer;
+  ${(props) => !props.isLast && 'border-bottom: 1px solid #122124;'}
 `;
 
-const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
-  const { isXs, isSm, isMd, isLg, isXl } = useMatchBreakpoints();
-  const [expanded, setExpanded] = useState(false);
-  const shouldRenderActionPanel = useDelayedUnmount(expanded, 300);
+const CellInner = styled.div`
+  padding: 24px 0px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding-right: 8px;
 
-  const toggleExpanded = () => {
-    setExpanded((prev) => !prev);
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding-right: 32px;
+  }
+`;
+
+const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataReady, isLast }) => {
+  const { t } = useTranslation();
+  const { isXs, isSm, isMd, isLg, isXl } = useMatchBreakpoints();
+  const [actionPanelExpanded, setActionPanelExpanded] = useState(false);
+  const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300);
+
+  const toggleActionPanel = () => {
+    setActionPanelExpanded((prev) => !prev);
   };
 
   const {
@@ -38,24 +53,64 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
   } = useCakeVault();
   const performanceFeeAsDecimal = performanceFee && performanceFee / 100;
 
+  const handleRenderRow = () => {
+    if (!isXs && !isSm) {
+    }
+    return (
+      <StyledTr onClick={toggleActionPanel} isLast={isLast}>
+        <td>
+          <CellInner>
+            <CellLayout>
+              <NameCell pool={pool} />
+            </CellLayout>
+          </CellInner>
+        </td>
+        <td>
+          <CellInner>
+            <EarningsCell pool={pool} account={account} userDataReady={userDataReady} />
+          </CellInner>
+        </td>
+        <td>
+          <AprCell pool={pool} performanceFee={performanceFeeAsDecimal} />
+        </td>
+        {(isLg || isXl) && (
+          <td>
+            <CellLayout label={t('Total staked')}>
+              <TotalStakedCell pool={pool} />
+            </CellLayout>
+          </td>
+        )}
+
+        {isXl && (
+          <td>
+            <EndsInCell pool={pool} />
+          </td>
+        )}
+        <td>
+          <CellInner>
+            <CellLayout>
+              <Details actionPanelToggled={actionPanelExpanded} />
+            </CellLayout>
+          </CellInner>
+        </td>
+      </StyledTr>
+    );
+  };
   return (
     <>
-      <StyledRow role="row" onClick={toggleExpanded}>
-        <NameCell pool={pool} />
-        <EarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
-        <AprCell pool={pool} performanceFee={performanceFeeAsDecimal} />
-        {(isLg || isXl) && <TotalStakedCell pool={pool} />}
-        {isXl && <EndsInCell pool={pool} />}
-        <ExpandActionCell expanded={expanded} isFullLayout={isMd || isLg || isXl} />
-      </StyledRow>
-      {shouldRenderActionPanel && (
-        <ActionPanel
-          account={account}
-          pool={pool}
-          userDataLoaded={userDataLoaded}
-          expanded={expanded}
-          breakpoints={{ isXs, isSm, isMd, isLg, isXl }}
-        />
+      {handleRenderRow()}
+      {shouldRenderChild && (
+        <tr>
+          <td colSpan={6}>
+            <ActionPanel
+              account={account}
+              pool={pool}
+              userDataReady={userDataReady}
+              actionPanelExpanded={actionPanelExpanded}
+              breakpoints={{ isXs, isSm, isMd, isLg, isXl }}
+            />
+          </td>
+        </tr>
       )}
     </>
   );
