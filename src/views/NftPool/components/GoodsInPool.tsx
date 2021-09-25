@@ -62,6 +62,10 @@ const Pools_: FC<{
               sort:
             </Text>
             <Select
+              style={{
+                maxWidth: '300px',
+                width: '100%',
+              }}
               options={[
                 {
                   label: t('xxxx'),

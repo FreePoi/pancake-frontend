@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, CSSProperties } from 'styled-components';
 import { ArrowDropDownIcon, Text } from '@kaco/uikit';
 
 const DropDownHeader = styled.div`
@@ -92,6 +92,7 @@ const ListItem = styled.li`
 `;
 
 export interface SelectProps {
+  style?: CSSProperties;
   options: OptionProps[];
   onChange?: (option: OptionProps) => void;
 }
@@ -101,7 +102,7 @@ export interface OptionProps {
   value: any;
 }
 
-const KacoSelect: React.FunctionComponent<SelectProps> = ({ options, onChange }) => {
+const KacoSelect: React.FunctionComponent<SelectProps> = ({ options, onChange, style }) => {
   const containerRef = useRef(null);
   const dropdownRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -139,7 +140,7 @@ const KacoSelect: React.FunctionComponent<SelectProps> = ({ options, onChange })
   }, []);
 
   return (
-    <DropDownContainer isOpen={isOpen} ref={containerRef} {...containerSize}>
+    <DropDownContainer style={style} isOpen={isOpen} ref={containerRef} {...containerSize}>
       {containerSize.width !== 0 && (
         <DropDownHeader onClick={toggling}>
           <Text fontSize="14px" color="#1bd3d5">

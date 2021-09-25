@@ -24,7 +24,8 @@ const Nft: FC<{ className?: string; nft: NFT; pair: NftPair }> = ({ className, n
 };
 
 export default styled(Nft)`
-  width: 300px;
+  max-width: 300px;
+  width: 100%;
   ${({ theme }) => theme.mediaQueries.sm} {
     width: 224px;
   }
