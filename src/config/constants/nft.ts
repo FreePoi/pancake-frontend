@@ -21,6 +21,14 @@ export const NFT_PAIRS: NftPairConfig[] = [
     pid: 0,
     type: NFT_TYPE.NFT1155,
   },
+  {
+    address: '0xa70c4580F1e00C1d7A9D0280832c0D513a6D530F',
+    nftAddress: '0xdf7952b35f24acf7fc0487d01c8d5690a60dba07',
+    name: 'PANCAKE NFT100',
+    symbol: 'KCAKE',
+    pid: 1,
+    type: NFT_TYPE.NFT721,
+  },
 ];
 
 export const BLOCK_INTERVAL = 3;
