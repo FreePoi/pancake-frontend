@@ -50,13 +50,14 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
       if (pair.type === NFT_TYPE.NFT721) {
         mint = contract.safeTransferFrom(account, pair.pairAddress, nft.id, '0x');
       } else {
-        mint = contract.safeTransferFrom(account, pair.pairAddress, [nft.id], [1], '0x');
+        console.log(account, pair.pairAddress, [nft.id], [1], '0x', contract);
+        mint = contract.safeTransferFrom(account, pair.pairAddress, nft.id, 1, '0x');
       }
     } else {
       if (pair.type === NFT_TYPE.NFT721) {
         mint = contract.safeTransferFrom(account, pair.pairAddress, nft.id, data);
       } else {
-        mint = contract.safeTransferFrom(account, pair.pairAddress, [nft.id], [1], data);
+        mint = contract.safeTransferFrom(account, pair.pairAddress, nft.id, 1, data);
       }
     }
 
