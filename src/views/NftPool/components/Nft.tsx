@@ -8,7 +8,12 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { LockInfo } from '../hooks/useNftWithLocks';
 import LockTime from './LockTime';
 
-const Nft: FC<{ className?: string; nft: NFT; lockInfo: LockInfo | undefined }> = ({ className, nft, lockInfo }) => {
+const Nft: FC<{ className?: string; nft: NFT; lockInfo: LockInfo | undefined; now: number }> = ({
+  className,
+  nft,
+  lockInfo,
+  now,
+}) => {
   const { add, items } = useContext(NftContext);
   const { account } = useActiveWeb3React();
   const added = useMemo(() => !!items.find((item) => item.id === nft.id), [items, nft]);
@@ -17,7 +22,7 @@ const Nft: FC<{ className?: string; nft: NFT; lockInfo: LockInfo | undefined }> 
     <div className={className}>
       <div className="show">
         <img src={nft.image} alt="" />
-        {lockInfo && (
+        {lockInfo && lockInfo.lastBlock > now && (
           <div className="locked">
             <LockTime lockInfo={lockInfo} />
           </div>
@@ -26,7 +31,7 @@ const Nft: FC<{ className?: string; nft: NFT; lockInfo: LockInfo | undefined }> 
       <Text fontSize="16px" style={{ flex: '1' }} bold mb={{ xs: '12px', md: '24px' }} mt={{ xs: '12px', md: '24px' }}>
         {nft.name}#{nft.id}
       </Text>
-      {lockInfo && account?.toLowerCase() !== lockInfo.unlocker.toLowerCase() ? (
+      {lockInfo && lockInfo.lastBlock > now && account?.toLowerCase() !== lockInfo.unlocker.toLowerCase() ? (
         <img src={LockSvg} alt="" />
       ) : (
         <Button height="32px" width="120px" variant={added ? 'text' : 'secondary'} onClick={() => !added && add(nft)}>

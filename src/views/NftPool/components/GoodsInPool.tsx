@@ -9,6 +9,7 @@ import { useTranslation } from 'contexts/Localization';
 import Select from 'components/KacoSelect/KacoSelect';
 import { useNftWithLocks } from '../hooks/useNftWithLocks';
 import NoBalance from './NoBalance';
+import { simpleRpcProvider } from 'utils/providers';
 
 export interface Pool {
   poolName: string;
@@ -35,6 +36,11 @@ const Pools_: FC<{
   const [fetching, setFetching] = useState(true);
   const { t } = useTranslation();
   const locksInfo = useNftWithLocks(pair);
+  const [now, setNow] = useState(0);
+
+  useEffect(() => {
+    simpleRpcProvider.getBlockNumber().then(setNow);
+  }, []);
 
   useEffect(() => {
     if (!pair?.nftAddress || !pair?.address) {
@@ -84,7 +90,7 @@ const Pools_: FC<{
           </Flex>
           <Grid gridGap="10px" className="pools">
             {items.map((item, index) => (
-              <Nft nft={item} key={index} lockInfo={locksInfo[item.id]} />
+              <Nft nft={item} key={index} lockInfo={locksInfo[item.id]} now={now} />
             ))}
           </Grid>
         </>
