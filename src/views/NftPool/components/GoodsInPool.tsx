@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Flex, Grid, Text } from '@kaco/uikit';
+import { Grid } from '@kaco/uikit';
 import styled from 'styled-components';
 import Nft from './Nft';
 import { NftPairConfig } from 'config/constants/nft';
 import { fetchNfts } from '../util/fetchNft';
 import PageLoader from 'components/Loader/PageLoader';
-import { useTranslation } from 'contexts/Localization';
-import Select from 'components/KacoSelect/KacoSelect';
+// import { useTranslation } from 'contexts/Localization';
+// import Select from 'components/KacoSelect/KacoSelect';
 import { useNftWithLocks } from '../hooks/useNftWithLocks';
 import NoBalance from './NoBalance';
 import { simpleRpcProvider } from 'utils/providers';
@@ -34,7 +34,7 @@ const Pools_: FC<{
 }> = ({ className, pair }) => {
   const [items, setItems] = useState<NFT[]>([]);
   const [fetching, setFetching] = useState(true);
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const locksInfo = useNftWithLocks(pair);
   const [now, setNow] = useState(0);
 
@@ -63,7 +63,7 @@ const Pools_: FC<{
         <NoBalance />
       ) : (
         <>
-          <Flex alignItems="center" mb="30px">
+          {/* <Flex alignItems="center" mb="30px">
             <Text color="#9DA6A6" fontSize="12px" mr="12px">
               sort:
             </Text>
@@ -87,7 +87,7 @@ const Pools_: FC<{
                 },
               ]}
             />
-          </Flex>
+          </Flex> */}
           <Grid gridGap="10px" className="pools">
             {items.map((item, index) => (
               <Nft nft={item} key={index} lockInfo={locksInfo[item.id]} now={now} />

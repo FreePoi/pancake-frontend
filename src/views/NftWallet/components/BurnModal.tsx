@@ -8,7 +8,7 @@ import { fetchNfts } from 'views/NftPool/util/fetchNft';
 import { NFT } from 'views/NftPool/components/GoodsInPool';
 import { useContract } from 'hooks/useContract';
 import Nft100Abi from 'config/abi/NFT100Pair721.json';
-import Select from 'components/KacoSelect/KacoSelect';
+// import Select from 'components/KacoSelect/KacoSelect';
 import PageLoader from 'components/Loader/PageLoader';
 import { LockInfo, useNftWithLocks } from 'views/NftPool/hooks/useNftWithLocks';
 import LockTime from 'views/NftPool/components/LockTime';
@@ -118,7 +118,6 @@ const Card = styled(Card_)`
 `;
 
 const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
-  const { t } = useTranslation();
   const { account } = useActiveWeb3React();
   const [nfts, setNfts] = useState<NFT[]>([]);
   const [fetching, setFetching] = useState(true);
@@ -180,7 +179,7 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
         <PageLoader />
       ) : (
         <>
-          <Flex justifyContent="center" mb="20px">
+          {/* <Flex justifyContent="center" mb="20px">
             <Select
               options={[
                 {
@@ -197,7 +196,7 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
                 },
               ]}
             />
-          </Flex>
+          </Flex> */}
 
           <Grid gridColumnGap={{ xs: '10px', md: '12px' }} gridRowGap={{ xs: '10px', md: '12px' }}>
             {nfts

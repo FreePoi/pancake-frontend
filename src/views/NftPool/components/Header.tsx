@@ -20,6 +20,7 @@ const PoolHeader_: FC<{ className?: string; pairIndex: number; floorPrice: numbe
   pairIndex,
   floorPrice,
 }) => {
+  console.log('floorPrice', floorPrice);
   const pair = useNftPair(pairIndex);
 
   return (
@@ -36,19 +37,19 @@ const PoolHeader_: FC<{ className?: string; pairIndex: number; floorPrice: numbe
           </div>
           <div className="info">
             <Text fontSize="18px" bold mb="4px">
-              {formatFloat(floorPrice)} BUSD
+              {formatFloat(floorPrice * 100)} BUSD
             </Text>
             <Text fontSize="12px">NFT Price</Text>
           </div>
           <div className="info second-line">
             <Text fontSize="18px" bold mb="4px">
-              {formatFloat(floorPrice * (pair?.supply || 0))} BUSD
+              {formatFloat(floorPrice * (pair?.supply || 0) * 100)} BUSD
             </Text>
             <Text fontSize="12px">Liquidity</Text>
           </div>
           <div className="info second-line">
             <Text fontSize="18px" bold mb="4px">
-              0
+              {(pair?.supply || 0) * 100}
             </Text>
             <Text fontSize="12px">KKaco Supply</Text>
           </div>

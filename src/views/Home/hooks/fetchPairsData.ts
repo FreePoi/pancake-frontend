@@ -1,4 +1,4 @@
-import { BIG_TEN } from './../../../utils/bigNumber';
+import { BIG_TEN } from '../../../utils/bigNumber';
 import { BigNumber } from '@ethersproject/bignumber';
 import RealBigNumber from 'bignumber.js';
 import ABI from 'config/abi/pair.json';

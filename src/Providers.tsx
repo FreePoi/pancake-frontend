@@ -10,6 +10,7 @@ import { LanguageProvider } from 'contexts/Localization';
 import { RefreshContextProvider } from 'contexts/RefreshContext';
 import { ToastsProvider } from 'contexts/ToastsContext';
 import store from 'state';
+import { PriceProvider } from 'contexts/PriceProvider';
 
 const ThemeProviderWrapper = (props) => {
   // const [isDark] = useThemeManager();
@@ -25,7 +26,9 @@ const Providers: React.FC = ({ children }) => {
             <ThemeProviderWrapper>
               <LanguageProvider>
                 <RefreshContextProvider>
-                  <ModalProvider>{children}</ModalProvider>
+                  <PriceProvider>
+                    <ModalProvider>{children}</ModalProvider>
+                  </PriceProvider>
                 </RefreshContextProvider>
               </LanguageProvider>
             </ThemeProviderWrapper>

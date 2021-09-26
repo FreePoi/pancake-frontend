@@ -15,10 +15,21 @@ import Erc1155 from 'config/abi/ERC1155.json';
 import * as ethers from 'ethers';
 import { simpleRpcProvider } from 'utils/providers';
 
-const StyledNav = styled.nav`
+const StyledNav = styled.nav<{ activeIndex: number }>`
   margin-bottom: 40px;
   display: flex;
   justify-content: center;
+
+  > div {
+    background: #12171a;
+    padding: 6px;
+    > button {
+      height: 36px !important;
+    }
+    > button${(props) => (props.activeIndex ? ':last-child' : ':first-child')} {
+      background: #1f373b !important;
+    }
+  }
 `;
 interface Props extends InjectedModalProps {
   nft: NFT;
@@ -72,7 +83,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
 
   return (
     <Modal style={{ position: 'relative', maxWidth: '400px', width: '100%' }} title={null} onDismiss={onDismiss}>
-      <StyledNav style={{ position: 'absolute', top: '20px' }}>
+      <StyledNav style={{ position: 'absolute', top: '20px' }} activeIndex={activeIndex}>
         <ButtonMenu activeIndex={activeIndex} variant="subtle" onItemClick={setActiveIndex}>
           <ButtonMenuItem>
             <Text width="100%">{t('Mint')}</Text>
@@ -84,6 +95,9 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
       </StyledNav>
       {activeIndex === 0 ? (
         <div style={{ maxWidth: '400px' }}>
+          <Text mb="16px" color="#F1842C" fontSize="12px" bold>
+            High-Value NFT? Lock it up!
+          </Text>
           <Flex
             style={{
               padding: '13px 14px',
@@ -93,7 +107,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
             }}
           >
             <img src={nft.image} alt="" style={{ width: '69px', height: '69px' }} />
-            <Text bold fontSize="20px" color="white" ml="30px">
+            <Text bold fontSize="16px" color="white" ml="30px">
               {nft.name}#{nft.id}
             </Text>
           </Flex>
@@ -123,10 +137,13 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
                 {pair.symbol}
               </Text>
               <Text fontSize="12px" color="#1BD3D5">
-                Quantity 100
+                Quantity 95
               </Text>
             </Flex>
           </Flex>
+          <Text textAlign="center" color="#9DA6A6" fontSize="12px" bold>
+            Fee 5%
+          </Text>
         </div>
       ) : (
         <div style={{ maxWidth: '400px' }}>
@@ -148,10 +165,10 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
             >
               <img src={nft.image} alt="" style={{ width: '69px', height: '69px' }} />
               <div>
-                <Text bold fontSize="20px" color="white" ml="30px">
+                <Text bold fontSize="16px" color="white" ml="30px">
                   Your sale method for
                 </Text>
-                <Text bold fontSize="20px" color="white" ml="30px">
+                <Text bold fontSize="16px" color="white" ml="30px">
                   {nft.name}#{nft.id}
                 </Text>
               </div>
@@ -164,6 +181,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
                 {lockdays} Day
               </Text>
               <Button
+                scale="sm"
                 mx="10px"
                 variant="secondary"
                 onClick={() => {
@@ -175,6 +193,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
                 -
               </Button>
               <Button
+                scale="sm"
                 onClick={() => {
                   if (lockdays < 30) {
                     setLockTime((old) => old + 1);
@@ -211,12 +230,12 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
                 {pair.symbol}
               </Text>
               <Text fontSize="12px" color="#1BD3D5">
-                Quantity 100
+                Quantity 95
               </Text>
             </Flex>
           </Flex>
           <Text textAlign="center" color="#F1842C" fontSize="12px" bold px="36px">
-            The default is 3% handling fee, add 1 day to increase 0.01% handling fee
+            The default is 5% handling fee, add 1 day to increase 0.05% handling fee
           </Text>
         </div>
       )}
