@@ -1,5 +1,7 @@
+import { NFT_PAIRS } from 'config/constants/nft';
 import { NFT } from '../components/GoodsInPool';
 import { chainId } from 'views/NftPools/hooks/useNftPools';
+import multicall from 'utils/multicall';
 
 interface CovalentTokenItem {
   balance: string;
@@ -76,4 +78,86 @@ export function filterNft(items: CovalentTokenItem[], nftAddress: string) {
       image: nft.external_data.image,
       name: nft.external_data.name,
     }));
+}
+
+export async function fetchNftInfo(nftAddress: string, id: number, owner: string): Promise<NFT> {
+  console.log('nftAddress: string, id: number, owner:', nftAddress, id, owner);
+  const pairConfig = NFT_PAIRS.find((pair) => pair.nftAddress.toLowerCase() === nftAddress.toLowerCase());
+
+  if (pairConfig.pid === 0) {
+    return await fetchPid0(pairConfig.nftAddress, id, owner, pairConfig.nftAbi);
+  } else {
+    return await fetchPid1(pairConfig.nftAddress, id, owner, pairConfig.nftAbi);
+  }
+}
+
+interface NftMeta {
+  name: string;
+  description: string;
+  image: string;
+  animation_url: string;
+  background_color: string;
+  external_link: string;
+  owner: string;
+}
+
+// kaco
+async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any): Promise<NFT> {
+  const calls = [
+    { address: nftAddress, name: 'balanceOf', params: [owner, id] },
+    { address: nftAddress, name: 'uri', params: [id] },
+  ];
+
+  const [balance, uri] = await multicall(abi, calls);
+  const res = await fetch(uri);
+  let info: NftMeta;
+
+  try {
+    info = await res.json();
+  } catch (e) {
+    console.log('nft metadata error', e);
+  }
+
+  if (!res.ok || !info) {
+    return;
+  }
+
+  return {
+    id,
+    balance: balance.toNumber(),
+    uri,
+    image: info.image,
+    name: info.name,
+  };
+}
+
+// kaco
+async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any): Promise<NFT> {
+  const calls = [
+    { address: nftAddress, name: 'balanceOf', params: [owner] },
+    { address: nftAddress, name: 'tokenUri', params: [id] },
+  ];
+
+  const [balance, uri] = await multicall(abi, calls);
+  const u = uri.slice('ipfs://'.length);
+  const res = await fetch(u);
+  let info: NftMeta;
+
+  try {
+    info = await res.json();
+  } catch (e) {
+    console.log('nft metadata error', e);
+  }
+
+  if (!res.ok || !info) {
+    return;
+  }
+
+  return {
+    id,
+    balance: balance.toNumber(),
+    uri: u,
+    image: info.image,
+    name: info.name,
+  };
 }

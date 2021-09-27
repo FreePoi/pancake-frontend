@@ -20,7 +20,6 @@ const PoolHeader_: FC<{ className?: string; pairIndex: number; floorPrice: numbe
   pairIndex,
   floorPrice,
 }) => {
-  console.log('floorPrice', floorPrice);
   const pair = useNftPair(pairIndex);
 
   return (

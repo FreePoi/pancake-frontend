@@ -90,7 +90,7 @@ const Pools_: FC<{
           </Flex> */}
           <Grid gridGap="10px" className="pools">
             {items.map((item, index) => (
-              <Nft nft={item} key={index} lockInfo={locksInfo[item.id]} now={now} />
+              <Nft nft={locksInfo[index]} key={index} now={now} />
             ))}
           </Grid>
         </>

@@ -1,3 +1,6 @@
+import PancakeNftAbi from '../abi/pancake-nft.json';
+import KacoNftAbi from '../abi/kaco-nft.json';
+
 export enum NFT_TYPE {
   NFT721 = 721,
   NFT1155 = 1155,
@@ -10,6 +13,7 @@ export interface NftPairConfig {
   symbol: string;
   pid: number;
   type: NFT_TYPE;
+  nftAbi: any;
 }
 
 export const NFT_PAIRS: NftPairConfig[] = [
@@ -20,6 +24,7 @@ export const NFT_PAIRS: NftPairConfig[] = [
     symbol: 'KKACO',
     pid: 0,
     type: NFT_TYPE.NFT1155,
+    nftAbi: KacoNftAbi,
   },
   {
     address: '0xa70c4580F1e00C1d7A9D0280832c0D513a6D530F',
@@ -28,6 +33,7 @@ export const NFT_PAIRS: NftPairConfig[] = [
     symbol: 'KCAKE',
     pid: 1,
     type: NFT_TYPE.NFT721,
+    nftAbi: PancakeNftAbi,
   },
 ];
 

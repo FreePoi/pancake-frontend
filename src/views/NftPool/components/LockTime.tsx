@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Flex, Text } from '@kaco/uikit';
 import { simpleRpcProvider } from 'utils/providers';
 import { BLOCK_INTERVAL } from 'config/constants/nft';
-import { LockInfo } from '../hooks/useNftWithLocks';
 
 function getLastDate(
   until: number,
@@ -39,7 +38,7 @@ function getLastDate(
   };
 }
 
-const LockTime: FC<{ className?: string; lockInfo: LockInfo | undefined }> = ({ className, lockInfo }) => {
+const LockTime: FC<{ className?: string; lastBlock: number }> = ({ className, lastBlock }) => {
   const [now, setNow] = useState(0);
   const nowDate:
     | {
@@ -48,7 +47,7 @@ const LockTime: FC<{ className?: string; lockInfo: LockInfo | undefined }> = ({ 
         mins: number;
         secs: number;
       }
-    | undefined = useMemo(() => lockInfo && getLastDate(lockInfo.lastBlock, now), [lockInfo, now]);
+    | undefined = useMemo(() => lastBlock && getLastDate(lastBlock, now), [lastBlock, now]);
 
   useEffect(() => {
     simpleRpcProvider.getBlockNumber().then(setNow);

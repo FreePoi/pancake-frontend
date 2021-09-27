@@ -46,7 +46,7 @@ const Card_: FC<{
         {lockInfo && (
           <div className="locked">
             <img src={LockSvg} alt="" />
-            <LockTime lockInfo={lockInfo} />
+            <LockTime lastBlock={lockInfo.lastBlock} />
           </div>
         )}
       </div>
@@ -122,7 +122,9 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
   const [nfts, setNfts] = useState<NFT[]>([]);
   const [fetching, setFetching] = useState(true);
   const contract = useContract(pair?.pairAddress, Nft100Abi);
-  const locksInfo = useNftWithLocks(pair && { type: pair.type, address: pair.pairAddress });
+  const locksInfo = useNftWithLocks(
+    pair && { type: pair.type, address: pair.pairAddress, nftAddress: pair.nftAddress },
+  );
 
   console.log('pair', pair);
   useEffect(() => {
