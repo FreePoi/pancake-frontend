@@ -354,7 +354,7 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
                 to={item.link}
                 key={item.link}
                 onClick={() => {
-                  [isXs, isSm, isMd].some(Boolean) && !item.children && !item.children.length && setCollapsed(true);
+                  [isXs, isSm, isMd].some(Boolean) && !item.children && !item.children?.length && setCollapsed(true);
 
                   if (item.children?.length) {
                     setMenuItems([

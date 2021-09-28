@@ -183,7 +183,7 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
         (e) => {
           toastError(
             t('Error'),
-            t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
+            t(e.data?.message || 'Please try again. Confirm the transaction and make sure you are paying enough gas!'),
           );
         },
       );
