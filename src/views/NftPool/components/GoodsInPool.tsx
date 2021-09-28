@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Nft from './Nft';
 import { NftPairConfig } from 'config/constants/nft';
 // import { fetchNfts } from '../util/fetchNft';
-// import PageLoader from 'components/Loader/PageLoader';
+import PageLoader from 'components/Loader/PageLoader';
 // import { useTranslation } from 'contexts/Localization';
 // import Select from 'components/KacoSelect/KacoSelect';
 // NftInfoWithLock, useNftWithLockInfo,
@@ -87,6 +87,10 @@ const Pools_: FC<{
   // if (fetching) {
   //   return <PageLoader />;
   // }
+
+  if (!nfts) {
+    return <PageLoader />;
+  }
 
   return (
     <div className={className}>
