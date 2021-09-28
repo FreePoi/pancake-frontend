@@ -83,6 +83,16 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.ksm,
   },
   {
+    pid: 16,
+    lpSymbol: 'KKAC-KAC LP',
+    lpAddresses: {
+      97: '',
+      56: '0x7641cfbc20b1c55485df217e0b81af80e5d9f4ce',
+    },
+    token: tokens.kkac,
+    quoteToken: tokens.kaco,
+  },
+  {
     pid: 14,
     lpSymbol: 'PHA-DOT LP',
     lpAddresses: {
