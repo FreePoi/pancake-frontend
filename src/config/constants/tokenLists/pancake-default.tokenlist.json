@@ -104,6 +104,30 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "/images/tokens/0x0112e557d400474717056C4e6D40eDD846F38351.svg"
+    },
+    {
+      "name": "Kaco NFT",
+      "symbol": "KKAC",
+      "address": "0x65aDc52BfD0E3d9Df80Be6E36F330E757862e2Bd",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "/images/tokens/0x65aDc52BfD0E3d9Df80Be6E36F330E757862e2Bd.png"
+    },
+    {
+      "name": "Pancake NFT",
+      "symbol": "KCAKE",
+      "address": "0xa70c4580F1e00C1d7A9D0280832c0D513a6D530F",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "/images/tokens/0xa70c4580F1e00C1d7A9D0280832c0D513a6D530F.png"
+    },
+    {
+      "name": "Pancake",
+      "symbol": "CAKE",
+      "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.svg"
     }
   ]
 }

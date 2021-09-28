@@ -1861,6 +1861,33 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://phala.network/',
   },
+  kkac: {
+    symbol: 'KKAC',
+    address: {
+      56: '0x65aDc52BfD0E3d9Df80Be6E36F330E757862e2Bd',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.kaco.finance/',
+  },
+  kcake: {
+    symbol: 'KCAKE',
+    address: {
+      56: '0xa70c4580F1e00C1d7A9D0280832c0D513a6D530F',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.kaco.finance/',
+  },
+  cake: {
+    symbol: 'CAKE',
+    address: {
+      56: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://pancakeswap.finance/',
+  },
 };
 
 export const WBNB = new Token(chainId, tokens.wbnb.address[chainId], 18, 'WBNB', 'Wrapped BNB');
