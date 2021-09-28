@@ -151,8 +151,11 @@ export default styled(ShopCart)`
       max-height: 328px;
       overflow-y: auto;
       overflow-x: hidden;
-      grid-template-columns: 136px 136px 136px 136px;
+      grid-template-columns: 136px 136px;
 
+      ${({ theme }) => theme.mediaQueries.md} {
+        grid-template-columns: 136px 136px 136px 136px;
+      }
       /* display: flex;
       flex-wrap: wrap; */
       > .item {
