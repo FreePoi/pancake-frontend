@@ -123,7 +123,7 @@ export const fetchPoolsUserDataAsync =
         tokenPerBlock: _tokenPerBlock.toNumber() * _poolWeight.toNumber(),
       });
       if (poolsConfig.length - 1 === index) {
-        console.log(userData);
+        // console.log(userData);
         dispatch(setPoolsUserData(userData));
       }
     });
