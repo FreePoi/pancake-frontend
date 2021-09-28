@@ -133,7 +133,7 @@ const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) =
         <td>
           <TitledItem
             title="Floor Price"
-            value={'$' + formatFloat(priceVsBusdMap[pair.pairAddress.toLowerCase()]?.toNumber() || 0)}
+            value={'$' + formatFloat(priceVsBusdMap[pair.pairAddress.toLowerCase()]?.toNumber() * 100 || 0)}
           />
         </td>
 
