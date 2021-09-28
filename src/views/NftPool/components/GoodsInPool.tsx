@@ -46,7 +46,7 @@ const Pools_: FC<{
   // const [fetching, setFetching] = useState(false);
   // const { t } = useTranslation();
   // const locksInfo = useNftWithLockInfo(pair);
-  const nfts = useNftWithLocks();
+  const nfts = useNftWithLocks(pair);
   const [now, setNow] = useState(0);
 
   useEffect(() => {
