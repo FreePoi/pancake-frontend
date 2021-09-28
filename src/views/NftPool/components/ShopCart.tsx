@@ -8,6 +8,8 @@ import { useContract } from 'hooks/useContract';
 import Nft100Abi from 'config/abi/NFT100Pair721.json';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { formatFloat } from '../util/format';
+import useToast from 'hooks/useToast';
+import { useTranslation } from 'contexts/Localization';
 
 const Item: FC<{ className?: string; item: NFT; floorPrice: number; symbol: string }> = ({
   className,
@@ -46,6 +48,8 @@ const ShopCart: FC<{ className?: string; floorPrice: number; symbol: string; pai
   const contract = useContract(pairAddres, Nft100Abi);
   const { account } = useActiveWeb3React();
   const { isXs, isSm, isMd } = useMatchBreakpoints();
+  const { toastSuccess, toastError } = useToast();
+  const { t } = useTranslation();
 
   const onBuy = useCallback(() => {
     if (!account || !contract) {
@@ -59,15 +63,18 @@ const ShopCart: FC<{ className?: string; floorPrice: number; symbol: string; pai
     );
 
     burn.then(
-      (s) => {
-        alert('success');
+      async (tx) => {
+        await tx.wait();
+        const receipt = await tx.wait();
+
+        console.log('receipt', receipt);
+        toastSuccess(t('Bought!'), t('You can have it now.'));
       },
       (e) => {
-        alert('failed');
-        console.log('e', e);
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'));
       },
     );
-  }, [contract, account, items]);
+  }, [contract, account, items, t, toastSuccess, toastError]);
 
   return (
     <div className={className}>

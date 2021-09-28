@@ -14,6 +14,7 @@ import { LockInfo, useNftWithLockInfo } from 'views/NftPool/hooks/useNftWithLock
 import LockTime from 'views/NftPool/components/LockTime';
 import LockSvg from '../img/lock.svg';
 import { simpleRpcProvider } from 'utils/providers';
+import useToast from 'hooks/useToast';
 
 interface Props extends InjectedModalProps {
   pair: NftPair | undefined;
@@ -134,11 +135,13 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
   } catch {
     localStorage.removeItem(NFT_POOLS);
   }
+  const { toastSuccess, toastError } = useToast();
   const { account } = useActiveWeb3React();
   const [nfts, setNfts] = useState<NFT[]>(_pairs);
   const [fetching, setFetching] = useState(false);
   const contract = useContract(pair?.pairAddress, Nft100Abi);
   const locksInfo = useNftWithLockInfo(pair && { type: pair.type, address: pair.pairAddress });
+  const { t } = useTranslation();
 
   console.log('pair', pair);
   useEffect(() => {
@@ -168,14 +171,24 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
       const burn = contract.withdraw([id], [1], account);
 
       burn.then(
-        (s) => {
-          alert('success');
+        async (tx) => {
           onDismiss();
+
+          await tx.wait();
+          const receipt = await tx.wait();
+
+          console.log('receipt', receipt);
+          toastSuccess(t('Burnt!'), t('Your fragments burnt, and you got NFT.'));
         },
-        (e) => console.log('e', e),
+        (e) => {
+          toastError(
+            t('Error'),
+            t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
+          );
+        },
       );
     },
-    [contract, account, onDismiss],
+    [contract, account, onDismiss, t, toastSuccess, toastError],
   );
 
   return (
