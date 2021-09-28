@@ -13,6 +13,7 @@ import PageLoader from 'components/Loader/PageLoader';
 import { LockInfo, useNftWithLocks } from 'views/NftPool/hooks/useNftWithLocks';
 import LockTime from 'views/NftPool/components/LockTime';
 import LockSvg from '../img/lock.svg';
+import { simpleRpcProvider } from 'utils/providers';
 
 interface Props extends InjectedModalProps {
   pair: NftPair | undefined;
@@ -37,6 +38,11 @@ const Card_: FC<{
   account: string | undefined;
 }> = ({ className, onBurn, nft, lockInfo, account }) => {
   const { t } = useTranslation();
+  const [now, setNow] = useState(0);
+
+  useEffect(() => {
+    simpleRpcProvider.getBlockNumber().then(setNow);
+  }, []);
 
   console.log('lockInfo', lockInfo, account, nft.id);
   return (
@@ -46,7 +52,7 @@ const Card_: FC<{
         {lockInfo && (
           <div className="locked">
             <img src={LockSvg} alt="" />
-            <LockTime lastBlock={lockInfo.lastBlock} />
+            <LockTime lastBlock={lockInfo.lastBlock} now={now} />
           </div>
         )}
       </div>

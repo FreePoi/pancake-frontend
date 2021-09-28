@@ -18,7 +18,7 @@ const Nft: FC<{ className?: string; nft: NftInfoWithLock; now: number }> = ({ cl
         <img src={nft.image} alt="" />
         {nft.lastBlock > now && (
           <div className="locked">
-            <LockTime lastBlock={nft.lastBlock} />
+            <LockTime lastBlock={nft.lastBlock} now={now} />
           </div>
         )}
       </div>

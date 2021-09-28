@@ -1,13 +1,13 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Grid } from '@kaco/uikit';
 import styled from 'styled-components';
 import Nft from './Nft';
 import { NftPairConfig } from 'config/constants/nft';
-// import { fetchNfts } from '../util/fetchNft';
+import { fetchNfts } from '../util/fetchNft';
 import PageLoader from 'components/Loader/PageLoader';
 // import { useTranslation } from 'contexts/Localization';
 // import Select from 'components/KacoSelect/KacoSelect';
-import { useNftWithLocks } from '../hooks/useNftWithLocks';
+import { NftInfoWithLock, useNftWithLockInfo } from '../hooks/useNftWithLocks';
 import NoBalance from './NoBalance';
 import { simpleRpcProvider } from 'utils/providers';
 
@@ -27,39 +27,69 @@ export interface NFT {
   image: string;
   name: string;
 }
+const NFT_POOLS = 'NFT_POOLS';
 
 const Pools_: FC<{
   className?: string;
   pair: NftPairConfig | undefined;
 }> = ({ className, pair }) => {
-  // const [items, setItems] = useState<NFT[]>([]);
-  // const [fetching, setFetching] = useState(false);
+  let _pairs: NFT[] = [];
+
+  try {
+    _pairs = JSON.parse(localStorage.getItem(NFT_POOLS)) || [];
+  } catch {
+    localStorage.removeItem(NFT_POOLS);
+  }
+  const [items, setItems] = useState<NFT[]>(_pairs);
+  const [fetching, setFetching] = useState(false);
   // const { t } = useTranslation();
-  const locksInfo = useNftWithLocks(pair);
+  const locksInfo = useNftWithLockInfo(pair);
   const [now, setNow] = useState(0);
 
   useEffect(() => {
     simpleRpcProvider.getBlockNumber().then(setNow);
   }, []);
 
-  // useEffect(() => {
-  //   if (!pair?.nftAddress || !pair?.address) {
-  //     return;
-  //   }
+  useEffect(() => {
+    console.log('pair', pair);
+    if (!pair?.nftAddress || !pair?.address) {
+      return;
+    }
 
-  //   setFetching(true);
-  //   fetchNfts(pair?.nftAddress, pair?.address)
-  //     .then(setItems)
-  //     .finally(() => setFetching(false));
-  // }, [pair]);
+    setFetching(true);
+    fetchNfts(pair?.nftAddress, pair?.address)
+      .then((items) => {
+        console.log(items, 'items');
 
-  if (!locksInfo) {
+        setItems(items);
+        localStorage.setItem(NFT_POOLS, JSON.stringify(items));
+      })
+      .finally(() => setFetching(false));
+  }, [pair]);
+
+  const results: NftInfoWithLock[] = useMemo(() => {
+    return items
+      .filter(({ id }) => locksInfo[id])
+      .map((item): NftInfoWithLock => {
+        const lockInfo = locksInfo[item.id];
+        return {
+          ...item,
+          lastBlock: lockInfo.lastBlock,
+          unlocker: lockInfo.unlocker,
+          amount: lockInfo.amount,
+        };
+      });
+  }, [items, locksInfo]);
+
+  console.log('results', results);
+
+  if (fetching) {
     return <PageLoader />;
   }
 
   return (
     <div className={className}>
-      {!locksInfo.length ? (
+      {!items.length ? (
         <NoBalance />
       ) : (
         <>
@@ -89,7 +119,7 @@ const Pools_: FC<{
             />
           </Flex> */}
           <Grid gridGap="10px" className="pools">
-            {locksInfo.map((item, index) => (
+            {results.map((item, index) => (
               <Nft nft={item} key={index} now={now} />
             ))}
           </Grid>

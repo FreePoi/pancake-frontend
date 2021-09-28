@@ -37,13 +37,13 @@ const PoolHeader_: FC<{ className?: string; pairIndex: number; floorPrice: numbe
           </div>
           <div className="info">
             <Text fontSize="18px" bold mb="4px">
-              {formatFloat(floorPrice * 100)} BUSD
+              ${formatFloat(floorPrice * 100)}
             </Text>
             <Text fontSize="12px">NFT Price</Text>
           </div>
           <div className="info second-line">
             <Text fontSize="18px" bold mb="4px">
-              {formatFloat(floorPrice * (pair?.supply || 0) * 100)} BUSD
+              ${formatFloat(floorPrice * (pair?.supply || 0) * 100)}
             </Text>
             <Text fontSize="12px">Liquidity</Text>
           </div>

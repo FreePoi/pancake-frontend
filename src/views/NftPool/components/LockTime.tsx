@@ -1,7 +1,6 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useMemo } from 'react';
 import styled from 'styled-components';
 import { Flex, Text } from '@kaco/uikit';
-import { simpleRpcProvider } from 'utils/providers';
 import { BLOCK_INTERVAL } from 'config/constants/nft';
 
 function getLastDate(
@@ -13,7 +12,7 @@ function getLastDate(
   mins: number;
   secs: number;
 } {
-  if (now >= until) {
+  if (now >= until || now === 0) {
     return {
       days: 0,
       hours: 0,
@@ -38,8 +37,7 @@ function getLastDate(
   };
 }
 
-const LockTime: FC<{ className?: string; lastBlock: number }> = ({ className, lastBlock }) => {
-  const [now, setNow] = useState(0);
+const LockTime: FC<{ className?: string; lastBlock: number; now: number }> = ({ className, lastBlock, now }) => {
   const nowDate:
     | {
         days: number;
@@ -49,15 +47,11 @@ const LockTime: FC<{ className?: string; lastBlock: number }> = ({ className, la
       }
     | undefined = useMemo(() => lastBlock && getLastDate(lastBlock, now), [lastBlock, now]);
 
-  useEffect(() => {
-    simpleRpcProvider.getBlockNumber().then(setNow);
-  }, []);
-
   return (
     <Flex className={className}>
       <div>
         <Text fontSize="20px" bold color="#1BD3D5">
-          {nowDate.days}
+          {nowDate.days || '?'}
         </Text>
         <Text fontSize="12px" color="#1BD3D5">
           Days
@@ -65,7 +59,7 @@ const LockTime: FC<{ className?: string; lastBlock: number }> = ({ className, la
       </div>
       <div>
         <Text fontSize="20px" bold color="#1BD3D5">
-          {nowDate.hours}
+          {nowDate.hours || '?'}
         </Text>
         <Text fontSize="12px" color="#1BD3D5">
           Hrs
@@ -73,7 +67,7 @@ const LockTime: FC<{ className?: string; lastBlock: number }> = ({ className, la
       </div>
       <div>
         <Text fontSize="20px" bold color="#1BD3D5">
-          {nowDate.mins}
+          {nowDate.mins || '?'}
         </Text>
         <Text fontSize="12px" color="#1BD3D5">
           Mins
@@ -81,7 +75,7 @@ const LockTime: FC<{ className?: string; lastBlock: number }> = ({ className, la
       </div>
       <div>
         <Text fontSize="20px" bold color="#1BD3D5">
-          {nowDate.secs}
+          {nowDate.secs || '?'}
         </Text>
         <Text fontSize="12px" color="#1BD3D5">
           Secs

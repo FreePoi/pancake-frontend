@@ -72,7 +72,7 @@ export const useNftWithLocks = (pair?: { type: NFT_TYPE; address: string; nftAdd
 
 export const useNftWithLockInfo = (pair?: { type: NFT_TYPE; address: string }) => {
   const contract = useContract(pair?.address, pair?.type === NFT_TYPE.NFT1155 ? NFT100Pair1155 : NFT100Pair721);
-  const [locksInfo, setLocksInfo] = useState<Locks>([]);
+  const [locksInfo, setLocksInfo] = useState<Locks>({});
 
   useEffect(() => {
     if (!contract || !pair) {
