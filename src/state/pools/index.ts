@@ -48,8 +48,11 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
   const totalStakings = await fetchPoolsTotalStaking();
 
   const prices = getTokenPricesFromFarm(getState().farms.data);
+  const _tokenPerBlock = await useTokenPerBlock();
 
-  const liveData = poolsConfig.map((pool) => {
+  const liveData = [];
+  poolsConfig.map(async (pool, index) => {
+    const _poolWeight = await usePoolWeight(pool);
     const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId);
     const totalStaking = totalStakings.find((entry) => entry.sousId === pool.sousId);
     const isPoolEndBlockExceeded = currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false;
@@ -65,21 +68,21 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
           stakingTokenPrice,
           earningTokenPrice,
           getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals),
-          parseFloat(pool.tokenPerBlock),
+          _tokenPerBlock.toNumber() * _poolWeight.toNumber(),
         )
       : 0;
-
-    return {
+    liveData.push({
       ...blockLimit,
       ...totalStaking,
       stakingTokenPrice,
       earningTokenPrice,
       apr,
       isFinished: isPoolFinished,
-    };
+    });
+    if (poolsConfig.length - 1 === index) {
+      dispatch(setPoolsPublicData(liveData));
+    }
   });
-
-  dispatch(setPoolsPublicData(liveData));
 };
 
 export const fetchPoolsStakingLimitsAsync = () => async (dispatch, getState) => {
@@ -123,7 +126,6 @@ export const fetchPoolsUserDataAsync =
         tokenPerBlock: _tokenPerBlock.toNumber() * _poolWeight.toNumber(),
       });
       if (poolsConfig.length - 1 === index) {
-        // console.log(userData);
         dispatch(setPoolsUserData(userData));
       }
     });
