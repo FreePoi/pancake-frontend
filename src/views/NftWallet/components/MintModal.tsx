@@ -14,6 +14,7 @@ import Erc721 from 'config/abi/erc-721.json';
 import Erc1155 from 'config/abi/ERC1155.json';
 import * as ethers from 'ethers';
 import { simpleRpcProvider } from 'utils/providers';
+import useToast from 'hooks/useToast';
 
 const StyledNav = styled.nav<{ activeIndex: number }>`
   margin-bottom: 40px;
@@ -47,6 +48,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
   const contract = useContract(pair?.nftAddress, pair?.type === NFT_TYPE.NFT721 ? Erc721 : Erc1155);
   const [activeIndex, setActiveIndex] = useState(0);
   const [lockdays, setLockdays] = useState(10);
+  const { toastSuccess, toastError } = useToast();
 
   const onMint = useCallback(async () => {
     if (!account) {
@@ -77,13 +79,20 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
     }
 
     mint.then(
-      (s) => {
-        alert('success');
+      async (tx) => {
         onDismiss();
+
+        await tx.wait();
+        const receipt = await tx.wait();
+
+        console.log('receipt', receipt);
+        toastSuccess(t('Minted!'), t('You can trade fragmented tokens now.'));
       },
-      (e) => console.log('e', e),
+      (e) => {
+        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'));
+      },
     );
-  }, [contract, pair, account, nft, onDismiss, activeIndex, lockdays]);
+  }, [contract, pair, account, nft, onDismiss, activeIndex, lockdays, toastSuccess, toastError, t]);
 
   return (
     <Modal style={{ position: 'relative', maxWidth: '400px', width: '100%' }} title={null} onDismiss={onDismiss}>
