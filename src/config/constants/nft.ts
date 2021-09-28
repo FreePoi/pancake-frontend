@@ -22,7 +22,7 @@ export const NFT_PAIRS: NftPairConfig[] = [
   {
     address: '0x65aDc52BfD0E3d9Df80Be6E36F330E757862e2Bd',
     nftAddress: '0x46F36F9FE211600417D9d24c014a154052ABC960',
-    name: 'KACO NFT100',
+    name: 'KACO NFT',
     symbol: 'KKACO',
     pid: 0,
     type: NFT_TYPE.NFT1155,
@@ -32,7 +32,7 @@ export const NFT_PAIRS: NftPairConfig[] = [
   {
     address: '0xa70c4580F1e00C1d7A9D0280832c0D513a6D530F',
     nftAddress: '0xdf7952b35f24acf7fc0487d01c8d5690a60dba07',
-    name: 'PANCAKE NFT100',
+    name: 'PANCAKE NFT',
     symbol: 'KCAKE',
     pid: 1,
     type: NFT_TYPE.NFT721,
