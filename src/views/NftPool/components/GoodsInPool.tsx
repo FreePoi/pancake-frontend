@@ -124,7 +124,7 @@ const Pools_: FC<{
             />
           </Flex> */}
           <Grid gridGap="10px" className="pools">
-            {nfts.map((item, index) => (
+            {[...nfts].reverse().map((item, index) => (
               <Nft nft={item} key={index} now={now} />
             ))}
           </Grid>
