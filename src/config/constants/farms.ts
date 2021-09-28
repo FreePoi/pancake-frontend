@@ -42,6 +42,16 @@ const farms: FarmConfig[] = [
   /**
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
+   {
+    pid: 16,
+    lpSymbol: 'KKAC-KAC LP',
+    lpAddresses: {
+      97: '',
+      56: '0x7641cfbc20b1c55485df217e0b81af80e5d9f4ce',
+    },
+    token: tokens.kkac,
+    quoteToken: tokens.kaco,
+  },
   {
     pid: 3,
     lpSymbol: 'KSM-KAC LP',
@@ -81,16 +91,6 @@ const farms: FarmConfig[] = [
     },
     token: tokens.wbnb,
     quoteToken: tokens.ksm,
-  },
-  {
-    pid: 16,
-    lpSymbol: 'KKAC-KAC LP',
-    lpAddresses: {
-      97: '',
-      56: '0x7641cfbc20b1c55485df217e0b81af80e5d9f4ce',
-    },
-    token: tokens.kkac,
-    quoteToken: tokens.kaco,
   },
   {
     pid: 14,
