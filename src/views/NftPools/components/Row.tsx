@@ -1,12 +1,15 @@
-import { FC, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { Text, Flex } from '@kaco/uikit';
 
-import LogoSvg from '../svg/demo.svg';
+// import LogoSvg from '../svg/demo.svg';
 import { RowBetween } from '../../../components/Layout/Row';
 import { NftPair } from '../hooks/useNftPools';
+import { PriceContext } from 'contexts/PriceProvider';
+import { formatFloat } from 'views/NftPool/util/format';
+import { NFT_PAIRS } from 'config/constants/nft';
 
 const StyledTr = styled.tr`
   border-bottom: 1px solid #122124;
@@ -38,15 +41,16 @@ const MoreTr = styled.tr`
   overflow: hidden;
 `;
 
-const PoolName_: FC<{ poolName: string; fragmentName: string; className?: string }> = ({
+const PoolName_: FC<{ poolName: string; fragmentName: string; className?: string; logo?: string }> = ({
   poolName,
   fragmentName,
   className,
+  logo,
 }) => {
   return (
     <Flex alignItems="center" className={className}>
       <div>
-        <img src={LogoSvg} alt="" />
+        <img src={logo} alt="" />
       </div>
       <div>
         <Text bold fontSize="16px" mb={{ xs: '4px', md: '7px' }}>
@@ -95,6 +99,7 @@ const TitledItem = styled(TitledItem_)``;
 const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) => {
   const history = useHistory();
   const [collapsed, setCollapsed] = useState(false);
+  const { priceVsBusdMap } = useContext(PriceContext);
 
   return (
     <>
@@ -103,7 +108,11 @@ const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) =
         onClickCapture={() => history.push(`/nft/pool/${pair.pairAddress}`)}
       >
         <td>
-          <PoolName poolName={pair.name} fragmentName={pair.symbol} />
+          <PoolName
+            poolName={pair.name}
+            fragmentName={pair.symbol}
+            logo={NFT_PAIRS.find((p) => pair.pairAddress.toLowerCase() === p.address.toLowerCase())?.logo}
+          />
         </td>
         {!simpleMode && (
           <>
@@ -111,19 +120,28 @@ const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) =
               <TitledItem title="NFT IN Pool" value={pair.supply} />
             </td>
             <td>
-              <TitledItem title="Liquidity" value={0} />
+              <TitledItem
+                title="Liquidity"
+                value={
+                  '$' +
+                  formatFloat((priceVsBusdMap[pair.pairAddress.toLowerCase()]?.toNumber() || 0) * pair.supply * 100)
+                }
+              />
             </td>
           </>
         )}
         <td>
-          <TitledItem title="Floor Price" value={0} />
+          <TitledItem
+            title="Floor Price"
+            value={'$' + formatFloat(priceVsBusdMap[pair.pairAddress.toLowerCase()]?.toNumber() || 0)}
+          />
         </td>
 
         {!simpleMode && (
           <>
-            <td>
+            {/* <td>
               <TitledItem title="7 Days Change" value={0} />
-            </td>
+            </td> */}
             <td>
               <div className="link">Link</div>
             </td>
@@ -137,7 +155,7 @@ const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) =
             style={{
               overflow: 'hidden',
               transition: 'height 0.1s',
-              height: simpleMode && !collapsed ? '130px' : '0px',
+              height: simpleMode && !collapsed ? '100px' : '0px',
             }}
             colSpan={6}
           >
@@ -146,7 +164,7 @@ const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) =
                 padding: simpleMode && !collapsed ? '10px 0px' : '0px',
                 overflow: 'hidden',
                 transition: 'height 0.1s',
-                height: simpleMode && !collapsed ? '130px' : '0px',
+                height: simpleMode && !collapsed ? '100px' : '0px',
               }}
             >
               <RowBetween padding="8px 12px">
@@ -155,12 +173,15 @@ const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) =
               </RowBetween>
               <RowBetween padding="8px 12px">
                 <Text fontSize="12px">Liquidity</Text>
-                <Text color="white">{0}</Text>
+                <Text color="white">
+                  {'$' +
+                    formatFloat((priceVsBusdMap[pair.pairAddress.toLowerCase()]?.toNumber() || 0) * pair.supply * 100)}
+                </Text>
               </RowBetween>
-              <RowBetween padding="8px 12px">
+              {/* <RowBetween padding="8px 12px">
                 <Text fontSize="12px">7 Days Change</Text>
                 <Text color="white">{0}</Text>
-              </RowBetween>
+              </RowBetween> */}
             </div>
           </td>
         </MoreTr>

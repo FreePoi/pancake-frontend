@@ -2,9 +2,10 @@ import React, { FC } from 'react';
 import { Flex, Text } from '@kaco/uikit';
 import styled from 'styled-components';
 import HeaderBgSvg from '../img/header-bg.svg';
-import LogoSvg from '../../NftPools/svg/demo.svg';
+// import LogoSvg from '../../NftPools/svg/demo.svg';
 import { useNftPair } from 'views/NftPools/hooks/useNftPools';
 import { formatFloat } from '../util/format';
+import { NFT_PAIRS } from 'config/constants/nft';
 
 export interface Pool {
   poolName: string;
@@ -25,7 +26,7 @@ const PoolHeader_: FC<{ className?: string; pairIndex: number; floorPrice: numbe
   return (
     <div className={className}>
       <div>
-        <img className="pool-logo" src={LogoSvg} alt="" />
+        <img className="pool-logo" src={NFT_PAIRS[pairIndex].logo} alt="" />
         <h1>{pair?.name}</h1>
         <Flex className="pool-info">
           <div className="info">

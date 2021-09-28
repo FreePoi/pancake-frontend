@@ -22,7 +22,7 @@ const NftPool: FC<{ className?: string }> = ({ className }) => {
         <PoolHeader pairIndex={index} floorPrice={priceVsBusdMap[pairAddress.toLowerCase()]?.toNumber() || 0} />
         <GoodsInPool pair={pair} />
       </Page>
-      {!!items.length && <ShopCart floorPrice={0.1} symbol="BUSD" pairAddres={pair.address} />}
+      {!!items.length && <ShopCart floorPrice={100} symbol={pair.symbol} pairAddres={pair.address} />}
     </>
   );
 };

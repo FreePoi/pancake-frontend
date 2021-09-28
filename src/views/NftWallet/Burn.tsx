@@ -10,6 +10,9 @@ import Erc20 from 'config/abi/erc20.json';
 import { BigNumber } from '@ethersproject/bignumber';
 import PageLoader from 'components/Loader/PageLoader';
 import NoBalance from './components/NoBalance';
+import RealBigNumber from 'bignumber.js';
+import { formatFloat } from 'views/NftPool/util/format';
+import { NFT_PAIRS } from 'config/constants/nft';
 
 const Burn: FC<{ className?: string }> = ({ className }) => {
   const pairs = useNftPairs();
@@ -51,7 +54,9 @@ const Burn: FC<{ className?: string }> = ({ className }) => {
         for (let i = 0; i < results.length - 1; i += step) {
           const balance: BigNumber = results[i][0];
           const decimals = results[i + 1][0];
-          const balanceNumber = balance.div(BigNumber.from(10).pow(BigNumber.from(decimals))).toNumber();
+          const balanceNumber = new RealBigNumber(balance.toString())
+            .div(new RealBigNumber(10).pow(new RealBigNumber(decimals)))
+            .toNumber();
 
           balancesOfNft100.push({ ...pairs[i / step], balance: balanceNumber });
         }
@@ -75,11 +80,15 @@ const Burn: FC<{ className?: string }> = ({ className }) => {
           <Grid gridGap={{ xs: '4px', md: '16px' }} className="nfts">
             {balancesOfNft100.map((balance, index) => (
               <Flex className="fragment" key={balance.pairAddress}>
-                <div className="logo"></div>
+                <img
+                  className="logo"
+                  src={NFT_PAIRS.find((p) => balance.pairAddress.toLowerCase() === p.address.toLowerCase())?.logo}
+                  alt=""
+                />
                 <Flex flex="1" justifyContent="space-between" alignItems="center">
                   <div className="">
                     <Text color="#1BD3D5" bold fontSize="20px">
-                      {balance.balance}
+                      {formatFloat(balance.balance)}
                     </Text>
                     <Text color="white" bold>
                       {balance.symbol}
@@ -145,7 +154,6 @@ export default styled(Burn)`
         width: 52px;
         height: 52px;
         border-radius: 50%;
-        background-color: #f1842c;
         margin-right: 20px;
       }
     }

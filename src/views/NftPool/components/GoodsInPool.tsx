@@ -3,7 +3,7 @@ import { Grid } from '@kaco/uikit';
 import styled from 'styled-components';
 import Nft from './Nft';
 import { NftPairConfig } from 'config/constants/nft';
-import { fetchNfts } from '../util/fetchNft';
+// import { fetchNfts } from '../util/fetchNft';
 import PageLoader from 'components/Loader/PageLoader';
 // import { useTranslation } from 'contexts/Localization';
 // import Select from 'components/KacoSelect/KacoSelect';
@@ -32,8 +32,8 @@ const Pools_: FC<{
   className?: string;
   pair: NftPairConfig | undefined;
 }> = ({ className, pair }) => {
-  const [items, setItems] = useState<NFT[]>([]);
-  const [fetching, setFetching] = useState(true);
+  // const [items, setItems] = useState<NFT[]>([]);
+  // const [fetching, setFetching] = useState(false);
   // const { t } = useTranslation();
   const locksInfo = useNftWithLocks(pair);
   const [now, setNow] = useState(0);
@@ -42,24 +42,24 @@ const Pools_: FC<{
     simpleRpcProvider.getBlockNumber().then(setNow);
   }, []);
 
-  useEffect(() => {
-    if (!pair?.nftAddress || !pair?.address) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!pair?.nftAddress || !pair?.address) {
+  //     return;
+  //   }
 
-    setFetching(true);
-    fetchNfts(pair?.nftAddress, pair?.address)
-      .then(setItems)
-      .finally(() => setFetching(false));
-  }, [pair]);
+  //   setFetching(true);
+  //   fetchNfts(pair?.nftAddress, pair?.address)
+  //     .then(setItems)
+  //     .finally(() => setFetching(false));
+  // }, [pair]);
 
-  if (fetching) {
+  if (!locksInfo) {
     return <PageLoader />;
   }
 
   return (
     <div className={className}>
-      {!items.length ? (
+      {!locksInfo.length ? (
         <NoBalance />
       ) : (
         <>
@@ -89,8 +89,8 @@ const Pools_: FC<{
             />
           </Flex> */}
           <Grid gridGap="10px" className="pools">
-            {items.map((item, index) => (
-              <Nft nft={locksInfo[index]} key={index} now={now} />
+            {locksInfo.map((item, index) => (
+              <Nft nft={item} key={index} now={now} />
             ))}
           </Grid>
         </>

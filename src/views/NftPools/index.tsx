@@ -20,6 +20,7 @@ const Header = styled(Flex)`
       margin-top: 30px;
       > img {
         width: 80%;
+        height: 90px;
       }
       ${({ theme }) => theme.mediaQueries.md} {
         > img {

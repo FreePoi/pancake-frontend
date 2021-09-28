@@ -7,7 +7,7 @@ import MintSvg from '../img/mint.svg';
 import { NFT } from 'views/NftPool/components/GoodsInPool';
 import { NftPair } from 'views/NftPools/hooks/useNftPools';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
-import { BLOCK_INTERVAL, NFT_TYPE } from 'config/constants/nft';
+import { BLOCK_INTERVAL, NFT_PAIRS, NFT_TYPE } from 'config/constants/nft';
 import { ButtonMenu, ButtonMenuItem } from '@kaco/uikit';
 import { useContract } from 'hooks/useContract';
 import Erc721 from 'config/abi/erc-721.json';
@@ -31,6 +31,9 @@ const StyledNav = styled.nav<{ activeIndex: number }>`
     }
   }
 `;
+const FEE = 5;
+const FEE_DAYLIY = 0.05;
+
 interface Props extends InjectedModalProps {
   nft: NFT;
   pair: NftPair;
@@ -43,7 +46,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
   const { account } = useActiveWeb3React();
   const contract = useContract(pair?.nftAddress, pair?.type === NFT_TYPE.NFT721 ? Erc721 : Erc1155);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [lockdays, setLockTime] = useState(10);
+  const [lockdays, setLockdays] = useState(10);
 
   const onMint = useCallback(async () => {
     if (!account) {
@@ -124,25 +127,26 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
               zIndex: 1,
             }}
           >
-            <div
+            <img
               style={{
                 width: '68px',
                 height: '68px',
-                background: '#6EB395',
                 borderRadius: '34px',
               }}
+              src={NFT_PAIRS.find((p) => pair.pairAddress.toLowerCase() === p.address.toLowerCase())?.logo}
+              alt=""
             />
             <Flex ml="30px" flexDirection="column" justifyContent="center">
               <Text bold fontSize="20px" color="white">
                 {pair.symbol}
               </Text>
               <Text fontSize="12px" color="#1BD3D5">
-                Quantity 95
+                Quantity {100 - FEE}
               </Text>
             </Flex>
           </Flex>
           <Text textAlign="center" color="#9DA6A6" fontSize="12px" bold>
-            Fee 5%
+            Fee {FEE}%
           </Text>
         </div>
       ) : (
@@ -186,7 +190,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
                 variant="secondary"
                 onClick={() => {
                   if (lockdays > 1) {
-                    setLockTime((old) => old - 1);
+                    setLockdays((old) => old - 1);
                   }
                 }}
               >
@@ -196,7 +200,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
                 scale="sm"
                 onClick={() => {
                   if (lockdays < 30) {
-                    setLockTime((old) => old + 1);
+                    setLockdays((old) => old + 1);
                   }
                 }}
               >
@@ -217,25 +221,26 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
               zIndex: 1,
             }}
           >
-            <div
+            <img
               style={{
                 width: '68px',
                 height: '68px',
-                background: '#6EB395',
                 borderRadius: '34px',
               }}
+              src={NFT_PAIRS.find((p) => pair.pairAddress.toLowerCase() === p.address.toLowerCase())?.logo}
+              alt=""
             />
             <Flex ml="30px" flexDirection="column" justifyContent="center">
               <Text bold fontSize="20px" color="white">
                 {pair.symbol}
               </Text>
               <Text fontSize="12px" color="#1BD3D5">
-                Quantity 95
+                Quantity {100 - FEE - FEE_DAYLIY * lockdays}
               </Text>
             </Flex>
           </Flex>
           <Text textAlign="center" color="#F1842C" fontSize="12px" bold px="36px">
-            The default is 5% handling fee, add 1 day to increase 0.05% handling fee
+            The default is {FEE}% handling fee, add 1 day to increase {FEE_DAYLIY}% handling fee
           </Text>
         </div>
       )}

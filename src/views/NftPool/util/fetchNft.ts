@@ -26,7 +26,6 @@ export async function fetchNfts(nftAddress: string, pairAddress: string) {
   const items = await fetchAllTokens(pairAddress);
   const nfts: NFT[] = filterNft(items, nftAddress);
 
-  console.log('items', items, 'fnts', nfts, nftAddress);
   return nfts;
 }
 
@@ -81,7 +80,6 @@ export function filterNft(items: CovalentTokenItem[], nftAddress: string) {
 }
 
 export async function fetchNftInfo(nftAddress: string, id: number, owner: string): Promise<NFT> {
-  console.log('nftAddress: string, id: number, owner:', nftAddress, id, owner);
   const pairConfig = NFT_PAIRS.find((pair) => pair.nftAddress.toLowerCase() === nftAddress.toLowerCase());
 
   if (pairConfig.pid === 0) {
@@ -108,11 +106,30 @@ async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any
     { address: nftAddress, name: 'uri', params: [id] },
   ];
 
-  const [balance, uri] = await multicall(abi, calls);
+  const [[balance], [uri]] = await multicall(abi, calls);
+  console.log('xxx', {
+    id,
+    balance: balance.toNumber(),
+    uri,
+    image: 'info.image',
+    name: 'info.name',
+  });
+  // return {
+  //   id,
+  //   balance: balance.toNumber(),
+  //   uri,
+  //   image: 'info.image',
+  //   name: 'info.name',
+  // };
+  // console.log('xxxxxxxxxxxxxxxxxxxxxxxx', uri);
+  // await fetchStatic(uri);
+  // console.log('yyyyyyyyyyyyyyyyyyyyyy', uri);
+
   const res = await fetch(uri);
   let info: NftMeta;
 
   try {
+    console.log('await res.text()', await res.text());
     info = await res.json();
   } catch (e) {
     console.log('nft metadata error', e);
@@ -135,11 +152,12 @@ async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any
 async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any): Promise<NFT> {
   const calls = [
     { address: nftAddress, name: 'balanceOf', params: [owner] },
-    { address: nftAddress, name: 'tokenUri', params: [id] },
+    { address: nftAddress, name: 'tokenURI', params: [id] },
   ];
 
-  const [balance, uri] = await multicall(abi, calls);
-  const u = uri.slice('ipfs://'.length);
+  const [[balance], [uri]] = await multicall(abi, calls);
+
+  const u = toUri(uri);
   const res = await fetch(u);
   let info: NftMeta;
 
@@ -157,7 +175,12 @@ async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any
     id,
     balance: balance.toNumber(),
     uri: u,
-    image: info.image,
+    image: toUri(info.image),
     name: info.name,
   };
+}
+
+// ipfs://QmYD9AtzyQPjSa9jfZcZq88gSaRssdhGmKqQifUDjGFfXm/dollop.png
+function toUri(uri: string) {
+  return 'https://ipfs.io/ipfs/' + uri.slice('ipfs://'.length);
 }

@@ -91,6 +91,7 @@ const Card = styled(Card_)`
     /* background: radial-gradient(circle, #2a6c6e, #43238c); */
     border-radius: 8px;
     img {
+      border-radius: 8px;
       max-width: 100%;
       max-height: 100%;
     }

@@ -13,11 +13,12 @@ export type LockInfo = { lastBlock: number; unlocker: string; amount?: number };
 export type Locks = { [key: number]: LockInfo };
 export type NftInfoWithLock = LockInfo & NFT;
 
-const defaultAddress = '0x0000000000000000000000000000000000000000';
+const defaultAddress = '0x0000000000000000000000000000000000000001';
 
 export const useNftWithLocks = (pair?: { type: NFT_TYPE; address: string; nftAddress: string }) => {
+  // const [fetching, setFetching] = useState(true);
   const contract = useContract(pair?.address, pair?.type === NFT_TYPE.NFT1155 ? NFT100Pair1155 : NFT100Pair721);
-  const [locksInfo, setLocksInfo] = useState<NftInfoWithLock[]>([]);
+  const [locksInfo, setLocksInfo] = useState<NftInfoWithLock[]>();
   const { account: _account } = useWeb3React();
 
   const account = useMemo(() => _account || defaultAddress, [_account]);
@@ -27,13 +28,14 @@ export const useNftWithLocks = (pair?: { type: NFT_TYPE; address: string; nftAdd
       return;
     }
 
-    console.log('contract', contract);
-
+    console.log('contract', contract, pair);
     if (pair.type === NFT_TYPE.NFT721) {
-      contract.getLockInfos().then(async ([ids, locksInfo]: [number[], [number, string][]]) => {
-        const promises = ids.map(async (id) => fetchNftInfo(pair.nftAddress, id, account));
+      contract.getLockInfos().then(async ([ids, locksInfo]: [BigNumber[], [number, string][]]) => {
+        const promises = ids.map(async (id) => fetchNftInfo(pair.nftAddress, id.toNumber(), account));
 
         const results = await Promise.all(promises);
+        console.log('fetchNftInfo', results);
+
         const nfts: NftInfoWithLock[] = results.map((nft, index) => ({
           lastBlock: locksInfo[index][0],
           unlocker: locksInfo[index][1],
@@ -51,6 +53,7 @@ export const useNftWithLocks = (pair?: { type: NFT_TYPE; address: string; nftAdd
         );
 
         const results = await Promise.all(promises);
+        console.log('results', results);
         const nfts: NftInfoWithLock[] = results.map((nft, index) => ({
           lastBlock: lockInfos[index][2],
           unlocker: lockInfos[index][1],
@@ -75,8 +78,6 @@ export const useNftWithLockInfo = (pair?: { type: NFT_TYPE; address: string }) =
     if (!contract || !pair) {
       return;
     }
-
-    console.log('contract', contract);
 
     if (pair?.type === NFT_TYPE.NFT721) {
       contract.getLockInfos().then(([ids, locksInfo]: [string[], [number, string][]]) => {
