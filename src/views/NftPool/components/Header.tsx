@@ -51,7 +51,7 @@ const PoolHeader_: FC<{ className?: string; pairIndex: number; floorPrice: numbe
             <Text fontSize="18px" bold mb="4px">
               {(pair?.supply || 0) * 100}
             </Text>
-            <Text fontSize="12px">KKaco Supply</Text>
+            <Text fontSize="12px">KCoin Supply</Text>
           </div>
         </Flex>
       </div>
