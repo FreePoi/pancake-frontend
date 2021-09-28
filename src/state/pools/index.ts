@@ -111,19 +111,22 @@ export const fetchPoolsUserDataAsync =
     const stakedBalances = await fetchUserStakeBalances(account);
     const pendingRewards = await fetchUserPendingRewards(account);
     const _tokenPerBlock = await useTokenPerBlock();
-    const userData = poolsConfig.map(async (pool) => {
+    const userData = [];
+    poolsConfig.map(async (pool, index) => {
       const _poolWeight = await usePoolWeight(pool);
-      return {
+      userData.push({
         sousId: pool.sousId,
         allowance: allowances[pool.sousId],
         stakingTokenBalance: stakingTokenBalances[pool.sousId],
         stakedBalance: stakedBalances[pool.sousId],
         pendingReward: pendingRewards[pool.sousId],
         tokenPerBlock: _tokenPerBlock.toNumber() * _poolWeight.toNumber(),
-      };
+      });
+      if (poolsConfig.length - 1 === index) {
+        console.log(userData);
+        dispatch(setPoolsUserData(userData));
+      }
     });
-
-    dispatch(setPoolsUserData(userData));
   };
 
 export const updateUserAllowance =
