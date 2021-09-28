@@ -153,7 +153,6 @@ export default styled(Burn)`
       > .logo {
         width: 52px;
         height: 52px;
-        border-radius: 50%;
         margin-right: 20px;
       }
     }

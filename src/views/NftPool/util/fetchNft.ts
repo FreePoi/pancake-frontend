@@ -35,6 +35,10 @@ const apiKeys = [
   'ckey_a8ada44913884c34a0906d32830',
   'ckey_86fa38882dd04212bcbf635df00',
   'ckey_ec6d8dd72f944f1da9a98362369',
+  'ckey_b5c20eead9c543f0a288c8107be',
+  'ckey_1b876e487b12404993237b6ffb0',
+  'ckey_284563ec81734a72a7d74a620d9',
+  'ckey_4f8e0c23ba324296b53e2242394',
 ];
 let index = Math.floor(Math.random() * apiKeys.length);
 
@@ -125,7 +129,7 @@ async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any
   // await fetchStatic(uri);
   // console.log('yyyyyyyyyyyyyyyyyyyyyy', uri);
 
-  const res = await fetch(uri);
+  const res = await fetch(uri, { mode: 'cors' });
   let info: NftMeta;
 
   try {

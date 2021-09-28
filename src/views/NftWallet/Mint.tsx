@@ -52,9 +52,17 @@ const NftsGroupByPool = styled(NftsGroupByPool_)`
     }
   }
 `;
+export const USER_NFTS = 'USER_NFTS';
 
 const Mint: FC<{ className?: string }> = ({ className }) => {
-  const [pools, setPools] = useState<({ nfts: NFT[] } & NftPair)[]>([]);
+  let _pairs: ({ nfts: NFT[] } & NftPair)[] = [];
+
+  try {
+    _pairs = JSON.parse(localStorage.getItem(USER_NFTS));
+  } catch {
+    localStorage.removeItem(USER_NFTS);
+  }
+  const [pools, setPools] = useState<({ nfts: NFT[] } & NftPair)[]>(_pairs);
   const { account } = useWeb3React();
   const pairs = useNftPairs();
   const [fetching, setFetching] = useState(true);
@@ -73,13 +81,15 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
           .filter((pair) => pair.nfts.length);
 
         setPools(pools);
+        console.log('save', JSON.stringify(pools));
+        localStorage.setItem(USER_NFTS, JSON.stringify(pools));
       }, console.error)
       .finally(() => setFetching(false));
   }, [account, pairs]);
 
   return (
     <Page className={className}>
-      {fetching ? (
+      {!pools && fetching ? (
         <PageLoader />
       ) : !pools.length ? (
         <NoBalance />

@@ -131,7 +131,6 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
               style={{
                 width: '68px',
                 height: '68px',
-                borderRadius: '34px',
               }}
               src={NFT_PAIRS.find((p) => pair.pairAddress.toLowerCase() === p.address.toLowerCase())?.logo}
               alt=""
@@ -225,7 +224,6 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
               style={{
                 width: '68px',
                 height: '68px',
-                borderRadius: '34px',
               }}
               src={NFT_PAIRS.find((p) => pair.pairAddress.toLowerCase() === p.address.toLowerCase())?.logo}
               alt=""
