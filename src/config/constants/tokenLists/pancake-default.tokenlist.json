@@ -111,7 +111,7 @@
       "address": "0x65aDc52BfD0E3d9Df80Be6E36F330E757862e2Bd",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "/images/tokens/0x65aDc52BfD0E3d9Df80Be6E36F330E757862e2Bd.png"
+      "logoURI": "/images/tokens/0x65aDc52BfD0E3d9Df80Be6E36F330E757862e2Bd.svg"
     },
     {
       "name": "Pancake NFT",
@@ -119,7 +119,7 @@
       "address": "0xa70c4580F1e00C1d7A9D0280832c0D513a6D530F",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "/images/tokens/0xa70c4580F1e00C1d7A9D0280832c0D513a6D530F.png"
+      "logoURI": "/images/tokens/0xa70c4580F1e00C1d7A9D0280832c0D513a6D530F.svg"
     },
     {
       "name": "Pancake",
