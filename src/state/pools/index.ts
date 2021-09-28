@@ -16,7 +16,7 @@ import {
 import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic';
 import fetchVaultUser from './fetchVaultUser';
 import { getTokenPricesFromFarm } from './helpers';
-
+import { useTokenPerBlock, usePoolWeight } from 'views/Pools/hooks/useTokenPerBlock';
 const initialState: PoolsState = {
   data: [...poolsConfig],
   userDataLoaded: false,
@@ -110,16 +110,23 @@ export const fetchPoolsUserDataAsync =
     const stakingTokenBalances = await fetchUserBalances(account);
     const stakedBalances = await fetchUserStakeBalances(account);
     const pendingRewards = await fetchUserPendingRewards(account);
-
-    const userData = poolsConfig.map((pool) => ({
-      sousId: pool.sousId,
-      allowance: allowances[pool.sousId],
-      stakingTokenBalance: stakingTokenBalances[pool.sousId],
-      stakedBalance: stakedBalances[pool.sousId],
-      pendingReward: pendingRewards[pool.sousId],
-    }));
-
-    dispatch(setPoolsUserData(userData));
+    const _tokenPerBlock = await useTokenPerBlock();
+    const userData = [];
+    poolsConfig.map(async (pool, index) => {
+      const _poolWeight = await usePoolWeight(pool);
+      userData.push({
+        sousId: pool.sousId,
+        allowance: allowances[pool.sousId],
+        stakingTokenBalance: stakingTokenBalances[pool.sousId],
+        stakedBalance: stakedBalances[pool.sousId],
+        pendingReward: pendingRewards[pool.sousId],
+        tokenPerBlock: _tokenPerBlock.toNumber() * _poolWeight.toNumber(),
+      });
+      if (poolsConfig.length - 1 === index) {
+        console.log(userData);
+        dispatch(setPoolsUserData(userData));
+      }
+    });
   };
 
 export const updateUserAllowance =

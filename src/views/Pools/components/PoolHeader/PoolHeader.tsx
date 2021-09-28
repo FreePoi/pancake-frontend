@@ -2,7 +2,7 @@ import { Text, Flex } from '@kaco/uikit';
 import { useTranslation } from 'contexts/Localization';
 import React from 'react';
 import styled from 'styled-components';
-import LogoPng from './PoolHeader.png';
+import LogoPng from './PoolHeader.svg';
 import Toggle from 'components/Menu/GlobalSettings/Toggle';
 import Search from 'components/Search';
 
