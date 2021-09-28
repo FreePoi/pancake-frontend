@@ -33,7 +33,7 @@ const StyledNav = styled.nav<{ activeIndex: number }>`
   }
 `;
 const FEE = 5;
-const FEE_DAYLIY = 0.05;
+const FEE_DAYLIY = 0.1;
 
 interface Props extends InjectedModalProps {
   nft: NFT;
