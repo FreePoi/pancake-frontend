@@ -95,6 +95,7 @@ const Burn: FC<{ className?: string }> = ({ className }) => {
                     </Text>
                   </div>
                   <Button
+                    disabled={true}
                     height="36px"
                     variant="secondary"
                     onClick={() => {

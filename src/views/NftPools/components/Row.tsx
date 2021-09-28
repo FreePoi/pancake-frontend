@@ -10,6 +10,7 @@ import { NftPair } from '../hooks/useNftPools';
 import { PriceContext } from 'contexts/PriceProvider';
 import { formatFloat } from 'views/NftPool/util/format';
 import { NFT_PAIRS } from 'config/constants/nft';
+import ArrowSvg from '../svg/arrow.svg';
 
 const StyledTr = styled.tr`
   border-bottom: 1px solid #122124;
@@ -143,7 +144,9 @@ const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) =
               <TitledItem title="7 Days Change" value={0} />
             </td> */}
             <td>
-              <div className="link">Link</div>
+              <div className="link">
+                <img src={ArrowSvg} alt="" />
+              </div>
             </td>
           </>
         )}

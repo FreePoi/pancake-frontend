@@ -5,6 +5,7 @@ interface NftContextProps {
   items: NFT[];
   add: (id: NFT) => void;
   remove: (id: NFT) => void;
+  clear: () => void;
 }
 
 export const NftContext: Context<NftContextProps> = React.createContext({} as unknown as NftContextProps);
@@ -34,12 +35,17 @@ export const NftProvider = React.memo(({ children }: { children: React.ReactNode
     });
   }, []);
 
+  const clear = useCallback(() => {
+    setItems([]);
+  }, []);
+
   return (
     <NftContext.Provider
       value={{
         items,
         add,
         remove,
+        clear,
       }}
     >
       {children}

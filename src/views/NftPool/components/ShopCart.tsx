@@ -10,6 +10,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { formatFloat } from '../util/format';
 import useToast from 'hooks/useToast';
 import { useTranslation } from 'contexts/Localization';
+import CloseSvg from '../img/close.svg';
 
 const Item: FC<{ className?: string; item: NFT; floorPrice: number; symbol: string }> = ({
   className,
@@ -44,7 +45,7 @@ const ShopCart: FC<{ className?: string; floorPrice: number; symbol: string; pai
   symbol,
   pairAddres,
 }) => {
-  const { items } = useContext(NftContext);
+  const { items, clear } = useContext(NftContext);
   const contract = useContract(pairAddres, Nft100Abi);
   const { account } = useActiveWeb3React();
   const { isXs, isSm, isMd } = useMatchBreakpoints();
@@ -66,19 +67,30 @@ const ShopCart: FC<{ className?: string; floorPrice: number; symbol: string; pai
       async (tx) => {
         await tx.wait();
         const receipt = await tx.wait();
+        clear();
 
         console.log('receipt', receipt);
-        toastSuccess(t('Bought!'), t('You can have it now.'));
+        toastSuccess(t('Bought!'), t('You have it now.'));
       },
       (e) => {
-        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'));
+        toastError(
+          t('Error'),
+          t(e.data?.message || 'Please try again. Confirm the transaction and make sure you are paying enough gas!'),
+        );
       },
     );
-  }, [contract, account, items, t, toastSuccess, toastError]);
+  }, [contract, account, items, t, toastSuccess, toastError, clear]);
 
   return (
     <div className={className}>
-      <Flex>
+      <Flex className="content">
+        <img
+          onClick={() => {
+            clear();
+          }}
+          src={CloseSvg}
+          alt=""
+        />
         <Grid gridGap={{ xs: '16px', md: '31px' }} className="items">
           {items.map((item) => (
             <Item item={item} key={item.id} floorPrice={floorPrice} symbol={symbol} />
@@ -116,17 +128,24 @@ export default styled(ShopCart)`
   width: 100%;
   bottom: 20px;
   z-index: 10;
-  > div {
+  > .content {
+    position: relative;
     flex-wrap: wrap;
     margin: 0px auto;
     max-width: 1086px;
     justify-content: space-between;
-    padding: 20px;
+    padding: 40px 20px 20px 20px;
     background: #1f373b;
     box-shadow: 0px 5px 16px 4px rgba(0, 0, 0, 0.2);
     opacity: 0.98;
     border-radius: 24px;
 
+    > img {
+      cursor: pointer;
+      position: absolute;
+      right: 30px;
+      top: 30px;
+    }
     > .items {
       padding-right: 5px;
       max-height: 328px;
@@ -172,7 +191,7 @@ export default styled(ShopCart)`
     }
 
     > .right {
-      margin-top: 10px;
+      padding-top: 30px;
       flex: 1;
       display: flex;
       flex-direction: row;

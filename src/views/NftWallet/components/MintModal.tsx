@@ -89,7 +89,10 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
         toastSuccess(t('Minted!'), t('You can trade fragmented tokens now.'));
       },
       (e) => {
-        toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'));
+        toastError(
+          t('Error'),
+          t(e.data?.message || 'Please try again. Confirm the transaction and make sure you are paying enough gas!'),
+        );
       },
     );
   }, [contract, pair, account, nft, onDismiss, activeIndex, lockdays, toastSuccess, toastError, t]);
