@@ -28,13 +28,11 @@ export const useNftWithLocks = (pair?: { type: NFT_TYPE; address: string; nftAdd
       return;
     }
 
-    console.log('contract', contract, pair);
     if (pair.type === NFT_TYPE.NFT721) {
       contract.getLockInfos().then(async ([ids, locksInfo]: [BigNumber[], [number, string][]]) => {
         const promises = ids.map(async (id) => fetchNftInfo(pair.nftAddress, id.toNumber(), account));
 
         const results = await Promise.all(promises);
-        console.log('fetchNftInfo', results);
 
         const nfts: NftInfoWithLock[] = results.map((nft, index) => ({
           lastBlock: locksInfo[index][0],
@@ -42,18 +40,15 @@ export const useNftWithLocks = (pair?: { type: NFT_TYPE; address: string; nftAdd
           ...nft,
         }));
 
-        console.log('721', nfts, 'locks');
         setLocksInfo(nfts);
       }, console.log);
     } else {
       contract.getLockInfos().then(async (lockInfos: [BigNumber, string, number, BigNumber][]) => {
-        console.log('getLockInfos', lockInfos, lockInfos[0][0].toNumber());
         const promises = lockInfos.map(async (lockInfo) =>
           fetchNftInfo(pair.nftAddress, lockInfo[0].toNumber(), account),
         );
 
         const results = await Promise.all(promises);
-        console.log('results', results);
         const nfts: NftInfoWithLock[] = results.map((nft, index) => ({
           lastBlock: lockInfos[index][2],
           unlocker: lockInfos[index][1],
@@ -62,7 +57,6 @@ export const useNftWithLocks = (pair?: { type: NFT_TYPE; address: string; nftAdd
         }));
 
         setLocksInfo(nfts);
-        console.log('1155', nfts, 'locks');
       }, console.log);
     }
   }, [contract, pair, account]);
@@ -91,7 +85,6 @@ export const useNftWithLockInfo = (pair?: { type: NFT_TYPE; address: string }) =
         }, {});
 
         setLocksInfo((old) => (_.isEqual(old, locks) ? old : locks));
-        console.log('nft', locks, 'locks');
       }, console.log);
     } else {
       contract.getLockInfos().then((lockInfos: [BigNumber, string, number, BigNumber][]) => {
@@ -106,7 +99,6 @@ export const useNftWithLockInfo = (pair?: { type: NFT_TYPE; address: string }) =
         }, {});
 
         setLocksInfo((old) => (_.isEqual(old, locks) ? old : locks));
-        console.log(locks, 'locks');
       }, console.log);
     }
   }, [contract, pair]);

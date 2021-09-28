@@ -5,12 +5,12 @@ import { useTranslation } from 'contexts/Localization';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { NftPair } from 'views/NftPools/hooks/useNftPools';
 import { fetchNfts } from 'views/NftPool/util/fetchNft';
-import { NFT } from 'views/NftPool/components/GoodsInPool';
+import { NFT, NFT_POOLS } from 'views/NftPool/components/GoodsInPool';
 import { useContract } from 'hooks/useContract';
 import Nft100Abi from 'config/abi/NFT100Pair721.json';
 // import Select from 'components/KacoSelect/KacoSelect';
 import PageLoader from 'components/Loader/PageLoader';
-import { LockInfo, useNftWithLocks } from 'views/NftPool/hooks/useNftWithLocks';
+import { LockInfo, useNftWithLockInfo } from 'views/NftPool/hooks/useNftWithLocks';
 import LockTime from 'views/NftPool/components/LockTime';
 import LockSvg from '../img/lock.svg';
 import { simpleRpcProvider } from 'utils/providers';
@@ -125,13 +125,20 @@ const Card = styled(Card_)`
 `;
 
 const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
+  let _pairs: NFT[] = [];
+
+  try {
+    _pairs = JSON.parse(localStorage.getItem(`${NFT_POOLS}-${pair?.pairAddress.toLowerCase()}`)) || [];
+
+    console.log('localstorage', _pairs);
+  } catch {
+    localStorage.removeItem(NFT_POOLS);
+  }
   const { account } = useActiveWeb3React();
-  const [nfts, setNfts] = useState<NFT[]>([]);
-  const [fetching, setFetching] = useState(true);
+  const [nfts, setNfts] = useState<NFT[]>(_pairs);
+  const [fetching, setFetching] = useState(false);
   const contract = useContract(pair?.pairAddress, Nft100Abi);
-  const locksInfo = useNftWithLocks(
-    pair && { type: pair.type, address: pair.pairAddress, nftAddress: pair.nftAddress },
-  );
+  const locksInfo = useNftWithLockInfo(pair && { type: pair.type, address: pair.pairAddress });
 
   console.log('pair', pair);
   useEffect(() => {
@@ -139,9 +146,16 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
       return;
     }
 
-    setFetching(true);
+    // setFetching(true);
     fetchNfts(pair.nftAddress, pair.pairAddress)
-      .then(setNfts, (e) => console.log('eee', e))
+      .then(
+        (nfts) => {
+          console.log('sssssssssssssss', nfts);
+          setNfts(nfts);
+          localStorage.setItem(`${NFT_POOLS}-${pair?.pairAddress.toLowerCase()}`, JSON.stringify(nfts));
+        },
+        (e) => console.log('eee', e),
+      )
       .finally(() => setFetching(false));
   }, [pair]);
 

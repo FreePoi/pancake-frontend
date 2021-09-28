@@ -61,8 +61,6 @@ export async function fetchAllTokens(account: string) {
     error_message: string | null;
   } = await data.json();
 
-  console.log('covalentData', covalentData);
-
   if (!covalentData.data || covalentData.error) {
     return;
   }
@@ -111,30 +109,13 @@ async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any
   ];
 
   const [[balance], [uri]] = await multicall(abi, calls);
-  console.log('xxx', {
-    id,
-    balance: balance.toNumber(),
-    uri,
-    image: 'info.image',
-    name: 'info.name',
-  });
-  // return {
-  //   id,
-  //   balance: balance.toNumber(),
-  //   uri,
-  //   image: 'info.image',
-  //   name: 'info.name',
-  // };
-  // console.log('xxxxxxxxxxxxxxxxxxxxxxxx', uri);
-  // await fetchStatic(uri);
-  // console.log('yyyyyyyyyyyyyyyyyyyyyy', uri);
 
-  const res = await fetch(uri, { mode: 'cors' });
+  const res = await fetch(uri);
   let info: NftMeta;
 
   try {
-    console.log('await res.text()', await res.text());
     info = await res.json();
+    console.log('await res.text()', info);
   } catch (e) {
     console.log('nft metadata error', e);
   }
