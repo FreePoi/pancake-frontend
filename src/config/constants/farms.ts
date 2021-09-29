@@ -53,6 +53,26 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.kaco,
   },
   {
+    pid: 18,
+    lpSymbol: 'KCAKE-CAKE LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3bfba971e3d40f6fc9fcc9571a7e96f55d248ddd',
+    },
+    token: tokens.kcake,
+    quoteToken: tokens.cake,
+  },
+  {
+    pid: 17,
+    lpSymbol: 'CAKE-KAC LP',
+    lpAddresses: {
+      97: '',
+      56: '0xc17205e5de6735e320f4c59dd31986d9d049051c',
+    },
+    token: tokens.cake,
+    quoteToken: tokens.kaco,
+  },
+  {
     pid: 3,
     lpSymbol: 'KSM-KAC LP',
     lpAddresses: {
