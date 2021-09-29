@@ -2,7 +2,7 @@ import PancakeNftAbi from '../abi/pancake-nft.json';
 import KacoNftAbi from '../abi/kaco-nft.json';
 import KacoLogo from '../../components/svg/kaco-nft.png';
 import PancakeLogo from '../../components/svg/pancake-nft.png';
-import AlpacaLogo from '../../components/svg/alpaca-nft.png';
+// import AlpacaLogo from '../../components/svg/alpaca-nft.png';
 export enum NFT_TYPE {
   NFT721 = 721,
   NFT1155 = 1155,
