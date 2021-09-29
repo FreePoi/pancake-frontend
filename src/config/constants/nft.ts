@@ -2,7 +2,7 @@ import PancakeNftAbi from '../abi/pancake-nft.json';
 import KacoNftAbi from '../abi/kaco-nft.json';
 import KacoLogo from '../../components/svg/kaco-nft.png';
 import PancakeLogo from '../../components/svg/pancake-nft.png';
-import AlpacaLogo from '../../components/svg/alpaca-nft.png';
+// import AlpacaLogo from '../../components/svg/alpaca-nft.png';
 export enum NFT_TYPE {
   NFT721 = 721,
   NFT1155 = 1155,
@@ -40,16 +40,16 @@ export const NFT_PAIRS: NftPairConfig[] = [
     nftAbi: PancakeNftAbi,
     logo: PancakeLogo,
   },
-  {
-    address: '0xBd6D17123Ec731adFf1cE2F9f7Af1aBC26E5EBfd',
-    nftAddress: '0xe85d7b8f4c0c13806e158a1c9d7dcb33140cdc46',
-    name: 'ALPACA NFT',
-    symbol: 'KALPACA',
-    pid: 2,
-    type: NFT_TYPE.NFT1155,
-    nftAbi: KacoNftAbi,
-    logo: AlpacaLogo,
-  },
+  // {
+  //   address: '0xBd6D17123Ec731adFf1cE2F9f7Af1aBC26E5EBfd',
+  //   nftAddress: '0xe85d7b8f4c0c13806e158a1c9d7dcb33140cdc46',
+  //   name: 'ALPACA NFT',
+  //   symbol: 'KALPACA',
+  //   pid: 2,
+  //   type: NFT_TYPE.NFT1155,
+  //   nftAbi: KacoNftAbi,
+  //   logo: AlpacaLogo,
+  // },
 ];
 
 export const BLOCK_INTERVAL = 3;
