@@ -84,7 +84,7 @@ export function filterNft(items: CovalentTokenItem[], nftAddress: string) {
 export async function fetchNftInfo(nftAddress: string, id: number, owner: string): Promise<NFT> {
   const pairConfig = NFT_PAIRS.find((pair) => pair.nftAddress.toLowerCase() === nftAddress.toLowerCase());
 
-  if (pairConfig.pid === 0) {
+  if ([0, 2].find((pid) => pairConfig.pid === pid)) {
     return await fetchPid0(pairConfig.nftAddress, id, owner, pairConfig.nftAbi);
   } else {
     return await fetchPid1(pairConfig.nftAddress, id, owner, pairConfig.nftAbi);
