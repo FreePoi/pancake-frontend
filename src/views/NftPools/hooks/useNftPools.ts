@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { BigNumber } from '@ethersproject/bignumber';
 import NFT100FactoryAbi from 'config/abi/NFT100Factory.json';
-import { NFT_FACTORY, NFT_TYPE } from 'config/constants/nft';
+import { NFT_FACTORY, NFT_TYPE, NFT_PAIRS } from 'config/constants/nft';
 import multicall from 'utils/multicall';
 import { useContract } from 'hooks/useContract';
 import _ from 'lodash';
@@ -63,7 +63,11 @@ export const useNftPairs = () => {
 
   useEffect(() => {
     contract.counter().then(async (counter) => {
-      const pairs = await fetchNftPairs(counter.toNumber());
+      let pairs = await fetchNftPairs(counter.toNumber());
+
+      pairs = pairs.filter((pair) =>
+        NFT_PAIRS.find((_pair) => _pair.address.toLowerCase() === pair.pairAddress.toLowerCase()),
+      );
 
       setPairs((oldPairs) => (_.isEqual(oldPairs, pairs) ? oldPairs : pairs));
     }, console.error);
