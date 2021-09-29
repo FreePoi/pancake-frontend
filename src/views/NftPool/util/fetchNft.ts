@@ -115,7 +115,7 @@ async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any
 
   try {
     info = await res.json();
-    console.log('await res.text()', info);
+    // console.log('await res.text()', info);
   } catch (e) {
     console.log('nft metadata error', e);
   }

@@ -82,7 +82,7 @@ const Pools_: FC<{
   // }, [items, locksInfo]);
 
   // console.log('results', results);
-  console.log('nfts', nfts);
+  // console.log('nfts', nfts);
 
   // if (fetching) {
   //   return <PageLoader />;
