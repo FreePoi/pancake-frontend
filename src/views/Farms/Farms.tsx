@@ -110,7 +110,7 @@ const Farms: React.FC = () => {
         }
 
         let totalLiquidity;
-        if (farm.pid == 18) {
+        if (farm.pid === 18) {
           // console.log(farm);
           totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times('18.62');
         } else {
