@@ -81,7 +81,7 @@ export function filterNft(items: CovalentTokenItem[], nftAddress: string) {
     }));
 }
 
-export async function fetchNftInfo(nftAddress: string, id: number, owner: string): Promise<NFT> {
+export async function fetchNftInfo(nftAddress: string, id: number, owner: string): Promise<NFT | undefined> {
   const pairConfig = NFT_PAIRS.find((pair) => pair.nftAddress.toLowerCase() === nftAddress.toLowerCase());
 
   if ([0, 2].find((pid) => pairConfig.pid === pid)) {
@@ -102,7 +102,7 @@ interface NftMeta {
 }
 
 // kaco
-async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any): Promise<NFT> {
+async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any): Promise<NFT | undefined> {
   const calls = [
     { address: nftAddress, name: 'balanceOf', params: [owner, id] },
     { address: nftAddress, name: 'uri', params: [id] },
@@ -110,31 +110,28 @@ async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any
 
   const [[balance], [uri]] = await multicall(abi, calls);
 
-  const res = await fetch(uri);
-  let info: NftMeta;
-
   try {
-    info = await res.json();
-    // console.log('await res.text()', info);
+    const res = await fetch(uri);
+    const info: NftMeta = await res.json();
+
+    if (!res.ok || !info) {
+      return;
+    }
+
+    return {
+      id,
+      balance: balance.toNumber(),
+      uri,
+      image: info.image,
+      name: info.name,
+    };
   } catch (e) {
     console.log('nft metadata error', e);
   }
-
-  if (!res.ok || !info) {
-    return;
-  }
-
-  return {
-    id,
-    balance: balance.toNumber(),
-    uri,
-    image: info.image,
-    name: info.name,
-  };
 }
 
 // kaco
-async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any): Promise<NFT> {
+async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any): Promise<NFT | undefined> {
   const calls = [
     { address: nftAddress, name: 'balanceOf', params: [owner] },
     { address: nftAddress, name: 'tokenURI', params: [id] },
@@ -143,26 +140,24 @@ async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any
   const [[balance], [uri]] = await multicall(abi, calls);
 
   const u = toUri(uri);
-  const res = await fetch(u);
-  let info: NftMeta;
 
   try {
-    info = await res.json();
+    const res = await fetch(u);
+    const info: NftMeta = await res.json();
+
+    if (!res.ok || !info) {
+      return;
+    }
+    return {
+      id,
+      balance: balance.toNumber(),
+      uri: u,
+      image: toUri(info.image),
+      name: info.name,
+    };
   } catch (e) {
-    console.log('nft metadata error', e);
+    console.log('fetch nft metadata error', e);
   }
-
-  if (!res.ok || !info) {
-    return;
-  }
-
-  return {
-    id,
-    balance: balance.toNumber(),
-    uri: u,
-    image: toUri(info.image),
-    name: info.name,
-  };
 }
 
 // ipfs://QmYD9AtzyQPjSa9jfZcZq88gSaRssdhGmKqQifUDjGFfXm/dollop.png

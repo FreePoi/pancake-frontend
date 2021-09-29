@@ -33,7 +33,7 @@ export const useNftWithLocks = (pair?: { type: NFT_TYPE; address: string; nftAdd
 
         const results = await Promise.all(promises);
 
-        const nfts: NftInfoWithLock[] = results.map((nft, index) => ({
+        const nfts: NftInfoWithLock[] = results.filter(Boolean).map((nft, index) => ({
           lastBlock: locksInfo[index][0],
           unlocker: locksInfo[index][1],
           ...nft,
@@ -49,7 +49,7 @@ export const useNftWithLocks = (pair?: { type: NFT_TYPE; address: string; nftAdd
         );
 
         const results = await Promise.all(promises);
-        const nfts: NftInfoWithLock[] = results.map((nft, index) => ({
+        const nfts: NftInfoWithLock[] = results.filter(Boolean).map((nft, index) => ({
           lastBlock: lockInfos[index][2],
           unlocker: lockInfos[index][1],
           amount: lockInfos[index][3].toNumber(),
