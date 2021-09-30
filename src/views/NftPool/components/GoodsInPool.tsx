@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { Grid } from '@kaco/uikit';
 import styled from 'styled-components';
 import Nft from './Nft';
@@ -8,9 +8,11 @@ import PageLoader from 'components/Loader/PageLoader';
 // import { useTranslation } from 'contexts/Localization';
 // import Select from 'components/KacoSelect/KacoSelect';
 // NftInfoWithLock, useNftWithLockInfo,
-import { useNftWithLocks } from '../hooks/useNftWithLocks';
+import { NftInfoWithLock, NftLockInfo, useNfts } from '../hooks/useNftWithLocks';
 import NoBalance from './NoBalance';
 import { simpleRpcProvider } from 'utils/providers';
+import { fetchNftInfo } from '../util/fetchNft';
+import { useWeb3React } from '@web3-react/core';
 
 export interface Pool {
   poolName: string;
@@ -28,8 +30,9 @@ export interface NFT {
   image: string;
   name: string;
 }
-
+const pageSize = 24;
 export const NFT_POOLS = 'NFT_POOLS';
+const defaultAddress = '0x0000000000000000000000000000000000000001';
 
 const Pools_: FC<{
   className?: string;
@@ -46,8 +49,54 @@ const Pools_: FC<{
   // const [fetching, setFetching] = useState(false);
   // const { t } = useTranslation();
   // const locksInfo = useNftWithLockInfo(pair);
-  const nfts = useNftWithLocks(pair);
+  // const nfts = useNftWithLocks(pair);
+  const { account: _account } = useWeb3React();
+  const [nfts, setNfts] = useState<NftInfoWithLock[]>();
+  const nfts_ = useNfts(pair);
+  const count = useRef(0);
+
+  const account = useMemo(() => _account || defaultAddress, [_account]);
+  const container = useRef<HTMLDivElement>(null);
   const [now, setNow] = useState(0);
+  const fetchingMore = useRef(false);
+
+  useEffect(() => {
+    if (!pair || !nfts_.length || !account) {
+      return;
+    }
+
+    fetchMore(nfts_, 0, pair.nftAddress, account).then((nfts) => {
+      setNfts(nfts);
+    });
+  }, [pair, nfts_, account]);
+
+  useEffect(() => {
+    if (!nfts || !nfts.length || !nfts_.length || !pair) {
+      return;
+    }
+
+    document.body.onscroll = (e) => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+
+      if (
+        clientHeight + scrollTop > scrollHeight - 300 &&
+        !fetchingMore.current &&
+        count.current < nfts_.length - pageSize
+      ) {
+        fetchingMore.current = true;
+        count.current += pageSize;
+        fetchMore(nfts_, count.current, pair.nftAddress, account)
+          .then((nfts) => {
+            setNfts((old) => [...old, ...nfts]);
+          })
+          .finally(() => (fetchingMore.current = false));
+      }
+    };
+
+    return () => (document.body.onscroll = undefined);
+  }, [nfts, container, nfts_, account, pair]);
 
   useEffect(() => {
     simpleRpcProvider.getBlockNumber().then(setNow);
@@ -80,9 +129,6 @@ const Pools_: FC<{
   //       };
   //     });
   // }, [items, locksInfo]);
-
-  // console.log('results', results);
-  // console.log('nfts', nfts);
 
   // if (fetching) {
   //   return <PageLoader />;
@@ -123,11 +169,12 @@ const Pools_: FC<{
               ]}
             />
           </Flex> */}
-          <Grid gridGap="10px" className="pools">
-            {[...nfts].reverse().map((item, index) => (
+          <Grid gridGap="10px" className="pools" ref={container}>
+            {nfts.map((item, index) => (
               <Nft nft={item} key={index} now={now} />
             ))}
           </Grid>
+          {/* {fetchingMore.current && <PageLoader />} */}
         </>
       )}
     </div>
@@ -156,3 +203,21 @@ export const GoodsInPool = styled(Pools_)`
     }
   }
 `;
+
+async function fetchMore(nfts: NftLockInfo[], start: number, nftAddress: string, account: string) {
+  const results = await Promise.all(
+    nfts.slice(start, start + pageSize).map((nft) => fetchNftInfo(nftAddress, nft.id, account)),
+  );
+
+  return results
+    .map((nft, index) => {
+      if (!nft) {
+        return undefined;
+      }
+
+      const n: NftInfoWithLock = { ...nft, ...nfts[index] };
+
+      return n;
+    })
+    .filter(Boolean);
+}
