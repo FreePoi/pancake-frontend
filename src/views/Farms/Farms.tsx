@@ -109,13 +109,7 @@ const Farms: React.FC = () => {
           return farm;
         }
 
-        let totalLiquidity;
-        if (farm.pid === 18) {
-          // console.log(farm);
-          totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times('18.62');
-        } else {
-          totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice);
-        }
+        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice);
         const { kacRewardsApr, lpRewardsApr, kacRewardApy } = isActive
           ? getFarmApr(
               kacPerBlock,
