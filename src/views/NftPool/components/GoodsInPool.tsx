@@ -194,11 +194,11 @@ export const GoodsInPool = styled(Pools_)`
     grid-template-columns: 1fr 1fr;
     justify-items: center;
 
-    ${({ theme }) => theme.mediaQueries.md} {
+    @media screen and (min-width: 1040px) {
       grid-template-columns: 1fr 1fr 1fr;
     }
 
-    @media screen and (min-width: 1165px) {
+    @media screen and (min-width: 1263px) {
       grid-template-columns: 1fr 1fr 1fr 1fr;
     }
   }
