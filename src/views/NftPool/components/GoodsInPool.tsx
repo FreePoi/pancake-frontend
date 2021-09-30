@@ -62,12 +62,14 @@ const Pools_: FC<{
   const fetchingMore = useRef(false);
 
   useEffect(() => {
+    alert(`pair: ${JSON.stringify(pair)}- ${nftsReversed.length} - ${account}`);
     if (!pair || !nftsReversed.length || !account) {
       return;
     }
 
     console.log('nftsxxxxxxxx');
     fetchMore(nftsReversed, 0, pair.nftAddress, account).then((nfts) => {
+      console.log('nfts', nfts);
       setNfts(nfts);
     });
   }, [pair, nftsReversed, account]);
