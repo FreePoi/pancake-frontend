@@ -53,6 +53,7 @@ const Pools_: FC<{
   const { account: _account } = useWeb3React();
   const [nfts, setNfts] = useState<NftInfoWithLock[]>();
   const nfts_ = useNfts(pair);
+  const nftsReversed = useMemo(() => [...nfts_].reverse(), [nfts_]);
   const count = useRef(0);
 
   const account = useMemo(() => _account || defaultAddress, [_account]);
@@ -61,17 +62,18 @@ const Pools_: FC<{
   const fetchingMore = useRef(false);
 
   useEffect(() => {
-    if (!pair || !nfts_.length || !account) {
+    if (!pair || !nftsReversed.length || !account) {
       return;
     }
 
-    fetchMore(nfts_, 0, pair.nftAddress, account).then((nfts) => {
+    console.log('nftsxxxxxxxx');
+    fetchMore(nftsReversed, 0, pair.nftAddress, account).then((nfts) => {
       setNfts(nfts);
     });
-  }, [pair, nfts_, account]);
+  }, [pair, nftsReversed, account]);
 
   useEffect(() => {
-    if (!nfts || !nfts.length || !nfts_.length || !pair) {
+    if (!nfts || !nfts.length || !nftsReversed.length || !pair) {
       return;
     }
 
@@ -83,11 +85,11 @@ const Pools_: FC<{
       if (
         clientHeight + scrollTop > scrollHeight - 300 &&
         !fetchingMore.current &&
-        count.current < nfts_.length - pageSize
+        count.current < nftsReversed.length - pageSize
       ) {
         fetchingMore.current = true;
         count.current += pageSize;
-        fetchMore(nfts_, count.current, pair.nftAddress, account)
+        fetchMore(nftsReversed, count.current, pair.nftAddress, account)
           .then((nfts) => {
             setNfts((old) => [...old, ...nfts]);
           })
@@ -96,7 +98,7 @@ const Pools_: FC<{
     };
 
     return () => (document.body.onscroll = undefined);
-  }, [nfts, container, nfts_, account, pair]);
+  }, [nfts, container, nftsReversed, account, pair]);
 
   useEffect(() => {
     simpleRpcProvider.getBlockNumber().then(setNow);
@@ -215,7 +217,7 @@ async function fetchMore(nfts: NftLockInfo[], start: number, nftAddress: string,
         return undefined;
       }
 
-      const n: NftInfoWithLock = { ...nft, ...nfts[index] };
+      const n: NftInfoWithLock = { ...nft, ...nfts[start + index] };
 
       return n;
     })
