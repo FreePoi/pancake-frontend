@@ -215,7 +215,7 @@ async function fetchMore(nfts: NftLockInfo[], start: number, nftAddress: string,
         return undefined;
       }
 
-      const n: NftInfoWithLock = { ...nft, ...nfts[index] };
+      const n: NftInfoWithLock = { ...nft, ...nfts[start + index] };
 
       return n;
     })
