@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Nft from './Nft';
 import { NftPairConfig } from 'config/constants/nft';
 // import { fetchNfts } from '../util/fetchNft';
-// import PageLoader from 'components/Loader/PageLoader';
+import PageLoader from 'components/Loader/PageLoader';
 // import { useTranslation } from 'contexts/Localization';
 // import Select from 'components/KacoSelect/KacoSelect';
 // NftInfoWithLock, useNftWithLockInfo,
@@ -68,7 +68,7 @@ const Pools_: FC<{
 
     console.log('nftsxxxxxxxx');
     fetchMore(nftsReversed, 0, pair.nftAddress, account).then((nfts) => {
-      alert(`nfts ${JSON.stringify(nfts?.length)}`);
+      // alert(`nfts ${JSON.stringify(nfts?.length)}`);
       setNfts(nfts);
     });
   }, [pair, nftsReversed, account]);
@@ -137,9 +137,8 @@ const Pools_: FC<{
   //   return <PageLoader />;
   // }
 
-  // return <PageLoader />;
   if (!nfts) {
-    return <div>xxx</div>;
+    return <PageLoader />;
   }
 
   return (
