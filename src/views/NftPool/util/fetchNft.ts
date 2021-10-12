@@ -105,7 +105,7 @@ interface NftMeta {
   owner: string;
 }
 
-// kaco
+// kaco, alpaca...
 async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any): Promise<NFT | undefined> {
   const calls = [
     { address: nftAddress, name: 'balanceOf', params: [owner, id] },
@@ -134,7 +134,7 @@ async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any
   }
 }
 
-// kaco
+// pancake
 async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any): Promise<NFT | undefined> {
   const calls = [
     { address: nftAddress, name: 'balanceOf', params: [owner] },
@@ -146,19 +146,30 @@ async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any
   const u = toUri(uri);
 
   try {
-    const res = await fetch(u);
-    const info: NftMeta = await res.json();
+    if (nftAddress.toLocaleLowerCase() === '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07'.toLowerCase()) {
+      const nftName = extractPancakeName(uri);
+      return {
+        id,
+        balance: balance.toNumber(),
+        uri: u,
+        image: toPancakeUri(nftName),
+        name: nftName,
+      };
+    } else {
+      const res = await fetch(u);
+      const info: NftMeta = await res.json();
 
-    if (!res.ok || !info) {
-      return;
+      if (!res.ok || !info) {
+        return;
+      }
+      return {
+        id,
+        balance: balance.toNumber(),
+        uri: u,
+        image: toUri(info.image),
+        name: info.name,
+      };
     }
-    return {
-      id,
-      balance: balance.toNumber(),
-      uri: u,
-      image: toUri(info.image),
-      name: info.name,
-    };
   } catch (e) {
     console.log('fetch nft metadata error', e);
   }
@@ -167,4 +178,13 @@ async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any
 // ipfs://QmYD9AtzyQPjSa9jfZcZq88gSaRssdhGmKqQifUDjGFfXm/dollop.png
 function toUri(uri: string) {
   return 'https://ipfs.io/ipfs/' + uri.slice('ipfs://'.length);
+}
+
+// ipfs://QmYu9WwPNKNSZQiTCDfRk7aCR472GURavR9M1qosDmqpev/sparkle.json
+function extractPancakeName(uri: string) {
+  return uri.slice(uri.lastIndexOf('/') + 1, uri.length - 5);
+}
+
+function toPancakeUri(name: string) {
+  return 'https://static-nft.pancakeswap.com/mainnet/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07/' + name + '-1000.png';
 }

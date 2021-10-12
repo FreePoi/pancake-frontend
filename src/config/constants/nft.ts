@@ -33,7 +33,7 @@ export const NFT_PAIRS: NftPairConfig[] = [
   },
   {
     address: '0xa70c4580F1e00C1d7A9D0280832c0D513a6D530F',
-    nftAddress: '0xdf7952b35f24acf7fc0487d01c8d5690a60dba07',
+    nftAddress: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
     name: 'PANCAKE NFT',
     symbol: 'KCAKE',
     pid: 1,
