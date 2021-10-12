@@ -22,63 +22,87 @@ interface CovalentTokenItem {
   }[];
 }
 
+interface BounceItem {
+  contract_addr: string;
+  contract_name: string;
+  token_type: number;
+  token_id: number;
+  owner_addr: string;
+  balance: number;
+  token_uri: string;
+  name: string;
+  description: string;
+  image: string;
+}
+
+interface BounceData {
+  nfts1155: BounceItem[];
+  nfts721: BounceItem[];
+  total1155: number;
+  total721: number;
+}
+
 export async function fetchNfts(nftAddress: string, pairAddress: string) {
   const items = await fetchAllTokens(pairAddress);
-  const nfts: NFT[] = filterNft(items, nftAddress);
+  const nfts: NFT[] = await filterNft(items, nftAddress);
 
   return nfts;
 }
 
-const apiKeys = [
-  'ckey_12045efc624e428fb454b1a6957',
-  'ckey_4eb246f7c62c4ffdb379460cd21',
-  'ckey_a8ada44913884c34a0906d32830',
-  'ckey_86fa38882dd04212bcbf635df00',
-  'ckey_ec6d8dd72f944f1da9a98362369',
-  'ckey_b5c20eead9c543f0a288c8107be',
-  'ckey_1b876e487b12404993237b6ffb0',
-  'ckey_284563ec81734a72a7d74a620d9',
-  'ckey_4f8e0c23ba324296b53e2242394',
-];
-let index = Math.floor(Math.random() * apiKeys.length);
-
 export async function fetchAllTokens(account: string) {
-  const key = apiKeys[index];
-
-  index += 1;
-  index = index === apiKeys.length ? 0 : index;
-
-  const apiUrl = `https://api.covalenthq.com/v1/${chainId}/address/${account}/balances_v2/?key=${key}&nft=true`;
+  const apiUrl = `https://nftview.bounce.finance/v2/bsc/nft?user_address=${account}`;
 
   const data = await fetch(apiUrl);
 
-  const covalentData: {
-    data: {
-      items: CovalentTokenItem[];
-    } | null;
-    error: boolean;
-    error_code: number | null;
-    error_message: string | null;
+  const rawData: {
+    code: number;
+    data: BounceData;
+    msg: string;
   } = await data.json();
 
-  if (!covalentData.data || covalentData.error) {
+  if (!rawData.data || rawData.msg !== 'ok') {
     return;
   }
 
-  return covalentData.data.items;
+  rawData.data.nfts1155.push(...rawData.data.nfts721);
+
+  return rawData.data.nfts1155;
 }
 
-export function filterNft(items: CovalentTokenItem[], nftAddress: string) {
-  return items
-    .filter((token) => token.nft_data && token.contract_address.toLocaleLowerCase() === nftAddress.toLocaleLowerCase())
-    .reduce((nfts, curr) => nfts.concat(curr.nft_data), [])
-    .map((nft) => ({
-      id: parseInt(nft.token_id),
-      balance: parseInt(nft.token_balance),
-      uri: nft.token_url,
-      image: nft.external_data.image,
-      name: nft.external_data.name,
-    }));
+export async function filterNft(items: BounceItem[], nftAddress: string) {
+  const flawItems = items.filter(
+    (token) =>
+      token.contract_addr.toLocaleLowerCase() === nftAddress.toLocaleLowerCase() &&
+      token.balance > 0 &&
+      (!token.image || token.image.length === 0),
+  );
+  console.log('flawItems: ', flawItems);
+  const promises = flawItems.map(async (item) => {
+    const temp = fetchNftInfo(nftAddress, item.token_id, item.owner_addr);
+    console.log('fetch result: ', temp);
+    return temp;
+  });
+  const results = await Promise.all(promises);
+  console.log('results: ', results);
+
+  results.push(
+    ...items
+      .filter(
+        (token) =>
+          token.contract_addr.toLocaleLowerCase() === nftAddress.toLocaleLowerCase() &&
+          token.balance > 0 &&
+          token.image,
+      )
+      // .reduce((nfts, curr) => nfts.concat(curr.nft_data), [])
+      .map((nft) => ({
+        id: nft.token_id,
+        balance: nft.balance,
+        uri: nft.token_uri,
+        image: nft.image,
+        name: nft.name,
+      })),
+  );
+  return results;
 }
 
 export async function fetchNftInfo(nftAddress: string, id: number, owner: string): Promise<NFT | undefined> {
