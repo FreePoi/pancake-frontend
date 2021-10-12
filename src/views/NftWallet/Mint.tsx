@@ -83,8 +83,8 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
         const results = await Promise.all(poolsPromises);
 
         setPools(results);
-        console.log('save', JSON.stringify(pools));
-        localStorage.setItem(USER_NFTS, JSON.stringify(pools));
+        console.log('save', JSON.stringify(results));
+        localStorage.setItem(USER_NFTS, JSON.stringify(results));
       }, console.error)
       .finally(() => setFetching(false));
   }, [account, pairs]);
