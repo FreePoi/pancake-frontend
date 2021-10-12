@@ -1,26 +1,6 @@
 import { NFT_PAIRS } from 'config/constants/nft';
 import { NFT } from '../components/GoodsInPool';
-import { chainId } from 'views/NftPools/hooks/useNftPools';
 import multicall from 'utils/multicall';
-
-interface CovalentTokenItem {
-  balance: string;
-  contract_address: string;
-  contract_name: string;
-  contract_ticker_symbol: string;
-  nft_data?: {
-    token_balance: string;
-    token_id: string;
-    token_url: string;
-    external_data: {
-      image: string;
-      image_256: string;
-      image_512: string;
-      image_1024: string;
-      name: string;
-    };
-  }[];
-}
 
 interface BounceItem {
   contract_addr: string;
