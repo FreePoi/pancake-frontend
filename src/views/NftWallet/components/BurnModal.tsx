@@ -45,7 +45,6 @@ const Card_: FC<{
     simpleRpcProvider.getBlockNumber().then(setNow);
   }, []);
 
-  console.log('lockInfo', lockInfo, account, nft.id);
   return (
     <div className={className}>
       <div className="show">
@@ -130,8 +129,6 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
 
   try {
     _pairs = JSON.parse(localStorage.getItem(`${NFT_POOLS}-${pair?.pairAddress.toLowerCase()}`)) || [];
-
-    console.log('localstorage', _pairs);
   } catch {
     localStorage.removeItem(NFT_POOLS);
   }
@@ -143,7 +140,6 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
   const locksInfo = useNftWithLockInfo(pair && { type: pair.type, address: pair.pairAddress });
   const { t } = useTranslation();
 
-  console.log('pair', pair);
   useEffect(() => {
     if (!pair) {
       return;
@@ -153,7 +149,6 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
     fetchNfts(pair.nftAddress, pair.pairAddress)
       .then(
         (nfts) => {
-          console.log('sssssssssssssss', nfts);
           setNfts(nfts);
           localStorage.setItem(`${NFT_POOLS}-${pair?.pairAddress.toLowerCase()}`, JSON.stringify(nfts));
         },
@@ -175,9 +170,7 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
           onDismiss();
 
           await tx.wait();
-          const receipt = await tx.wait();
 
-          console.log('receipt', receipt);
           toastSuccess(t('Burnt!'), t('Your fragments burnt, and you got NFT.'));
         },
         (e) => {

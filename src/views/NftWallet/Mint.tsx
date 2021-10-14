@@ -73,7 +73,6 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
       return;
     }
 
-    console.log('fetchAllTokens');
     setFetching(true);
     fetchAllTokens(account)
       .then((items) => {
@@ -82,7 +81,6 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
           .filter((pair) => pair.nfts.length);
 
         setPools(pools);
-        console.log('save', JSON.stringify(pools));
         localStorage.setItem(USER_NFTS, JSON.stringify(pools));
       }, console.error)
       .finally(() => setFetching(false));

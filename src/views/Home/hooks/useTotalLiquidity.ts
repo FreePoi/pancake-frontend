@@ -1,4 +1,3 @@
-import farms from 'config/constants/farms';
 import BigNumber from 'bignumber.js';
 import fetchPairsData, { PairsData, PairsMap } from './fetchPairsData';
 import usePairLength from './usePairsLength';
@@ -43,19 +42,14 @@ function getPriceVsBusd(
 }
 
 function countup({ countup, source }: PairsData): BigNumber {
-  Object.entries(countup).map(([address, amount]) =>
-    console.log(
-      `${
-        farms.find((farm) => farm.token.address[56].toLowerCase() === address)?.token.symbol ||
-        farms.find((farm) => farm.quoteToken.address[56].toLowerCase() === address)?.quoteToken.symbol ||
-        address.slice(0, 5)
-      }-${amount.toFixed(4)}`,
-    ),
-  );
-  // console.log(
-  //   'countup',
-  //   'source',
-  //   source,
+  // Object.entries(countup).map(([address, amount]) =>
+  //   console.log(
+  //     `${
+  //       farms.find((farm) => farm.token.address[56].toLowerCase() === address)?.token.symbol ||
+  //       farms.find((farm) => farm.quoteToken.address[56].toLowerCase() === address)?.quoteToken.symbol ||
+  //       address.slice(0, 5)
+  //     }-${amount.toFixed(4)}`,
+  //   ),
   // );
   const priceVsBusdMap: { [key: string]: BigNumber } = {};
 

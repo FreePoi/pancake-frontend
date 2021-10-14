@@ -41,8 +41,6 @@ function getPriceVsBusd(
   return priceVsBusdMap[tokenAddress];
 }
 
-// function countup
-
 interface PriceContextProps {
   priceVsBusdMap: Record<string, BigNumber>;
   total: BigNumber;
