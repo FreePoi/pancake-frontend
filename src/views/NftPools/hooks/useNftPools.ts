@@ -5,8 +5,7 @@ import { NFT_FACTORY, NFT_TYPE, NFT_PAIRS } from 'config/constants/nft';
 import multicall from 'utils/multicall';
 import { useContract } from 'hooks/useContract';
 import _ from 'lodash';
-
-export const chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10);
+import { chainId } from 'config/constants/tokens';
 
 export interface NftPair {
   pairAddress: string;

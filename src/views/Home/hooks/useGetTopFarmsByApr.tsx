@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ChainId } from '@kaco/sdk';
+import { ChainId } from 'config/constants/tokens';
 import { useFarms, usePriceCakeBusd } from 'state/farms/hooks';
 import { useAppDispatch } from 'state';
 import { fetchFarmsPublicDataAsync, nonArchivedFarms } from 'state/farms';

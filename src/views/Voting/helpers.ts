@@ -5,6 +5,7 @@ import { BIG_ZERO } from 'utils/bigNumber';
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types';
 import { simpleRpcProvider } from 'utils/providers';
 import { ADMIN_ADDRESS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config';
+import { ChainId } from 'config/constants/tokens';
 
 export const isCoreProposal = (proposal: Proposal) => {
   return proposal.author.toLowerCase() === ADMIN_ADDRESS.toLowerCase();
@@ -38,7 +39,7 @@ export interface Message {
 export const generateMetaData = () => {
   return {
     plugins: {},
-    network: 56,
+    network: ChainId.MAINNET,
     strategies: [{ name: 'cake', params: { symbol: 'KAC', address: getCakeAddress(), decimals: 18 } }],
   };
 };

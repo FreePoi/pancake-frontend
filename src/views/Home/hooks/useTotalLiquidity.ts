@@ -3,7 +3,7 @@ import fetchPairsData, { PairsData, PairsMap } from './fetchPairsData';
 import usePairLength from './usePairsLength';
 import { useEffect, useState } from 'react';
 import fetchPairsAddress from './fetchPairsAddress';
-import { BUSD } from 'config/constants/tokens';
+import { BUSD, chainId } from 'config/constants/tokens';
 
 function getPriceVsBusd(
   tokenAddress: string,
@@ -11,7 +11,6 @@ function getPriceVsBusd(
   priceVsBusdMap: { [key: string]: BigNumber },
   from?: string,
 ): BigNumber | undefined {
-  const chainId = parseInt(process.env.REACT_APP_CHAIN_ID);
   const busdAddress = BUSD[chainId].address.toLowerCase();
 
   Object.entries(source[tokenAddress]).find(([quoteTokenAddress, pair]) => {

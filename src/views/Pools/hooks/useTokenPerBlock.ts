@@ -6,12 +6,14 @@ import masterChef from 'config/abi/masterchef.json';
 import masterchefABI from 'config/abi/masterchef.json';
 import { getMasterChefAddress } from 'utils/addressHelpers';
 import { PoolConfig } from 'config/constants/types';
+import { chainId } from 'config/constants/tokens';
 
 const base = BIG_TEN.pow(new BigNumber(18));
-export const useTokenPerBlock = async () => {
+
+export const fetchTokenPerBlock = async () => {
   const res = await multicall(masterChef, [
     {
-      address: addresses.masterChef[56],
+      address: addresses.masterChef[chainId],
       name: 'cakePerBlock',
     },
   ]);

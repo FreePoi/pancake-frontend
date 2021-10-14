@@ -16,7 +16,7 @@ import {
 import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic';
 import fetchVaultUser from './fetchVaultUser';
 import { getTokenPricesFromFarm } from './helpers';
-import { useTokenPerBlock, usePoolWeight } from 'views/Pools/hooks/useTokenPerBlock';
+import { fetchTokenPerBlock, usePoolWeight } from 'views/Pools/hooks/useTokenPerBlock';
 const initialState: PoolsState = {
   data: [...poolsConfig],
   userDataLoaded: false,
@@ -48,7 +48,7 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
   const totalStakings = await fetchPoolsTotalStaking();
 
   const prices = getTokenPricesFromFarm(getState().farms.data);
-  const _tokenPerBlock = await useTokenPerBlock();
+  const _tokenPerBlock = await fetchTokenPerBlock();
 
   const liveData = [];
   poolsConfig.map(async (pool, index) => {
@@ -113,7 +113,7 @@ export const fetchPoolsUserDataAsync =
     const stakingTokenBalances = await fetchUserBalances(account);
     const stakedBalances = await fetchUserStakeBalances(account);
     const pendingRewards = await fetchUserPendingRewards(account);
-    const _tokenPerBlock = await useTokenPerBlock();
+    const _tokenPerBlock = await fetchTokenPerBlock();
     const userData = [];
     poolsConfig.map(async (pool, index) => {
       const _poolWeight = await usePoolWeight(pool);
