@@ -75,13 +75,14 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
 
     setFetching(true);
     fetchAllTokens(account)
-      .then((items) => {
-        const pools = pairs
-          .map((pair) => ({ ...pair, nfts: filterNft(items, pair.nftAddress) }))
-          .filter((pair) => pair.nfts.length);
+      .then(async (items) => {
+        const poolsPromises = pairs
+          .map(async (pair) => ({ ...pair, nfts: await filterNft(items, pair.nftAddress) }))
+          .filter(async (pair) => (await pair).nfts.length);
+        const results = await Promise.all(poolsPromises);
 
-        setPools(pools);
-        localStorage.setItem(USER_NFTS, JSON.stringify(pools));
+        setPools(results);
+        localStorage.setItem(USER_NFTS, JSON.stringify(results));
       }, console.error)
       .finally(() => setFetching(false));
   }, [account, pairs]);

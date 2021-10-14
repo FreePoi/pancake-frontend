@@ -128,6 +128,22 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.svg"
+    },
+    {
+      "name": "Alpaca NFT",
+      "symbol": "KALPACA",
+      "address": "0xBd6D17123Ec731adFf1cE2F9f7Af1aBC26E5EBfd",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "/images/tokens/0xBd6D17123Ec731adFf1cE2F9f7Af1aBC26E5EBfd.svg"
+    },
+    {
+      "name": "Alpaca",
+      "symbol": "ALPACA",
+      "address": "0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "/images/tokens/0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F.svg"
     }
   ]
 }

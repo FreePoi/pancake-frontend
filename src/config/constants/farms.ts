@@ -63,6 +63,26 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.cake,
   },
   {
+    pid: 19,
+    lpSymbol: 'KALPACA-ALPACA LP',
+    lpAddresses: {
+      97: '',
+      56: '0x69ebc54cf45f6a3b1f5087710bbca61a2cfa890b',
+    },
+    token: tokens.kalpaca,
+    quoteToken: tokens.alpaca,
+  },
+  {
+    pid: 20,
+    lpSymbol: 'ALPACA-KAC LP',
+    lpAddresses: {
+      97: '',
+      56: '0x23dc044ff5359a123a857cf5fffaf55323b76528',
+    },
+    token: tokens.alpaca,
+    quoteToken: tokens.kaco,
+  },
+  {
     pid: 17,
     lpSymbol: 'CAKE-KAC LP',
     lpAddresses: {

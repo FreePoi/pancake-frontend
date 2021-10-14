@@ -1888,6 +1888,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://pancakeswap.finance/',
   },
+  kalpaca: {
+    symbol: 'KALPACA',
+    address: {
+      56: '0xBd6D17123Ec731adFf1cE2F9f7Af1aBC26E5EBfd',
+      97: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.kaco.finance/',
+  },
 };
 
 export const WBNB = new Token(chainId, tokens.wbnb.address[chainId], 18, 'WBNB', 'Wrapped BNB');
