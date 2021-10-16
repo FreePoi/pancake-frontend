@@ -3,6 +3,7 @@ import KacoNftAbi from '../abi/kaco-nft.json';
 import KacoLogo from '../../components/svg/kaco-nft.png';
 import PancakeLogo from '../../components/svg/pancake-nft.png';
 import AlpacaLogo from '../../components/svg/alpaca-nft.png';
+import { ChainId } from './tokens';
 
 export enum NFT_TYPE {
   NFT721 = 721,
@@ -75,6 +76,6 @@ export const BLOCK_INTERVAL = 3;
 // ];
 
 export const NFT_FACTORY = {
-  56: '0x7bce4113838bC9609A0A96149c61B0ae811421b2',
-  97: '0x7C3343Ddb7Fd5cD2C8A421C5C22C44c396AD50B2',
+  [ChainId.MAINNET]: '0x7bce4113838bC9609A0A96149c61B0ae811421b2',
+  [ChainId.TESTNET]: '0x7C3343Ddb7Fd5cD2C8A421C5C22C44c396AD50B2',
 };

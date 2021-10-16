@@ -1,3 +1,4 @@
+import { chainId as processChainId } from 'config/constants/tokens';
 import { useEffect, useState, useRef } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
@@ -21,7 +22,7 @@ const useActiveWeb3React = (): Web3ReactContextInterface<Web3Provider> => {
     }
   }, [library]);
 
-  return { library: provider, chainId: chainId ?? parseInt(process.env.REACT_APP_CHAIN_ID, 10), ...web3React };
+  return { library: provider, chainId: chainId ?? processChainId, ...web3React };
 };
 
 export default useActiveWeb3React;

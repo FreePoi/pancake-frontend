@@ -73,7 +73,6 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
       return;
     }
 
-    console.log('fetchAllTokens');
     setFetching(true);
     fetchAllTokens(account)
       .then(async (items) => {
@@ -83,7 +82,6 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
         const results = await Promise.all(poolsPromises);
 
         setPools(results);
-        console.log('save', JSON.stringify(results));
         localStorage.setItem(USER_NFTS, JSON.stringify(results));
       }, console.error)
       .finally(() => setFetching(false));

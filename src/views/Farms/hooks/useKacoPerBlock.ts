@@ -1,3 +1,4 @@
+import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import addresses from 'config/constants/contracts';
 import multicall from 'utils/multicall';
 
@@ -11,16 +12,17 @@ import { useEffect, useState } from 'react';
 const base = BIG_TEN.pow(new RealBigNumber(18));
 
 const useKacPerBlock = (): RealBigNumber => {
+  const { chainId } = useActiveWeb3React();
   const [kacPerBlock, setKacPerBlock] = useState<RealBigNumber>(new RealBigNumber(0));
 
   useEffect(() => {
     multicall(masterChef, [
       {
-        address: addresses.masterChef[56],
+        address: addresses.masterChef[chainId],
         name: 'cakePerBlock',
       },
     ]).then(([kacPerBlock]) => setKacPerBlock(new RealBigNumber(kacPerBlock.toString()).div(base)));
-  }, []);
+  }, [chainId]);
 
   return kacPerBlock;
 };

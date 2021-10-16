@@ -1,4 +1,4 @@
-import { ChainId } from '@kaco/sdk';
+import { ChainId } from 'config/constants/tokens';
 import BigNumber from 'bignumber.js/bignumber';
 import { BIG_TEN } from 'utils/bigNumber';
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import { ChainId, Currency, currencyEquals, ETHER, Token } from '@kaco/sdk';
+import { Currency, currencyEquals, ETHER, Token } from '@kaco/sdk';
 import { Text } from '@kaco/uikit';
 import styled from 'styled-components';
 import { useTranslation } from 'contexts/Localization';
-
+import { ChainId } from 'config/constants/tokens';
 import { SUGGESTED_BASES } from '../../config/constants';
 import { AutoColumn } from '../Layout/Column';
 import QuestionHelper from '../QuestionHelper';

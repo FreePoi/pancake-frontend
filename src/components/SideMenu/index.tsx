@@ -1,7 +1,6 @@
 import React, { FC, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
-import { usePriceCakeBusd } from 'state/farms/hooks';
 import LogoPng from './imgs/logo.svg';
 import BgPng from './imgs/bg.png';
 // import FarmSvg from './imgs/icon_Farm_D.svg';
@@ -31,6 +30,7 @@ import { Flex, Text, useMatchBreakpoints } from '@kaco/uikit';
 import TwitterIcon from '../svg/Twitter';
 import TelegramIcon from '../svg/Telegram';
 import DocLink from './imgs/DocLink';
+import { useKacoPrice } from 'hooks/useKacoPrice';
 
 const NavLink = styled(Link)<{ active: 't' | 'f' }>`
   display: flex;
@@ -253,7 +253,7 @@ const Wrapper = styled.div<{ collapsed: boolean }>`
 
 const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
   const [collapsed, setCollapsed] = useState(false);
-  const cakePriceUsd = usePriceCakeBusd();
+  const kacoPrice = useKacoPrice();
   const { isXs, isSm, isMd } = useMatchBreakpoints();
   const { pathname } = useLocation();
   const [menuItems, setMenuItems] = useState<
@@ -409,7 +409,7 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
             <img src={LogoSvg} alt="" />
             {!collapsed && (
               <Text color="#1BD3D5" bold fontSize="16px" ml="10px">
-                ${cakePriceUsd.isNaN() ? '0' : cakePriceUsd.toFixed(2)}
+                ${kacoPrice.isNaN() ? '0' : kacoPrice.toFixed(2)}
               </Text>
             )}
           </Flex>

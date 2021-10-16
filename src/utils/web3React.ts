@@ -4,10 +4,10 @@ import { BscConnector } from '@binance-chain/bsc-connector';
 import { ConnectorNames } from '@kaco/uikit';
 import { ethers } from 'ethers';
 import getNodeUrl from './getRpcUrl';
+import { chainId } from 'config/constants/tokens';
 
 const POLLING_INTERVAL = 12000;
 const rpcUrl = getNodeUrl();
-const chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10);
 
 const injected = new InjectedConnector({ supportedChainIds: [chainId] });
 

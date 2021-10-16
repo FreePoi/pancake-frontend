@@ -66,10 +66,8 @@ const ShopCart: FC<{ className?: string; floorPrice: number; symbol: string; pai
     burn.then(
       async (tx) => {
         await tx.wait();
-        const receipt = await tx.wait();
         clear();
 
-        console.log('receipt', receipt);
         toastSuccess(t('Bought!'), t('You have it now.'));
       },
       (e) => {

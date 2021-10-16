@@ -66,10 +66,7 @@ const Pools_: FC<{
       return;
     }
 
-    console.log('nftsxxxxxxxx');
-    fetchMore(nftsReversed, 0, pair.nftAddress, account).then((nfts) => {
-      setNfts(nfts);
-    });
+    fetchMore(nftsReversed, 0, pair.nftAddress, account).then(setNfts);
   }, [pair, nftsReversed, account]);
 
   useEffect(() => {

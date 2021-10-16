@@ -1,5 +1,5 @@
-import { ChainId, JSBI, Percent, Token, WETH } from '@kaco/sdk';
-import { BUSD, DAI, USDT, BTCB, Kaco, WBNB, UST, ETH, USDC, DOT, KSM } from './tokens';
+import { JSBI, Percent, Token, WETH } from '@kaco/sdk';
+import { BUSD, DAI, USDT, BTCB, Kaco, WBNB, UST, ETH, USDC, DOT, KSM, ChainId } from './tokens';
 
 export const ROUTER_ADDRESS = '0xB44A8AEb4805a5404a8d20A1294a61C95Ae6F256';
 
@@ -99,8 +99,8 @@ export const BLOCKED_ADDRESSES: string[] = [
   '0x8576aCC5C05D6Ce88f4e49bf65BdF0C62F91353C',
 ];
 export const FACTORY_ADDRESS = {
-  97: '0xd95D56A112D62DFc1e6F9bC2432d12b8e1B25d60',
-  56: '0xa5e48a6E56e164907263e901B98D9b11CCB46C47',
+  [ChainId.TESTNET]: '0xd95D56A112D62DFc1e6F9bC2432d12b8e1B25d60',
+  [ChainId.MAINNET]: '0xa5e48a6E56e164907263e901B98D9b11CCB46C47',
 };
 
 export { default as farmsConfig } from './farms';
