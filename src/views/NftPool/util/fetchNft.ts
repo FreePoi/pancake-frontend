@@ -182,7 +182,26 @@ function toUri(uri: string) {
 
 // ipfs://QmYu9WwPNKNSZQiTCDfRk7aCR472GURavR9M1qosDmqpev/sparkle.json
 function extractPancakeName(uri: string) {
-  return uri.slice(uri.lastIndexOf('/') + 1, uri.length - 5);
+  let name: string = uri.slice(uri.lastIndexOf('/') + 1, uri.length - 5);
+  switch (name) {
+    case 'easter-flipper': {
+      name = 'flipsie-easter-21';
+      break;
+    }
+    case 'easter-champion-storm': {
+      name = 'easter-21-champions';
+      break;
+    }
+    case 'easter-caker': {
+      name = 'cakeston-easter-21';
+      break;
+    }
+    case 'easter-storm': {
+      name = 'stormy-easter-21';
+      break;
+    }
+  }
+  return name;
 }
 
 function toPancakeUri(name: string) {
