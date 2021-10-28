@@ -90,7 +90,7 @@ const CollectModal: React.FC<CollectModalProps> = ({ onDismiss }) => {
       toastError(t('Error'), t('Please make sure you is Eligible!'));
       return;
     }
-    if (claimable <= 0) {
+    if (claimable <= 0 && isAirdropClaimed) {
       toastError(t('Error'), t('Please make sure you have claimable!'));
       return;
     }
