@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Flex, Text, IconButton, CloseIcon } from '@kaco/uikit';
 import { useTranslation } from 'contexts/Localization';
 import Modal from 'components/Modal/Modal';
 import Claim_KAC_Token_PNG from './Claim_KAC_Token_PNG.png';
 import Balance from 'components/Balance';
 import styled from 'styled-components';
-// import { ethers } from 'ethers';
+import { useMerkleContract } from 'hooks/useContract';
 import { useWeb3React } from '@web3-react/core';
-// import useToast from 'hooks/useToast';
+import useToast from 'hooks/useToast';
+
+import { ethersToBigNumber } from 'utils/bigNumber';
+import { getBalanceNumber } from 'utils/formatBalance';
+import merkle from 'config/constants/merkle.json';
 // import ConnectWalletButton from 'components/ConnectWalletButton';
 // todo
 // import { getAddressByType } from 'utils/collectibles';
@@ -54,9 +58,63 @@ interface CollectModalProps {
 const CollectModal: React.FC<CollectModalProps> = ({ onDismiss }) => {
   const { t } = useTranslation();
   const [isLoading] = useState(false);
+  const [isEligible, setIsEligible] = useState(false);
+  const [isAirdropClaimed, setIsAirdropClaimed] = useState(false);
+  const [claimable, setClaimable] = useState(0);
   const { account } = useWeb3React();
+  const airdropContract = useMerkleContract();
+  const { toastError, toastSuccess } = useToast();
 
-  const handleConfirm = async () => {};
+  const claims = merkle.claims;
+  useEffect(() => {
+    if (account) {
+      if (claims[account] != null) {
+        setIsEligible(true);
+        airdropContract
+          .isClaimed(claims[account].index)
+          .call()
+          .then((isClaimed: boolean) => {
+            setIsAirdropClaimed(isClaimed);
+            const amountAsBN = ethersToBigNumber(claims[account].amount);
+            setClaimable(getBalanceNumber(amountAsBN));
+          });
+      }
+    }
+  }, [account]);
+  const claimAirdrop = async () => {
+    if (!airdropContract) {
+      toastError(t('Error'), t('Please make sure contract connected!'));
+      return;
+    }
+    if (!isEligible) {
+      toastError(t('Error'), t('Please make sure you is Eligible!'));
+      return;
+    }
+    if (claimable <= 0) {
+      toastError(t('Error'), t('Please make sure you have claimable!'));
+      return;
+    }
+
+    airdropContract
+      .claim(claims[account].index, account, claims[account].amount, claims[account].proof)
+      .send({
+        from: account,
+      })
+      .on('error', function (error) {
+        toastError(t('Error'), t('Transaction Failed'));
+      })
+      .on('transactionHash', function (transactionHash) {
+        console.log(transactionHash);
+        // toastSuccess(t('Contract Enabled'), 'Click here to review your claim.', {
+        //   onClick: function () {
+        //     window.open('https://etherscan.io/tx/' + transactionHash, '_blank');
+        //   },
+        // });
+      })
+      .on('confirmation', function (confirmationNumber, receipt) {
+        toastSuccess('Claim', 'Airdrop Claim Successful');
+      });
+  };
 
   return (
     <Modal>
@@ -104,7 +162,7 @@ const CollectModal: React.FC<CollectModalProps> = ({ onDismiss }) => {
       <BgButton
         minWidth="150px"
         variant="secondary"
-        onClick={handleConfirm}
+        onClick={claimAirdrop}
         disabled={!account || isLoading}
         ml="8px"
         mr="8px"

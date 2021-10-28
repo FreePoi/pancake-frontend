@@ -144,5 +144,5 @@ export const getFarmAuctionContract = (signer?: ethers.Signer | ethers.providers
 };
 
 export const getMerkleContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract(merkleAbi, getMerkleAddress(), signer) as FarmAuctionContract;
+  return getContract(merkleAbi, getMerkleAddress(), signer);
 };
