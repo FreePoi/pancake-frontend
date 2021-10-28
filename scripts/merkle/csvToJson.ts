@@ -25,10 +25,10 @@ rl.on('close', function () {
       }
       return fileLine;
     })
-    .then((data: { address: string; amount: string }[]) => {
+    .then((data: { address: string; amount: number }[]) => {
       const _data = {};
       for (let i = 0; i < data.length; i++) {
-        _data[data[i].address] = Number(data[i].amount);
+        _data[data[i].address] = (data[i].amount * 1000000000000000000).toString(16);
       }
       console.log(_data);
       const { claims, merkleRoot, tokenTotal } = parseBalanceMap(_data);
