@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useWeb3React } from '@web3-react/core';
 import ConnectWalletButton from '../ConnectWalletButton';
 // import { LogoutIcon, useMatchBreakpoints, useModal } from '@kaco/uikit';
-import { Text, Flex, LogoutIcon, useMatchBreakpoints, useTooltip } from '@kaco/uikit';
+import { Text, Flex, LogoutIcon, useMatchBreakpoints, useTooltip, useModal } from '@kaco/uikit';
 import UncollapsedSvg from './imgs/icon_sq.svg';
 import BscSvg from './imgs/icon_bsc.svg';
 import SdnSvg from './imgs/icon_sd.png';
@@ -11,7 +11,7 @@ import SelectedSvg from './imgs/icon_select.svg';
 import SlSvg from './imgs/icon_sl.svg';
 import useAuth from 'hooks/useAuth';
 import { useTranslation } from 'contexts/Localization';
-// import ClaimModal from './Modals/ClaimModal';
+import ClaimModal from './Modals/ClaimModal';
 export enum ThemeChoice {
   Dark,
   White,
@@ -82,17 +82,17 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
     hideArrow: true,
     tooltipOffset: [20, 10],
   });
-  console.log('tooltipVisible', tooltipVisible);
-  // const [onPresentClaim] = useModal(<ClaimModal />);
+  // console.log('tooltipVisible', tooltipVisible);
+  const [onPresentClaim] = useModal(<ClaimModal />);
   return (
     <div className={className}>
       {(isXs || isSm) && <img src={UncollapsedSvg} alt="" onClick={() => setCollapsed(!collapsed)} />}
       <div className="right">
-        {/* {account ? (
+        {account ? (
           <div className="claim_kac" onClick={onPresentClaim}>
             Claim KAC
           </div>
-        ) : null} */}
+        ) : null}
         {/* <div className="icons">
           <a target="_blank" rel="noreferrer" href="https://twitter.com/KACOFinance">
             <TwitterIcon height="28px" />

@@ -54,38 +54,9 @@ interface CollectModalProps {
 const CollectModal: React.FC<CollectModalProps> = ({ onDismiss }) => {
   const { t } = useTranslation();
   const [isLoading] = useState(false);
-  // const [value, setValue] = useState('');
-  // const [error, setError] = useState(null);
-  // const contract = useERC721(getAddressByType('pancake'));
   const { account } = useWeb3React();
-  // const { toastSuccess } = useToast();
 
-  // const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { value: inputValue } = evt.target;
-  //   setValue(inputValue);
-  // };
-  const handleConfirm = async () => {
-    // try {
-    // const isValidAddress = ethers.utils.isAddress(value);
-    // if (!isValidAddress) {
-    //   setError(t('Please enter a valid wallet address'));
-    // } else {
-    // const tx = await contract.transferFrom(account, value, tokenIds[0]);
-    // setIsLoading(true);
-    // const receipt = await tx.wait();
-    // if (receipt.status) {
-    //   onDismiss();
-    //   onSuccess();
-    //   toastSuccess(t('NFT successfully transferred!'));
-    // } else {
-    //   setError(t('Unable to transfer NFT'));
-    //   setIsLoading(false);
-    // }
-    // }
-    // } catch (err) {
-    //   console.error('Unable to Claim KAC Token:', err);
-    // }
-  };
+  const handleConfirm = async () => {};
 
   return (
     <Modal>

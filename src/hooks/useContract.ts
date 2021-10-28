@@ -24,6 +24,7 @@ import {
   getBunnySpecialCakeVaultContract,
   getBunnySpecialPredictionContract,
   getFarmAuctionContract,
+  getMerkleContract,
 } from 'utils/contractHelpers';
 import { getMulticallAddress } from 'utils/addressHelpers';
 
@@ -171,6 +172,11 @@ export const useFarmAuctionContract = () => {
   //
   // Similar behavior was also noticed on Trading Competition page.
   return useMemo(() => getFarmAuctionContract(account ? library.getSigner() : library), [library, account]);
+};
+
+export const useMerkleContract = () => {
+  const { account, library } = useActiveWeb3React();
+  return useMemo(() => getMerkleContract(account ? library.getSigner() : library), [library, account]);
 };
 
 // Code below migrated from Exchange useContract.ts
