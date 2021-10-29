@@ -67,20 +67,20 @@ const CollectModal: React.FC<CollectModalProps> = ({ onDismiss }) => {
   // const [error, setError] = useState('');
   // const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const getEligibility = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      // const address = event.target.value;
-      const address = '0xFB83a67784F110dC658B19515308A7a95c2bA33A';
-      setRecipientAddress(address);
-      const eligibility = !!getClaimObjectFromAddress(address);
-      setIsEligible(eligibility);
-      if (eligibility) {
-      } else {
-        toastError('Error', 'Address has no available claim');
-      }
-    },
-    [setIsEligible, toastError],
-  );
+  // const getEligibility = useCallback(
+  //   (event: React.ChangeEvent<HTMLInputElement>) => {
+  //     // const address = event.target.value;
+  //     const address = '0xFB83a67784F110dC658B19515308A7a95c2bA33A';
+  //     setRecipientAddress(address);
+  //     const eligibility = !!getClaimObjectFromAddress(address);
+  //     setIsEligible(eligibility);
+  //     if (eligibility) {
+  //     } else {
+  //       toastError('Error', 'Address has no available claim');
+  //     }
+  //   },
+  //   [setIsEligible, toastError],
+  // );
   const getAirdropStats = useCallback(async () => {
     const claimObject: any = getClaimObjectFromAddress(recipientAddress);
     setClaimable(getBalanceAmount(claimObject.amount, 18).toString());
