@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Flex, Text, IconButton, CloseIcon } from '@kaco/uikit';
 import { useTranslation } from 'contexts/Localization';
 import Modal from 'components/Modal/Modal';
@@ -58,88 +58,54 @@ const CollectModal: React.FC<CollectModalProps> = ({ onDismiss }) => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
   const airdropContract = useMerkleDistributorContract();
-
-  const [recipientAddress, setRecipientAddress] = useState('0xFB83a67784F110dC658B19515308A7a95c2bA33A');
-  const [isEligible, setIsEligible] = useState(false);
-  const [isAirdropClaimed, setIsAirdropClaimed] = useState(false);
   const [claimable, setClaimable] = useState('0');
   const { toastError, toastSuccess } = useToast();
-  // const [error, setError] = useState('');
-  // const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  // const getEligibility = useCallback(
-  //   (event: React.ChangeEvent<HTMLInputElement>) => {
-  //     // const address = event.target.value;
-  //     const address = '0xFB83a67784F110dC658B19515308A7a95c2bA33A';
-  //     setRecipientAddress(address);
-  //     const eligibility = !!getClaimObjectFromAddress(address);
-  //     setIsEligible(eligibility);
-  //     if (eligibility) {
-  //     } else {
-  //       toastError('Error', 'Address has no available claim');
-  //     }
-  //   },
-  //   [setIsEligible, toastError],
-  // );
-  const getAirdropStats = useCallback(async () => {
-    const claimObject: any = getClaimObjectFromAddress(recipientAddress);
-    setClaimable(getBalanceAmount(claimObject.amount, 18).toString());
-    const isClaimed = await airdropContract.isClaimed(claimObject.index);
-    console.log(isClaimed);
-    setIsAirdropClaimed(!!isClaimed);
-    if (isClaimed) {
-      toastError('Claimed Error', 'you have already claimed your airdrop');
-    } else {
-    }
-  }, [recipientAddress, setIsAirdropClaimed, toastError, airdropContract]);
-  const claimAirdrop = useCallback(async () => {
-    console.log(isAirdropClaimed);
-    if (isAirdropClaimed) {
-      return;
-    }
-    const claimObject = getClaimObjectFromAddress(recipientAddress);
-    setIsLoading(true);
-    console.log(3333);
-    const tx = await airdropContract.claim(claimObject.index, recipientAddress, claimObject.amount, claimObject.proof, {
-      from: account,
-    });
-    console.log(1111);
-    toastSuccess('Recoreded', 'Your transaction has been recoreded');
-    const receipt = await tx.wait();
-    if (receipt.status) {
-      toastSuccess('successfully claimed', 'You have successfully claimed your airdrop');
-    } else {
-      toastError('Transation was not Successful');
-    }
-    setIsLoading(false);
-  }, [account, recipientAddress, airdropContract, toastError, toastSuccess, isAirdropClaimed]);
   useEffect(() => {
-    const setUp = async () => {
-      if (!airdropContract) {
-        toastError('Error', 'airdrop not available');
-      }
-      const address = '0xFB83a67784F110dC658B19515308A7a95c2bA33A';
-      setRecipientAddress(address);
-      const eligibility = !!getClaimObjectFromAddress(address);
-      setIsEligible(eligibility);
-      if (eligibility) {
-        await getAirdropStats();
-      } else {
+    const address = account;
+    const claimObject: any = getClaimObjectFromAddress(address);
+    setClaimable(getBalanceAmount(claimObject?.amount ?? 0, 18).toString());
+  }, [account]);
+  const claimAirdrop = async () => {
+    try {
+      const address = account;
+      // is Eligibility
+      const claimObject = getClaimObjectFromAddress(address);
+      if (!claimObject) {
         toastError('Error', 'Address has no available claim');
+        return false;
       }
-      // if (isEligible) {
-      //   await getAirdropStats();
-      // }
-    };
-    setUp();
-  }, [isEligible, getAirdropStats, toastError, airdropContract]);
+      // is claimed
+      const isClaimed = await airdropContract.isClaimed(claimObject.index);
+      if (isClaimed) {
+        toastError('Claimed Error', 'you have already claimed your airdrop');
+        return false;
+      }
+      setIsLoading(true);
+      const tx = await airdropContract.claim(claimObject.index, address, claimObject.amount, claimObject.proof, {
+        from: account,
+      });
+      toastSuccess('Recoreded', 'Your transaction has been recoreded');
+      const receipt = await tx.wait();
+      if (receipt.status) {
+        toastSuccess('successfully claimed', 'You have successfully claimed your airdrop');
+      } else {
+        toastError('Transation was not Successful');
+      }
+      setIsLoading(false);
+    } catch (e: any) {
+      setIsLoading(false);
+      toastError(e?.data?.message ?? 'Claimed Error');
+    }
+  };
+
   return (
     <Modal>
       <Flex justifyContent="space-between" mb="10px">
         <HeaderStyled>
           <img src={Claim_KAC_Token_PNG} alt="Claim_KAC_Token_PNG" />
           <div>
-            <Balance fontSize="28px" bold value={+claimable} decimals={8} unit="KAC" />
+            <Balance fontSize="28px" bold value={+claimable} decimals={2} unit="KAC" />
             <Text bold fontSize="14px">
               Claim KAC Token
             </Text>
@@ -184,7 +150,7 @@ const CollectModal: React.FC<CollectModalProps> = ({ onDismiss }) => {
         ml="8px"
         mr="8px"
       >
-        {isAirdropClaimed ? 'Claimed' : t('Claim KAC')}
+        {t('Claim KAC')}
       </BgButton>
     </Modal>
   );

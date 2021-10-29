@@ -513,18 +513,6 @@
         "0xe89483acbd4aa3a5315292fd7e76ae5fff8c49afe6f5ef3eaf168f2496247b45",
         "0x5853ebb3992c9e7eb569f106481f665174309bba851bfac2160414540f61069c"
       ]
-    },
-    "0x61Cc4Eecf10dabEE8420dAFE9FCAce1c99fe4f0f": {
-      "index": 0,
-      "amount": "0x056bc75e2d63100000",
-      "proof": [
-        "0x0ba206616fa68e61b86e0402b87d9e02acd3f59e9b60eebf43bd74a09d93b94b",
-        "0x7575ccaab5696dc9dddf5d975221152c7134095271e87ca8d8ee5b96bd38bede",
-        "0x6e713a71619523bc058839effa2f6f1731d38fcc5d1056673824c5dff80e54d1",
-        "0xe237ffb1aa2d21ac3690ab6dbb44ac4a6744bc95bb205681335d9200bee89ed8",
-        "0xe89483acbd4aa3a5315292fd7e76ae5fff8c49afe6f5ef3eaf168f2496247b45",
-        "0x5853ebb3992c9e7eb569f106481f665174309bba851bfac2160414540f61069c"
-      ]
     }
   }
 }
