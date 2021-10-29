@@ -1,21 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Flex, Text, IconButton, CloseIcon } from '@kaco/uikit';
 import { useTranslation } from 'contexts/Localization';
 import Modal from 'components/Modal/Modal';
 import Claim_KAC_Token_PNG from './Claim_KAC_Token_PNG.png';
 import Balance from 'components/Balance';
 import styled from 'styled-components';
-import { useMerkleContract } from 'hooks/useContract';
-import { useWeb3React } from '@web3-react/core';
+import { useMerkleDistributorContract } from 'hooks/useContract';
 import useToast from 'hooks/useToast';
-
-import { ethersToBigNumber } from 'utils/bigNumber';
-import { getBalanceNumber } from 'utils/formatBalance';
+import { useWeb3React } from '@web3-react/core';
 import merkle from 'config/constants/merkle.json';
-// import ConnectWalletButton from 'components/ConnectWalletButton';
-// todo
-// import { getAddressByType } from 'utils/collectibles';
-// import { useERC721 } from 'hooks/useContract';
 
 const HeaderStyled = styled(Flex)`
   img {
@@ -55,74 +48,97 @@ const BgButton = styled(Button)`
 interface CollectModalProps {
   onDismiss?: () => void;
 }
+
+const getClaimObjectFromAddress = (address: string) => {
+  const keys = Object.keys(merkle.claims);
+  return merkle.claims[keys.find((key) => key.toLowerCase() === address.toLowerCase())];
+};
 const CollectModal: React.FC<CollectModalProps> = ({ onDismiss }) => {
   const { t } = useTranslation();
-  const [isLoading] = useState(false);
+  const { account } = useWeb3React();
+  const airdropContract = useMerkleDistributorContract();
+
+  const [recipientAddress, setRecipientAddress] = useState('0xFB83a67784F110dC658B19515308A7a95c2bA33A');
   const [isEligible, setIsEligible] = useState(false);
   const [isAirdropClaimed, setIsAirdropClaimed] = useState(false);
   const [claimable, setClaimable] = useState(0);
-  const { account } = useWeb3React();
-  const airdropContract = useMerkleContract();
   const { toastError, toastSuccess } = useToast();
-
-  const claims = merkle.claims;
-  useEffect(() => {
-    if (account) {
-      if (claims[account] != null) {
-        setIsEligible(true);
-        airdropContract
-          .isClaimed(claims[account].index)
-          .call()
-          .then((isClaimed: boolean) => {
-            setIsAirdropClaimed(isClaimed);
-            const amountAsBN = ethersToBigNumber(claims[account].amount);
-            setClaimable(getBalanceNumber(amountAsBN));
-          });
+  // const [error, setError] = useState('');
+  // const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const getEligibility = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      // const address = event.target.value;
+      const address = '0xFB83a67784F110dC658B19515308A7a95c2bA33A';
+      setRecipientAddress(address);
+      const eligibility = !!getClaimObjectFromAddress(address);
+      setIsEligible(eligibility);
+      if (eligibility) {
+      } else {
+        toastError('Error', 'Address has no available claim');
       }
+    },
+    [setIsEligible, toastError],
+  );
+  const getAirdropStats = useCallback(async () => {
+    const claimObject: any = getClaimObjectFromAddress(recipientAddress);
+    setClaimable(claimObject.amount);
+    const isClaimed = await airdropContract.isClaimed(claimObject.index);
+    console.log(isClaimed);
+    setIsAirdropClaimed(!!isClaimed);
+    if (isClaimed) {
+      toastError('Claimed Error', 'you have already claimed your airdrop');
+    } else {
     }
-  }, [account, airdropContract, claims]);
-  const claimAirdrop = async () => {
-    if (!airdropContract) {
-      toastError(t('Error'), t('Please make sure contract connected!'));
+  }, [recipientAddress, setIsAirdropClaimed, toastError, airdropContract]);
+  const claimAirdrop = useCallback(async () => {
+    console.log(isAirdropClaimed);
+    if (isAirdropClaimed) {
       return;
     }
-    if (!isEligible) {
-      toastError(t('Error'), t('Please make sure you is Eligible!'));
-      return;
+    const claimObject = getClaimObjectFromAddress(recipientAddress);
+    setIsLoading(true);
+    console.log(3333);
+    const tx = await airdropContract.claim(claimObject.index, recipientAddress, claimObject.amount, claimObject.proof, {
+      from: account,
+    });
+    console.log(1111);
+    toastSuccess('Recoreded', 'Your transaction has been recoreded');
+    const receipt = await tx.wait();
+    if (receipt.status) {
+      toastSuccess('successfully claimed', 'You have successfully claimed your airdrop');
+    } else {
+      toastError('Transation was not Successful');
     }
-    if (claimable <= 0 && isAirdropClaimed) {
-      toastError(t('Error'), t('Please make sure you have claimable!'));
-      return;
-    }
-
-    airdropContract
-      .claim(claims[account].index, account, claims[account].amount, claims[account].proof)
-      .send({
-        from: account,
-      })
-      .on('error', function (error) {
-        toastError(t('Error'), t('Transaction Failed'));
-      })
-      .on('transactionHash', function (transactionHash) {
-        console.log(transactionHash);
-        // toastSuccess(t('Contract Enabled'), 'Click here to review your claim.', {
-        //   onClick: function () {
-        //     window.open('https://etherscan.io/tx/' + transactionHash, '_blank');
-        //   },
-        // });
-      })
-      .on('confirmation', function (confirmationNumber, receipt) {
-        toastSuccess('Claim', 'Airdrop Claim Successful');
-      });
-  };
-
+    setIsLoading(false);
+  }, [account, recipientAddress, airdropContract, toastError, toastSuccess, isAirdropClaimed]);
+  useEffect(() => {
+    const setUp = async () => {
+      if (!airdropContract) {
+        toastError('Error', 'airdrop not available');
+      }
+      const address = '0xFB83a67784F110dC658B19515308A7a95c2bA33A';
+      setRecipientAddress(address);
+      const eligibility = !!getClaimObjectFromAddress(address);
+      setIsEligible(eligibility);
+      if (eligibility) {
+        await getAirdropStats();
+      } else {
+        toastError('Error', 'Address has no available claim');
+      }
+      // if (isEligible) {
+      //   await getAirdropStats();
+      // }
+    };
+    setUp();
+  }, [isEligible, getAirdropStats, toastError, airdropContract]);
   return (
     <Modal>
       <Flex justifyContent="space-between" mb="10px">
         <HeaderStyled>
           <img src={Claim_KAC_Token_PNG} alt="Claim_KAC_Token_PNG" />
           <div>
-            <Balance fontSize="28px" bold value={620.89} decimals={2} unit="KAC" />
+            <Balance fontSize="28px" bold value={claimable} decimals={2} unit="KAC" />
             <Text bold fontSize="14px">
               Claim KAC Token
             </Text>
@@ -167,7 +183,7 @@ const CollectModal: React.FC<CollectModalProps> = ({ onDismiss }) => {
         ml="8px"
         mr="8px"
       >
-        {t('Claim KAC')}
+        {isAirdropClaimed ? 'Claimed' : t('Claim KAC')}
       </BgButton>
     </Modal>
   );

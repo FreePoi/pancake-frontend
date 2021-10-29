@@ -174,7 +174,7 @@ export const useFarmAuctionContract = () => {
   return useMemo(() => getFarmAuctionContract(account ? library.getSigner() : library), [library, account]);
 };
 
-export const useMerkleContract = () => {
+export const useMerkleDistributorContract = () => {
   const { account, library } = useActiveWeb3React();
   return useMemo(() => getMerkleContract(account ? library.getSigner() : library), [library, account]);
 };

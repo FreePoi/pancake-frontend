@@ -1,5 +1,12 @@
-import ethers, { Contract, ContractFunction } from 'ethers';
-
+import ethers, {
+  Contract,
+  ContractFunction,
+  BigNumberish,
+  CallOverrides,
+  Overrides,
+  ContractTransaction,
+} from 'ethers';
+import { BytesLike } from '@ethersproject/bytes';
 export type MultiCallResponse<T> = T | null;
 
 // Predictions
@@ -95,4 +102,20 @@ export interface FarmAuctionContract extends Contract {
   whitelisted: ContractFunction<boolean>;
   getWhitelistedAddresses: ContractFunction<GetWhitelistedAddressesResponse>;
   auctionsHistory: ContractFunction<AuctionsHistoryResponse>;
+}
+
+export interface IMerkleDistributorInterface extends Contract {
+  claim(
+    index: BigNumberish,
+    account: string,
+    amount: BigNumberish,
+    merkleProof: BytesLike[],
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>;
+
+  isClaimed(index: BigNumberish, overrides?: CallOverrides): Promise<[boolean]>;
+
+  merkleRoot(overrides?: CallOverrides): Promise<[string]>;
+
+  token(overrides?: CallOverrides): Promise<[string]>;
 }

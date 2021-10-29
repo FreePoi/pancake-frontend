@@ -8,7 +8,7 @@ const csvFilePath = './airdropRecords.csv';
 console.log(path.resolve(__dirname, csvFilePath));
 const rl: any = readline.createInterface({
   input: fs.createReadStream(path.resolve(__dirname, csvFilePath)),
-  output: fs.createWriteStream(path.resolve(__dirname, './result.json')),
+  output: fs.createWriteStream(path.resolve(__dirname, 'src/config/constants/merkle.json')),
   terminal: false,
 });
 rl.on('close', function () {
