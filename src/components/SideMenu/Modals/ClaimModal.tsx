@@ -80,7 +80,7 @@ const CollectModal: React.FC<CollectModalProps> = ({ onDismiss }) => {
           });
       }
     }
-  }, [account]);
+  }, [account, airdropContract, claims]);
   const claimAirdrop = async () => {
     if (!airdropContract) {
       toastError(t('Error'), t('Please make sure contract connected!'));

@@ -31,13 +31,14 @@ export function parseBalanceMap(balances: OldFormat | NewFormat[]): MerkleDistri
   const dataByAddress = balancesInNewFormat.reduce<{
     [address: string]: { amount: BigNumber; flags?: { [flag: string]: boolean } };
   }>((memo, { address: account, earnings, reasons }) => {
-    console.log(earnings);
+    // console.log(earnings);
     if (!isAddress(account)) {
       throw new Error(`Found invalid address: ${account}`);
     }
     const parsed = getAddress(account);
     if (memo[parsed]) throw new Error(`Duplicate address: ${parsed}`);
     const parsedNum = BigNumber.from(earnings);
+    // console.log("parsedNum: ", parsedNum);
     if (parsedNum.lte(0)) throw new Error(`Invalid amount for account: ${account}`);
     const flags = {
       isSOCKS: reasons.includes('socls'),
