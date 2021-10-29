@@ -10,6 +10,7 @@ import useToast from 'hooks/useToast';
 import { useWeb3React } from '@web3-react/core';
 import merkle from 'config/constants/merkle.json';
 
+import { getBalanceAmount } from 'utils/formatBalance';
 const HeaderStyled = styled(Flex)`
   img {
     width: 60px;
@@ -61,7 +62,7 @@ const CollectModal: React.FC<CollectModalProps> = ({ onDismiss }) => {
   const [recipientAddress, setRecipientAddress] = useState('0xFB83a67784F110dC658B19515308A7a95c2bA33A');
   const [isEligible, setIsEligible] = useState(false);
   const [isAirdropClaimed, setIsAirdropClaimed] = useState(false);
-  const [claimable, setClaimable] = useState(0);
+  const [claimable, setClaimable] = useState('0');
   const { toastError, toastSuccess } = useToast();
   // const [error, setError] = useState('');
   // const [message, setMessage] = useState('');
@@ -82,7 +83,7 @@ const CollectModal: React.FC<CollectModalProps> = ({ onDismiss }) => {
   );
   const getAirdropStats = useCallback(async () => {
     const claimObject: any = getClaimObjectFromAddress(recipientAddress);
-    setClaimable(claimObject.amount);
+    setClaimable(getBalanceAmount(claimObject.amount, 18).toString());
     const isClaimed = await airdropContract.isClaimed(claimObject.index);
     console.log(isClaimed);
     setIsAirdropClaimed(!!isClaimed);
@@ -138,7 +139,7 @@ const CollectModal: React.FC<CollectModalProps> = ({ onDismiss }) => {
         <HeaderStyled>
           <img src={Claim_KAC_Token_PNG} alt="Claim_KAC_Token_PNG" />
           <div>
-            <Balance fontSize="28px" bold value={claimable} decimals={2} unit="KAC" />
+            <Balance fontSize="28px" bold value={+claimable} decimals={8} unit="KAC" />
             <Text bold fontSize="14px">
               Claim KAC Token
             </Text>
