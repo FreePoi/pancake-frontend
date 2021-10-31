@@ -118,8 +118,7 @@ const CollectModal: React.FC<CollectModalProps> = ({ onDismiss }) => {
       </Flex>
 
       <Text padding="0 4%" mt="20px" mb="30px" bold fontSize="14px" lineHeight="24px" color="#9DA6A6">
-        Enter an address to trigger a KAC claim. If the address has any claimable KAC it will be sent to them on
-        submission.
+        Get your rewards
       </Text>
       {/* <BorderDiv>
         {error && (
