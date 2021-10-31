@@ -90,7 +90,7 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
       <div className="right">
         {account ? (
           <div className="claim_kac" onClick={onPresentClaim}>
-            Claim KAC
+            {isXs || isSm ? 'Claim' : '  Claim Kac  '}
           </div>
         ) : null}
         {/* <div className="icons">
@@ -192,15 +192,16 @@ export default styled(Header)`
       }
     }
     .claim_kac {
-      padding: 0px 30px;
-      height: 32px;
-      line-height: 32px;
+      padding: 0px 0.8rem;
+      overflow: hidden;
+      height: 36px;
+      line-height: 36px;
       font-size: 14px;
       color: #fff;
       background: linear-gradient(90deg, #1bd3d5, #d755d9, #ec9b5a);
       border-radius: 12px;
       font-weight: bold;
-      margin-right: 12px;
+      margin-right: 16px;
       cursor: pointer;
     }
     > .account {
