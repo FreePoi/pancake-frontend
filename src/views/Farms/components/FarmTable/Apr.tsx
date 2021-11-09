@@ -69,10 +69,10 @@ const Apr: React.FC<AprProps> = ({
     <Container>
       {originalValue ? (
         <>
-          <AprWrapper>{apy}%</AprWrapper>
-          <ReferenceElement ref={targetRef}>
+          <AprWrapper>{apr}%</AprWrapper>
+          {/* <ReferenceElement ref={targetRef}>
             <HelpIcon color="textSubtle" />
-          </ReferenceElement>
+          </ReferenceElement> */}
           {tooltipVisible && tooltip}
           {/* {!hideButton && (
             <ApyButton
