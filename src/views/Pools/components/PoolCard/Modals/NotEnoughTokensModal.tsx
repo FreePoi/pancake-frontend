@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'contexts/Localization';
 // import styled from 'styled-components';
-import { Text, Button, OpenNewIcon, Link } from '@kaco/uikit';
+import { Text, Button } from '@kaco/uikit';
 import Modal from 'components/Modal/Modal';
 
 interface NotEnoughTokensModalProps {
