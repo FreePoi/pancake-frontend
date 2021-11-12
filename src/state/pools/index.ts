@@ -64,7 +64,6 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
     const earningTokenAddress = pool.earningToken.address ? getAddress(pool.earningToken.address).toLowerCase() : null;
     const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0;
     const _rewardPerBlock = await fetchRewardPerBlock(pool);
-    // console.log('_rewardPerBlock', _rewardPerBlock.toNumber(), pool.sousId);
     const apr = !isPoolFinished
       ? getPoolApr(
           stakingTokenPrice,
@@ -194,7 +193,10 @@ export const PoolsSlice = createSlice({
       const userData = action.payload;
       state.data = state.data.map((pool) => {
         const userPoolData = userData.find((entry) => entry.sousId === pool.sousId);
-        return { ...pool, userData: userPoolData };
+        if (userPoolData) {
+          return { ...pool, userData: userPoolData };
+        }
+        return pool;
       });
       state.userDataLoaded = true;
     },
