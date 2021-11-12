@@ -16,7 +16,7 @@ import {
 import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic';
 import fetchVaultUser from './fetchVaultUser';
 import { getTokenPricesFromFarm } from './helpers';
-import { fetchTokenPerBlock, usePoolWeight } from 'views/Pools/hooks/useTokenPerBlock';
+import { fetchTokenPerBlock, fetchRewardPerBlock, usePoolWeight } from 'views/Pools/hooks/useTokenPerBlock';
 const initialState: PoolsState = {
   data: [...poolsConfig],
   userDataLoaded: false,
@@ -63,13 +63,17 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
 
     const earningTokenAddress = pool.earningToken.address ? getAddress(pool.earningToken.address).toLowerCase() : null;
     const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0;
+    const _rewardPerBlock = await fetchRewardPerBlock(pool);
+    // console.log('_rewardPerBlock', _rewardPerBlock, pool.sousId);
     const apr = !isPoolFinished
-      ? getPoolApr(
-          stakingTokenPrice,
-          earningTokenPrice,
-          getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals),
-          _tokenPerBlock.toNumber() * _poolWeight.toNumber(),
-        )
+      ? pool.sousId === 0
+        ? getPoolApr(
+            stakingTokenPrice,
+            earningTokenPrice,
+            getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals),
+            _tokenPerBlock.toNumber() * _poolWeight.toNumber(),
+          )
+        : _rewardPerBlock.toNumber()
       : 0;
     liveData.push({
       ...blockLimit,
