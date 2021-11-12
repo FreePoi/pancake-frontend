@@ -1,7 +1,7 @@
 import React from 'react';
 import orderBy from 'lodash/orderBy';
 import { useWeb3React } from '@web3-react/core';
-import nfts from 'config/constants/_nfts';
+import pancakeNfts from 'config/constants/pancake_nfts';
 import { useAppDispatch } from 'state';
 import { fetchWalletNfts } from 'state/collectibles';
 import { useGetCollectibles } from 'state/collectibles/hooks';
@@ -31,7 +31,7 @@ const NftList = () => {
 
   return (
     <NftGrid>
-      {orderBy(nfts, 'sortOrder').map((nft) => {
+      {orderBy(pancakeNfts, 'sortOrder').map((nft) => {
         const Card = nftComponents[nft.identifier] || NftCard;
 
         return (

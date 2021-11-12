@@ -11,7 +11,6 @@ const Nft: FC<{ className?: string; nft: NftInfoWithLock; now: number }> = ({ cl
   const { add, items } = useContext(NftContext);
   const { account } = useActiveWeb3React();
   const added = useMemo(() => !!items.find((item) => item.id === nft.id), [items, nft]);
-
   return (
     <div className={className}>
       <div className="show">

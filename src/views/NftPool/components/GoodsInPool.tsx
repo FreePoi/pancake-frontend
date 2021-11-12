@@ -6,14 +6,14 @@ import { NftPairConfig } from 'config/constants/nft';
 // import { fetchNfts } from '../util/fetchNft';
 import PageLoader from 'components/Loader/PageLoader';
 // import { useTranslation } from 'contexts/Localization';
-// import Select from 'components/KacoSelect/KacoSelect';
+import PancakeNfts from 'config/constants/pancake_nfts';
 // NftInfoWithLock, useNftWithLockInfo,
+import Search from 'components/Search';
 import { NftInfoWithLock, NftLockInfo, useNfts } from '../hooks/useNftWithLocks';
 import NoBalance from './NoBalance';
 import { simpleRpcProvider } from 'utils/providers';
 import { fetchNftInfo } from '../util/fetchNft';
 import { useWeb3React } from '@web3-react/core';
-
 export interface Pool {
   poolName: string;
   fragmentName: string;
@@ -60,7 +60,8 @@ const Pools_: FC<{
   const container = useRef<HTMLDivElement>(null);
   const [now, setNow] = useState(0);
   const fetchingMore = useRef(false);
-
+  const [filter, setFilter] = useState<string>('');
+  // console.log(pair, nfts ? [...new Set(nfts.map((v) => v.name))] : '');
   useEffect(() => {
     if (!pair || !nftsReversed.length || !account) {
       return;
@@ -143,31 +144,11 @@ const Pools_: FC<{
         <NoBalance />
       ) : (
         <>
-          {/* <Flex alignItems="center" mb="30px">
-            <Text color="#9DA6A6" fontSize="12px" mr="12px">
-              sort:
-            </Text>
-            <Select
-              style={{
-                maxWidth: '300px',
-                width: '100%',
-              }}
-              options={[
-                {
-                  label: t('xxxx'),
-                  value: 'xxxx',
-                },
-                {
-                  label: t('zzzz'),
-                  value: 'zzzz',
-                },
-                {
-                  label: t('yyyy'),
-                  value: 'yyyy',
-                },
-              ]}
-            />
-          </Flex> */}
+          <div className="searchWrap">
+            <Search placeholder="Search NFT" value={filter} onChange={setFilter} />
+            <ul></ul>
+          </div>
+
           <Grid gridGap="10px" className="pools" ref={container}>
             {nfts.map((item, index) => (
               <Nft nft={item} key={index} now={now} />

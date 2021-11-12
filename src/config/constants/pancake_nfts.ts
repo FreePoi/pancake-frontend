@@ -19,6 +19,8 @@ export const nftSources: NftSource = {
     identifierKey: 'image',
   },
 };
+// 0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07  pancake
+// 0x8f0528ce5ef7b51152a59745befdd91d97091d2f  Alpaca
 
 /**
  * NOTE: https://cloudflare-ipfs.com does not support video streaming so for the video URLS we need to use
