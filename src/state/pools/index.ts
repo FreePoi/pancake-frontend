@@ -64,17 +64,16 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
     const earningTokenAddress = pool.earningToken.address ? getAddress(pool.earningToken.address).toLowerCase() : null;
     const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0;
     const _rewardPerBlock = await fetchRewardPerBlock(pool);
-    // console.log('_rewardPerBlock', _rewardPerBlock, pool.sousId);
+    // console.log('_rewardPerBlock', _rewardPerBlock.toNumber(), pool.sousId);
     const apr = !isPoolFinished
-      ? pool.sousId === 0
-        ? getPoolApr(
-            stakingTokenPrice,
-            earningTokenPrice,
-            getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals),
-            _tokenPerBlock.toNumber() * _poolWeight.toNumber(),
-          )
-        : _rewardPerBlock.toNumber()
+      ? getPoolApr(
+          stakingTokenPrice,
+          earningTokenPrice,
+          getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals),
+          pool.sousId === 0 ? _tokenPerBlock.toNumber() * _poolWeight.toNumber() : _rewardPerBlock.toNumber(),
+        )
       : 0;
+    console.log('apr', apr);
     liveData.push({
       ...blockLimit,
       ...totalStaking,
