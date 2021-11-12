@@ -73,7 +73,6 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
           pool.sousId === 0 ? _tokenPerBlock.toNumber() * _poolWeight.toNumber() : _rewardPerBlock.toNumber(),
         )
       : 0;
-    console.log('apr', apr);
     liveData.push({
       ...blockLimit,
       ...totalStaking,
