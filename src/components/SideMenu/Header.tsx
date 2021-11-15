@@ -12,7 +12,7 @@ import SlSvg from './imgs/icon_sl.svg';
 import useAuth from 'hooks/useAuth';
 import { useTranslation } from 'contexts/Localization';
 import ClaimModal from './Modals/ClaimModal';
-import { useKarsierContract } from 'hooks/useContract';
+// import { useKarsierContract } from 'hooks/useContract';
 import BigNumber from 'bignumber.js';
 export enum ThemeChoice {
   Dark,
@@ -29,14 +29,14 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
   const { logout } = useAuth();
   const { t } = useTranslation();
 
-  const karsierContract = useKarsierContract();
+  // const karsierContract = useKarsierContract();
+  const karsierContract = null;
   // const [karsierNfts, setKarsierNfts] = useState([]);
   const [karsierNft, setKarsierNft] = useState('');
 
-  console.log(karsierContract.walletOfOwner);
   useEffect(() => {
     (async () => {
-      if (account && karsierContract.walletOfOwner) {
+      if (account && karsierContract && karsierContract.walletOfOwner) {
         const _arr = await karsierContract.walletOfOwner(account);
         if (_arr.length) {
           const _kArr = _arr.map((v: BigNumber) => v.toNumber());
