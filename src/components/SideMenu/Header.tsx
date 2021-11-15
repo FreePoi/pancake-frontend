@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useWeb3React } from '@web3-react/core';
 import ConnectWalletButton from '../ConnectWalletButton';
@@ -13,6 +13,7 @@ import useAuth from 'hooks/useAuth';
 import { useTranslation } from 'contexts/Localization';
 import ClaimModal from './Modals/ClaimModal';
 import { useKarsierContract } from 'hooks/useContract';
+import BigNumber from 'bignumber.js';
 export enum ThemeChoice {
   Dark,
   White,
@@ -29,15 +30,26 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
   const { t } = useTranslation();
 
   const karsierContract = useKarsierContract();
+  // const [karsierNfts, setKarsierNfts] = useState([]);
+  const [karsierNft, setKarsierNft] = useState('');
 
+  console.log(karsierContract.walletOfOwner);
   useEffect(() => {
     (async () => {
-      if (account) {
+      if (account && karsierContract.walletOfOwner) {
         const _arr = await karsierContract.walletOfOwner(account);
-        console.log(_arr);
+        if (_arr.length) {
+          const _kArr = _arr.map((v: BigNumber) => v.toNumber());
+          // setKarsierNfts(_kArr);
+          const uri = await karsierContract.tokenURI(_kArr[0]);
+          const res = await fetch(uri);
+          const info = await res.json();
+
+          setKarsierNft(info.image || '');
+        }
       }
     })();
-  }, [account]);
+  }, [account, karsierContract]);
   const tooltipContent = (
     <div>
       <Text fontSize="16px" bold color="#1BD3D5">
@@ -140,7 +152,11 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
           <div className="account">
             <span>{account}</span>
             {/* add kaco header img */}
-            <LogoutIcon onClick={logout} />
+            {karsierNft.length > 0 ? (
+              <img className="head_icon" src={karsierNft} alt={karsierNft} onClick={logout} />
+            ) : (
+              <LogoutIcon onClick={logout} />
+            )}
           </div>
         ) : (
           <ConnectWalletButton scale="sm" />
@@ -224,16 +240,23 @@ export default styled(Header)`
           fill: #1fc7d4;
         }
       }
+      .head_icon {
+        display: block;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        padding: 2px;
+      }
       display: flex;
       align-items: center;
       font-size: 14px;
       font-weight: bold;
       color: #ffffff;
-      height: 36px;
+      height: 38px;
       background: #1f252a;
       border: 1px solid #2f363b;
       border-radius: 12px;
-      padding: 0px 16px;
+      padding: 2px 16px;
       max-width: 150px;
       > span {
         text-overflow: ellipsis;

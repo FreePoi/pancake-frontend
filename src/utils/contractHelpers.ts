@@ -25,6 +25,7 @@ import {
   getBunnySpecialPredictionAddress,
   getFarmAuctionAddress,
   getMerkleAddress,
+  getKarsierAddress,
 } from 'utils/addressHelpers';
 
 // ABI
@@ -154,6 +155,6 @@ export const getMerkleContract = (signer?: ethers.Signer | ethers.providers.Prov
   return _merkle;
 };
 export const getKarsierContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  const _merkle = getContract(KarsierAbi, getMerkleAddress(), signer) as IMerkleDistributorInterface;
+  const _merkle = getContract(KarsierAbi, getKarsierAddress(), signer) as IMerkleDistributorInterface;
   return _merkle;
 };
