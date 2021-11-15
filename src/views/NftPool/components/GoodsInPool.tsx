@@ -6,7 +6,7 @@ import { NftPairConfig } from 'config/constants/nft';
 // import { fetchNfts } from '../util/fetchNft';
 import PageLoader from 'components/Loader/PageLoader';
 // import { useTranslation } from 'contexts/Localization';
-import PancakeNfts from 'config/constants/pancake_nfts';
+// import PancakeNfts from 'config/constants/pancake_nfts';
 // NftInfoWithLock, useNftWithLockInfo,
 import Search from 'components/Search';
 import { NftInfoWithLock, NftLockInfo, useNfts } from '../hooks/useNftWithLocks';

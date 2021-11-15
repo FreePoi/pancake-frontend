@@ -62,7 +62,7 @@ const Farms: React.FC = () => {
   const { data: farmsLP, userDataLoaded } = useFarms();
   const cakePrice = usePriceCakeBusd();
   const [query] = useState('');
-  const [viewMode] = usePersistState(ViewMode.TABLE, { localStorageKey: 'pancake_farm_view' });
+  const [viewMode] = usePersistState(ViewMode.TABLE, { localStorageKey: 'kaco_farm_view' });
   const { account } = useWeb3React();
   const [sortOption] = useState('hot');
   const chosenFarmsLength = useRef(0);
