@@ -13,6 +13,7 @@ interface BounceItem {
   name: string;
   description: string;
   image: string;
+  attributes?: any;
 }
 
 interface BounceData {
@@ -80,6 +81,7 @@ export async function filterNft(items: BounceItem[], nftAddress: string) {
         uri: nft.token_uri,
         image: nft.image,
         name: nft.name,
+        attributes: nft?.attributes || {},
       })),
   );
   return results;
@@ -103,33 +105,33 @@ interface NftMeta {
   background_color: string;
   external_link: string;
   owner: string;
+  attributes?: any[];
 }
 
 // kaco, alpaca...
 async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any): Promise<NFT | undefined> {
-  const calls = [
-    { address: nftAddress, name: 'balanceOf', params: [owner, id] },
-    { address: nftAddress, name: 'uri', params: [id] },
-  ];
-
-  const [[balance], [uri]] = await multicall(abi, calls);
-
   try {
-    const res = await fetch(uri);
+    // const _data01 = await multicall(abi, [{ address: nftAddress, name: 'balanceOf', params: [owner, id] }]);
+    // console.log(_data01[0][0]);
+
+    const _data = await multicall(abi, [{ address: nftAddress, name: 'uri', params: [id] }]);
+    const res = await fetch(_data[0][0]);
     const info: NftMeta = await res.json();
 
     if (!res.ok || !info) {
       return;
     }
-
     return {
       id,
-      balance: balance.toNumber(),
-      uri,
+      // balance: _data01[0][0].toNumber(),
+      balance: 0,
+      uri: _data[0][0],
       image: info.image,
       name: info.name,
+      attributes: info?.attributes || [],
     };
   } catch (e) {
+    console.log(nftAddress, id, abi);
     console.log('nft metadata error', e);
   }
 }
@@ -154,6 +156,7 @@ async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any
         uri: u,
         image: toPancakeUri(nftName),
         name: nftName,
+        attributes: [],
       };
     } else {
       const res = await fetch(u);
@@ -168,6 +171,7 @@ async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any
         uri: u,
         image: toUri(info.image),
         name: info.name,
+        attributes: info?.attributes || [],
       };
     }
   } catch (e) {

@@ -15,7 +15,7 @@ const NftPool: FC<{ className?: string }> = ({ className }) => {
   const { pairAddress } = useParams<{ pairAddress: string }>();
   const index = NFT_PAIRS.findIndex((pair) => pair.address.toLocaleLowerCase() === pairAddress.toLocaleLowerCase());
   const pair = NFT_PAIRS[index];
-  console.log(items);
+  // console.log(items);
   return (
     <>
       <Page className={className}>

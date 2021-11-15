@@ -1,12 +1,11 @@
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { Grid } from '@kaco/uikit';
 import styled from 'styled-components';
-import Nft from './Nft';
-import { NftPairConfig } from 'config/constants/nft';
+import NftItem from './Nft';
+import { NftPairConfig, NftItemConfig } from 'config/constants/nft';
 // import { fetchNfts } from '../util/fetchNft';
 import PageLoader from 'components/Loader/PageLoader';
 // import { useTranslation } from 'contexts/Localization';
-// import PancakeNfts from 'config/constants/pancake_nfts';
 // NftInfoWithLock, useNftWithLockInfo,
 import Search from 'components/Search';
 import { NftInfoWithLock, NftLockInfo, useNfts } from '../hooks/useNftWithLocks';
@@ -29,6 +28,7 @@ export interface NFT {
   uri: string;
   image: string;
   name: string;
+  attributes: any[];
 }
 const pageSize = 24;
 export const NFT_POOLS = 'NFT_POOLS';
@@ -50,6 +50,7 @@ const Pools_: FC<{
   // const { t } = useTranslation();
   // const locksInfo = useNftWithLockInfo(pair);
   // const nfts = useNftWithLocks(pair);
+  const NftData = [...new Set(pair.data.map((v: any) => v.name))];
   const { account: _account } = useWeb3React();
   const [nfts, setNfts] = useState<NftInfoWithLock[]>();
   const nfts_ = useNfts(pair);
@@ -60,21 +61,21 @@ const Pools_: FC<{
   const container = useRef<HTMLDivElement>(null);
   const [now, setNow] = useState(0);
   const fetchingMore = useRef(false);
-  const [filter, setFilter] = useState<string>('');
+  const [showName, setShowName] = useState(false);
+  const [searchNameValue, setSearchNameValue] = useState('');
+  const [searchIdValue, setSearchIdValue] = useState('');
   // console.log(pair, nfts ? [...new Set(nfts.map((v) => v.name))] : '');
   useEffect(() => {
     if (!pair || !nftsReversed.length || !account) {
       return;
     }
-
-    fetchMore(nftsReversed, 0, pair.nftAddress, account).then(setNfts);
-  }, [pair, nftsReversed, account]);
+    fetchMore(nftsReversed, pair.data, 0, pair.nftAddress, account, searchIdValue, searchNameValue).then(setNfts);
+  }, [pair, nftsReversed, account, searchIdValue, searchNameValue]);
 
   useEffect(() => {
     if (!nfts || !nfts.length || !nftsReversed.length || !pair) {
       return;
     }
-
     document.body.onscroll = (e) => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
@@ -87,7 +88,7 @@ const Pools_: FC<{
       ) {
         fetchingMore.current = true;
         count.current += pageSize;
-        fetchMore(nftsReversed, count.current, pair.nftAddress, account)
+        fetchMore(nftsReversed, pair.data, count.current, pair.nftAddress, account, searchIdValue, searchNameValue)
           .then((nfts) => {
             setNfts((old) => [...old, ...nfts]);
           })
@@ -96,7 +97,7 @@ const Pools_: FC<{
     };
 
     return () => (document.body.onscroll = undefined);
-  }, [nfts, container, nftsReversed, account, pair]);
+  }, [nfts, container, nftsReversed, account, pair, searchIdValue, searchNameValue]);
 
   useEffect(() => {
     simpleRpcProvider.getBlockNumber().then(setNow);
@@ -140,18 +141,47 @@ const Pools_: FC<{
 
   return (
     <div className={className}>
+      <div className="searchWrap">
+        <Search
+          placeholder="Search NFT"
+          value={searchIdValue || searchNameValue}
+          onChange={(v) => {
+            setSearchIdValue(v);
+            setSearchNameValue('');
+          }}
+          onFocus={setShowName}
+          onBlur={(v) => {
+            setTimeout(() => {
+              setShowName(v);
+            }, 500);
+          }}
+        />
+
+        {showName ? (
+          <ul className="nameList">
+            {NftData.map((v, index: number) => (
+              <li
+                key={index}
+                onClick={() => {
+                  setSearchIdValue('');
+                  setSearchNameValue(`${v}`);
+                }}
+                className={searchNameValue === v ? 'on' : ''}
+              >
+                {v}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
+
       {!nfts.length ? (
         <NoBalance />
       ) : (
         <>
-          <div className="searchWrap">
-            <Search placeholder="Search NFT" value={filter} onChange={setFilter} />
-            <ul></ul>
-          </div>
-
           <Grid gridGap="10px" className="pools" ref={container}>
             {nfts.map((item, index) => (
-              <Nft nft={item} key={index} now={now} />
+              <NftItem nft={item} key={index} now={now} />
             ))}
           </Grid>
           {/* {fetchingMore.current && <PageLoader />} */}
@@ -170,6 +200,43 @@ export const GoodsInPool = styled(Pools_)`
     background: #122124;
     padding: 40px;
   }
+  .searchWrap {
+    margin-bottom: 22px;
+    width: 100%;
+    position: relative;
+    ${({ theme }) => theme.mediaQueries.md} {
+      width: 42%;
+    }
+    .nameList {
+      position: absolute;
+      z-index: 19;
+      background-color: rgba(18, 33, 36, 0.9);
+      width: 100%;
+      list-style: none;
+      color: #9da6a6;
+      border: 2px solid #1bd3d5;
+      border-radius: 16px;
+      line-height: 32px;
+      font-size: 14px;
+      padding: 10px 18px;
+      margin-top: 12px;
+      max-height: 380px;
+      overflow-y: scroll;
+      font-weight: 600;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      li {
+        transition: all 0.3s ease;
+        cursor: pointer;
+        &:hover,
+        &.on {
+          color: #1bd3d5;
+        }
+      }
+    }
+  }
+
   > .pools {
     grid-template-columns: 1fr 1fr;
     justify-items: center;
@@ -184,19 +251,33 @@ export const GoodsInPool = styled(Pools_)`
   }
 `;
 
-async function fetchMore(nfts: NftLockInfo[], start: number, nftAddress: string, account: string) {
-  const results = await Promise.all(
-    nfts.slice(start, start + pageSize).map((nft) => fetchNftInfo(nftAddress, nft.id, account)),
-  );
+async function fetchMore(
+  nfts: NftLockInfo[],
+  nftData: NftItemConfig[],
+  start: number,
+  nftAddress: string,
+  account: string,
+  searchId: string,
+  searchName: string,
+) {
+  let _nfts = nfts;
+  if (searchId) {
+    _nfts = nftData.filter((v) => `${v.name}${v.id}`.indexOf(searchId) > -1);
+    console.log(_nfts);
+  } else if (searchName) {
+    _nfts = nftData.filter((v) => `${v.name}`.indexOf(searchName) > -1);
+  }
 
+  const results = await Promise.all(
+    _nfts.slice(start, start + pageSize).map((nft) => fetchNftInfo(nftAddress, nft.id, account)),
+  );
   return results
     .map((nft, index) => {
+      console.log({ nft });
       if (!nft) {
         return undefined;
       }
-
       const n: NftInfoWithLock = { ...nft, ...nfts[start + index] };
-
       return n;
     })
     .filter(Boolean);

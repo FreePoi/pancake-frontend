@@ -20,12 +20,14 @@ const Wrapper = styled.div<{ focused: boolean }>`
   }
 `;
 
-const Search: FC<{ className?: string; value: string; onChange: (now: string) => void; placeholder?: string }> = ({
-  className,
-  value,
-  onChange,
-  placeholder,
-}) => {
+const Search: FC<{
+  className?: string;
+  value: string;
+  onChange: (now: string) => void;
+  onBlur?: (value: boolean) => void;
+  onFocus?: (value: boolean) => void;
+  placeholder?: string;
+}> = ({ className, value, onChange, onBlur, onFocus, placeholder }) => {
   const [focused, setFocused] = useState(false);
 
   return (
@@ -33,8 +35,18 @@ const Search: FC<{ className?: string; value: string; onChange: (now: string) =>
       <img src={SearchSvg} alt="" />
       <Input
         placeholder={placeholder}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
+        onFocus={() => {
+          setFocused(true);
+          if (onFocus) {
+            onFocus(true);
+          }
+        }}
+        onBlur={() => {
+          setFocused(false);
+          if (onBlur) {
+            onBlur(false);
+          }
+        }}
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />

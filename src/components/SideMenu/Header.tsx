@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import { useWeb3React } from '@web3-react/core';
 import ConnectWalletButton from '../ConnectWalletButton';
@@ -12,6 +12,7 @@ import SlSvg from './imgs/icon_sl.svg';
 import useAuth from 'hooks/useAuth';
 import { useTranslation } from 'contexts/Localization';
 import ClaimModal from './Modals/ClaimModal';
+import { useKarsierContract } from 'hooks/useContract';
 export enum ThemeChoice {
   Dark,
   White,
@@ -26,6 +27,17 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
   const { isXs, isSm } = useMatchBreakpoints();
   const { logout } = useAuth();
   const { t } = useTranslation();
+
+  const karsierContract = useKarsierContract();
+
+  useEffect(() => {
+    (async () => {
+      if (account) {
+        const _arr = await karsierContract.walletOfOwner(account);
+        console.log(_arr);
+      }
+    })();
+  }, [account]);
   const tooltipContent = (
     <div>
       <Text fontSize="16px" bold color="#1BD3D5">
@@ -127,6 +139,7 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
         {account ? (
           <div className="account">
             <span>{account}</span>
+            {/* add kaco header img */}
             <LogoutIcon onClick={logout} />
           </div>
         ) : (
