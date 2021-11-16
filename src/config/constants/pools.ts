@@ -30,6 +30,20 @@ const pools: PoolConfig[] = [
     sortOrder: 999,
     isFinished: false,
   },
+  {
+    sousId: 2,
+    stakingToken: tokens.kaco,
+    earningToken: tokens.dot,
+    contractAddress: {
+      [ChainId.TESTNET]: '',
+      [ChainId.MAINNET]: '0xb676E8fa2a1B38C2Cb22ab14b53743efb2cA93c9',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    tokenPerBlock: '0.0004930555550',
+    sortOrder: 999,
+    isFinished: false,
+  },
 ];
 
 export default pools;
