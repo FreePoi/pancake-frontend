@@ -26,11 +26,11 @@ export interface NftPairConfig {
 
 export interface NftItemConfig {
   id: number;
-  uri: string;
-  image: string;
+  uri?: string;
+  image?: string;
   name: string;
-  lastBlock: number;
-  unlocker: string;
+  lastBlock?: number;
+  unlocker?: string;
 }
 export const NFT_PAIRS: NftPairConfig[] = [
   {

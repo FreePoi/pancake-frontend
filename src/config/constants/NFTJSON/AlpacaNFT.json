@@ -12428,5 +12428,23 @@
     "lastBlock": 0,
     "unlocker": "0x0000000000000000000000000000000000000000",
     "amount": 1
+  },
+  {
+    "id": 37697,
+    "balance": 0,
+    "uri": "https://graphigo.prd.galaxy.eco/metadata/0xe85d7B8f4c0C13806E158a1c9D7Dcb33140cdc46/37697.json",
+    "image": "https://d257b89266utxb.cloudfront.net/galaxy/images/alpacafinance/1634311596419356794.png",
+    "name": "CryptoBarTW x Alpaca Finance",
+    "attributes": [
+      {
+        "trait_type": "category",
+        "value": "CryptoBarTW x Alpaca Finance"
+      },
+      {
+        "display_type": "date",
+        "trait_type": "birthday",
+        "value": 1634389400
+      }
+    ]
   }
 ]

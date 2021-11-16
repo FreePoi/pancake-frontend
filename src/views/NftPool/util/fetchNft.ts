@@ -57,14 +57,14 @@ export async function filterNft(items: BounceItem[], nftAddress: string) {
       token.balance > 0 &&
       (!token.image || token.image.length === 0),
   );
-  console.log('flawItems: ', flawItems);
+  // console.log('flawItems: ', flawItems);
   const promises = flawItems.map(async (item) => {
     const temp = fetchNftInfo(nftAddress, item.token_id, item.owner_addr);
-    console.log('fetch result: ', temp);
+    // console.log('fetch result: ', temp);
     return temp;
   });
   const results = await Promise.all(promises);
-  console.log('results: ', results);
+  // console.log('results: ', results);
 
   results.push(
     ...items
@@ -111,28 +111,25 @@ interface NftMeta {
 // kaco, alpaca...
 async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any): Promise<NFT | undefined> {
   try {
-    // const _data01 = await multicall(abi, [{ address: nftAddress, name: 'balanceOf', params: [owner, id] }]);
-    // console.log(_data01[0][0]);
-
-    const _data = await multicall(abi, [{ address: nftAddress, name: 'uri', params: [id] }]);
-    const res = await fetch(_data[0][0]);
+    const _balance = await multicall(abi, [{ address: nftAddress, name: 'balanceOf', params: [owner, id] }]);
+    const _uri = await multicall(abi, [{ address: nftAddress, name: 'uri', params: [id] }]);
+    const res = await fetch(_uri[0][0]);
     const info: NftMeta = await res.json();
 
     if (!res.ok || !info) {
       return;
     }
+
     return {
       id,
-      // balance: _data01[0][0].toNumber(),
-      balance: 0,
-      uri: _data[0][0],
+      balance: _balance[0][0].toNumber(),
+      uri: _uri[0][0],
       image: info.image,
       name: info.name,
       attributes: info?.attributes || [],
     };
   } catch (e) {
-    console.log(nftAddress, id, abi);
-    console.log('nft metadata error', e);
+    // console.log('nft metadata error', e);
   }
 }
 
@@ -175,7 +172,7 @@ async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any
       };
     }
   } catch (e) {
-    console.log('fetch nft metadata error', e);
+    // console.log('fetch nft metadata error', e);
   }
 }
 

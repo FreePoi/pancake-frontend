@@ -260,20 +260,28 @@ async function fetchMore(
   searchId: string,
   searchName: string,
 ) {
-  let _nfts = nfts;
+  let ids = nftData;
   if (searchId) {
-    _nfts = nftData.filter((v) => `${v.name}${v.id}`.indexOf(searchId) > -1);
-    console.log(_nfts);
+    ids = nftData.filter((v) => `${v.name}${v.id}`.indexOf(searchId) > -1);
   } else if (searchName) {
-    _nfts = nftData.filter((v) => `${v.name}`.indexOf(searchName) > -1);
+    ids = nftData.filter((v) => `${v.name}`.indexOf(searchName) > -1);
   }
-
+  let _nfts: NftLockInfo[] = [];
+  nfts.map((vv) => {
+    const _nftsd = ids.filter((v) => vv.id === v.id);
+    if (_nftsd && _nftsd.length > 0) {
+      _nfts.push(vv);
+    }
+    return vv;
+  });
+  if (_nfts.length === 0) {
+    _nfts = nfts;
+  }
   const results = await Promise.all(
     _nfts.slice(start, start + pageSize).map((nft) => fetchNftInfo(nftAddress, nft.id, account)),
   );
   return results
     .map((nft, index) => {
-      console.log({ nft });
       if (!nft) {
         return undefined;
       }
