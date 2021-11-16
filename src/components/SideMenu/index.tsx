@@ -22,6 +22,8 @@ import FarmSvg from '../svg/Farm';
 import NftSvg from '../svg/Nft';
 import HomeSvg from '../svg/Home';
 import PoolsSvg from '../svg/PoolsSvg';
+import KarsierSvg from '../svg/KarsierSvg';
+
 // import InfoSvg from '../svg/InfoSvg';
 import LogoSvg from './imgs/icon_logo.svg';
 import Header from './Header';
@@ -310,6 +312,11 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
     //   imgs: [InfoSvg, InfoNSvg],
     //   link: '/info',
     // },
+    {
+      text: 'Karsier',
+      img: KarsierSvg,
+      link: 'https://karsier.kaco.finance/',
+    },
   ]);
 
   const sideCollapsedWidth = useMemo(() => {
@@ -351,9 +358,13 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
                     ? 't'
                     : 'f'
                 }
-                to={item.link}
+                to={item.link.indexOf('https://') > -1 ? '' : item.link}
                 key={item.link}
                 onClick={() => {
+                  if (item.link.indexOf('https://') > -1) {
+                    window.open(item.link);
+                    return;
+                  }
                   [isXs, isSm, isMd].some(Boolean) && !item.children && !item.children?.length && setCollapsed(true);
 
                   if (item.children?.length) {
