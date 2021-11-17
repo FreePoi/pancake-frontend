@@ -103,7 +103,7 @@ const Pools_: FC<{
   }, [pair, nftsReversed, items, account, searchNameValue]);
 
   useEffect(() => {
-    if (!nfts || !nfts.length || !items.length || !nftsReversed.length || !pair || fetching) {
+    if (!nfts || !nfts.length || !items.length || !nftsReversed.length || !pair) {
       return;
     }
     document.body.onscroll = (e) => {
@@ -129,7 +129,7 @@ const Pools_: FC<{
     };
 
     return () => (document.body.onscroll = undefined);
-  }, [nfts, container, items, nftsReversed, account, pair, searchIdValue, searchNameValue, fetching]);
+  }, [nfts, container, items, nftsReversed, account, pair, searchIdValue, searchNameValue]);
 
   useEffect(() => {
     simpleRpcProvider.getBlockNumber().then(setNow);
@@ -152,7 +152,6 @@ const Pools_: FC<{
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       setFetching(true);
-      setShowName(false);
       console.log(searchIdValue);
       fetchMore(nftsReversed, items, 0, pair.nftAddress, account, searchIdValue, searchNameValue).then((res) => {
         setNfts(res);
