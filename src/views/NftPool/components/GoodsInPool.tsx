@@ -82,7 +82,7 @@ const Pools_: FC<{
   }, [pair, nftsReversed, items, account, searchNameValue]);
 
   useEffect(() => {
-    if (!nfts || !nfts.length || !items.length || !nftsReversed.length || !pair) {
+    if (!nfts || !nfts.length || !items.length || !nftsReversed.length || !pair || fetching) {
       return;
     }
     document.body.onscroll = (e) => {
@@ -108,7 +108,7 @@ const Pools_: FC<{
     };
 
     return () => (document.body.onscroll = undefined);
-  }, [nfts, container, items, nftsReversed, account, pair, searchIdValue, searchNameValue]);
+  }, [nfts, container, items, nftsReversed, account, pair, searchIdValue, searchNameValue, fetching]);
 
   useEffect(() => {
     simpleRpcProvider.getBlockNumber().then(setNow);
@@ -146,11 +146,9 @@ const Pools_: FC<{
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      if (!items || !items.length) {
-        return;
-      }
       setFetching(true);
       setShowName(false);
+      console.log(searchIdValue);
       fetchMore(nftsReversed, items, 0, pair.nftAddress, account, searchIdValue, searchNameValue).then((res) => {
         setNfts(res);
         setFetching(false);
@@ -159,7 +157,7 @@ const Pools_: FC<{
     }
   };
   const onSearch = () => {
-    if (!items || !items.length) {
+    if (!items || !items.length || fetching) {
       return;
     }
     setFetching(true);
@@ -181,6 +179,9 @@ const Pools_: FC<{
             if (!items || !items.length) {
               return;
             }
+            if (fetching) {
+              return;
+            }
             if (!showName) {
               setShowName(true);
             }
@@ -192,7 +193,7 @@ const Pools_: FC<{
           onBlur={(v) => {
             setTimeout(() => {
               setShowName(v);
-            }, 800);
+            }, 500);
           }}
           onKeyDown={onKeyDown}
         />
@@ -202,6 +203,9 @@ const Pools_: FC<{
               <li
                 key={index}
                 onClick={() => {
+                  if (fetching) {
+                    return;
+                  }
                   setSearchIdValue('');
                   setSearchNameValue(`${v}`);
                 }}

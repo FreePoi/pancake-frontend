@@ -1,6 +1,7 @@
 import { NFT_PAIRS } from 'config/constants/nft';
 import { NFT } from '../components/GoodsInPool';
 import multicall from 'utils/multicall';
+import BigNumber from 'bignumber.js';
 
 interface BounceItem {
   contract_addr: string;
@@ -111,7 +112,10 @@ interface NftMeta {
 // kaco, alpaca...
 async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any, nft: any): Promise<NFT | undefined> {
   try {
-    const _balance = await multicall(abi, [{ address: nftAddress, name: 'balanceOf', params: [owner, id] }]);
+    let _balance = new BigNumber(0);
+    if (owner) {
+      _balance = await multicall(abi, [{ address: nftAddress, name: 'balanceOf', params: [owner, id] }]);
+    }
     if (nft === null || !nft.name) {
       const _uri = await multicall(abi, [{ address: nftAddress, name: 'uri', params: [id] }]);
       const res = await fetch(_uri[0][0]);
