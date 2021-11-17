@@ -10,7 +10,12 @@ import NFT100Pair1155 from 'config/abi/NFT100Pair1155.json';
 import { fetchNftInfo } from '../util/fetchNft';
 
 export type LockInfo = { lastBlock: number; unlocker: string; amount?: number };
-export type NftLockInfo = { id: number; lastBlock: number; unlocker: string; amount?: number };
+export type NftLockInfo = {
+  id: number;
+  lastBlock: number;
+  unlocker: string;
+  amount?: number;
+};
 export type Locks = { [key: number]: LockInfo };
 export type NftInfoWithLock = LockInfo & NFT;
 
@@ -30,7 +35,7 @@ export const useNftWithLocks = (pair?: { type: NFT_TYPE; address: string; nftAdd
     }
     if (pair.type === NFT_TYPE.NFT721) {
       contract.getLockInfos().then(async ([ids, locksInfo]: [BigNumber[], [number, string][]]) => {
-        const promises = ids.map(async (id) => fetchNftInfo(pair.nftAddress, id.toNumber(), account));
+        const promises = ids.map(async (id) => fetchNftInfo(pair.nftAddress, id.toNumber(), account, null));
 
         const results = await Promise.all(promises);
 
@@ -45,7 +50,7 @@ export const useNftWithLocks = (pair?: { type: NFT_TYPE; address: string; nftAdd
     } else {
       contract.getLockInfos().then(async (lockInfos: [BigNumber, string, number, BigNumber][]) => {
         const promises = lockInfos.map(async (lockInfo) =>
-          fetchNftInfo(pair.nftAddress, lockInfo[0].toNumber(), account),
+          fetchNftInfo(pair.nftAddress, lockInfo[0].toNumber(), account, lockInfo[0]),
         );
 
         const results = await Promise.all(promises);

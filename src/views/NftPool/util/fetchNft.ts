@@ -59,7 +59,7 @@ export async function filterNft(items: BounceItem[], nftAddress: string) {
   );
   // console.log('flawItems: ', flawItems);
   const promises = flawItems.map(async (item) => {
-    const temp = fetchNftInfo(nftAddress, item.token_id, item.owner_addr);
+    const temp = fetchNftInfo(nftAddress, item.token_id, item.owner_addr, item);
     // console.log('fetch result: ', temp);
     return temp;
   });
@@ -87,11 +87,11 @@ export async function filterNft(items: BounceItem[], nftAddress: string) {
   return results;
 }
 
-export async function fetchNftInfo(nftAddress: string, id: number, owner: string): Promise<NFT | undefined> {
+export async function fetchNftInfo(nftAddress: string, id: number, owner: string, nft: any): Promise<NFT | undefined> {
   const pairConfig = NFT_PAIRS.find((pair) => pair.nftAddress.toLowerCase() === nftAddress.toLowerCase());
 
   if ([0, 2].findIndex((pid) => pairConfig.pid === pid) > -1) {
-    return await fetchPid0(pairConfig.nftAddress, id, owner, pairConfig.nftAbi);
+    return await fetchPid0(pairConfig.nftAddress, id, owner, pairConfig.nftAbi, nft);
   } else {
     return await fetchPid1(pairConfig.nftAddress, id, owner, pairConfig.nftAbi);
   }
@@ -109,24 +109,35 @@ interface NftMeta {
 }
 
 // kaco, alpaca...
-async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any): Promise<NFT | undefined> {
+async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any, nft: any): Promise<NFT | undefined> {
   try {
     const _balance = await multicall(abi, [{ address: nftAddress, name: 'balanceOf', params: [owner, id] }]);
-    const _uri = await multicall(abi, [{ address: nftAddress, name: 'uri', params: [id] }]);
-    const res = await fetch(_uri[0][0]);
-    const info: NftMeta = await res.json();
+    if (nft === null || !nft.name) {
+      const _uri = await multicall(abi, [{ address: nftAddress, name: 'uri', params: [id] }]);
+      const res = await fetch(_uri[0][0]);
+      const info: NftMeta = await res.json();
 
-    if (!res.ok || !info) {
-      return;
+      if (!res.ok || !info) {
+        return;
+      }
+
+      return {
+        id,
+        balance: _balance[0][0].toNumber(),
+        uri: _uri[0][0],
+        image: info.image,
+        name: info.name,
+        attributes: info?.attributes || [],
+      };
     }
-
+    console.log(1111);
     return {
       id,
       balance: _balance[0][0].toNumber(),
-      uri: _uri[0][0],
-      image: info.image,
-      name: info.name,
-      attributes: info?.attributes || [],
+      uri: nft?.uri ?? '',
+      image: nft?.image ?? '',
+      name: nft?.name ?? '',
+      attributes: nft?.attributes ?? [],
     };
   } catch (e) {
     // console.log('nft metadata error', e);

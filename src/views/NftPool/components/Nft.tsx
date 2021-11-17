@@ -18,7 +18,7 @@ const Nft: FC<{ className?: string; nft: NftInfoWithLock; now: number; pairPid: 
   const added = useMemo(() => !!items.find((item) => item.id === nft.id), [items, nft]);
   return (
     <div className={className}>
-      {nft.attributes.length && pairPid === 0 ? (
+      {nft.attributes.length && pairPid === 3 ? (
         <div className="attri">
           <h3>
             {nft.name}#{nft.id}

@@ -119,6 +119,7 @@ const Pools_: FC<{
     // setFetching(true);
     fetchNfts(pair?.nftAddress, pair?.address).then((items) => {
       const _items = items.filter((v) => v?.id);
+      console.log({ _items });
       const _arr = [...new Set(_items.map((v: any) => v && v.name))];
       setNftData(_arr);
       setItems(_items);
@@ -147,6 +148,9 @@ const Pools_: FC<{
           placeholder="Search NFT"
           value={searchIdValue || searchNameValue}
           onChange={(v) => {
+            if (fetching) {
+              return;
+            }
             setSearchIdValue(v);
             setSearchNameValue('');
           }}
@@ -267,28 +271,26 @@ async function fetchMore(
     ids = nftData.filter((v) => `${v.id}`.startsWith(searchId));
   } else if (searchName) {
     ids = nftData.filter((v) => `${v.name}`.indexOf(searchName) > -1);
+  } else {
+    ids = nftData;
   }
-  let _nfts: NftLockInfo[] = [];
+  const _nfts = [];
   nfts.map((vv) => {
     const _nftsd = ids.filter((v) => v && +vv.id === +v.id);
     if (_nftsd && _nftsd.length > 0) {
-      _nfts.push(vv);
+      _nfts.push({ ...vv, ..._nftsd[0] });
     }
     return vv;
   });
-  if (_nfts.length === 0) {
-    _nfts = nfts;
-  }
   const results = await Promise.all(
-    _nfts.slice(start, start + pageSize).map((nft) => fetchNftInfo(nftAddress, nft.id, account)),
+    _nfts.slice(start, start + pageSize).map((nft) => fetchNftInfo(nftAddress, Number(nft.id), account, nft)),
   );
   return results
     .map((nft, index) => {
       if (!nft) {
         return undefined;
       }
-      const n: NftInfoWithLock = { ...nfts[start + index], ...nft };
-
+      const n: NftInfoWithLock = { ..._nfts[start + index], ...nft };
       return n;
     })
     .filter(Boolean);
