@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { KeyboardEvent, FC, useEffect, useMemo, useRef, useState } from 'react';
 import { Grid } from '@kaco/uikit';
 import styled from 'styled-components';
 import NftItem from './Nft';
@@ -144,24 +144,21 @@ const Pools_: FC<{
   //     });
   // }, [items, locksInfo]);
 
-  const onKeyDown = useCallback(
-    (e: KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter') {
-        if (!items || !items.length) {
-          return;
-        }
-        setFetching(true);
-        setShowName(false);
-        fetchMore(nftsReversed, items, 0, pair.nftAddress, account, searchIdValue, searchNameValue).then((res) => {
-          setNfts(res);
-          setFetching(false);
-          return true;
-        });
+  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      if (!items || !items.length) {
+        return;
       }
-    },
-    [pair, nftsReversed, items, account, searchIdValue, searchNameValue],
-  );
-  const onSearch = useCallback(() => {
+      setFetching(true);
+      setShowName(false);
+      fetchMore(nftsReversed, items, 0, pair.nftAddress, account, searchIdValue, searchNameValue).then((res) => {
+        setNfts(res);
+        setFetching(false);
+        return true;
+      });
+    }
+  };
+  const onSearch = () => {
     if (!items || !items.length) {
       return;
     }
@@ -172,7 +169,7 @@ const Pools_: FC<{
       setFetching(false);
       return true;
     });
-  }, [pair, nftsReversed, items, account, searchIdValue, searchNameValue]);
+  };
 
   return (
     <div className={className}>
