@@ -130,7 +130,6 @@ async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any
         attributes: info?.attributes || [],
       };
     }
-    console.log(1111);
     return {
       id,
       balance: _balance[0][0].toNumber(),

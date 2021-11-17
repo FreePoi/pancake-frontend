@@ -122,7 +122,6 @@ const Pools_: FC<{
     // setFetching(true);
     fetchNfts(pair?.nftAddress, pair?.address).then((items) => {
       const _items = items.filter((v) => v?.id);
-      console.log({ _items });
       const _arr = [...new Set(_items.map((v: any) => v && v.name))];
       setNftData(_arr);
       setItems(_items);
@@ -168,7 +167,6 @@ const Pools_: FC<{
     }
     setFetching(true);
     setShowName(false);
-    console.log(searchNameValue);
     fetchMore(nftsReversed, items, 0, pair.nftAddress, account, searchIdValue, searchNameValue).then((res) => {
       setNfts(res);
       setFetching(false);
