@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { KeyboardEvent, FC, useState } from 'react';
 import styled from 'styled-components';
 import { Input } from '@kaco/uikit';
 import SearchSvg from '../svg/search.svg';
@@ -26,13 +26,15 @@ const Search: FC<{
   onChange: (now: string) => void;
   onBlur?: (value: boolean) => void;
   onFocus?: (value: boolean) => void;
+  onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void;
+  onSearch?: (now?: string) => void;
   placeholder?: string;
-}> = ({ className, value, onChange, onBlur, onFocus, placeholder }) => {
+}> = ({ className, value, onChange, onBlur, onFocus, placeholder, onSearch, onKeyDown }) => {
   const [focused, setFocused] = useState(false);
 
   return (
     <Wrapper tabIndex={1} className={className} focused={focused}>
-      <img src={SearchSvg} alt="" />
+      <img src={SearchSvg} alt="" onClick={() => onSearch(value)} />
       <Input
         placeholder={placeholder}
         onFocus={() => {
@@ -47,6 +49,7 @@ const Search: FC<{
             onBlur(false);
           }
         }}
+        onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => onKeyDown(e)}
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />

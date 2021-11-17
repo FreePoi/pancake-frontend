@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import React, { KeyboardEvent, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Grid } from '@kaco/uikit';
 import styled from 'styled-components';
 import NftItem from './Nft';
@@ -30,7 +30,7 @@ export interface NFT {
   name: string;
   attributes: any[];
 }
-const pageSize = 24;
+const pageSize = 12;
 export const NFT_POOLS = 'NFT_POOLS';
 const defaultAddress = '0x0000000000000000000000000000000000000001';
 
@@ -40,20 +40,23 @@ const Pools_: FC<{
 }> = ({ className, pair }) => {
   let _pairs: NFT[] = [];
 
+  let _nfts: NftLockInfo[] = [];
   try {
     _pairs = JSON.parse(localStorage.getItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}`)) || [];
+    _nfts = JSON.parse(localStorage.getItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}-nft`)) || [];
   } catch {
     localStorage.removeItem(NFT_POOLS);
   }
+
   const [items, setItems] = useState<NFT[]>(_pairs);
   const [fetching, setFetching] = useState(false);
   // const { t } = useTranslation();
   // const locksInfo = useNftWithLockInfo(pair);
   // const nfts = useNftWithLocks(pair);
-  const [NftData, setNftData] = useState([]);
+  const [NftData, setNftData] = useState([...new Set(_pairs.map((v: any) => v && v.name))]);
   const { account: _account } = useWeb3React();
   const [nfts, setNfts] = useState<NftInfoWithLock[]>();
-  const nfts_ = useNfts(pair);
+  const nfts_ = useNfts(pair, _nfts);
   const nftsReversed = useMemo(() => [...nfts_].reverse(), [nfts_]);
   const count = useRef(0);
 
@@ -68,15 +71,15 @@ const Pools_: FC<{
     if (!pair || !nftsReversed.length || !items.length || !account) {
       return;
     }
-    if (searchIdValue || searchNameValue) {
+    if (searchNameValue) {
       setFetching(true);
     }
-    fetchMore(nftsReversed, items, 0, pair.nftAddress, account, searchIdValue, searchNameValue).then((res) => {
+    fetchMore(nftsReversed, items, 0, pair.nftAddress, account, '', searchNameValue).then((res) => {
       setNfts(res);
       setFetching(false);
       return true;
     });
-  }, [pair, nftsReversed, items, account, searchIdValue, searchNameValue]);
+  }, [pair, nftsReversed, items, account, searchNameValue]);
 
   useEffect(() => {
     if (!nfts || !nfts.length || !items.length || !nftsReversed.length || !pair) {
@@ -141,6 +144,38 @@ const Pools_: FC<{
   //       };
   //     });
   // }, [items, locksInfo]);
+
+  const onKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        if (!items || !items.length) {
+          return;
+        }
+        setFetching(true);
+        setShowName(false);
+        fetchMore(nftsReversed, items, 0, pair.nftAddress, account, searchIdValue, searchNameValue).then((res) => {
+          setNfts(res);
+          setFetching(false);
+          return true;
+        });
+      }
+    },
+    [pair, nftsReversed, items, account, searchIdValue, searchNameValue],
+  );
+  const onSearch = useCallback(() => {
+    if (!items || !items.length) {
+      return;
+    }
+    setFetching(true);
+    setShowName(false);
+    console.log(searchNameValue);
+    fetchMore(nftsReversed, items, 0, pair.nftAddress, account, searchIdValue, searchNameValue).then((res) => {
+      setNfts(res);
+      setFetching(false);
+      return true;
+    });
+  }, [pair, nftsReversed, items, account, searchIdValue, searchNameValue]);
+
   return (
     <div className={className}>
       <div className="searchWrap">
@@ -148,18 +183,23 @@ const Pools_: FC<{
           placeholder="Search NFT"
           value={searchIdValue || searchNameValue}
           onChange={(v) => {
-            if (fetching) {
+            if (!items || !items.length) {
               return;
+            }
+            if (!showName) {
+              setShowName(true);
             }
             setSearchIdValue(v);
             setSearchNameValue('');
           }}
+          onSearch={onSearch}
           onFocus={setShowName}
           onBlur={(v) => {
             setTimeout(() => {
               setShowName(v);
-            }, 500);
+            }, 800);
           }}
+          onKeyDown={onKeyDown}
         />
         {showName && NftData.length > 0 ? (
           <ul className="nameList">
@@ -266,6 +306,7 @@ async function fetchMore(
   searchId: string,
   searchName: string,
 ) {
+  console.log(111);
   let ids = nftData;
   if (searchId) {
     ids = nftData.filter((v) => `${v.id}`.startsWith(searchId));

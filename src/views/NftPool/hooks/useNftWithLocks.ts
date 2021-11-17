@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { NFT } from './../components/GoodsInPool';
+import { NFT, NFT_POOLS } from './../components/GoodsInPool';
 import type { BigNumber } from '@ethersproject/bignumber';
 import _ from 'lodash';
 import { NFT_TYPE } from 'config/constants/nft';
@@ -111,11 +111,14 @@ export const useNftWithLockInfo = (pair?: { type: NFT_TYPE; address: string }) =
   return locksInfo;
 };
 
-export const useNfts = (pair?: { type: NFT_TYPE; address: string }) => {
+export const useNfts = (pair?: { type: NFT_TYPE; address: string }, _nfts?: NftLockInfo[]): NftLockInfo[] => {
   const contract = useContract(pair?.address, pair?.type === NFT_TYPE.NFT1155 ? NFT100Pair1155 : NFT100Pair721);
   const [locksInfo, setLocksInfo] = useState<NftLockInfo[]>([]);
 
   useEffect(() => {
+    if (_nfts) {
+      setLocksInfo((old) => (_.isEqual(old, _nfts) ? old : _nfts));
+    }
     if (!contract || !pair) {
       return;
     }
@@ -142,7 +145,7 @@ export const useNfts = (pair?: { type: NFT_TYPE; address: string }) => {
         setLocksInfo((old) => (_.isEqual(old, locks) ? old : locks));
       }, console.log);
     }
-  }, [contract, pair]);
-
+  }, [contract, pair, _nfts]);
+  localStorage.setItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}-nft`, JSON.stringify(locksInfo));
   return locksInfo;
 };
