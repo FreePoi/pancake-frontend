@@ -4,9 +4,6 @@ import KacoLogo from '../../components/svg/kaco-nft.png';
 import PancakeLogo from '../../components/svg/pancake-nft.png';
 import AlpacaLogo from '../../components/svg/alpaca-nft.png';
 import { ChainId } from './tokens';
-import PancakeNft from './NFTJSON/PancakeNFT.json';
-import KacoNFT from './NFTJSON/KacoNFT.json';
-import AlpacaNFT from './NFTJSON/AlpacaNFT.json';
 export enum NFT_TYPE {
   NFT721 = 721,
   NFT1155 = 1155,
@@ -21,7 +18,6 @@ export interface NftPairConfig {
   type: NFT_TYPE;
   nftAbi: any;
   logo: string;
-  data: NftItemConfig[];
 }
 
 export interface NftItemConfig {
@@ -42,7 +38,6 @@ export const NFT_PAIRS: NftPairConfig[] = [
     type: NFT_TYPE.NFT1155,
     nftAbi: KacoNftAbi,
     logo: KacoLogo,
-    data: KacoNFT,
   },
   {
     address: '0xa70c4580F1e00C1d7A9D0280832c0D513a6D530F',
@@ -53,7 +48,6 @@ export const NFT_PAIRS: NftPairConfig[] = [
     type: NFT_TYPE.NFT721,
     nftAbi: PancakeNftAbi,
     logo: PancakeLogo,
-    data: PancakeNft,
   },
   {
     address: '0xBd6D17123Ec731adFf1cE2F9f7Af1aBC26E5EBfd',
@@ -64,7 +58,6 @@ export const NFT_PAIRS: NftPairConfig[] = [
     type: NFT_TYPE.NFT1155,
     nftAbi: KacoNftAbi,
     logo: AlpacaLogo,
-    data: AlpacaNFT,
   },
 ];
 

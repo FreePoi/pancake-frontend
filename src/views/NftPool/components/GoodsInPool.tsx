@@ -3,7 +3,7 @@ import { Grid } from '@kaco/uikit';
 import styled from 'styled-components';
 import NftItem from './Nft';
 import { NftPairConfig, NftItemConfig } from 'config/constants/nft';
-// import { fetchNfts } from '../util/fetchNft';
+import { fetchNfts } from '../util/fetchNft';
 import PageLoader from 'components/Loader/PageLoader';
 // import { useTranslation } from 'contexts/Localization';
 // NftInfoWithLock, useNftWithLockInfo,
@@ -38,19 +38,19 @@ const Pools_: FC<{
   className?: string;
   pair: NftPairConfig | undefined;
 }> = ({ className, pair }) => {
-  // let _pairs: NFT[] = [];
+  let _pairs: NFT[] = [];
 
-  // try {
-  //   _pairs = JSON.parse(localStorage.getItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}`)) || [];
-  // } catch {
-  //   localStorage.removeItem(NFT_POOLS);
-  // }
-  // const [items, setItems] = useState<NFT[]>(_pairs);
-  // const [fetching, setFetching] = useState(false);
+  try {
+    _pairs = JSON.parse(localStorage.getItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}`)) || [];
+  } catch {
+    localStorage.removeItem(NFT_POOLS);
+  }
+  const [items, setItems] = useState<NFT[]>(_pairs);
+  const [fetching, setFetching] = useState(false);
   // const { t } = useTranslation();
   // const locksInfo = useNftWithLockInfo(pair);
   // const nfts = useNftWithLocks(pair);
-  const NftData = [...new Set(pair.data.map((v: any) => v.name))];
+  const [NftData, setNftData] = useState([]);
   const { account: _account } = useWeb3React();
   const [nfts, setNfts] = useState<NftInfoWithLock[]>();
   const nfts_ = useNfts(pair);
@@ -64,16 +64,22 @@ const Pools_: FC<{
   const [showName, setShowName] = useState(false);
   const [searchNameValue, setSearchNameValue] = useState('');
   const [searchIdValue, setSearchIdValue] = useState('');
-  // console.log(pair, nfts ? [...new Set(nfts.map((v) => v.name))] : '');
   useEffect(() => {
-    if (!pair || !nftsReversed.length || !account) {
+    if (!pair || !nftsReversed.length || !items.length || !account) {
       return;
     }
-    fetchMore(nftsReversed, pair.data, 0, pair.nftAddress, account, searchIdValue, searchNameValue).then(setNfts);
-  }, [pair, nftsReversed, account, searchIdValue, searchNameValue]);
+    if (searchIdValue || searchNameValue) {
+      setFetching(true);
+    }
+    fetchMore(nftsReversed, items, 0, pair.nftAddress, account, searchIdValue, searchNameValue).then((res) => {
+      setNfts(res);
+      setFetching(false);
+      return true;
+    });
+  }, [pair, nftsReversed, items, account, searchIdValue, searchNameValue]);
 
   useEffect(() => {
-    if (!nfts || !nfts.length || !nftsReversed.length || !pair) {
+    if (!nfts || !nfts.length || !items.length || !nftsReversed.length || !pair) {
       return;
     }
     document.body.onscroll = (e) => {
@@ -88,7 +94,7 @@ const Pools_: FC<{
       ) {
         fetchingMore.current = true;
         count.current += pageSize;
-        fetchMore(nftsReversed, pair.data, count.current, pair.nftAddress, account, searchIdValue, searchNameValue)
+        fetchMore(nftsReversed, items, count.current, pair.nftAddress, account, searchIdValue, searchNameValue)
           .then((nfts) => {
             setNfts((old) => [...old, ...nfts]);
           })
@@ -97,25 +103,27 @@ const Pools_: FC<{
     };
 
     return () => (document.body.onscroll = undefined);
-  }, [nfts, container, nftsReversed, account, pair, searchIdValue, searchNameValue]);
+  }, [nfts, container, items, nftsReversed, account, pair, searchIdValue, searchNameValue]);
 
   useEffect(() => {
     simpleRpcProvider.getBlockNumber().then(setNow);
   }, []);
 
-  // useEffect(() => {
-  //   if (!pair?.nftAddress || !pair?.address) {
-  //     return;
-  //   }
+  useEffect(() => {
+    if (!pair?.nftAddress || !pair?.address) {
+      return;
+    }
 
-  //   setFetching(true);
-  //   fetchNfts(pair?.nftAddress, pair?.address)
-  //     .then((items) => {
-  //       setItems(items);
-  //       localStorage.setItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}`, JSON.stringify(items));
-  //     })
-  //     .finally(() => setFetching(false));
-  // }, [pair]);
+    // setFetching(true);
+    fetchNfts(pair?.nftAddress, pair?.address).then((items) => {
+      const _items = items.filter((v) => v.id);
+      const _arr = [...new Set(_items.map((v: any) => v && v.name))];
+      setNftData(_arr);
+      setItems(_items);
+      localStorage.setItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}`, JSON.stringify(_items));
+    });
+    // .finally(() => setFetching(false));
+  }, [pair]);
 
   // const results: NftInfoWithLock[] = useMemo(() => {
   //   return items
@@ -130,15 +138,6 @@ const Pools_: FC<{
   //       };
   //     });
   // }, [items, locksInfo]);
-
-  // if (fetching) {
-  //   return <PageLoader />;
-  // }
-
-  if (!nfts) {
-    return <PageLoader />;
-  }
-
   return (
     <div className={className}>
       <div className="searchWrap">
@@ -156,8 +155,7 @@ const Pools_: FC<{
             }, 500);
           }}
         />
-
-        {showName ? (
+        {showName && NftData.length > 0 ? (
           <ul className="nameList">
             {NftData.map((v, index: number) => (
               <li
@@ -175,13 +173,15 @@ const Pools_: FC<{
         ) : null}
       </div>
 
-      {!nfts.length ? (
+      {fetching || !nfts ? (
+        <PageLoader />
+      ) : !nfts.length ? (
         <NoBalance />
       ) : (
         <>
           <Grid gridGap="10px" className="pools" ref={container}>
             {nfts.map((item, index) => (
-              <NftItem nft={item} key={index} now={now} />
+              <NftItem nft={item} key={index} now={now} pairPid={pair.pid} />
             ))}
           </Grid>
           {/* {fetchingMore.current && <PageLoader />} */}
@@ -262,13 +262,13 @@ async function fetchMore(
 ) {
   let ids = nftData;
   if (searchId) {
-    ids = nftData.filter((v) => `${v.name}${v.id}`.indexOf(searchId) > -1);
+    ids = nftData.filter((v) => `${v.id}`.startsWith(searchId));
   } else if (searchName) {
     ids = nftData.filter((v) => `${v.name}`.indexOf(searchName) > -1);
   }
   let _nfts: NftLockInfo[] = [];
   nfts.map((vv) => {
-    const _nftsd = ids.filter((v) => vv.id === v.id);
+    const _nftsd = ids.filter((v) => v && +vv.id === +v.id);
     if (_nftsd && _nftsd.length > 0) {
       _nfts.push(vv);
     }
@@ -285,7 +285,8 @@ async function fetchMore(
       if (!nft) {
         return undefined;
       }
-      const n: NftInfoWithLock = { ...nft, ...nfts[start + index] };
+      const n: NftInfoWithLock = { ...nfts[start + index], ...nft };
+
       return n;
     })
     .filter(Boolean);

@@ -7,13 +7,18 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { NftInfoWithLock } from '../hooks/useNftWithLocks';
 import LockTime from './LockTime';
 
-const Nft: FC<{ className?: string; nft: NftInfoWithLock; now: number }> = ({ className, nft, now }) => {
+const Nft: FC<{ className?: string; nft: NftInfoWithLock; now: number; pairPid: number }> = ({
+  className,
+  nft,
+  now,
+  pairPid,
+}) => {
   const { add, items } = useContext(NftContext);
   const { account } = useActiveWeb3React();
   const added = useMemo(() => !!items.find((item) => item.id === nft.id), [items, nft]);
   return (
     <div className={className}>
-      {nft.attributes.length ? (
+      {nft.attributes.length && pairPid === 0 ? (
         <div className="attri">
           <h3>
             {nft.name}#{nft.id}
