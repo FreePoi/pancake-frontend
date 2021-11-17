@@ -118,7 +118,7 @@ const Pools_: FC<{
 
     // setFetching(true);
     fetchNfts(pair?.nftAddress, pair?.address).then((items) => {
-      const _items = items.filter((v) => v.id);
+      const _items = items.filter((v) => v?.id);
       const _arr = [...new Set(_items.map((v: any) => v && v.name))];
       setNftData(_arr);
       setItems(_items);
