@@ -67,7 +67,24 @@ const Pools_: FC<{
   const [showName, setShowName] = useState(false);
   const [searchNameValue, setSearchNameValue] = useState('');
   const [searchIdValue, setSearchIdValue] = useState('');
+
   useEffect(() => {
+    if (!pair?.nftAddress || !pair?.address) {
+      return;
+    }
+
+    // setFetching(true);
+    fetchNfts(pair.nftAddress, pair.address).then((items) => {
+      const _items = items.filter((v) => v?.id);
+      const _arr = [...new Set(_items.map((v: any) => v && v.name))];
+      setNftData(_arr);
+      setItems(_items);
+      localStorage.setItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}`, JSON.stringify(_items));
+    });
+    // .finally(() => setFetching(false));
+  }, [pair]);
+  useEffect(() => {
+    console.log({ pair, nftsReversed, items, account, searchNameValue });
     if (!pair || !nftsReversed.length || !items.length || !account) {
       return;
     }
@@ -113,22 +130,6 @@ const Pools_: FC<{
   useEffect(() => {
     simpleRpcProvider.getBlockNumber().then(setNow);
   }, []);
-
-  useEffect(() => {
-    if (!pair?.nftAddress || !pair?.address) {
-      return;
-    }
-
-    // setFetching(true);
-    fetchNfts(pair?.nftAddress, pair?.address).then((items) => {
-      const _items = items.filter((v) => v?.id);
-      const _arr = [...new Set(_items.map((v: any) => v && v.name))];
-      setNftData(_arr);
-      setItems(_items);
-      localStorage.setItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}`, JSON.stringify(_items));
-    });
-    // .finally(() => setFetching(false));
-  }, [pair]);
 
   // const results: NftInfoWithLock[] = useMemo(() => {
   //   return items
