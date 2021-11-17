@@ -116,7 +116,7 @@ export const useNfts = (pair?: { type: NFT_TYPE; address: string }, _nfts?: NftL
   const [locksInfo, setLocksInfo] = useState<NftLockInfo[]>([]);
 
   useEffect(() => {
-    if (_nfts) {
+    if (_nfts && _nfts.length > 0) {
       setLocksInfo((old) => (_.isEqual(old, _nfts) ? old : _nfts));
     }
     if (!contract || !pair) {
