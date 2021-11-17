@@ -88,7 +88,7 @@ const Pools_: FC<{
     // .finally(() => setFetching(false));
   }, [pair, items]);
   useEffect(() => {
-    console.log({ pair, nftsReversed, items, account, searchNameValue });
+    // console.log({ pair, nftsReversed, items, account, searchNameValue });
     if (!pair || !nftsReversed.length || !account) {
       return;
     }
@@ -103,7 +103,7 @@ const Pools_: FC<{
   }, [pair, nftsReversed, items, account, searchNameValue]);
 
   useEffect(() => {
-    if (!nfts || !nfts.length || !nftsReversed.length || !pair) {
+    if (!nfts || !nfts.length || !items.length || !nftsReversed.length || !pair) {
       return;
     }
     document.body.onscroll = (e) => {
@@ -111,7 +111,7 @@ const Pools_: FC<{
       const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
       const clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
 
-      // console.log(document.body.onscroll, count.current, nftsReversed.length, pageSize);
+      console.log(document.body.onscroll, count.current, nftsReversed.length, pageSize);
       if (
         clientHeight + scrollTop > scrollHeight - 300 &&
         !fetchingMore.current &&
@@ -153,7 +153,7 @@ const Pools_: FC<{
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       setFetching(true);
-      console.log(searchIdValue);
+      // console.log(searchIdValue);
       fetchMore(nftsReversed, items, 0, pair.nftAddress, account, searchIdValue, searchNameValue).then((res) => {
         setNfts(res);
         setFetching(false);
@@ -311,7 +311,7 @@ async function fetchMore(
   searchId: string,
   searchName: string,
 ) {
-  console.log(111);
+  // console.log(111);
   let ids = nftData;
   if (searchId) {
     ids = nftData.filter((v) => `${v.id}`.startsWith(searchId));
@@ -320,6 +320,7 @@ async function fetchMore(
   } else {
     ids = nftData;
   }
+  // console.log(111, { ids });
   let _nfts = [];
   if (ids.length !== 0) {
     nfts.map((vv) => {
@@ -330,8 +331,11 @@ async function fetchMore(
       return vv;
     });
   } else {
-    _nfts = nfts;
+    if (!searchId && !searchName) {
+      _nfts = nfts;
+    }
   }
+  // console.log(111, { _nfts });
   const results = await Promise.all(
     _nfts.slice(start, start + pageSize).map((nft) => fetchNftInfo(nftAddress, Number(nft.id), account, nft)),
   );
