@@ -84,7 +84,7 @@ const Pools_: FC<{
       }
     });
     // .finally(() => setFetching(false));
-  }, [pair]);
+  }, [pair, items]);
   useEffect(() => {
     console.log({ pair, nftsReversed, items, account, searchNameValue });
     if (!pair || !nftsReversed.length || !items.length || !account) {
