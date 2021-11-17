@@ -96,7 +96,9 @@ const Pools_: FC<{
         count.current += pageSize;
         fetchMore(nftsReversed, items, count.current, pair.nftAddress, account, searchIdValue, searchNameValue)
           .then((nfts) => {
-            setNfts((old) => [...old, ...nfts]);
+            if (document.body.onscroll) {
+              setNfts((old) => [...old, ...nfts]);
+            }
           })
           .finally(() => (fetchingMore.current = false));
       }
