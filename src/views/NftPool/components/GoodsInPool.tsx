@@ -78,7 +78,7 @@ const Pools_: FC<{
       const _items = items.filter((v) => v?.id);
       const _arr = [...new Set(_items.map((v: any) => v && v.name))];
       setNftData(_arr);
-      if (_items.length != items.length) {
+      if (_items.length !== items.length) {
         setItems(_items);
         localStorage.setItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}`, JSON.stringify(_items));
       }
