@@ -76,11 +76,13 @@ const Pools_: FC<{
     // setFetching(true);
     fetchNfts(pair.nftAddress, pair.address).then((__items) => {
       const _items = __items.filter((v) => v?.id);
-      const _arr = [...new Set(_items.map((v: any) => v && v.name))];
-      setNftData(_arr);
-      if (items.length === 0 || _items.length !== items.length) {
-        setItems(_items);
-        localStorage.setItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}`, JSON.stringify(_items));
+      if (_items.length > 0) {
+        const _arr = [...new Set(_items.map((v: any) => v && v.name))];
+        setNftData(_arr);
+        if (items.length === 0 || _items.length !== items.length) {
+          setItems(_items);
+          localStorage.setItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}`, JSON.stringify(_items));
+        }
       }
     });
     // .finally(() => setFetching(false));

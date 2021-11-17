@@ -149,8 +149,10 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
     fetchNfts(pair.nftAddress, pair.pairAddress)
       .then(
         (nfts) => {
-          setNfts(nfts);
-          localStorage.setItem(`${NFT_POOLS}-${pair?.pairAddress.toLowerCase()}`, JSON.stringify(nfts));
+          if (nfts.length) {
+            setNfts(nfts);
+            localStorage.setItem(`${NFT_POOLS}-${pair?.pairAddress.toLowerCase()}`, JSON.stringify(nfts));
+          }
         },
         (e) => console.log('eee', e),
       )
