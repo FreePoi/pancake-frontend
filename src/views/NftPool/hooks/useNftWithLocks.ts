@@ -113,12 +113,9 @@ export const useNftWithLockInfo = (pair?: { type: NFT_TYPE; address: string }) =
 
 export const useNfts = (pair?: { type: NFT_TYPE; address: string }, _nfts?: NftLockInfo[]): NftLockInfo[] => {
   const contract = useContract(pair?.address, pair?.type === NFT_TYPE.NFT1155 ? NFT100Pair1155 : NFT100Pair721);
-  const [locksInfo, setLocksInfo] = useState<NftLockInfo[]>([]);
+  const [locksInfo, setLocksInfo] = useState<NftLockInfo[]>(_nfts);
 
   useEffect(() => {
-    if (_nfts && _nfts.length > 0) {
-      setLocksInfo((old) => (_.isEqual(old, _nfts) ? old : _nfts));
-    }
     if (!contract || !pair) {
       return;
     }
@@ -145,7 +142,7 @@ export const useNfts = (pair?: { type: NFT_TYPE; address: string }, _nfts?: NftL
         setLocksInfo((old) => (_.isEqual(old, locks) ? old : locks));
       }, console.log);
     }
-  }, [contract, pair, _nfts]);
+  }, [contract, pair]);
   localStorage.setItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}-nft`, JSON.stringify(locksInfo));
   return locksInfo;
 };
