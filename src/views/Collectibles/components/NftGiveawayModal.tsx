@@ -5,7 +5,7 @@ import { Modal, Text, Button, Flex, InjectedModalProps } from '@kaco/uikit';
 import history from 'routerHistory';
 import { delay } from 'lodash';
 import { useTranslation } from 'contexts/Localization';
-import nftList from 'config/constants/_nfts';
+import PancakeNftList from 'config/constants/pancake_nfts';
 import { Nft } from 'config/constants/types';
 import { useProfile } from 'state/profile/hooks';
 import { Profile } from 'state/types';
@@ -44,7 +44,7 @@ const getClaimableNft = (profile: Profile): Nft => {
   const identifier = Object.keys(teamNftMap).find(
     (mapNftIdentifier) => teamNftMap[mapNftIdentifier] === profile.team.id,
   );
-  return nftList.find((nft) => nft.identifier === identifier);
+  return PancakeNftList.find((nft) => nft.identifier === identifier);
 };
 
 const NftGiveawayModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {

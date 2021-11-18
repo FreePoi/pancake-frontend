@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import type { BigNumber } from '@ethersproject/bignumber';
 import NFT100FactoryAbi from 'config/abi/NFT100Factory.json';
 import { NFT_FACTORY, NFT_TYPE, NFT_PAIRS } from 'config/constants/nft';
-import multicall from 'utils/multicall';
+import multicall, { multicallv2 } from 'utils/multicall';
 import { useContract } from 'hooks/useContract';
 import _ from 'lodash';
 import { chainId } from 'config/constants/tokens';
@@ -22,9 +22,9 @@ const fetchNftPairs = async (count: number): Promise<NftPair[]> => {
     name: 'getPairByIndex',
     params: [index],
   }));
-
+  // console.log({ calls });
   const infos = (await multicall(NFT100FactoryAbi, calls)) as [string, string, BigNumber, string, string, BigNumber][];
-
+  // console.log({ infos });
   return infos.map((info) => ({
     pairAddress: info[0],
     nftAddress: info[1],
@@ -44,7 +44,14 @@ const fetchNftPair = async (index: number): Promise<NftPair> => {
     },
   ];
 
-  const [info] = (await multicall(NFT100FactoryAbi, calls)) as [string, string, BigNumber, string, string, BigNumber][];
+  const [info] = (await multicallv2(NFT100FactoryAbi, calls)) as [
+    string,
+    string,
+    BigNumber,
+    string,
+    string,
+    BigNumber,
+  ][];
 
   return {
     pairAddress: info[0],
@@ -61,7 +68,8 @@ export const useNftPairs = () => {
   const contract = useContract(NFT_FACTORY[chainId], NFT100FactoryAbi);
 
   useEffect(() => {
-    contract.counter().then(async (counter) => {
+    contract.counter().then(async (counter: BigNumber) => {
+      // console.log('counter', counter.toString());
       let pairs = await fetchNftPairs(counter.toNumber());
 
       pairs = pairs.filter((pair) =>

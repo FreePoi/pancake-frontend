@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { NFT } from './../components/GoodsInPool';
+import { NFT, NFT_POOLS } from './../components/GoodsInPool';
 import type { BigNumber } from '@ethersproject/bignumber';
 import _ from 'lodash';
 import { NFT_TYPE } from 'config/constants/nft';
@@ -10,7 +10,12 @@ import NFT100Pair1155 from 'config/abi/NFT100Pair1155.json';
 import { fetchNftInfo } from '../util/fetchNft';
 
 export type LockInfo = { lastBlock: number; unlocker: string; amount?: number };
-export type NftLockInfo = { id: number; lastBlock: number; unlocker: string; amount?: number };
+export type NftLockInfo = {
+  id: number;
+  lastBlock: number;
+  unlocker: string;
+  amount?: number;
+};
 export type Locks = { [key: number]: LockInfo };
 export type NftInfoWithLock = LockInfo & NFT;
 
@@ -30,7 +35,7 @@ export const useNftWithLocks = (pair?: { type: NFT_TYPE; address: string; nftAdd
     }
     if (pair.type === NFT_TYPE.NFT721) {
       contract.getLockInfos().then(async ([ids, locksInfo]: [BigNumber[], [number, string][]]) => {
-        const promises = ids.map(async (id) => fetchNftInfo(pair.nftAddress, id.toNumber(), account));
+        const promises = ids.map(async (id) => fetchNftInfo(pair.nftAddress, id.toNumber(), account, null));
 
         const results = await Promise.all(promises);
 
@@ -106,9 +111,9 @@ export const useNftWithLockInfo = (pair?: { type: NFT_TYPE; address: string }) =
   return locksInfo;
 };
 
-export const useNfts = (pair?: { type: NFT_TYPE; address: string }) => {
+export const useNfts = (pair?: { type: NFT_TYPE; address: string }, _nfts?: NftLockInfo[]): NftLockInfo[] => {
   const contract = useContract(pair?.address, pair?.type === NFT_TYPE.NFT1155 ? NFT100Pair1155 : NFT100Pair721);
-  const [locksInfo, setLocksInfo] = useState<NftLockInfo[]>([]);
+  const [locksInfo, setLocksInfo] = useState<NftLockInfo[]>(_nfts);
 
   useEffect(() => {
     if (!contract || !pair) {
@@ -138,6 +143,6 @@ export const useNfts = (pair?: { type: NFT_TYPE; address: string }) => {
       }, console.log);
     }
   }, [contract, pair]);
-
+  localStorage.setItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}-nft`, JSON.stringify(locksInfo));
   return locksInfo;
 };

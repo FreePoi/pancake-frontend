@@ -25,6 +25,7 @@ import {
   getBunnySpecialPredictionAddress,
   getFarmAuctionAddress,
   getMerkleAddress,
+  getKarsierAddress,
 } from 'utils/addressHelpers';
 
 // ABI
@@ -55,6 +56,7 @@ import bunnySpecialCakeVaultAbi from 'config/abi/bunnySpecialCakeVault.json';
 import bunnySpecialPredictionAbi from 'config/abi/bunnySpecialPrediction.json';
 import farmAuctionAbi from 'config/abi/farmAuction.json';
 import merkleAbi from 'config/abi/merkleAbi.json';
+import KarsierAbi from 'config/abi/karsierAbi.json';
 import {
   ChainLinkOracleContract,
   FarmAuctionContract,
@@ -150,5 +152,9 @@ export const getFarmAuctionContract = (signer?: ethers.Signer | ethers.providers
 
 export const getMerkleContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   const _merkle = getContract(merkleAbi, getMerkleAddress(), signer) as IMerkleDistributorInterface;
+  return _merkle;
+};
+export const getKarsierContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  const _merkle = getContract(KarsierAbi, getKarsierAddress(), signer) as IMerkleDistributorInterface;
   return _merkle;
 };

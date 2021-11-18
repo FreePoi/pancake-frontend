@@ -67,3 +67,7 @@ export const getFarmAuctionAddress = () => {
 export const getMerkleAddress = () => {
   return getAddress(addresses.merkle);
 };
+
+export const getKarsierAddress = () => {
+  return getAddress(addresses.karsier);
+};

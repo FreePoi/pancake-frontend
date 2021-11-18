@@ -1,6 +1,7 @@
 import { NFT_PAIRS } from 'config/constants/nft';
 import { NFT } from '../components/GoodsInPool';
 import multicall from 'utils/multicall';
+import BigNumber from 'bignumber.js';
 
 interface BounceItem {
   contract_addr: string;
@@ -13,6 +14,7 @@ interface BounceItem {
   name: string;
   description: string;
   image: string;
+  attributes?: any;
 }
 
 interface BounceData {
@@ -26,6 +28,21 @@ export async function fetchNfts(nftAddress: string, pairAddress: string) {
   const items = await fetchAllTokens(pairAddress);
   const nfts: NFT[] = await filterNft(items, nftAddress);
 
+  return nfts;
+}
+export async function fetchAllNfts(pairAddress: string) {
+  const items: any = await fetchAllTokens(pairAddress);
+  const nfts: NFT[] = [];
+  for (let i = 0; i < items.length; i++) {
+    nfts.push({
+      id: +items[i].token_id,
+      balance: 0,
+      uri: items[i].uri,
+      image: items[i].image,
+      name: items[i].name,
+      attributes: items[i].attributes,
+    });
+  }
   return nfts;
 }
 
@@ -56,15 +73,11 @@ export async function filterNft(items: BounceItem[], nftAddress: string) {
       token.balance > 0 &&
       (!token.image || token.image.length === 0),
   );
-  console.log('flawItems: ', flawItems);
   const promises = flawItems.map(async (item) => {
     const temp = fetchNftInfo(nftAddress, item.token_id, item.owner_addr);
-    console.log('fetch result: ', temp);
     return temp;
   });
   const results = await Promise.all(promises);
-  console.log('results: ', results);
-
   results.push(
     ...items
       .filter(
@@ -80,16 +93,17 @@ export async function filterNft(items: BounceItem[], nftAddress: string) {
         uri: nft.token_uri,
         image: nft.image,
         name: nft.name,
+        attributes: nft?.attributes || {},
       })),
   );
   return results;
 }
 
-export async function fetchNftInfo(nftAddress: string, id: number, owner: string): Promise<NFT | undefined> {
+export async function fetchNftInfo(nftAddress: string, id: number, owner: string, nft?: any): Promise<NFT | undefined> {
   const pairConfig = NFT_PAIRS.find((pair) => pair.nftAddress.toLowerCase() === nftAddress.toLowerCase());
 
   if ([0, 2].findIndex((pid) => pairConfig.pid === pid) > -1) {
-    return await fetchPid0(pairConfig.nftAddress, id, owner, pairConfig.nftAbi);
+    return await fetchPid0(pairConfig.nftAddress, id, owner, pairConfig.nftAbi, nft);
   } else {
     return await fetchPid1(pairConfig.nftAddress, id, owner, pairConfig.nftAbi);
   }
@@ -103,35 +117,42 @@ interface NftMeta {
   background_color: string;
   external_link: string;
   owner: string;
+  attributes?: any[];
 }
 
 // kaco, alpaca...
-async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any): Promise<NFT | undefined> {
-  const calls = [
-    { address: nftAddress, name: 'balanceOf', params: [owner, id] },
-    { address: nftAddress, name: 'uri', params: [id] },
-  ];
-
-  const [[balance], [uri]] = await multicall(abi, calls);
-
+async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any, nft: any): Promise<NFT | undefined> {
   try {
-    const res = await fetch(uri);
-    const info: NftMeta = await res.json();
-
-    if (!res.ok || !info) {
-      return;
+    let _balance = new BigNumber(0);
+    if (owner) {
+      _balance = await multicall(abi, [{ address: nftAddress, name: 'balanceOf', params: [owner, id] }]);
     }
+    if (nft === null || !nft?.name) {
+      const _uri = await multicall(abi, [{ address: nftAddress, name: 'uri', params: [id] }]);
+      const res = await fetch(_uri[0][0]);
+      const info: NftMeta = await res.json();
 
+      if (!res.ok || !info) {
+        return;
+      }
+      return {
+        id,
+        balance: _balance[0][0].toNumber(),
+        uri: _uri[0][0],
+        image: info.image,
+        name: info.name,
+        attributes: info?.attributes || [],
+      };
+    }
     return {
       id,
-      balance: balance.toNumber(),
-      uri,
-      image: info.image,
-      name: info.name,
+      balance: _balance[0][0].toNumber(),
+      uri: nft?.uri ?? '',
+      image: nft?.image ?? '',
+      name: nft?.name ?? '',
+      attributes: nft?.attributes ?? [],
     };
-  } catch (e) {
-    console.log('nft metadata error', e);
-  }
+  } catch (e) {}
 }
 
 // pancake
@@ -154,6 +175,7 @@ async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any
         uri: u,
         image: toPancakeUri(nftName),
         name: nftName,
+        attributes: [],
       };
     } else {
       const res = await fetch(u);
@@ -168,11 +190,10 @@ async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any
         uri: u,
         image: toUri(info.image),
         name: info.name,
+        attributes: info?.attributes || [],
       };
     }
-  } catch (e) {
-    console.log('fetch nft metadata error', e);
-  }
+  } catch (e) {}
 }
 
 // ipfs://QmYD9AtzyQPjSa9jfZcZq88gSaRssdhGmKqQifUDjGFfXm/dollop.png

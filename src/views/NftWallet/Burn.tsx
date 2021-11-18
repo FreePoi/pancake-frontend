@@ -65,7 +65,13 @@ const Burn: FC<{ className?: string }> = ({ className }) => {
       })
       .finally(() => setFetching(false));
   }, [account, pairs]);
-
+  if (!account) {
+    return (
+      <Page style={{ minHeight: '0px' }}>
+        <NoBalance />
+      </Page>
+    );
+  }
   return (
     <Page style={{ minHeight: '0px' }}>
       {fetching ? (

@@ -80,7 +80,7 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
       apr,
       isFinished: isPoolFinished,
     });
-    if (poolsConfig.length - 1 === index) {
+    if (poolsConfig.length === liveData.length) {
       dispatch(setPoolsPublicData(liveData));
     }
   });

@@ -1,4 +1,4 @@
-import Nfts, { IPFS_GATEWAY, nftSources } from 'config/constants/_nfts';
+import PancakeNfts, { IPFS_GATEWAY, nftSources } from 'config/constants/pancake_nfts';
 import { Nft, NftType } from 'config/constants/types';
 import { getAddress } from './addressHelpers';
 import { getErc721Contract } from './contractHelpers';
@@ -67,7 +67,7 @@ export const getNftByTokenId = async (nftAddress: string, tokenId: number): Prom
     return null;
   }
 
-  return Nfts.find((nft) => {
+  return PancakeNfts.find((nft) => {
     return uriData[identifierKey].includes(nft.identifier);
   });
 };

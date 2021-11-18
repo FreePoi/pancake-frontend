@@ -5,7 +5,7 @@ import csv from 'csvtojson';
 import { parseBalanceMap } from './utils/parse-balance-map';
 
 const csvFilePath = './airdropRecords.csv';
-console.log(path.resolve(__dirname, csvFilePath));
+// console.log(path.resolve(__dirname, csvFilePath));
 const rl: any = readline.createInterface({
   input: fs.createReadStream(path.resolve(__dirname, csvFilePath)),
   output: fs.createWriteStream(path.resolve(__dirname, 'src/config/constants/merkle.json')),
@@ -30,9 +30,8 @@ rl.on('close', function () {
       for (let i = 0; i < data.length; i++) {
         _data[data[i].address] = (data[i].amount * 1000000000000000000).toString(16);
       }
-      console.log(_data);
       const { claims, merkleRoot, tokenTotal } = parseBalanceMap(_data);
-      console.log(claims, merkleRoot, tokenTotal);
+      // console.log(claims, merkleRoot, tokenTotal);
 
       fs.writeFileSync(
         'src/config/constants/merkle.json',

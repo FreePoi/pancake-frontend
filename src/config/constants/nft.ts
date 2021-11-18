@@ -4,7 +4,6 @@ import KacoLogo from '../../components/svg/kaco-nft.png';
 import PancakeLogo from '../../components/svg/pancake-nft.png';
 import AlpacaLogo from '../../components/svg/alpaca-nft.png';
 import { ChainId } from './tokens';
-
 export enum NFT_TYPE {
   NFT721 = 721,
   NFT1155 = 1155,
@@ -21,6 +20,14 @@ export interface NftPairConfig {
   logo: string;
 }
 
+export interface NftItemConfig {
+  id: number;
+  uri?: string;
+  image?: string;
+  name: string;
+  lastBlock?: number;
+  unlocker?: string;
+}
 export const NFT_PAIRS: NftPairConfig[] = [
   {
     address: '0x65aDc52BfD0E3d9Df80Be6E36F330E757862e2Bd',
