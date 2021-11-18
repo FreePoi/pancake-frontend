@@ -30,6 +30,21 @@ export async function fetchNfts(nftAddress: string, pairAddress: string) {
 
   return nfts;
 }
+export async function fetchAllNfts(pairAddress: string) {
+  const items: any = await fetchAllTokens(pairAddress);
+  const nfts: NFT[] = [];
+  for (let i = 0; i < items.length; i++) {
+    nfts.push({
+      id: +items[i].token_id,
+      balance: 0,
+      uri: items[i].uri,
+      image: items[i].image,
+      name: items[i].name,
+      attributes: items[i].attributes,
+    });
+  }
+  return nfts;
+}
 
 export async function fetchAllTokens(account: string) {
   const apiUrl = `https://nftview.bounce.finance/v2/bsc/nft?user_address=${account}`;
