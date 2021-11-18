@@ -80,13 +80,18 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
           .map(async (pair) => ({ ...pair, nfts: await filterNft(items, pair.nftAddress) }))
           .filter(async (pair) => (await pair).nfts.length);
         const results = await Promise.all(poolsPromises);
-
         setPools(results);
         localStorage.setItem(USER_NFTS, JSON.stringify(results));
       }, console.error)
       .finally(() => setFetching(false));
   }, [account, pairs]);
-
+  if (!account) {
+    return (
+      <Page className={className}>
+        <NoBalance />
+      </Page>
+    );
+  }
   return (
     <Page className={className}>
       {!pools && fetching ? (

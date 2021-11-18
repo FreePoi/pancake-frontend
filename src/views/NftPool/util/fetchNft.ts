@@ -73,15 +73,11 @@ export async function filterNft(items: BounceItem[], nftAddress: string) {
       token.balance > 0 &&
       (!token.image || token.image.length === 0),
   );
-  // console.log('flawItems: ', flawItems);
   const promises = flawItems.map(async (item) => {
-    const temp = fetchNftInfo(nftAddress, item.token_id, item.owner_addr, item);
-    // console.log('fetch result: ', temp);
+    const temp = fetchNftInfo(nftAddress, item.token_id, item.owner_addr);
     return temp;
   });
   const results = await Promise.all(promises);
-  // console.log('results: ', results);
-
   results.push(
     ...items
       .filter(
@@ -103,7 +99,7 @@ export async function filterNft(items: BounceItem[], nftAddress: string) {
   return results;
 }
 
-export async function fetchNftInfo(nftAddress: string, id: number, owner: string, nft: any): Promise<NFT | undefined> {
+export async function fetchNftInfo(nftAddress: string, id: number, owner: string, nft?: any): Promise<NFT | undefined> {
   const pairConfig = NFT_PAIRS.find((pair) => pair.nftAddress.toLowerCase() === nftAddress.toLowerCase());
 
   if ([0, 2].findIndex((pid) => pairConfig.pid === pid) > -1) {
@@ -131,7 +127,7 @@ async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any
     if (owner) {
       _balance = await multicall(abi, [{ address: nftAddress, name: 'balanceOf', params: [owner, id] }]);
     }
-    if (nft === null || !nft.name) {
+    if (nft === null || !nft?.name) {
       const _uri = await multicall(abi, [{ address: nftAddress, name: 'uri', params: [id] }]);
       const res = await fetch(_uri[0][0]);
       const info: NftMeta = await res.json();
@@ -139,7 +135,6 @@ async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any
       if (!res.ok || !info) {
         return;
       }
-
       return {
         id,
         balance: _balance[0][0].toNumber(),
@@ -157,9 +152,7 @@ async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any
       name: nft?.name ?? '',
       attributes: nft?.attributes ?? [],
     };
-  } catch (e) {
-    // console.log('nft metadata error', e);
-  }
+  } catch (e) {}
 }
 
 // pancake
@@ -200,9 +193,7 @@ async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any
         attributes: info?.attributes || [],
       };
     }
-  } catch (e) {
-    // console.log('fetch nft metadata error', e);
-  }
+  } catch (e) {}
 }
 
 // ipfs://QmYD9AtzyQPjSa9jfZcZq88gSaRssdhGmKqQifUDjGFfXm/dollop.png

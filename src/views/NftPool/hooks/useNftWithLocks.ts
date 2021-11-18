@@ -50,7 +50,7 @@ export const useNftWithLocks = (pair?: { type: NFT_TYPE; address: string; nftAdd
     } else {
       contract.getLockInfos().then(async (lockInfos: [BigNumber, string, number, BigNumber][]) => {
         const promises = lockInfos.map(async (lockInfo) =>
-          fetchNftInfo(pair.nftAddress, lockInfo[0].toNumber(), account, lockInfo[0]),
+          fetchNftInfo(pair.nftAddress, lockInfo[0].toNumber(), account),
         );
 
         const results = await Promise.all(promises);
