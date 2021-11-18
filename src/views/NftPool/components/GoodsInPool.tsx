@@ -99,7 +99,7 @@ const Pools_: FC<{
   }, [pair, nftsReversed, items, account]);
 
   useEffect(() => {
-    if (!nfts || !nfts.length || !items.length || !nftsReversed.length || !pair) {
+    if (!nfts || !nfts.length || !nftsReversed.length || !pair) {
       return;
     }
 
