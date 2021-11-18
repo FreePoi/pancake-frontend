@@ -295,7 +295,7 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
     {
       text: 'NFT',
       img: NftSvg,
-      collapsed: false,
+      collapsed: true,
       link: '/nft/pools/',
       children: [
         { text: 'Markets', link: '/nft/pools' },
@@ -366,7 +366,7 @@ const SideMenu: FC<{ className?: string }> = ({ className, children }) => {
                     return;
                   }
                   [isXs, isSm, isMd].some(Boolean) && !item.children && !item.children?.length && setCollapsed(true);
-
+                  setMenuItems([...menuItems.map((v) => (v.children ? { ...v, collapsed: true } : v))]);
                   if (item.children?.length) {
                     setMenuItems([
                       ...menuItems.slice(0, index),
