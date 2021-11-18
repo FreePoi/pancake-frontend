@@ -182,7 +182,7 @@ const Pools_: FC<{
       {items.length > 0 ? (
         <div className="searchWrap">
           <Search
-            placeholder="Search NFT"
+            placeholder="Search NFT By Id"
             value={searchIdValue || searchNameValue}
             onChange={(v) => {
               if (!items || !items.length) {
