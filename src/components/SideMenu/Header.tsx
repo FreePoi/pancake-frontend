@@ -134,10 +134,10 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
           borderRadius="12px"
           border="2px solid #1BD3D5"
           height="36px"
-          width="100px"
+          width={isXs || isSm ? '70px' : '100px'}
           justifyContent="space-between"
-          padding="0px 16px"
-          mr="16px"
+          padding={isXs || isSm ? '0px 10px' : '0px 16px'}
+          mr={isXs || isSm ? '8px' : '16px'}
         >
           <Text color="#1BD3D5" fontSize="12px" bold>
             BSC
@@ -221,7 +221,7 @@ export default styled(Header)`
       }
     }
     .claim_kac {
-      padding: 0px 0.8rem;
+      padding: 0px 10px;
       overflow: hidden;
       height: 36px;
       line-height: 36px;
@@ -230,8 +230,16 @@ export default styled(Header)`
       background: linear-gradient(90deg, #1bd3d5, #d755d9, #ec9b5a);
       border-radius: 12px;
       font-weight: bold;
-      margin-right: 16px;
+      margin-right: 8px;
       cursor: pointer;
+      ${({ theme }) => theme.mediaQueries.xs} {
+        margin-right: 8px;
+        padding: 0px 10px;
+      }
+      ${({ theme }) => theme.mediaQueries.sm} {
+        margin-right: 16px;
+        padding: 0px 16px;
+      }
     }
     > .account {
       > svg {
@@ -256,8 +264,16 @@ export default styled(Header)`
       background: #1f252a;
       border: 1px solid #2f363b;
       border-radius: 12px;
-      padding: 2px 16px;
-      max-width: 150px;
+      padding: 2px 10px;
+      max-width: 80px;
+      ${({ theme }) => theme.mediaQueries.xs} {
+        padding: 2px 16px;
+        max-width: 120px;
+      }
+      ${({ theme }) => theme.mediaQueries.sm} {
+        padding: 2px 16px;
+        max-width: 150px;
+      }
       > span {
         text-overflow: ellipsis;
         overflow: hidden;
