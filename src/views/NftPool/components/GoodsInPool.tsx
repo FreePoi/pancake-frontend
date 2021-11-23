@@ -76,8 +76,30 @@ const Pools_: FC<{
     fetchAllNfts(pair.address).then((__items) => {
       const _items = __items.filter((v) => v?.id);
       if (_items.length > 0 && _items.length !== items.length) {
+        // if (pair.pid === 0) {
+        //   const KACONFTData = [
+        //     'Green KACO monkey',
+        //     'Kaco Early Bird Mining',
+        //     'ARTEZ',
+        //     'Trick or KACO',
+        //     'COCO',
+        //     'DUDU',
+        //     'KACO Lover',
+        //     'Trick or KACO',
+        //     'Green AMEI',
+        //     'Sliver AMEI',
+        //     'Gold AMEI',
+        //     'GURRO x Pancake',
+        //     'GURRO x Kaco',
+        //     'GURRO x Alpaca',
+        //   ];
+
+        //   setNftData(KACONFTData);
+        // } else {
         const _arr = [...new Set(_items.map((v: any) => v && v.name).filter((v) => v))];
         setNftData(_arr);
+        // }
+
         if (items.length === 0 || _items.length !== items.length) {
           setItems(_items);
           localStorage.setItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}`, JSON.stringify(_items));
@@ -182,7 +204,7 @@ const Pools_: FC<{
       {items.length > 0 ? (
         <div className="searchWrap">
           <Search
-            placeholder="Search NFT By Id"
+            placeholder="Search NFT"
             value={searchIdValue || searchNameValue}
             onChange={(v) => {
               if (!items || !items.length) {
@@ -320,7 +342,7 @@ async function fetchMore(
 ) {
   let ids = nftData;
   if (searchId) {
-    ids = nftData.filter((v) => `${v.id}`.startsWith(searchId));
+    ids = nftData.filter((v) => `${v.name}#${v.id}`.toLowerCase().indexOf(`${searchId}`.toLowerCase()) > -1);
   } else if (searchName) {
     ids = nftData.filter((v) => `${v.name}`.indexOf(searchName) > -1);
   } else {
