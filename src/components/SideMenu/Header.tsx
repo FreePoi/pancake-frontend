@@ -3,17 +3,13 @@ import styled from 'styled-components';
 import { useWeb3React } from '@web3-react/core';
 import ConnectWalletButton from '../ConnectWalletButton';
 // import { LogoutIcon, useMatchBreakpoints, useModal } from '@kaco/uikit';
-import { Text, Flex, LogoutIcon, useMatchBreakpoints, useTooltip, useModal } from '@kaco/uikit';
+import { LogoutIcon, useMatchBreakpoints, useModal } from '@kaco/uikit';
 import UncollapsedSvg from './imgs/icon_sq.svg';
-import BscSvg from './imgs/icon_bsc.svg';
-import SdnSvg from './imgs/icon_sd.png';
-import SelectedSvg from './imgs/icon_select.svg';
-import SlSvg from './imgs/icon_sl.svg';
 import useAuth from 'hooks/useAuth';
-import { useTranslation } from 'contexts/Localization';
 import ClaimModal from './Modals/ClaimModal';
 // import { useKarsierContract } from 'hooks/useContract';
 import BigNumber from 'bignumber.js';
+import SwitchChain from './Modals/SwitchChain';
 export enum ThemeChoice {
   Dark,
   White,
@@ -27,8 +23,6 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
   const { account } = useWeb3React();
   const { isXs, isSm } = useMatchBreakpoints();
   const { logout } = useAuth();
-  const { t } = useTranslation();
-
   // const karsierContract = useKarsierContract();
   const karsierContract = null;
   // const [karsierNfts, setKarsierNfts] = useState([]);
@@ -50,63 +44,7 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
       }
     })();
   }, [account, karsierContract]);
-  const tooltipContent = (
-    <div>
-      <Text fontSize="16px" bold color="#1BD3D5">
-        Select a Network
-      </Text>
-      <Text fontSize="12px" bold mb="25px" mt="15px">
-        {t('You are currently browsing Kaco on BSC network')}
-      </Text>
-      <Flex
-        style={{ cursor: 'pointer' }}
-        mb="12px"
-        py="14px"
-        px="19px"
-        alignItems="center"
-        justifyContent="space-between"
-        background="#272E32"
-        borderRadius="16px"
-        onClick={() => (window.location.href = 'https://www.kaco.finance/')}
-      >
-        <Flex alignItems="center">
-          <img src={BscSvg} alt="" />
-          <Text color="white" fontSize="16px" bold ml="21px">
-            BSC
-          </Text>
-        </Flex>
-        <img src={SelectedSvg} alt="" />
-      </Flex>
 
-      <Flex
-        style={{ cursor: 'pointer' }}
-        mb="12px"
-        py="14px"
-        px="19px"
-        alignItems="center"
-        justifyContent="space-between"
-        background="#272E32"
-        borderRadius="16px"
-        onClick={() => (window.location.href = 'https://shiden.kaco.finance/')}
-      >
-        <Flex alignItems="center">
-          <img src={SdnSvg} alt="" />
-          <Text color="white" fontSize="16px" bold ml="21px">
-            SDN
-          </Text>
-        </Flex>
-      </Flex>
-      <Flex></Flex>
-    </div>
-  );
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, {
-    trigger: 'click',
-    tootipStyle: { background: '#1F252A' },
-    placement: 'top-end',
-    hideArrow: true,
-    tooltipOffset: [20, 10],
-  });
-  // console.log('tooltipVisible', tooltipVisible);
   const [onPresentClaim] = useModal(<ClaimModal />);
   return (
     <div className={className}>
@@ -125,29 +63,8 @@ const Header: FC<{ className?: string; setCollapsed: (collapsed: boolean) => voi
             <TelegramIcon height="28px" />
           </a>
         </div> */}
-        {tooltipVisible && tooltip}
+        <SwitchChain />
 
-        <Flex
-          style={{ cursor: 'pointer' }}
-          ref={targetRef}
-          alignItems="center"
-          borderRadius="12px"
-          border="2px solid #1BD3D5"
-          height="36px"
-          width={isXs || isSm ? '70px' : '100px'}
-          justifyContent="space-between"
-          padding={isXs || isSm ? '0px 10px' : '0px 16px'}
-          mr={isXs || isSm ? '8px' : '16px'}
-        >
-          <Text color="#1BD3D5" fontSize="12px" bold>
-            BSC
-          </Text>
-          <img
-            style={{ width: '10px', height: '6px', transform: tooltipVisible ? '' : 'scaleY(-1)' }}
-            src={SlSvg}
-            alt=""
-          />
-        </Flex>
         {account ? (
           <div className="account">
             <span>{account}</span>
