@@ -145,6 +145,7 @@ const Pools: React.FC = () => {
       latinise(pool.earningToken.symbol.toLowerCase()).includes(lowercaseQuery),
     );
   }
+  chosenPools.push(...(finishedPools || []));
   chosenPools = sortPools(chosenPools).slice(0, numberOfPoolsVisible);
   chosenPoolsLength.current = chosenPools.length;
 
