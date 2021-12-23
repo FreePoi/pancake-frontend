@@ -92,9 +92,9 @@ const fetchFarmsPrices = async (farms: (Farm & PublicFarmData)[]) => {
     let quoteTokenPrice = getFarmQuoteTokenPrice(farm, quoteTokenFarm, bnbPriceBusd);
 
     if (farm.pid === 18) {
-      quoteTokenPrice = new BigNumber(19.68);
-    } else if (farm.pid === 19) {
-      quoteTokenPrice = new BigNumber(0.9281);
+      quoteTokenPrice = new BigNumber(11.64);
+    } else if (farm.pid === 19 || farm.pid === 22) {
+      quoteTokenPrice = new BigNumber(0.551);
     }
 
     const token = { ...farm.token, busdPrice: baseTokenPrice.toJSON() };
