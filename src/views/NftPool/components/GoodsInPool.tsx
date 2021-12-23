@@ -72,41 +72,17 @@ const Pools_: FC<{
     if (!pair?.nftAddress || !pair?.address) {
       return;
     }
-    // setFetching(true);
     fetchAllNfts(pair.address).then((__items) => {
       const _items = __items.filter((v) => v?.id);
       if (_items.length > 0 && _items.length !== items.length) {
-        // if (pair.pid === 0) {
-        //   const KACONFTData = [
-        //     'Green KACO monkey',
-        //     'Kaco Early Bird Mining',
-        //     'ARTEZ',
-        //     'Trick or KACO',
-        //     'COCO',
-        //     'DUDU',
-        //     'KACO Lover',
-        //     'Trick or KACO',
-        //     'Green AMEI',
-        //     'Sliver AMEI',
-        //     'Gold AMEI',
-        //     'GURRO x Pancake',
-        //     'GURRO x Kaco',
-        //     'GURRO x Alpaca',
-        //   ];
-
-        //   setNftData(KACONFTData);
-        // } else {
         const _arr = [...new Set(_items.map((v: any) => v && v.name).filter((v) => v))];
         setNftData(_arr);
-        // }
-
         if (items.length === 0 || _items.length !== items.length) {
           setItems(_items);
           localStorage.setItem(`${NFT_POOLS}-${pair?.address.toLowerCase()}`, JSON.stringify(_items));
         }
       }
     });
-    // .finally(() => setFetching(false));
   }, [pair, items]);
   useEffect(() => {
     if (!pair || !nftsReversed.length || !account) {

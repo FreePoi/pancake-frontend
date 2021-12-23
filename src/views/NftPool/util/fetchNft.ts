@@ -40,7 +40,7 @@ export async function fetchAllNfts(pairAddress: string) {
       uri: items[i].uri,
       image: items[i].image,
       name: items[i].name,
-      attributes: items[i].attributes,
+      attributes: items[i].attributes || items[i]?.metadata?.attributes,
     });
   }
   return nfts;
@@ -62,7 +62,6 @@ export async function fetchAllTokens(account: string) {
   }
 
   rawData.data.nfts1155.push(...rawData.data.nfts721);
-
   return rawData.data.nfts1155;
 }
 
@@ -105,7 +104,7 @@ export async function fetchNftInfo(nftAddress: string, id: number, owner: string
   if ([0, 2].findIndex((pid) => pairConfig.pid === pid) > -1) {
     return await fetchPid0(pairConfig.nftAddress, id, owner, pairConfig.nftAbi, nft);
   } else {
-    return await fetchPid1(pairConfig.nftAddress, id, owner, pairConfig.nftAbi);
+    return await fetchPid1(pairConfig.nftAddress, id, owner, pairConfig.nftAbi, nft);
   }
 }
 
@@ -156,7 +155,7 @@ async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any
 }
 
 // pancake
-async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any): Promise<NFT | undefined> {
+async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any, nft: any): Promise<NFT | undefined> {
   const calls = [
     { address: nftAddress, name: 'balanceOf', params: [owner] },
     { address: nftAddress, name: 'tokenURI', params: [id] },
@@ -177,19 +176,28 @@ async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any
         name: nftName,
         attributes: [],
       };
+    } else if (nftAddress.toLocaleLowerCase() === '0x57A7c5d10c3F87f5617Ac1C60DA60082E44D539e'.toLowerCase()) {
+      const name = 'Dauntless Alpie';
+      const nftName = extractName(name, `${id}`);
+      return {
+        id,
+        balance: balance.toNumber(),
+        uri: u,
+        image: toPancakeUri(nftName, nftAddress),
+        name: name,
+        attributes: nft?.attributes || [],
+      };
     } else {
       const res = await fetch(u);
       const info: NftMeta = await res.json();
       if (!res.ok || !info) {
         return;
       }
-      const nftName = extractName(info.name, `${id}`);
       return {
         id,
         balance: balance.toNumber(),
         uri: u,
-        image: toPancakeUri(nftName, nftAddress),
-        // toUri(info.image),
+        image: toUri(info.image),
         name: info.name,
         attributes: info?.attributes || [],
       };
