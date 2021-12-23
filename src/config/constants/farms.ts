@@ -103,6 +103,26 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.kaco,
   },
   {
+    pid: 14,
+    lpSymbol: 'PHA-DOT LP',
+    lpAddresses: {
+      [ChainId.TESTNET]: '',
+      [ChainId.MAINNET]: '0xa007ac283a4e9c915337d8a6c89fe7c9064e7522',
+    },
+    token: tokens.pha,
+    quoteToken: tokens.dot,
+  },
+  {
+    pid: 11,
+    lpSymbol: 'USDT-BUSD LP',
+    lpAddresses: {
+      [ChainId.TESTNET]: '',
+      [ChainId.MAINNET]: '0xd56414bdb4de22ced7698a5cb8e83741574ffe15',
+    },
+    token: tokens.usdt,
+    quoteToken: tokens.busd,
+  },
+  {
     pid: 3,
     lpSymbol: 'KSM-KAC LP',
     lpAddresses: {
@@ -141,16 +161,6 @@ const farms: FarmConfig[] = [
     },
     token: tokens.wbnb,
     quoteToken: tokens.ksm,
-  },
-  {
-    pid: 14,
-    lpSymbol: 'PHA-DOT LP',
-    lpAddresses: {
-      [ChainId.TESTNET]: '',
-      [ChainId.MAINNET]: '0xa007ac283a4e9c915337d8a6c89fe7c9064e7522',
-    },
-    token: tokens.pha,
-    quoteToken: tokens.dot,
   },
   {
     pid: 13,
@@ -201,16 +211,6 @@ const farms: FarmConfig[] = [
     },
     token: tokens.near,
     quoteToken: tokens.usdt,
-  },
-  {
-    pid: 11,
-    lpSymbol: 'USDT-BUSD LP',
-    lpAddresses: {
-      [ChainId.TESTNET]: '',
-      [ChainId.MAINNET]: '0xd56414bdb4de22ced7698a5cb8e83741574ffe15',
-    },
-    token: tokens.usdt,
-    quoteToken: tokens.busd,
   },
 ];
 
