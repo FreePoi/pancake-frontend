@@ -59,6 +59,16 @@ export const NFT_PAIRS: NftPairConfig[] = [
     nftAbi: KacoNftAbi,
     logo: AlpacaLogo,
   },
+  {
+    address: '0xc799B336f15A42AD506b0a792543907245c81110',
+    nftAddress: '0x57A7c5d10c3F87f5617Ac1C60DA60082E44D539e',
+    name: 'ALPIE NFT',
+    symbol: 'KALPIE',
+    pid: 3,
+    type: NFT_TYPE.NFT721,
+    nftAbi: PancakeNftAbi,
+    logo: AlpacaLogo,
+  },
 ];
 
 export const BLOCK_INTERVAL = 3;
