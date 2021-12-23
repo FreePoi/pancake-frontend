@@ -27,8 +27,9 @@ const Nft: FC<{ className?: string; nft: NftInfoWithLock; now: number; pairPid: 
             {nft.attributes.map((v: any, index: number) => {
               return (
                 <li key={index}>
-                  <h4>{Object.keys(v)}: </h4>
-                  <p>{Object.values(v)}</p>
+                  <h4>
+                    {v.trait_type || Object.keys(v)}: <i>{v.value || Object.values(v)}</i>
+                  </h4>
                 </li>
               );
             })}
@@ -111,6 +112,7 @@ export default styled(Nft)`
       list-style: none;
     }
     h3 {
+      word-break: break-all;
       color: #1bd3d5;
       font-size: 18px;
       font-weight: 800;
@@ -122,6 +124,13 @@ export default styled(Nft)`
       word-break: break-all;
       color: #9da6a6;
       line-height: 20px;
+      i {
+        color: #fff;
+        font-size: 12px;
+        word-break: break-all;
+        line-height: 20px;
+        font-style: normal;
+      }
     }
     p {
       color: #fff;

@@ -173,22 +173,23 @@ async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any
         id,
         balance: balance.toNumber(),
         uri: u,
-        image: toPancakeUri(nftName),
+        image: toPancakeUri(nftName, nftAddress),
         name: nftName,
         attributes: [],
       };
     } else {
       const res = await fetch(u);
       const info: NftMeta = await res.json();
-
       if (!res.ok || !info) {
         return;
       }
+      const nftName = extractName(info.name, `${id}`);
       return {
         id,
         balance: balance.toNumber(),
         uri: u,
-        image: toUri(info.image),
+        image: toPancakeUri(nftName, nftAddress),
+        // toUri(info.image),
         name: info.name,
         attributes: info?.attributes || [],
       };
@@ -224,7 +225,10 @@ function extractPancakeName(uri: string) {
   }
   return name;
 }
-
-function toPancakeUri(name: string) {
-  return 'https://static-nft.pancakeswap.com/mainnet/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07/' + name + '-1000.png';
+function extractName(name: string, id: string) {
+  return name.trim().replaceAll(' ', '-').toLowerCase() + '-' + id;
+}
+function toPancakeUri(name: string, contractAddress: string) {
+  return `https://static-nft.pancakeswap.com/mainnet/${contractAddress}/${name}-1000.png`;
+  // return 'https://static-nft.pancakeswap.com/mainnet/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07/' + name + '-1000.png';
 }

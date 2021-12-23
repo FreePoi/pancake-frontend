@@ -1,8 +1,10 @@
 import PancakeNftAbi from '../abi/pancake-nft.json';
 import KacoNftAbi from '../abi/kaco-nft.json';
-import KacoLogo from '../../components/svg/kaco-nft.png';
-import PancakeLogo from '../../components/svg/pancake-nft.png';
-import AlpacaLogo from '../../components/svg/alpaca-nft.png';
+import KacoLogo from '../../components/svg/KKac.svg';
+import PancakeLogo from '../../components/svg/KCake.svg';
+import AlpacaLogo from '../../components/svg/KAlpaca.svg';
+import AlpiesLogo from '../../components/svg/KAlpies.svg';
+
 import { ChainId } from './tokens';
 export enum NFT_TYPE {
   NFT721 = 721,
@@ -67,7 +69,7 @@ export const NFT_PAIRS: NftPairConfig[] = [
     pid: 3,
     type: NFT_TYPE.NFT721,
     nftAbi: PancakeNftAbi,
-    logo: AlpacaLogo,
+    logo: AlpiesLogo,
   },
 ];
 
