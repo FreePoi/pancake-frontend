@@ -73,6 +73,16 @@ const farms: FarmConfig[] = [
     quoteToken: tokens.alpaca,
   },
   {
+    pid: 22,
+    lpSymbol: 'KALPIE-ALPACA LP',
+    lpAddresses: {
+      [ChainId.TESTNET]: '',
+      [ChainId.MAINNET]: '0x2927ed3fa9947195c1a2233e8d2ef25c0c21bfc5',
+    },
+    token: tokens.kalpie,
+    quoteToken: tokens.alpaca,
+  },
+  {
     pid: 20,
     lpSymbol: 'ALPACA-KAC LP',
     lpAddresses: {

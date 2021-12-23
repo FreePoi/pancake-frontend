@@ -1902,6 +1902,15 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://www.kaco.finance/',
   },
+  kalpie: {
+    symbol: 'KALPIE',
+    address: {
+      [ChainId.MAINNET]: '0xc799B336f15A42AD506b0a792543907245c81110',
+      [ChainId.TESTNET]: '',
+    },
+    decimals: 18,
+    projectLink: 'https://www.kaco.finance/',
+  },
 };
 
 export const WBNB = new Token(chainId, tokens.wbnb.address[chainId], 18, 'WBNB', 'Wrapped BNB');
