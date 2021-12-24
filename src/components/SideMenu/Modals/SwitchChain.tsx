@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Flex, useTooltip } from '@kaco/uikit';
+import { Text, Flex, useTooltip, useMatchBreakpoints } from '@kaco/uikit';
 import BscSvg from '../imgs/icon_bsc.svg';
 import SelectedSvg from '../imgs/icon_select.svg';
 import SdnSvg from '../imgs/icon_sd.png';
@@ -7,6 +7,7 @@ import SlSvg from '../imgs/icon_sl.svg';
 
 const chainKey = 'BSC';
 const SwitchChain = () => {
+  const { isXs, isSm } = useMatchBreakpoints();
   const { targetRef, tooltip, tooltipVisible } = useTooltip(SwitchChainTooltip, {
     trigger: 'click',
     tootipStyle: { background: '#1F252A', padding: '20px 30px' },
@@ -24,32 +25,38 @@ const SwitchChain = () => {
         borderRadius="12px"
         border={`1.4px solid ${tooltipVisible ? '#1BD3D5' : '#238485'}`}
         height="36px"
-        width="100px"
+        width={isXs || isSm ? '40px' : '100px'}
         justifyContent="space-between"
-        padding="0px 16px"
-        mr="16px"
+        padding={isXs || isSm ? '0px 10px' : '0px 16px'}
+        mr={isXs || isSm ? '8px' : '16px'}
       >
         {/*  @ts-ignore */}
         {chainKey === 'SDN' ? (
           <>
             <img style={{ width: '16px' }} src={SdnSvg} alt="" />
-            <Text color="#1BD3D5" fontSize="14px" bold>
-              SDN
-            </Text>
+            {isXs || isSm ? null : (
+              <Text color="#1BD3D5" fontSize="14px" bold>
+                SDN
+              </Text>
+            )}
           </>
         ) : (
           <>
             <img style={{ width: '16px' }} src={BscSvg} alt="" />
-            <Text color="#1BD3D5" fontSize="14px" bold>
-              BSC
-            </Text>
+            {isXs || isSm ? null : (
+              <Text color="#1BD3D5" fontSize="14px" bold>
+                BSC
+              </Text>
+            )}
           </>
         )}
-        <img
-          style={{ width: '8px', height: '4px', transform: tooltipVisible ? '' : 'scaleY(-1)' }}
-          src={SlSvg}
-          alt=""
-        />
+        {isXs || isSm ? null : (
+          <img
+            style={{ width: '8px', height: '4px', transform: tooltipVisible ? '' : 'scaleY(-1)' }}
+            src={SlSvg}
+            alt=""
+          />
+        )}
       </Flex>
     </>
   );
