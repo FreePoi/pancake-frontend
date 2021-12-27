@@ -114,12 +114,10 @@ export const useNftWithLockInfo = (pair?: { type: NFT_TYPE; address: string }) =
 export const useNfts = (pair?: { type: NFT_TYPE; address: string }, _nfts?: NftLockInfo[]): NftLockInfo[] => {
   const contract = useContract(pair?.address, pair?.type === NFT_TYPE.NFT1155 ? NFT100Pair1155 : NFT100Pair721);
   const [locksInfo, setLocksInfo] = useState<NftLockInfo[]>(_nfts);
-
   useEffect(() => {
     if (!contract || !pair) {
       return;
     }
-
     if (pair?.type === NFT_TYPE.NFT721) {
       contract.getLockInfos().then(([ids, locksInfo]: [BigNumber[], [number, string][]]) => {
         const locks: NftLockInfo[] = ids.map((id, index) => ({
@@ -130,7 +128,7 @@ export const useNfts = (pair?: { type: NFT_TYPE; address: string }, _nfts?: NftL
 
         setLocksInfo((old) => (_.isEqual(old, locks) ? old : locks));
       }, console.log);
-    } else {
+    } else if (pair.type === NFT_TYPE.NFT1155) {
       contract.getLockInfos().then((lockInfos: [BigNumber, string, number, BigNumber][]) => {
         const locks: NftLockInfo[] = lockInfos.map((curr) => ({
           id: curr[0].toNumber(),

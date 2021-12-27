@@ -75,7 +75,7 @@ const Pools_: FC<{
     fetchAllNfts(pair.address).then((__items) => {
       const _items = __items.filter((v) => v?.id);
       if (_items.length > 0 && _items.length !== items.length) {
-        const _arr = [...new Set(_items.map((v: any) => v && v.name).filter((v) => v))];
+        const _arr = [...new Set(_items.map((v: any) => v && v.id).filter((v) => v))];
         setNftData(_arr);
         if (items.length === 0 || _items.length !== items.length) {
           setItems(_items);
@@ -308,7 +308,7 @@ export const GoodsInPool = styled(Pools_)`
 `;
 
 async function fetchMore(
-  nfts: NftLockInfo[],
+  __nfts: NftLockInfo[],
   nftData: NftItemConfig[],
   start: number,
   nftAddress: string,
@@ -316,6 +316,16 @@ async function fetchMore(
   searchId: string,
   searchName: string,
 ) {
+  const nfts = [];
+  if (account) {
+    for (let i = 0; i < __nfts.length; i++) {
+      if (__nfts[i].unlocker === account) {
+        nfts.unshift(__nfts[i]);
+      } else {
+        nfts.push(__nfts[i]);
+      }
+    }
+  }
   let ids = nftData;
   if (searchId) {
     ids = nftData.filter((v) => `${v.name}#${v.id}`.toLowerCase().indexOf(`${searchId}`.toLowerCase()) > -1);
