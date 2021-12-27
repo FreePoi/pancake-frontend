@@ -71,6 +71,16 @@ export const NFT_PAIRS: NftPairConfig[] = [
     nftAbi: PancakeNftAbi,
     logo: AlpiesLogo,
   },
+  {
+    address: '0xA0263dB7d3858B7bc17ddD4C3000F9E10CAfdf2C',
+    nftAddress: '0x6798f4E7dA4Fc196678d75e289A9d4801C3C849E',
+    name: 'MOONPOT NFT',
+    symbol: 'KPOT',
+    pid: 4,
+    type: NFT_TYPE.NFT1155,
+    nftAbi: KacoNftAbi,
+    logo: AlpiesLogo,
+  },
 ];
 
 export const BLOCK_INTERVAL = 3;
