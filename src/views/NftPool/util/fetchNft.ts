@@ -109,7 +109,6 @@ export async function fetchNftInfo(nftAddress: string, id: number, owner: string
   if ([0, 2, 4].findIndex((pid) => pairConfig.pid === pid) > -1) {
     return await fetchPid0(pairConfig.nftAddress, id, owner, pairConfig.nftAbi, nft);
   } else {
-    console.log(pairConfig.nftAddress);
     return await fetchPid1(pairConfig.nftAddress, id, owner, pairConfig.nftAbi, nft);
   }
 }
