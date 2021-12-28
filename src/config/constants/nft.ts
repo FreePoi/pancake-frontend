@@ -1,4 +1,5 @@
 import PancakeNftAbi from '../abi/pancake-nft.json';
+import AlpiesNftAbi from '../abi/alpies-nft.json';
 import KacoNftAbi from '../abi/kaco-nft.json';
 import KacoLogo from '../../components/svg/KKac.svg';
 import PancakeLogo from '../../components/svg/KCake.svg';
@@ -78,7 +79,7 @@ export const NFT_PAIRS: NftPairConfig[] = [
     symbol: 'KPOT',
     pid: 4,
     type: NFT_TYPE.NFT1155,
-    nftAbi: KacoNftAbi,
+    nftAbi: AlpiesNftAbi,
     logo: AlpiesLogo,
   },
 ];

@@ -1,22 +1,20 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { Button, Text, useModal } from '@kaco/uikit';
-import MintModal from './MintModal';
+import { Button, Text } from '@kaco/uikit';
+// import MintModal from './MintModal';
 import { NFT } from 'views/NftPool/components/GoodsInPool';
 import { NftPair } from 'views/NftPools/hooks/useNftPools';
 
 const Nft: FC<{ className?: string; nft: NFT; pair: NftPair }> = ({ className, nft, pair }) => {
-  const [onMint] = useModal(<MintModal nft={nft} pair={pair} />);
+  // const [onMint] = useModal(<MintModal nft={nft} pair={pair} />);
 
   return (
     <div className={className}>
-      <div className="show">
-        <img src={nft.image} alt="" />
-      </div>
+      <div className="show">{nft?.image ? <img src={nft.image} alt="" /> : null}</div>
       <Text className="text" style={{ flex: '1' }} bold mb={{ xs: '16px', md: '24px' }} mt={{ xs: '16px', md: '24px' }}>
-        {nft.name}#{nft.id}
+        {nft?.name}#{nft?.id}
       </Text>
-      <Button height="40px" variant={'secondary'} onClick={onMint}>
+      <Button height="40px" variant={'secondary'}>
         Mint
       </Button>
     </div>

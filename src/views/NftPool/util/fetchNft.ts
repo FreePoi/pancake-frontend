@@ -106,9 +106,10 @@ export async function filterNft(items: BounceItem[], nftAddress: string) {
 export async function fetchNftInfo(nftAddress: string, id: number, owner: string, nft?: any): Promise<NFT | undefined> {
   const pairConfig = NFT_PAIRS.find((pair) => pair.nftAddress.toLowerCase() === nftAddress.toLowerCase());
 
-  if ([0, 2].findIndex((pid) => pairConfig.pid === pid) > -1) {
+  if ([0, 2, 4].findIndex((pid) => pairConfig.pid === pid) > -1) {
     return await fetchPid0(pairConfig.nftAddress, id, owner, pairConfig.nftAbi, nft);
   } else {
+    console.log(pairConfig.nftAddress);
     return await fetchPid1(pairConfig.nftAddress, id, owner, pairConfig.nftAbi, nft);
   }
 }
@@ -161,11 +162,16 @@ async function fetchPid0(nftAddress: string, id: number, owner: string, abi: any
 
 // pancake
 async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any, nft: any): Promise<NFT | undefined> {
-  const calls = [
-    { address: nftAddress, name: 'balanceOf', params: [owner] },
+  let calls = [
+    { address: nftAddress, name: 'balanceOf', params: [owner] as any },
     { address: nftAddress, name: 'tokenURI', params: [id] },
   ];
-
+  if (nftAddress.toLocaleLowerCase() === '0x6798f4E7dA4Fc196678d75e289A9d4801C3C849E'.toLowerCase()) {
+    calls = [
+      { address: nftAddress, name: 'balanceOf', params: [owner, id] },
+      { address: nftAddress, name: 'uri', params: [id] },
+    ];
+  }
   const [[balance], [uri]] = await multicall(abi, calls);
 
   const u = toUri(uri);

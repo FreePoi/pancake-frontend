@@ -22,8 +22,8 @@ const NftsGroupByPool_: FC<{
         {title}
       </Text>
       <Grid gridGap={{ xs: '4px', md: '10px' }} className="nfts">
-        {nfts.map((nft) => (
-          <Nft nft={nft} key={nft.id} pair={pair} />
+        {nfts.map((nft, index) => (
+          <Nft nft={nft} key={index} pair={pair} />
         ))}
       </Grid>
     </div>
@@ -80,7 +80,6 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
           .map(async (pair) => ({ ...pair, nfts: await filterNft(items, pair.nftAddress) }))
           .filter(async (pair) => (await pair).nfts.length);
         const results = await Promise.all(poolsPromises);
-        console.log({ results });
         setPools(results);
         localStorage.setItem(USER_NFTS, JSON.stringify(results));
       }, console.error)
