@@ -96,7 +96,7 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
     <Page className={className}>
       {!pools && fetching ? (
         <PageLoader />
-      ) : !pools.length ? (
+      ) : !pools && !pools.length ? (
         <NoBalance />
       ) : (
         pools.map((pair, index) => (
