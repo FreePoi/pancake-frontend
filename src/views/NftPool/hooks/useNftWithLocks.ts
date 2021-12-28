@@ -177,9 +177,9 @@ export const useNfts = (
         const queue = async (arr) => {
           const res = [];
           for (const key of arr) {
-            console.log(key);
+            // console.log(key);
             const data = await contract.getLockInfos(key);
-            console.log(data);
+            // console.log(data);
             res.push(data);
           }
           return await res;
