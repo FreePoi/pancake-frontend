@@ -80,6 +80,7 @@ const Mint: FC<{ className?: string }> = ({ className }) => {
           .map(async (pair) => ({ ...pair, nfts: await filterNft(items, pair.nftAddress) }))
           .filter(async (pair) => (await pair).nfts.length);
         const results = await Promise.all(poolsPromises);
+        console.log({ results });
         setPools(results);
         localStorage.setItem(USER_NFTS, JSON.stringify(results));
       }, console.error)
