@@ -6,6 +6,7 @@ import { NftPairConfig, NftItemConfig } from 'config/constants/nft';
 import { fetchAllNfts } from '../util/fetchNft';
 import PageLoader from 'components/Loader/PageLoader';
 // import { useTranslation } from 'contexts/Localization';
+import { NftPair } from 'views/NftPools/hooks/useNftPools';
 // NftInfoWithLock, useNftWithLockInfo,
 import Search from 'components/Search';
 import { NftInfoWithLock, NftLockInfo, useNfts } from '../hooks/useNftWithLocks';
@@ -37,7 +38,8 @@ const defaultAddress = '0x0000000000000000000000000000000000000001';
 const Pools_: FC<{
   className?: string;
   pair: NftPairConfig | undefined;
-}> = ({ className, pair }) => {
+  pairDetail: NftPair | undefined;
+}> = ({ className, pair, pairDetail }) => {
   let _pairs: NFT[] = [];
 
   let _nfts: NftLockInfo[] = [];
@@ -56,7 +58,7 @@ const Pools_: FC<{
   const [NftData, setNftData] = useState([...new Set(_pairs.map((v: any) => v && v.name))].filter((v) => v));
   const { account: _account } = useWeb3React();
   const [nfts, setNfts] = useState<NftInfoWithLock[]>();
-  const nfts_ = useNfts(pair, _nfts);
+  const nfts_ = useNfts(pairDetail, pair, _nfts);
   const nftsReversed = useMemo(() => [...nfts_].reverse(), [nfts_]);
   const count = useRef(0);
 

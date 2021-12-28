@@ -137,6 +137,7 @@ const BurnModal: React.FC<Props> = ({ onDismiss, pair }) => {
   const [nfts, setNfts] = useState<NFT[]>(_pairs);
   const [fetching, setFetching] = useState(false);
   const contract = useContract(pair?.pairAddress, Nft100Abi);
+
   const locksInfo = useNftWithLockInfo(pair && { type: pair.type, address: pair.pairAddress });
   const { t } = useTranslation();
 

@@ -2,11 +2,9 @@ import React, { FC } from 'react';
 import { Flex, Text } from '@kaco/uikit';
 import styled from 'styled-components';
 import HeaderBgSvg from '../img/header-bg.svg';
-// import LogoSvg from '../../NftPools/svg/demo.svg';
-import { useNftPair } from 'views/NftPools/hooks/useNftPools';
 import { formatFloat } from '../util/format';
 import { NFT_PAIRS } from 'config/constants/nft';
-
+import { NftPair } from 'views/NftPools/hooks/useNftPools';
 export interface Pool {
   poolName: string;
   fragmentName: string;
@@ -16,12 +14,13 @@ export interface Pool {
   changeDay7: number;
 }
 
-const PoolHeader_: FC<{ className?: string; pairIndex: number; floorPrice: number }> = ({
+const PoolHeader_: FC<{ className?: string; pairIndex: number; floorPrice: number; pair: NftPair | undefined }> = ({
   className,
   pairIndex,
   floorPrice,
+  pair,
 }) => {
-  const pair = useNftPair(pairIndex);
+  // const pair = useNftPair(pairIndex);
 
   return (
     <div className={className}>
