@@ -33,36 +33,41 @@ export async function fetchNfts(nftAddress: string, pairAddress: string) {
 export async function fetchAllNfts(pairAddress: string) {
   const items: any = await fetchAllTokens(pairAddress);
   const nfts: NFT[] = [];
-  for (let i = 0; i < items.length; i++) {
-    nfts.push({
-      id: +items[i].token_id,
-      balance: 0,
-      uri: items[i].uri,
-      image: items[i].image,
-      name: items[i].name,
-      attributes: items[i].attributes || items[i]?.metadata?.attributes,
-    });
+  if (items && items.length) {
+    for (let i = 0; i < items.length; i++) {
+      nfts.push({
+        id: +items[i].token_id,
+        balance: 0,
+        uri: items[i].uri,
+        image: items[i].image,
+        name: items[i].name,
+        attributes: items[i].attributes || items[i]?.metadata?.attributes,
+      });
+    }
   }
   return nfts;
 }
 
 export async function fetchAllTokens(account: string) {
-  const apiUrl = `https://nftview.bounce.finance/v2/bsc/nft?user_address=${account}`;
+  try {
+    const apiUrl = `https://nftview.bounce.finance/v2/bsc/nft?user_address=${account}`;
+    const data = await fetch(apiUrl);
 
-  const data = await fetch(apiUrl);
+    const rawData: {
+      code: number;
+      data: BounceData;
+      msg: string;
+    } = await data.json();
 
-  const rawData: {
-    code: number;
-    data: BounceData;
-    msg: string;
-  } = await data.json();
+    if (!rawData.data || rawData.msg !== 'ok') {
+      return [];
+    }
 
-  if (!rawData.data || rawData.msg !== 'ok') {
-    return;
+    rawData.data.nfts1155.push(...rawData.data.nfts721);
+    return rawData.data.nfts1155;
+  } catch (e: any) {
+    return [];
   }
-
-  rawData.data.nfts1155.push(...rawData.data.nfts721);
-  return rawData.data.nfts1155;
 }
 
 export async function filterNft(items: BounceItem[], nftAddress: string) {
