@@ -70,7 +70,7 @@ export const NFT_PAIRS: NftPairConfig[] = [
     type: NFT_TYPE.NFT721,
     nftAbi: PancakeNftAbi,
     logo: AlpiesLogo,
-  }
+  },
 ];
 
 export const BLOCK_INTERVAL = 3;
