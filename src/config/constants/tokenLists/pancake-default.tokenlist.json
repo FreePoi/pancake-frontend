@@ -152,6 +152,14 @@
       "chainId": 56,
       "decimals": 18,
       "logoURI": "/images/tokens/0xc799B336f15A42AD506b0a792543907245c81110.svg"
+    },
+    {
+      "name": "Moonpot NFT",
+      "symbol": "KPOT",
+      "address": "0xA0263dB7d3858B7bc17ddD4C3000F9E10CAfdf2C",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "/images/tokens/0xA0263dB7d3858B7bc17ddD4C3000F9E10CAfdf2C.svg"
     }
   ]
 }
