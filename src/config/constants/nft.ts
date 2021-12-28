@@ -1,11 +1,9 @@
 import PancakeNftAbi from '../abi/pancake-nft.json';
-import AlpiesNftAbi from '../abi/alpies-nft.json';
 import KacoNftAbi from '../abi/kaco-nft.json';
 import KacoLogo from '../../components/svg/KKac.svg';
 import PancakeLogo from '../../components/svg/KCake.svg';
 import AlpacaLogo from '../../components/svg/KAlpaca.svg';
 import AlpiesLogo from '../../components/svg/KAlpies.svg';
-import PotLogo from '../../components/svg/KPot.svg';
 
 import { ChainId } from './tokens';
 export enum NFT_TYPE {
@@ -72,17 +70,7 @@ export const NFT_PAIRS: NftPairConfig[] = [
     type: NFT_TYPE.NFT721,
     nftAbi: PancakeNftAbi,
     logo: AlpiesLogo,
-  },
-  {
-    address: '0xA0263dB7d3858B7bc17ddD4C3000F9E10CAfdf2C',
-    nftAddress: '0x6798f4E7dA4Fc196678d75e289A9d4801C3C849E',
-    name: 'MOONPOT NFT',
-    symbol: 'KPOT',
-    pid: 4,
-    type: NFT_TYPE.NFT1155,
-    nftAbi: AlpiesNftAbi,
-    logo: PotLogo,
-  },
+  }
 ];
 
 export const BLOCK_INTERVAL = 3;
