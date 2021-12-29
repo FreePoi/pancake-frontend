@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { ButtonMenu, ButtonMenuItem } from '@kaco/uikit';
-import { useTranslation } from 'contexts/Localization';
 
 const StyledNav = styled.nav`
   margin-bottom: 40px;
@@ -23,7 +22,6 @@ const getActiveIndex = (pathname: string): number => {
 
 const Nav = () => {
   const location = useLocation();
-  const { t } = useTranslation();
   const activeIndex = getActiveIndex(location.pathname);
 
   return (
@@ -37,7 +35,7 @@ const Nav = () => {
           to="/nft/wallet/mint"
           as={Link}
         >
-          {t('MINT')}
+          NFT
         </ButtonMenuItem>
         <ButtonMenuItem
           style={activeIndex === 1 ? { color: '#1BD3D5', background: '#1F373B' } : { color: 'white' }}
@@ -47,7 +45,7 @@ const Nav = () => {
           to="/nft/wallet/burn"
           as={Link}
         >
-          {t('BURN')}
+          KCOIN
         </ButtonMenuItem>
       </ButtonMenu>
     </StyledNav>

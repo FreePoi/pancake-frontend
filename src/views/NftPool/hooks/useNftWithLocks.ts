@@ -197,7 +197,6 @@ export const useNfts = (
               }));
               locks.push(..._item);
             }
-            console.log(locks.map((v) => v.id));
             setLocksInfo((old) => (_.isEqual(old, locks) ? old : locks));
           })
           .catch((e) => console.log(e));
