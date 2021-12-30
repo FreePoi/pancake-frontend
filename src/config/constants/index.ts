@@ -40,7 +40,8 @@ const Pancake = new Token(
 export const ADDITIONAL_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
   [ChainId.MAINNET]: {
     // '0xBd6D17123Ec731adFf1cE2F9f7Af1aBC26E5EBfd': [ALPACA],
-    [Pancake.address]: [Pancake],
+    // KCake
+    '0xa70c4580F1e00C1d7A9D0280832c0D513a6D530F': [Pancake],
   },
 };
 
