@@ -42,6 +42,9 @@ const getFarmBaseTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: B
   if (
     quoteTokenFarm.quoteToken.symbol === 'BUSD' ||
     quoteTokenFarm.quoteToken.symbol === 'USDT' ||
+    quoteTokenFarm.quoteToken.symbol === 'KAC' ||
+    quoteTokenFarm.quoteToken.symbol === 'ALPACA' ||
+    quoteTokenFarm.quoteToken.symbol === 'CAKE' ||
     quoteTokenFarm.quoteToken.symbol === 'USDC'
   ) {
     const quoteTokenInBusd = quoteTokenFarm.tokenPriceVsQuote;
@@ -49,7 +52,6 @@ const getFarmBaseTokenPrice = (farm: Farm, quoteTokenFarm: Farm, bnbPriceBusd: B
       ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd)
       : BIG_ZERO;
   }
-
   // Catch in case token does not have immediate or once-removed BUSD/wBNB quoteToken
   return BIG_ZERO;
 };

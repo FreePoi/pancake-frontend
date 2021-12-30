@@ -178,9 +178,6 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
               <img src={nft.image} alt="" style={{ width: '69px', height: '69px' }} />
               <div>
                 <Text bold fontSize="16px" color="white" ml="30px">
-                  Your sale method for
-                </Text>
-                <Text bold fontSize="16px" color="white" ml="30px">
                   {nft.name}#{nft.id}
                 </Text>
               </div>
