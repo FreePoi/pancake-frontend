@@ -2030,6 +2030,8 @@ export const ETH = new Token(
   'ETH',
   'Binance-Peg Ethereum Token',
 );
+
+export const ALPACA = new Token(ChainId.MAINNET, '0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F', 18, 'ALPACA', 'Alpaca');
 export const USDC = new Token(
   ChainId.MAINNET as any,
   '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',

@@ -1,5 +1,5 @@
 import { JSBI, Percent, Token, WETH } from '@kaco/sdk';
-import { BUSD, DAI, USDT, BTCB, Kaco, WBNB, UST, ETH, USDC, DOT, KSM, ChainId } from './tokens';
+import { BUSD, DAI, USDT, BTCB, Kaco, WBNB, ALPACA, ETH, DOT, KSM, ChainId } from './tokens';
 
 export const ROUTER_ADDRESS = '0xB44A8AEb4805a5404a8d20A1294a61C95Ae6F256';
 
@@ -17,10 +17,11 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     KSM[ChainId.MAINNET],
     BUSD[ChainId.MAINNET],
     USDT,
-    BTCB[ChainId.MAINNET],
-    UST,
+    ALPACA,
+    // BTCB[ChainId.MAINNET],
+    // UST,
     ETH,
-    USDC,
+    // USDC,
   ],
   [ChainId.TESTNET]: [WETH[ChainId.TESTNET], Kaco[ChainId.TESTNET], BUSD[ChainId.TESTNET]],
 };
@@ -29,8 +30,18 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
  * Addittional bases for specific tokens
  * @example { [WBTC.address]: [renBTC], [renBTC.address]: [WBTC] }
  */
+const Pancake = new Token(
+  ChainId.MAINNET,
+  '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+  18,
+  'Cake',
+  'PancakeSwap Token',
+);
 export const ADDITIONAL_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
-  [ChainId.MAINNET]: {},
+  [ChainId.MAINNET]: {
+    // '0xBd6D17123Ec731adFf1cE2F9f7Af1aBC26E5EBfd': [ALPACA],
+    [Pancake.address]: [Pancake],
+  },
 };
 
 /**
