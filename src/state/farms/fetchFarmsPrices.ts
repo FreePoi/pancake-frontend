@@ -91,7 +91,14 @@ const fetchFarmsPrices = async (farms: (Farm & PublicFarmData)[]) => {
   const farmsWithPrices = farms.map((farm) => {
     const quoteTokenFarm = getFarmFromTokenSymbol(farms, farm.quoteToken.symbol);
     const baseTokenPrice = getFarmBaseTokenPrice(farm, quoteTokenFarm, bnbPriceBusd);
-    const quoteTokenPrice = getFarmQuoteTokenPrice(farm, quoteTokenFarm, bnbPriceBusd);
+    let quoteTokenPrice = getFarmQuoteTokenPrice(farm, quoteTokenFarm, bnbPriceBusd);
+
+    if (farm.pid === 18) {
+      quoteTokenPrice = new BigNumber(11.89);
+    } else if (farm.pid === 19 || farm.pid === 22) {
+      quoteTokenPrice = new BigNumber(0.6219);
+    }
+
 
     const token = { ...farm.token, busdPrice: baseTokenPrice.toJSON() };
     const quoteToken = { ...farm.quoteToken, busdPrice: quoteTokenPrice.toJSON() };
