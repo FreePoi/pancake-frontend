@@ -37,7 +37,7 @@ const Nft: FC<{ className?: string; nft: NftInfoWithLock; now: number; pairPid: 
         </div>
       ) : null}
       <div className="show">
-        {nft.image.indexOf('.png') > -1 ? (
+        {nft.image.indexOf('.png') > -1 || nft.image.indexOf('.jpg') > -1 ? (
           <img src={nft.image} alt="" />
         ) : (
           <video width="100%" height="100%" autoPlay={true} loop={true} playsInline={true}>
