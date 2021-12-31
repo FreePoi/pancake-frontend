@@ -37,7 +37,14 @@ const Nft: FC<{ className?: string; nft: NftInfoWithLock; now: number; pairPid: 
         </div>
       ) : null}
       <div className="show">
-        <img src={nft.image} alt="" />
+        {nft.image.indexOf('.png') > -1 ? (
+          <img src={nft.image} alt="" />
+        ) : (
+          <video width="100%" height="100%" autoPlay={true} loop={true} playsInline={true}>
+            <source src={`${nft.image}.webm`} type="video/webm" />
+            <source src={`${nft.image}.mp4`} type="video/mp4" />
+          </video>
+        )}
         {nft.lastBlock > now && (
           <div className="locked">
             <LockTime lastBlock={nft.lastBlock} now={now} />

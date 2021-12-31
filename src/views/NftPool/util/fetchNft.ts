@@ -178,14 +178,32 @@ async function fetchPid1(nftAddress: string, id: number, owner: string, abi: any
   try {
     if (nftAddress.toLocaleLowerCase() === '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07'.toLowerCase()) {
       const nftName = extractPancakeName(uri);
-      return {
-        id,
-        balance: balance.toNumber(),
-        uri: u,
-        image: toPancakeUri(nftName, nftAddress),
-        name: nftName,
-        attributes: [],
-      };
+      if (nftName.length > 20) {
+        const res = await fetch(u);
+        const info: NftMeta = await res.json();
+        if (!res.ok || !info) {
+          return;
+        }
+        const _nftName = extractPancakeName(info.name);
+        return {
+          id,
+          balance: balance.toNumber(),
+          uri: u,
+          // image: toUri(info.image),
+          image: toPancakeUri(nftName, nftAddress, _nftName),
+          name: info.name,
+          attributes: [],
+        };
+      } else {
+        return {
+          id,
+          balance: balance.toNumber(),
+          uri: u,
+          image: toPancakeUri(nftName, nftAddress),
+          name: nftName,
+          attributes: [],
+        };
+      }
     } else if (nftAddress.toLocaleLowerCase() === '0x57A7c5d10c3F87f5617Ac1C60DA60082E44D539e'.toLowerCase()) {
       const name = 'Dauntless Alpie';
       const nftName = extractName(name, `${id}`);
@@ -246,7 +264,13 @@ function extractPancakeName(uri: string) {
 function extractName(name: string, id: string) {
   return name.trim().replaceAll(' ', '-').toLowerCase() + '-' + id;
 }
-function toPancakeUri(name: string, contractAddress: string) {
+function toPancakeUri(name: string, contractAddress: string, basename?: string) {
+  if (name.length > 20) {
+    // pancake-christmas
+    return `https://static-nft.pancakeswap.com/mainnet/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07/${basename
+      .toLocaleLowerCase()
+      .replace(' ', '-')}-2021`;
+  }
   return `https://static-nft.pancakeswap.com/mainnet/${contractAddress}/${name}-1000.png`;
   // return 'https://static-nft.pancakeswap.com/mainnet/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07/' + name + '-1000.png';
 }
