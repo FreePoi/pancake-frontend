@@ -50,8 +50,7 @@ const Card_: FC<{
       <div className="show">
         {nft.image.indexOf('.mp4') > -1 ? (
           <video width="100%" height="100%" autoPlay={true} loop={true} playsInline={true}>
-            <source src={`${nft.image}.webm`} type="video/webm" />
-            <source src={`${nft.image}.mp4`} type="video/mp4" />
+            <source src={`${nft.image}`} type="video/mp4" />
           </video>
         ) : (
           <img src={nft.image} alt="" />
