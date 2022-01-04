@@ -23,7 +23,7 @@ const Nft: FC<{ className?: string; nft: NFT; pair: NftPair }> = ({ className, n
         {nft?.name}#{nft?.id}
       </Text>
       <Button height="40px" variant={'secondary'} onClick={onMint}>
-        Mint
+        Sale
       </Button>
     </div>
   );
