@@ -16,7 +16,7 @@ const Nft: FC<{ className?: string; nft: NFT; pair: NftPair }> = ({ className, n
             <source src={`${nft.image}`} type="video/mp4" />
           </video>
         ) : (
-          <img src={nft.image} alt="" />
+          <img src={nft.image} alt={`${nft.name}#${nft.id}`} />
         )}
       </div>
       <Text className="text" style={{ flex: '1' }} bold mb={{ xs: '16px', md: '24px' }} mt={{ xs: '16px', md: '24px' }}>
