@@ -118,12 +118,27 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
               alignItems: 'center',
             }}
           >
-            {!nft || !nft?.image ? null : nft.image.indexOf('.png') > -1 || nft.image.indexOf('.jpg') > -1 ? (
-              <img src={nft.image} alt={`${nft.name}#${nft.id}`} style={{ width: '69px', height: '69px' }} />
-            ) : (
-              <video width="69px" height="69px" autoPlay={true} loop={true} playsInline={true}>
+            {nft.image.indexOf('.mp4') > -1 ? (
+              <video
+                style={{
+                  maxWidth: '100px',
+                }}
+                width="100%"
+                height="100%"
+                autoPlay={true}
+                loop={true}
+                playsInline={true}
+              >
                 <source src={`${nft.image}`} type="video/mp4" />
               </video>
+            ) : (
+              <img
+                src={nft.image}
+                style={{
+                  maxWidth: '100px',
+                }}
+                alt={`${nft.name}#${nft.id}`}
+              />
             )}
             <Text bold fontSize="16px" color="white" ml="30px">
               {nft.name}#{nft.id}
@@ -185,6 +200,9 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
                 <video
                   width="100%"
                   height="100%"
+                  style={{
+                    maxWidth: '100px',
+                  }}
                   autoPlay={true}
                   loop={true}
                   playsInline={true}
@@ -193,13 +211,17 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
                   <source src={`${nft.image}`} type="video/mp4" />
                 </video>
               ) : (
-                <img src={nft.image} alt={`${nft.name}#${nft.id}`} />
+                <img
+                  style={{
+                    maxWidth: '100px',
+                  }}
+                  src={nft.image}
+                  alt={`${nft.name}#${nft.id}`}
+                />
               )}
-              {/* <div>
-                <Text bold fontSize="16px" color="white" ml="30px">
-                  {nft.name}#{nft.id}
-                </Text>
-              </div> */}
+              <Text bold fontSize="16px" color="white" ml="30px">
+                {nft.name}#{nft.id}
+              </Text>
             </Flex>
             <Text color="#9DA6A6" fontSize="12px" mb="12px" mt="26px" pl="10px">
               Choose lock time
@@ -262,7 +284,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
               </Text>
             </Flex>
           </Flex>
-          <Text textAlign="center" color="#1BD3D5" fontSize="12px" bold px="36px">
+          <Text textAlign="center" color="#9DA6A6" fontSize="12px" bold px="36px">
             Fee: {FEE}% + {FEE_DAYLIY}% * LockDays
             {/* The default is {FEE}% handling fee, add 1 day to increase {FEE_DAYLIY}% handling fee */}
           </Text>
