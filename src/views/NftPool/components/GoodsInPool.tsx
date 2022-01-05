@@ -260,16 +260,20 @@ export const GoodsInPool = styled(Pools_)`
   border-radius: 24px;
   z-index: 2;
   position: relative;
-  padding-top: 30px;
+  padding-top: 70px;
   ${({ theme }) => theme.mediaQueries.md} {
     background: #122124;
     padding: 50px 40px;
   }
   .exclude_nft {
     position: absolute;
-    top: 62px;
-    right: 50px;
+    top: 22px;
+    right: 0;
     color: #fff;
+    ${({ theme }) => theme.mediaQueries.md} {
+      top: 62px;
+      right: 50px;
+    }
     h3 {
       color: #9da6a6;
       font-size: 18px;
@@ -309,7 +313,7 @@ export const GoodsInPool = styled(Pools_)`
       right: 20px;
       z-index: 20;
       background-color: #1f252a;
-      min-width: 300px;
+      min-width: 200px;
       list-style: none;
       color: #9da6a6;
       border: 2px solid #238485;
@@ -322,6 +326,9 @@ export const GoodsInPool = styled(Pools_)`
       visibility: hidden;
       overflow: hidden;
       transition: opacity 0.1s ease;
+      ${({ theme }) => theme.mediaQueries.md} {
+        min-width: 300px;
+      }
     }
   }
   .searchWrap {
