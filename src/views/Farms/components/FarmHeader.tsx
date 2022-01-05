@@ -10,9 +10,11 @@ import Search from 'components/Search';
 const ToggleWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 10px;
-  ${Text} {
-    margin-left: 8px;
+  word-break: break-all;
+  margin-bottom: 8px;
+  margin-right: 12px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-bottom: 0;
   }
 `;
 const Wrapper = styled.div`
@@ -95,7 +97,7 @@ const FarmHeader: React.FC<{
     </ToggleWrapper>
   );
   return (
-    <Flex className={className} justifyContent="space-between">
+    <Flex className={className} justifyContent="space-between" flexWrap="wrap">
       <div className="left">
         <img src={LogoPng} alt="" />
         {/* <Text color="#1BD3D5" fontSize="20px">
@@ -103,16 +105,24 @@ const FarmHeader: React.FC<{
         </Text> */}
       </div>
       <div className="right">
-        <Flex alignItems="center" mb="16px" justifyContent="flex-end">
+        <HeaderFlex>
           {stakedOnlySwitch}
           {liveOrFinishedSwitch}
-        </Flex>
+        </HeaderFlex>
         <Search value={filter} onChange={onFilterChange} placeholder="Search Farm" />
       </div>
     </Flex>
   );
 };
-
+const HeaderFlex = styled(Flex)`
+  align-items: center;
+  margin-bottom: 16px;
+  justify-content: start;
+  flex-wrap: wrap;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    justify-content: flex-end;
+  }
+`;
 export default styled(FarmHeader)`
   padding-top: 11px;
   margin-bottom: 44px;
@@ -123,16 +133,20 @@ export default styled(FarmHeader)`
       height: 90px;
       margin-bottom: 20px;
     }
-    margin-bottom: 25px;
+    margin-bottom: 0;
     ${({ theme }) => theme.mediaQueries.sm} {
-      margin-bottom: 0px;
+      margin-bottom: 25px;
     }
   }
   > .right {
     display: flex;
     justify-content: flex-end;
     flex-direction: column;
-    flex: 1;
-    max-width: 360px;
+    flex: 2;
+    max-width: 460px;
+    min-width: 300px;
+    ${({ theme }) => theme.mediaQueries.xl} {
+      flex: 1;
+    }
   }
 `;

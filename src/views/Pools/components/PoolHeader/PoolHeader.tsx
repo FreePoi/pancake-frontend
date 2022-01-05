@@ -10,9 +10,10 @@ import Search from 'components/Search';
 const ToggleWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 10px;
-  ${Text} {
-    margin-left: 8px;
+  word-break: break-all;
+  margin-right: 12px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-bottom: 0;
   }
 `;
 const Wrapper = styled.div`
@@ -95,16 +96,24 @@ const PoolHeader: React.FC<{
         </Text>
       </div>
       <div className="right">
-        <Flex alignItems="center" mb="16px" justifyContent="flex-end">
+        <HeaderFlex>
           {stakedOnlySwitch}
           {liveOrFinishedSwitch}
-        </Flex>
+        </HeaderFlex>
         <Search value={filter} onChange={onFilterChange} placeholder={placeholder} />
       </div>
     </Flex>
   );
 };
-
+const HeaderFlex = styled(Flex)`
+  align-items: center;
+  margin-bottom: 16px;
+  justify-content: start;
+  flex-wrap: wrap;
+  ${({ theme }) => theme.mediaQueries.xl} {
+    justify-content: flex-end;
+  }
+`;
 export default styled(PoolHeader)`
   padding-top: 11px;
   margin-bottom: 44px;
@@ -122,9 +131,9 @@ export default styled(PoolHeader)`
       height: 55px;
       margin-bottom: 20px;
     }
-    margin-bottom: 25px;
+    margin-bottom: 0;
     ${({ theme }) => theme.mediaQueries.sm} {
-      margin-bottom: 0px;
+      margin-bottom: 25px;
     }
   }
   > .right {
@@ -132,6 +141,7 @@ export default styled(PoolHeader)`
     justify-content: flex-end;
     flex-direction: column;
     flex: 1;
-    max-width: 360px;
+    max-width: 460px;
+    min-width: 300px;
   }
 `;
