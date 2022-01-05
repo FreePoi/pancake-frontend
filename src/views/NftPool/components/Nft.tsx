@@ -84,7 +84,7 @@ export default styled(Nft)`
   z-index: 1;
 
   &:hover {
-    border-color: #1bd3d5;
+    border-color: #238485;
     z-index: 9;
     .attri {
       visibility: visible;
@@ -102,7 +102,7 @@ export default styled(Nft)`
     width: 90%;
     background-color: #122124;
     color: #9da6a6;
-    border: 2px solid #1bd3d5;
+    border: 2px solid #238485;
     border-radius: 16px;
     line-height: 28px;
     padding: 10px 18px;

@@ -265,7 +265,7 @@ export const GoodsInPool = styled(Pools_)`
       width: 100%;
       list-style: none;
       color: #9da6a6;
-      border: 2px solid #1bd3d5;
+      border: 2px solid #238485;
       border-radius: 16px;
       line-height: 32px;
       font-size: 14px;
