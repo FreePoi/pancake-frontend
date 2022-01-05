@@ -71,7 +71,7 @@ export default styled(Nft)`
   padding: 6px;
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 12px;
-    width: 224px;
+    width: 250px;
   }
   background: #122124;
   border: 2px solid #1e3337;

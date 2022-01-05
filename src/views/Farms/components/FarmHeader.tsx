@@ -2,10 +2,41 @@ import { Text, Flex } from '@kaco/uikit';
 import { useTranslation } from 'contexts/Localization';
 import React from 'react';
 import styled from 'styled-components';
+import { useLocation, useRouteMatch, Link } from 'react-router-dom';
+import { ButtonMenu, ButtonMenuItem, NotificationDot } from '@kaco/uikit';
 import LogoPng from '../imgs/farms.svg';
 import Toggle from 'components/Menu/GlobalSettings/Toggle';
 import Search from 'components/Search';
+const ToggleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  ${Text} {
+    margin-left: 8px;
+  }
+`;
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 34px;
+  background-color: #122124;
+  height: 34px;
+  border: 1px solid #1f373b;
+  a {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
 
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 16px;
+  }
+`;
+const WrapperButtonMenu = styled(ButtonMenu)`
+  padding: 0;
+  border-radius: 32px;
+  height: 32px;
+`;
 const FarmHeader: React.FC<{
   className?: string;
   filter: string;
@@ -13,8 +44,56 @@ const FarmHeader: React.FC<{
   onStakedOnlyChange: (now: boolean) => void;
   onFilterChange: (now: string) => void;
 }> = ({ className, onStakedOnlyChange, filter, onFilterChange, stakedOnly }) => {
+  const { url, isExact } = useRouteMatch();
+  const location = useLocation();
   const { t } = useTranslation();
 
+  let activeIndex;
+  switch (location.pathname) {
+    case '/farms':
+      activeIndex = 0;
+      break;
+    case '/farms/history':
+      activeIndex = 1;
+      break;
+    case '/farms/archived':
+      activeIndex = 2;
+      break;
+    default:
+      activeIndex = 0;
+      break;
+  }
+  const liveOrFinishedSwitch = (
+    <Wrapper>
+      <WrapperButtonMenu activeIndex={activeIndex} scale="sm" variant="primary">
+        <ButtonMenuItem
+          as={Link}
+          style={{ color: isExact ? '#fff' : '#9DA6A6', borderRadius: '32px', margin: 0 }}
+          to={`${url}`}
+        >
+          {t('Live')}
+        </ButtonMenuItem>
+        <NotificationDot show={false}>
+          <ButtonMenuItem
+            id="finished-pools-button"
+            style={{ color: isExact ? '#9DA6A6' : '#fff', borderRadius: '32px', margin: 0 }}
+            as={Link}
+            to={`${url}/history`}
+          >
+            {t('Finished')}
+          </ButtonMenuItem>
+        </NotificationDot>
+      </WrapperButtonMenu>
+    </Wrapper>
+  );
+  const stakedOnlySwitch = (
+    <ToggleWrapper>
+      <Text color="textSubtle" mr="12px" bold>
+        {t('Staked only')}
+      </Text>
+      <Toggle checked={stakedOnly} onChange={() => onStakedOnlyChange(!stakedOnly)} />
+    </ToggleWrapper>
+  );
   return (
     <Flex className={className} justifyContent="space-between">
       <div className="left">
@@ -25,10 +104,8 @@ const FarmHeader: React.FC<{
       </div>
       <div className="right">
         <Flex alignItems="center" mb="16px" justifyContent="flex-end">
-          <Text color="textSubtle" mr="12px" bold>
-            {t('Staked only')}
-          </Text>
-          <Toggle checked={stakedOnly} onChange={() => onStakedOnlyChange(!stakedOnly)} />
+          {stakedOnlySwitch}
+          {liveOrFinishedSwitch}
         </Flex>
         <Search value={filter} onChange={onFilterChange} placeholder="Search Farm" />
       </div>
