@@ -11,6 +11,7 @@ import { NftPair } from '../hooks/useNftPools';
 import { formatFloat } from 'views/NftPool/util/format';
 import { NFT_PAIRS } from 'config/constants/nft';
 import ArrowSvg from '../svg/arrow.svg';
+import { usePrice } from 'state/price/hooks';
 const StyledTr = styled.tr`
   border-bottom: 1px solid #122124;
 
@@ -100,7 +101,7 @@ const TitledItem = styled(TitledItem_)``;
 const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) => {
   const history = useHistory();
   const [collapsed, setCollapsed] = useState(false);
-  const { priceVsBusdMap } = window;
+  const { priceVsBusdMap } = usePrice();
   return (
     <>
       <StyledTr
@@ -123,8 +124,7 @@ const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) =
               <TitledItem
                 title="Liquidity"
                 value={
-                  '$' +
-                  formatFloat((priceVsBusdMap[pair.pairAddress.toLowerCase()]?.toNumber() || 0) * pair.supply * 100)
+                  '$' + formatFloat((Number(priceVsBusdMap[pair.pairAddress.toLowerCase()]) || 0) * pair.supply * 100)
                 }
               />
             </td>
@@ -133,7 +133,7 @@ const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) =
         <td>
           <TitledItem
             title="Floor Price"
-            value={'$' + formatFloat(priceVsBusdMap[pair.pairAddress.toLowerCase()]?.toNumber() * 100 || 0)}
+            value={'$' + formatFloat(Number(priceVsBusdMap[pair.pairAddress.toLowerCase()] || 0) * 100)}
           />
         </td>
 
@@ -182,8 +182,7 @@ const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) =
               <RowBetween padding="8px 12px">
                 <Text fontSize="12px">Liquidity</Text>
                 <Text color="white">
-                  {'$' +
-                    formatFloat((priceVsBusdMap[pair.pairAddress.toLowerCase()]?.toNumber() || 0) * pair.supply * 100)}
+                  {'$' + formatFloat(Number(priceVsBusdMap[pair.pairAddress.toLowerCase()] || 0) * pair.supply * 100)}
                 </Text>
               </RowBetween>
               {/* <RowBetween padding="8px 12px">

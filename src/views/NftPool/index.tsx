@@ -8,6 +8,7 @@ import { NFT_PAIRS } from 'config/constants/nft';
 import { GoodsInPool } from './components/GoodsInPool';
 import { useNftPair } from 'views/NftPools/hooks/useNftPools';
 import { NftPair } from 'views/NftPools/hooks/useNftPools';
+import { usePrice } from 'state/price/hooks';
 
 const NFTPool: FC<{ className?: string }> = ({ className }) => {
   const { items } = useContext(NftContext);
@@ -15,15 +16,15 @@ const NFTPool: FC<{ className?: string }> = ({ className }) => {
   const index = NFT_PAIRS.findIndex((pair) => pair.address.toLocaleLowerCase() === pairAddress.toLocaleLowerCase());
   const pair = NFT_PAIRS[index];
   const pairDetail: NftPair = useNftPair(index);
-
-  const { priceVsBusdMap } = window;
+  const { priceVsBusdMap } = usePrice();
+  console.log({ priceVsBusdMap });
   return (
     <div style={{ background: 'rgba(0,0,0,0)' }}>
       <Page className={className}>
         <PoolHeader
           pairIndex={index}
           pair={pairDetail}
-          floorPrice={priceVsBusdMap[pairAddress.toLowerCase()]?.toNumber() || 0}
+          floorPrice={Number(priceVsBusdMap[pairAddress.toLowerCase()] || 0)}
         />
         <GoodsInPool pair={pair} pairDetail={pairDetail} />
       </Page>
