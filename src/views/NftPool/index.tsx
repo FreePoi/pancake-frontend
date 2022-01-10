@@ -6,17 +6,17 @@ import { PoolHeader } from './components/Header';
 import { NftProvider, NftContext } from './providers/nft.provider';
 import { NFT_PAIRS } from 'config/constants/nft';
 import { GoodsInPool } from './components/GoodsInPool';
-import { PriceContext } from 'contexts/PriceProvider';
 import { useNftPair } from 'views/NftPools/hooks/useNftPools';
 import { NftPair } from 'views/NftPools/hooks/useNftPools';
 
 const NFTPool: FC<{ className?: string }> = ({ className }) => {
   const { items } = useContext(NftContext);
-  const { priceVsBusdMap } = useContext(PriceContext);
   const { pairAddress } = useParams<{ pairAddress: string }>();
   const index = NFT_PAIRS.findIndex((pair) => pair.address.toLocaleLowerCase() === pairAddress.toLocaleLowerCase());
   const pair = NFT_PAIRS[index];
   const pairDetail: NftPair = useNftPair(index);
+
+  const { priceVsBusdMap } = window;
   return (
     <div style={{ background: 'rgba(0,0,0,0)' }}>
       <Page className={className}>

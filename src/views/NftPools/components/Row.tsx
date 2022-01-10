@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from 'react';
+import { FC, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -7,7 +7,7 @@ import { Text, Flex } from '@kaco/uikit';
 // import LogoSvg from '../svg/demo.svg';
 import { RowBetween } from '../../../components/Layout/Row';
 import { NftPair } from '../hooks/useNftPools';
-import { PriceContext } from 'contexts/PriceProvider';
+
 import { formatFloat } from 'views/NftPool/util/format';
 import { NFT_PAIRS } from 'config/constants/nft';
 import ArrowSvg from '../svg/arrow.svg';
@@ -100,7 +100,7 @@ const TitledItem = styled(TitledItem_)``;
 const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) => {
   const history = useHistory();
   const [collapsed, setCollapsed] = useState(false);
-  const { priceVsBusdMap } = useContext(PriceContext);
+  const { priceVsBusdMap } = window;
   return (
     <>
       <StyledTr
