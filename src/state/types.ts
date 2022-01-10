@@ -154,7 +154,7 @@ export interface BlockState {
 }
 // Price
 export interface PriceState {
-  priceVsBusdMap: Record<string, BigNumber>;
+  priceVsBusdMap: Record<string, string>;
 }
 
 // Collectibles
