@@ -81,10 +81,7 @@ export async function filterNft(items: BounceItem[], nftAddress: string) {
   results.push(
     ...items
       .filter(
-        (token) =>
-          token.contract_addr.toLocaleLowerCase() === nftAddress.toLocaleLowerCase() &&
-          token.balance > 0 &&
-          token.image,
+        (token) => token.contract_addr.toLocaleLowerCase() === nftAddress.toLocaleLowerCase() && token.balance > 0,
       )
       // .reduce((nfts, curr) => nfts.concat(curr.nft_data), [])
       .map((nft) => ({
@@ -101,9 +98,12 @@ export async function filterNft(items: BounceItem[], nftAddress: string) {
   const obj = {};
   if (results.length) {
     for (let i = 0; i < results.length; i++) {
-      if (!obj[results[i].id]) {
-        uniqueArr.push(results[i]);
-        obj[results[i].id] = true;
+      if (results[i]) {
+        const id = results[i].id || results[i]['token_id'];
+        if (!obj[id]) {
+          uniqueArr.push(results[i]);
+          obj[id] = true;
+        }
       }
     }
   }
