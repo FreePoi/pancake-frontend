@@ -42,7 +42,7 @@ interface Props extends InjectedModalProps {
 
 const BLOCKS_ONE_DAY = (3600 * 24) / BLOCK_INTERVAL;
 
-const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
+const MintModal: React.FC<Props> = ({ onDismiss, nft = {}, pair }) => {
   const { t } = useTranslation();
   const { account } = useActiveWeb3React();
   const contract = useContract(pair?.nftAddress, pair?.type === NFT_TYPE.NFT721 ? Erc721 : Erc1155);
@@ -118,7 +118,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
               alignItems: 'center',
             }}
           >
-            {nft.image.indexOf('.mp4') > -1 ? (
+            {(nft?.image ?? '').indexOf('.mp4') > -1 ? (
               <video
                 style={{
                   maxWidth: '100px',
@@ -196,7 +196,7 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft, pair }) => {
                 alignItems: 'center',
               }}
             >
-              {nft.image.indexOf('.mp4') > -1 ? (
+              {(nft?.image ?? '').indexOf('.mp4') > -1 ? (
                 <video
                   width="100%"
                   height="100%"
