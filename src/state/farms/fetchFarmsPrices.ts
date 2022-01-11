@@ -58,8 +58,8 @@ const getFarmBaseTokenPrice = (
       : BIG_ZERO;
   }
 
-  if (priceVsBusdMap[quoteTokenFarm.quoteToken.address[chainId].toLocaleLowerCase()]) {
-    return new BigNumber(priceVsBusdMap[quoteTokenFarm.quoteToken.address[chainId].toLocaleLowerCase()]);
+  if (priceVsBusdMap[farm.token.address[chainId].toLocaleLowerCase()]) {
+    return new BigNumber(priceVsBusdMap[farm.token.address[chainId].toLocaleLowerCase()]);
   }
   // Catch in case token does not have immediate or once-removed BUSD/wBNB quoteToken
   return BIG_ZERO;
@@ -94,8 +94,8 @@ const getFarmQuoteTokenPrice = (
   ) {
     return quoteTokenFarm.tokenPriceVsQuote ? new BigNumber(quoteTokenFarm.tokenPriceVsQuote) : BIG_ZERO;
   }
-  if (priceVsBusdMap[farm.quoteToken.address[chainId].toLowerCase()]) {
-    return new BigNumber(priceVsBusdMap[farm.quoteToken.address[chainId].toLowerCase()]);
+  if (priceVsBusdMap[farm.token.address[chainId].toLocaleLowerCase()]) {
+    return new BigNumber(priceVsBusdMap[farm.token.address[chainId].toLocaleLowerCase()]);
   }
   return BIG_ZERO;
 };
