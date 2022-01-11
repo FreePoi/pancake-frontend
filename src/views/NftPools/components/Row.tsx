@@ -11,7 +11,7 @@ import { NftPair } from '../hooks/useNftPools';
 import { formatFloat } from 'views/NftPool/util/format';
 import { NFT_PAIRS } from 'config/constants/nft';
 import ArrowSvg from '../svg/arrow.svg';
-import { usePrice } from 'state/price/hooks';
+import { usePollPrice, usePrice } from 'state/price/hooks';
 const StyledTr = styled.tr`
   border-bottom: 1px solid #122124;
 
@@ -101,6 +101,7 @@ const TitledItem = styled(TitledItem_)``;
 const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) => {
   const history = useHistory();
   const [collapsed, setCollapsed] = useState(false);
+  usePollPrice(pair.pairAddress, '100');
   const { priceVsBusdMap } = usePrice();
   return (
     <>
