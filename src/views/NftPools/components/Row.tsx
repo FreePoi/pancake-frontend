@@ -122,7 +122,7 @@ const Row: FC<{ pair: NftPair; simpleMode: boolean }> = ({ pair, simpleMode }) =
               <TitledItem title="NFT IN Pool" value={pair.supply.toLocaleString()} />
             </td>
             <td>
-              <TitledItem title="Liquidity" value={'$' + pair.liquidity.toLocaleString()} />
+              <TitledItem title="Liquidity" value={pair.liquidity ? '$' + pair.liquidity.toLocaleString() : '-'} />
             </td>
           </>
         )}

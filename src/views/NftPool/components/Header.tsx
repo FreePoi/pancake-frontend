@@ -42,7 +42,7 @@ const PoolHeader_: FC<{ className?: string; pairIndex: number; floorPrice: numbe
           </div>
           <div className="info second-line">
             <Text fontSize="18px" bold mb="4px">
-              ${pair?.liquidity.toLocaleString()}
+              ${pair?.liquidity ? pair.liquidity.toLocaleString() : '-'}
             </Text>
             <Text fontSize="12px">Liquidity</Text>
           </div>
