@@ -64,7 +64,6 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   const isManualCakePool = sousId === 0;
 
   const showStakedTag = isAutoVault ? hasVaultShares : isStaked;
-  console.log({ showStakedTag, hasVaultShares, isStaked });
   let title = `${t('Earn')} ${earningTokenSymbol}`;
   let subtitle = `${t('Stake')} ${stakingTokenSymbol}`;
   const showSubtitle = sousId !== 0 || (sousId === 0 && !isXs && !isSm);
