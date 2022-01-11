@@ -7,6 +7,9 @@ import { NftPair } from 'views/NftPools/hooks/useNftPools';
 
 const Nft: FC<{ className?: string; nft: NFT; pair: NftPair }> = ({ className, nft = {} as NFT, pair }) => {
   const [onMint] = useModal(<MintModal nft={nft} pair={pair} />);
+  if (!nft || !nft.image) {
+    return null;
+  }
 
   return (
     <div className={className}>

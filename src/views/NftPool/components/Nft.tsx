@@ -16,6 +16,9 @@ const Nft: FC<{ className?: string; nft: NftInfoWithLock; now: number; pairPid: 
   const { add, items } = useContext(NftContext);
   const { account } = useActiveWeb3React();
   const added = useMemo(() => !!items.find((item) => item.id === nft.id), [items, nft]);
+  if (!nft || !nft.image) {
+    return null;
+  }
   return (
     <div className={className}>
       {nft.attributes.length && pairPid === 3 ? (

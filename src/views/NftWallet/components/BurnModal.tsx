@@ -44,7 +44,9 @@ const Card_: FC<{
   useEffect(() => {
     simpleRpcProvider.getBlockNumber().then(setNow);
   }, []);
-
+  if (!nft || !nft.image) {
+    return null;
+  }
   return (
     <div className={className}>
       <div className="show">

@@ -92,7 +92,9 @@ const MintModal: React.FC<Props> = ({ onDismiss, nft = {}, pair }) => {
       },
     );
   }, [contract, pair, account, nft, onDismiss, activeIndex, lockdays, toastSuccess, toastError, t]);
-
+  if (!nft || !nft.image) {
+    return null;
+  }
   return (
     <Modal style={{ position: 'relative', maxWidth: '400px', width: '100%' }} title={null} onDismiss={onDismiss}>
       <StyledNav style={{ position: 'absolute', top: '20px' }} activeIndex={activeIndex}>
