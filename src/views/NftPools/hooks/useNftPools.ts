@@ -81,7 +81,6 @@ export const useNftPairs = (farms: FarmWithStakedValue[]): NftPair[] => {
             liquidity: Number(totalLiquidity.toFixed(0)),
           };
         });
-      console.log({ pairs });
       setPairs((oldPairs) => (_.isEqual(oldPairs, pairs) ? oldPairs : pairs));
     }, console.error);
   }, [contract, farms]);
