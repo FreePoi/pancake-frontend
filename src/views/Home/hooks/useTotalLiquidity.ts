@@ -94,7 +94,6 @@ function useTotalLiquidity(): BigNumber {
     }
   }, [_kaco_usdt_price, priceVsBusdMap]);
   useEffect(() => {
-    console.log('oo');
     fetchPairsAddress(pairsCount).then(fetchPairsData).then(countup).then(setTotalFarms).catch(console.log);
   }, [pairsCount]);
   useEffect(() => {
