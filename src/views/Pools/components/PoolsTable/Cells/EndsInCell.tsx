@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Flex, Link, Skeleton, Text, TimerIcon } from '@kaco/uikit';
 import { getBscScanLink } from 'utils';
 import { Pool } from 'state/types';
@@ -7,15 +6,11 @@ import { useBlock } from 'state/block/hooks';
 import Balance from 'components/Balance';
 import { useTranslation } from 'contexts/Localization';
 import { getPoolBlockInfo } from 'views/Pools/helpers';
-import BaseCell, { CellContent } from './BaseCell';
+import CellLayout from './CellLayout';
 
 interface FinishCellProps {
   pool: Pool;
 }
-
-const StyledCell = styled(BaseCell)`
-  flex: 2 0 100px;
-`;
 
 const EndsInCell: React.FC<FinishCellProps> = ({ pool }) => {
   const { sousId, totalStaked, startBlock, endBlock, isFinished } = pool;
@@ -25,7 +20,7 @@ const EndsInCell: React.FC<FinishCellProps> = ({ pool }) => {
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
     getPoolBlockInfo(pool, currentBlock);
 
-  const isCakePool = sousId === 0;
+  const isCakePool = sousId === 0 || sousId === 1;
 
   const renderBlocks = shouldShowBlockCountdown ? (
     <Flex alignItems="center">
@@ -55,14 +50,9 @@ const EndsInCell: React.FC<FinishCellProps> = ({ pool }) => {
   const isLoadingPublicData = !totalStaked.gt(0) || !currentBlock || (!blocksRemaining && !blocksUntilStart);
   const showLoading = isLoadingPublicData && !isCakePool && !isFinished;
   return (
-    <StyledCell role="cell">
-      <CellContent>
-        <Text fontSize="12px" color="textSubtle" textAlign="left">
-          {hasPoolStarted || !shouldShowBlockCountdown ? t('Ends in') : t('Starts in')}
-        </Text>
-        {showLoading ? <Skeleton width="80px" height="16px" /> : renderBlocks}
-      </CellContent>
-    </StyledCell>
+    <CellLayout label={hasPoolStarted || !shouldShowBlockCountdown ? t('Ends in') : t('Starts in')}>
+      {showLoading ? <Skeleton width="80px" height="16px" /> : renderBlocks}
+    </CellLayout>
   );
 };
 

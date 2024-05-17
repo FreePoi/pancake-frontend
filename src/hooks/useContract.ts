@@ -24,12 +24,15 @@ import {
   getBunnySpecialCakeVaultContract,
   getBunnySpecialPredictionContract,
   getFarmAuctionContract,
+  getMerkleContract,
+  getKarsierContract,
 } from 'utils/contractHelpers';
 import { getMulticallAddress } from 'utils/addressHelpers';
 
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from '@ethersproject/contracts';
-import { ChainId, WETH } from '@kaco/sdk';
+import { ChainId } from 'config/constants/tokens';
+import { WETH } from '@kaco/sdk';
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json';
 import ENS_PUBLIC_RESOLVER_ABI from '../config/abi/ens-public-resolver.json';
 import ENS_ABI from '../config/abi/ens-registrar.json';
@@ -172,6 +175,16 @@ export const useFarmAuctionContract = () => {
   return useMemo(() => getFarmAuctionContract(account ? library.getSigner() : library), [library, account]);
 };
 
+export const useMerkleDistributorContract = () => {
+  const { account, library } = useActiveWeb3React();
+  return useMemo(() => getMerkleContract(account ? library.getSigner() : library), [library, account]);
+};
+
+export const useKarsierContract = () => {
+  const { account, library } = useActiveWeb3React();
+  return useMemo(() => getKarsierContract(account ? library.getSigner() : library), [library, account]);
+};
+
 // Code below migrated from Exchange useContract.ts
 
 // returns null on errors
@@ -195,7 +208,7 @@ export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: b
 
 export function useWETHContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React();
-  return useContract(chainId ? WETH[chainId].address : undefined, WETH_ABI, withSignerIfPossible);
+  return useContract(chainId && WETH[chainId] ? WETH[chainId].address : undefined, WETH_ABI, withSignerIfPossible);
 }
 
 export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contract | null {

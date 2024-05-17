@@ -43,7 +43,20 @@ import { DashedPrimayCard } from 'components/Card';
 const BorderCard = styled.div`
   padding: 16px;
 `;
-
+const ErrPStyled = styled.p`
+  position: fixed;
+  z-index: 999;
+  bottom: calc(18vh - 64px);
+  text-align: center;
+  width: 500px;
+  left: 50%;
+  color: #f00;
+  background: #111719;
+  transform: translate(-50%, 0, -50%, 0);
+  border-radius: 12px;
+  padding: 18px 0;
+  transform: translateX(-50%);
+`;
 export default function RemoveLiquidity({
   history,
   match: {
@@ -74,6 +87,8 @@ export default function RemoveLiquidity({
   const deadline = useTransactionDeadline();
   const [allowedSlippage] = useUserSlippageTolerance();
 
+  // warn text
+  const [errorWarn, setErrorWarn] = useState('');
   const formattedAmounts = {
     [Field.LIQUIDITY_PERCENT]: parsedAmounts[Field.LIQUIDITY_PERCENT].equalTo('0')
       ? '0'
@@ -268,24 +283,14 @@ export default function RemoveLiquidity({
     } else {
       throw new Error('Attempting to confirm without approval or a signature. Please contact support.');
     }
-    console.log(
-      'approval',
-      approval === ApprovalState.APPROVED,
-      oneCurrencyIsETH,
-      args,
-      methodNames,
-      currencyA,
-      currencyB,
-      ETHER,
-      'signatureData',
-      signatureData,
-    );
+
     const safeGasEstimates: (BigNumber | undefined)[] = await Promise.all(
       methodNames.map((methodName) =>
         router.estimateGas[methodName](...args)
           .then(calculateGasMargin)
           .catch((err) => {
             console.error(`estimateGas failed`, methodName, args, err);
+            setErrorWarn('you may need setting a higher slippage tolerance');
             return undefined;
           }),
       ),
@@ -452,6 +457,7 @@ export default function RemoveLiquidity({
 
   const handleDismissConfirmation = useCallback(() => {
     setSignatureData(null); // important that we clear signature data to avoid bad sigs
+    setErrorWarn('');
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onUserInput(Field.LIQUIDITY_PERCENT, '0');
@@ -477,21 +483,9 @@ export default function RemoveLiquidity({
     true,
     'removeLiquidityModal',
   );
-
-  console.log(
-    'currencyIdA, currencyIdB',
-    currencyIdA,
-    currencyIdB,
-    'tokenA, tokenB',
-    tokenA,
-    tokenB,
-    'currencyA, currencyB',
-    currencyA,
-    currencyB,
-  );
-
   return (
     <Page>
+      {errorWarn && errorWarn.length ? <ErrPStyled>{errorWarn}</ErrPStyled> : null}
       <AppBody>
         <AppHeader
           backTo="/pool"
@@ -528,11 +522,11 @@ export default function RemoveLiquidity({
                   max={100}
                   value={innerLiquidityPercentage}
                   onValueChanged={(value) => setInnerLiquidityPercentage(Math.ceil(value))}
-                  mb="16px"
                 />
                 <Flex flexWrap="wrap" justifyContent="space-evenly">
                   <Button
                     style={{
+                      marginTop: '16px',
                       color: innerLiquidityPercentage === 25 ? 'white' : '#1BD3D5',
                       background: innerLiquidityPercentage === 25 ? '#1BD3D5' : '#1F252A',
                       borderRadius: '12px',
@@ -545,6 +539,7 @@ export default function RemoveLiquidity({
                   </Button>
                   <Button
                     style={{
+                      marginTop: '16px',
                       color: innerLiquidityPercentage === 50 ? 'white' : '#1BD3D5',
                       background: innerLiquidityPercentage === 50 ? '#1BD3D5' : '#1F252A',
                       borderRadius: '12px',
@@ -557,6 +552,7 @@ export default function RemoveLiquidity({
                   </Button>
                   <Button
                     style={{
+                      marginTop: '16px',
                       color: innerLiquidityPercentage === 75 ? 'white' : '#1BD3D5',
                       background: innerLiquidityPercentage === 75 ? '#1BD3D5' : '#1F252A',
                       borderRadius: '12px',
@@ -569,6 +565,7 @@ export default function RemoveLiquidity({
                   </Button>
                   <Button
                     style={{
+                      marginTop: '16px',
                       color: innerLiquidityPercentage === 100 ? 'white' : '#1BD3D5',
                       background: innerLiquidityPercentage === 100 ? '#1BD3D5' : '#1F252A',
                       borderRadius: '12px',
@@ -687,7 +684,7 @@ export default function RemoveLiquidity({
 
           {pair && (
             <AutoColumn gap="10px" style={{ marginTop: '16px' }}>
-              <PlainCard height="36px" style={{ display: 'flex', alignItems: 'center', padding: '0px 20px' }}>
+              <PlainCard style={{ display: 'flex', alignItems: 'center', padding: '15px 20px' }}>
                 <Flex justifyContent="flex-start">
                   <Text fontSize="12px" bold small color="secondary">
                     {t('Prices')}:&nbsp;

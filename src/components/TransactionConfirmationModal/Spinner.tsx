@@ -7,6 +7,7 @@ const Wrapper = styled.div``;
 
 function Spinner() {
   const ref = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const animation = lottie.loadAnimation({
       container: ref.current,
@@ -18,6 +19,7 @@ function Spinner() {
 
     return () => animation.destroy();
   }, []);
+
   return <Wrapper ref={ref}></Wrapper>;
 }
 

@@ -1,10 +1,11 @@
-import { Token as SDKToken, Pair, ChainId } from '@kaco/sdk';
+import { chainId } from 'config/constants/tokens';
+import { Token as SDKToken, Pair } from '@kaco/sdk';
 import tokens from './tokens';
 import { FarmAuctionBidderConfig, Token } from './types';
 
 const getLpAddress = (token: string, quoteToken: Token) => {
-  const tokenAsToken = new SDKToken(ChainId.MAINNET, token, 18);
-  const quoteTokenAsToken = new SDKToken(ChainId.MAINNET, quoteToken.address[56], 18);
+  const tokenAsToken = new SDKToken(chainId, token, 18);
+  const quoteTokenAsToken = new SDKToken(chainId, quoteToken.address[chainId], 18);
   return Pair.getAddress(tokenAsToken, quoteTokenAsToken);
 };
 

@@ -1,66 +1,89 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { Button, ChevronUpIcon } from '@kaco/uikit';
-import { useTranslation } from 'contexts/Localization';
 import { Pool } from 'state/types';
 import PoolRow from './PoolRow';
 
 interface PoolsTableProps {
   pools: Pool[];
-  userDataLoaded: boolean;
+  userDataReady: boolean;
   account: string;
 }
 
-const StyledTable = styled.div`
-  border-radius: ${({ theme }) => theme.radii.card};
+const Container = styled.div`
+  filter: ${({ theme }) => theme.card.dropShadow};
+  width: 100%;
+  background: ${({ theme }) => theme.card.background};
+  border-radius: 16px;
+  margin: 16px 0px;
+`;
 
-  background-color: ${({ theme }) => theme.card.background};
-  > div:not(:last-child) {
-    border-bottom: 2px solid ${({ theme }) => theme.colors.disabled};
+const TableWrapper = styled.div`
+  overflow: visible;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
-const StyledTableBorder = styled.div`
-  border-radius: ${({ theme }) => theme.radii.card};
-  background-color: ${({ theme }) => theme.colors.cardBorder};
-  padding: 1px 1px 3px 1px;
-  background-size: 400% 400%;
+const StyledTable = styled.table`
+  border-collapse: collapse;
+  font-size: 14px;
+  border-radius: 4px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 `;
 
-const ScrollButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  padding-top: 5px;
-  padding-bottom: 5px;
+const TableBody = styled.tbody`
+  & tr {
+    background: #1f373b;
+    td {
+      font-size: 16px;
+      vertical-align: middle;
+    }
+  }
 `;
 
-const PoolsTable: React.FC<PoolsTableProps> = ({ pools, userDataLoaded, account }) => {
-  const { t } = useTranslation();
+const TableContainer = styled.div`
+  position: relative;
+  table tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+  }
+
+  table tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+  }
+  table tr:first-child td:first-child {
+    border-top-left-radius: 10px;
+  }
+
+  table tr:first-child td:last-child {
+    border-top-right-radius: 10px;
+  }
+`;
+const PoolsTable: React.FC<PoolsTableProps> = ({ pools, userDataReady, account }) => {
   const tableWrapperEl = useRef<HTMLDivElement>(null);
-  const scrollToTop = (): void => {
-    tableWrapperEl.current.scrollIntoView({
-      behavior: 'smooth',
-    });
-  };
+
   return (
-    <StyledTableBorder>
-      <StyledTable role="table" ref={tableWrapperEl}>
-        {pools.map((pool) => (
-          <PoolRow
-            key={pool.isAutoVault ? 'auto-cake' : pool.sousId}
-            pool={pool}
-            account={account}
-            userDataLoaded={userDataLoaded}
-          />
-        ))}
-        <ScrollButtonContainer>
-          <Button variant="text" onClick={scrollToTop}>
-            {t('To Top')}
-            <ChevronUpIcon color="primary" />
-          </Button>
-        </ScrollButtonContainer>
-      </StyledTable>
-    </StyledTableBorder>
+    <Container>
+      <TableContainer>
+        <TableWrapper ref={tableWrapperEl}>
+          <StyledTable>
+            <TableBody>
+              {pools.map((pool, index) => (
+                <PoolRow
+                  key={pool.isAutoVault ? 'auto-cake' : pool.sousId}
+                  pool={pool}
+                  account={account}
+                  userDataReady={userDataReady}
+                  isLast={index === pools.length - 1}
+                />
+              ))}
+            </TableBody>
+          </StyledTable>
+        </TableWrapper>
+      </TableContainer>
+    </Container>
   );
 };
 

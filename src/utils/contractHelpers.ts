@@ -24,6 +24,8 @@ import {
   getBunnySpecialCakeVaultAddress,
   getBunnySpecialPredictionAddress,
   getFarmAuctionAddress,
+  getMerkleAddress,
+  getKarsierAddress,
 } from 'utils/addressHelpers';
 
 // ABI
@@ -53,7 +55,14 @@ import MultiCallAbi from 'config/abi/Multicall.json';
 import bunnySpecialCakeVaultAbi from 'config/abi/bunnySpecialCakeVault.json';
 import bunnySpecialPredictionAbi from 'config/abi/bunnySpecialPrediction.json';
 import farmAuctionAbi from 'config/abi/farmAuction.json';
-import { ChainLinkOracleContract, FarmAuctionContract, PredictionsContract } from './types';
+import merkleAbi from 'config/abi/merkleAbi.json';
+import KarsierAbi from 'config/abi/karsierAbi.json';
+import {
+  ChainLinkOracleContract,
+  FarmAuctionContract,
+  PredictionsContract,
+  IMerkleDistributorInterface,
+} from './types';
 
 const getContract = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
   const signerOrProvider = signer ?? simpleRpcProvider;
@@ -139,4 +148,13 @@ export const getBunnySpecialPredictionContract = (signer?: ethers.Signer | ether
 };
 export const getFarmAuctionContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(farmAuctionAbi, getFarmAuctionAddress(), signer) as FarmAuctionContract;
+};
+
+export const getMerkleContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  const _merkle = getContract(merkleAbi, getMerkleAddress(), signer) as IMerkleDistributorInterface;
+  return _merkle;
+};
+export const getKarsierContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  const _merkle = getContract(KarsierAbi, getKarsierAddress(), signer) as IMerkleDistributorInterface;
+  return _merkle;
 };

@@ -1,82 +1,97 @@
 import React from 'react';
 import styled from 'styled-components';
-import BigNumber from 'bignumber.js';
+import { useLocation } from 'react-router-dom';
 import { Text, useMatchBreakpoints } from '@kaco/uikit';
 import { useTranslation } from 'contexts/Localization';
-import { useCakeVault } from 'state/pools/hooks';
 import { Pool } from 'state/types';
-import { BIG_ZERO } from 'utils/bigNumber';
 import { TokenPairImage } from 'components/TokenImage';
 import CakeVaultTokenPairImage from '../../CakeVaultCard/CakeVaultTokenPairImage';
-import BaseCell, { CellContent } from './BaseCell';
+import { CellContent } from './BaseCell';
 
 interface NameCellProps {
   pool: Pool;
 }
+const Container = styled.div`
+  padding-left: 16px;
+  display: flex;
+  align-items: center;
 
-const StyledCell = styled(BaseCell)`
-  flex: 5;
-  flex-direction: row;
-  padding-left: 12px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    flex: 1 0 150px;
     padding-left: 32px;
+  }
+
+  > div {
+    > .label {
+      font-size: 16px;
+      font-weight: bolder;
+      color: #ffffff;
+    }
+    > .ratio {
+      margin-top: 11px;
+      font-size: 14px;
+      color: #9da6a6;
+    }
+  }
+`;
+
+const TokenWrapper = styled.div`
+  padding-right: 16px;
+  width: 24px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 60px;
   }
 `;
 
 const NameCell: React.FC<NameCellProps> = ({ pool }) => {
+  const location = useLocation();
   const { t } = useTranslation();
   const { isXs, isSm } = useMatchBreakpoints();
-  const { sousId, stakingToken, earningToken, userData, isFinished, isAutoVault } = pool;
-  const {
-    userData: { userShares },
-  } = useCakeVault();
-  const hasVaultShares = userShares && userShares.gt(0);
+  const { sousId, stakingToken, earningToken, isFinished, isAutoVault } = pool;
 
   const stakingTokenSymbol = stakingToken.symbol;
   const earningTokenSymbol = earningToken.symbol;
 
-  const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO;
-  const isStaked = stakedBalance.gt(0);
   const isManualCakePool = sousId === 0;
-
-  const showStakedTag = isAutoVault ? hasVaultShares : isStaked;
 
   let title = `${t('Earn')} ${earningTokenSymbol}`;
   let subtitle = `${t('Stake')} ${stakingTokenSymbol}`;
   const showSubtitle = sousId !== 0 || (sousId === 0 && !isXs && !isSm);
 
   if (isAutoVault) {
-    title = t('Auto CAKE');
+    title = t('Auto KAC');
     subtitle = t('Automatic restaking');
   } else if (isManualCakePool) {
-    title = t('Manual CAKE');
-    subtitle = `${t('Earn')} CAKE ${t('Stake').toLocaleLowerCase()} CAKE`;
+    title = t('Earn KAC');
+    subtitle = `${t('Stake').toLocaleLowerCase()} KAC ${t('Earn')} KAC`;
   }
+  const showFinishedPools = location.pathname.includes('history');
 
   return (
-    <StyledCell role="cell">
-      {isAutoVault ? (
-        <CakeVaultTokenPairImage mr="8px" width={40} height={40} />
-      ) : (
-        <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} mr="8px" width={40} height={40} />
-      )}
+    <Container>
+      <TokenWrapper>
+        {isAutoVault ? (
+          <CakeVaultTokenPairImage width={60} height={60} />
+        ) : (
+          <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} width={60} height={60} />
+        )}
+      </TokenWrapper>
       <CellContent>
-        {showStakedTag && (
-          <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">
+        {showFinishedPools && (
+          <Text
+            fontSize="12px"
+            bold
+            color={isFinished ? 'failure' : 'secondary'}
+            textTransform="uppercase"
+            paddingBottom="3px"
+          >
             {t('Staked')}
           </Text>
         )}
-        <Text bold={!isXs && !isSm} small={isXs || isSm}>
-          {title}
-        </Text>
-        {showSubtitle && (
-          <Text fontSize="12px" color="textSubtle">
-            {subtitle}
-          </Text>
-        )}
+        <div className="label">{title}</div>
+        {showSubtitle && <div className="ratio">{subtitle}</div>}
       </CellContent>
-    </StyledCell>
+    </Container>
   );
 };
 

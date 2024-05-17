@@ -22,10 +22,10 @@ import ChartDisclaimer from './components/ChartDisclaimer';
 const Predictions = () => {
   const { isXl } = useMatchBreakpoints();
   const [hasAcceptedRisk, setHasAcceptedRisk] = usePersistState(false, {
-    localStorageKey: 'pancake_predictions_accepted_risk',
+    localStorageKey: 'kaco_predictions_accepted_risk',
   });
   const [hasAcceptedChart, setHasAcceptedChart] = usePersistState(false, {
-    localStorageKey: 'pancake_predictions_chart',
+    localStorageKey: 'kaco_predictions_chart',
   });
   const { account } = useWeb3React();
   const status = useGetPredictionsStatus();

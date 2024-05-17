@@ -31,5 +31,5 @@ export const tokenEarnedPerThousandDollarsCompounding = ({
 
 export const getRoi = ({ amountEarned, amountInvested }) => {
   const percentage = (amountEarned / amountInvested) * 100;
-  return percentage;
+  return percentage || 0;
 };

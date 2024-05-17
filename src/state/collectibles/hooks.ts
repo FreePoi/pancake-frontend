@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state';
-import Nfts from 'config/constants/nfts';
+import PancakeNfts from 'config/constants/pancake_nfts';
 import { State } from '../types';
 import { fetchWalletNfts } from './index';
 
@@ -23,6 +23,6 @@ export const useGetCollectibles = () => {
     isInitialized,
     isLoading,
     tokenIds: data,
-    nftsInWallet: Nfts.filter((nft) => identifiers.includes(nft.identifier)),
+    nftsInWallet: PancakeNfts.filter((nft) => identifiers.includes(nft.identifier)),
   };
 };

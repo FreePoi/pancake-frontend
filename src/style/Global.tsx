@@ -13,10 +13,10 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Microsoft sYaHei';
     font-style: normal;
     font-weight: 400;
-    src: url(/static/fonts/ms-yahei.ttf);
+    src: url(/fonts/ms-yahei.ttf);
   }
   * {
-    font-family: Microsoft sYaHei;
+    font-family: "Microsoft sYaHei";
   }
   html {
     height: 100%;

@@ -37,7 +37,10 @@ const ExpandedWrapper = styled(Flex)`
     width: 14px;
   }
 `;
-
+const ReferenceElement = styled.div`
+  display: inline-block;
+  padding-left: 5px;
+`;
 const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   const { t } = useTranslation();
   const { currentBlock } = useBlock();
@@ -77,7 +80,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
       return getBalanceNumber(totalCakeInVault, stakingToken.decimals);
     }
     if (isManualCakePool) {
-      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked).minus(totalCakeInVault);
+      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked);
       return getBalanceNumber(manualCakeTotalMinusAutoVault, stakingToken.decimals);
     }
     return getBalanceNumber(totalStaked, stakingToken.decimals);
@@ -99,9 +102,9 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           {totalStaked && totalStaked.gte(0) ? (
             <>
               <Balance small value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
-              <span ref={totalStakedTargetRef}>
+              <ReferenceElement ref={totalStakedTargetRef}>
                 <HelpIcon color="textSubtle" width="20px" ml="6px" mt="4px" />
-              </span>
+              </ReferenceElement>
             </>
           ) : (
             <Skeleton width="90px" height="21px" />
@@ -146,11 +149,11 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           </Flex>
         </Flex>
       )}
-      <Flex mb="2px" justifyContent="flex-end">
+      {/* <Flex mb="2px" justifyContent="flex-end">
         <LinkExternal href={`https://pancakeswap.info/token/${getAddress(earningToken.address)}`} bold={false} small>
           {t('See Token Info')}
         </LinkExternal>
-      </Flex>
+      </Flex> */}
       <Flex mb="2px" justifyContent="flex-end">
         <LinkExternal href={earningToken.projectLink} bold={false} small>
           {t('View Project Site')}

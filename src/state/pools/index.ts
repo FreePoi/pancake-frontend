@@ -16,7 +16,7 @@ import {
 import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic';
 import fetchVaultUser from './fetchVaultUser';
 import { getTokenPricesFromFarm } from './helpers';
-
+import { fetchTokenPerBlock, fetchRewardPerBlock, usePoolWeight } from 'views/Pools/hooks/useTokenPerBlock';
 const initialState: PoolsState = {
   data: [...poolsConfig],
   userDataLoaded: false,
@@ -48,8 +48,11 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
   const totalStakings = await fetchPoolsTotalStaking();
 
   const prices = getTokenPricesFromFarm(getState().farms.data);
+  const _tokenPerBlock = await fetchTokenPerBlock();
 
-  const liveData = poolsConfig.map((pool) => {
+  const liveData = [];
+  poolsConfig.map(async (pool, index) => {
+    const _poolWeight = await usePoolWeight(pool);
     const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId);
     const totalStaking = totalStakings.find((entry) => entry.sousId === pool.sousId);
     const isPoolEndBlockExceeded = currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false;
@@ -60,26 +63,27 @@ export const fetchPoolsPublicDataAsync = (currentBlock: number) => async (dispat
 
     const earningTokenAddress = pool.earningToken.address ? getAddress(pool.earningToken.address).toLowerCase() : null;
     const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0;
+    const _rewardPerBlock = await fetchRewardPerBlock(pool);
     const apr = !isPoolFinished
       ? getPoolApr(
           stakingTokenPrice,
           earningTokenPrice,
           getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals),
-          parseFloat(pool.tokenPerBlock),
+          pool.sousId === 0 ? _tokenPerBlock.toNumber() * _poolWeight.toNumber() : _rewardPerBlock.toNumber(),
         )
       : 0;
-
-    return {
+    liveData.push({
       ...blockLimit,
       ...totalStaking,
       stakingTokenPrice,
       earningTokenPrice,
       apr,
       isFinished: isPoolFinished,
-    };
+    });
+    if (poolsConfig.length === liveData.length) {
+      dispatch(setPoolsPublicData(liveData));
+    }
   });
-
-  dispatch(setPoolsPublicData(liveData));
 };
 
 export const fetchPoolsStakingLimitsAsync = () => async (dispatch, getState) => {
@@ -110,16 +114,22 @@ export const fetchPoolsUserDataAsync =
     const stakingTokenBalances = await fetchUserBalances(account);
     const stakedBalances = await fetchUserStakeBalances(account);
     const pendingRewards = await fetchUserPendingRewards(account);
-
-    const userData = poolsConfig.map((pool) => ({
-      sousId: pool.sousId,
-      allowance: allowances[pool.sousId],
-      stakingTokenBalance: stakingTokenBalances[pool.sousId],
-      stakedBalance: stakedBalances[pool.sousId],
-      pendingReward: pendingRewards[pool.sousId],
-    }));
-
-    dispatch(setPoolsUserData(userData));
+    const _tokenPerBlock = await fetchTokenPerBlock();
+    const userData = [];
+    poolsConfig.map(async (pool, index) => {
+      const _poolWeight = await usePoolWeight(pool);
+      userData.push({
+        sousId: pool.sousId,
+        allowance: allowances[pool.sousId],
+        stakingTokenBalance: stakingTokenBalances[pool.sousId],
+        stakedBalance: stakedBalances[pool.sousId],
+        pendingReward: pendingRewards[pool.sousId],
+        tokenPerBlock: _tokenPerBlock.toNumber() * _poolWeight.toNumber(),
+      });
+      if (poolsConfig.length - 1 === index) {
+        dispatch(setPoolsUserData(userData));
+      }
+    });
   };
 
 export const updateUserAllowance =
@@ -183,7 +193,10 @@ export const PoolsSlice = createSlice({
       const userData = action.payload;
       state.data = state.data.map((pool) => {
         const userPoolData = userData.find((entry) => entry.sousId === pool.sousId);
-        return { ...pool, userData: userPoolData };
+        if (userPoolData) {
+          return { ...pool, userData: userPoolData };
+        }
+        return pool;
       });
       state.userDataLoaded = true;
     },

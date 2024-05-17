@@ -114,7 +114,6 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
       </ActionContainer>
     );
   }
-
   if (isApproved) {
     if (stakedBalance.gt(0)) {
       return (
@@ -193,7 +192,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
 
   return (
     <ActionContent>
-      <Button width="232px" disabled={requestedApproval} onClick={handleApprove} variant="secondary">
+      <Button width="232px" marginLeft="20px" disabled={requestedApproval} onClick={handleApprove} variant="secondary">
         {t('Enable')}
       </Button>
     </ActionContent>

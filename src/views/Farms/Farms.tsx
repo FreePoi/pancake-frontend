@@ -3,7 +3,7 @@ import { Route, useRouteMatch, useLocation } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import { useWeb3React } from '@web3-react/core';
 import { RowType, Flex } from '@kaco/uikit';
-import { ChainId } from '@kaco/sdk';
+import { ChainId } from 'config/constants/tokens';
 import FlexLayout from 'components/Layout/Flex';
 import Page from 'components/Layout/Page';
 import { useFarms, usePollFarmsData, usePriceCakeBusd } from 'state/farms/hooks';
@@ -14,7 +14,6 @@ import { getFarmApr } from 'utils/apr';
 import { orderBy } from 'lodash';
 import isArchivedPid from 'utils/farmHelpers';
 import { latinise } from 'utils/latinise';
-import { useUserFarmStakedOnly } from 'state/user/hooks';
 import Loading from 'components/Loading';
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard';
 import Table from './components/FarmTable/FarmTable';
@@ -31,12 +30,28 @@ import useKacPerBlock from './hooks/useKacoPerBlock';
 // `;
 const NUMBER_OF_FARMS_VISIBLE = 12;
 
-const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
+const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number): string => {
   if (cakeRewardsApr && lpRewardsApr) {
     return (cakeRewardsApr + lpRewardsApr).toLocaleString('en-US', { maximumFractionDigits: 2 });
   }
   if (cakeRewardsApr) {
     return cakeRewardsApr.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  }
+  if (cakeRewardsApr === 0 && lpRewardsApr === 0) {
+    return '0';
+  }
+  return null;
+};
+
+const getDisplayApy = (cakeRewardsApy?: number): string => {
+  if (cakeRewardsApy) {
+    return cakeRewardsApy.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  }
+  if (cakeRewardsApy) {
+    return cakeRewardsApy.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  }
+  if (cakeRewardsApy === 0) {
+    return '0';
   }
   return null;
 };
@@ -47,7 +62,7 @@ const Farms: React.FC = () => {
   const { data: farmsLP, userDataLoaded } = useFarms();
   const cakePrice = usePriceCakeBusd();
   const [query] = useState('');
-  const [viewMode] = usePersistState(ViewMode.TABLE, { localStorageKey: 'pancake_farm_view' });
+  const [viewMode] = usePersistState(ViewMode.TABLE, { localStorageKey: 'kaco_farm_view' });
   const { account } = useWeb3React();
   const [sortOption] = useState('hot');
   const chosenFarmsLength = useRef(0);
@@ -55,6 +70,8 @@ const Farms: React.FC = () => {
   const isArchived = pathname.includes('archived');
   const isInactive = pathname.includes('history');
   const isActive = !isInactive && !isArchived;
+  const [stakedOnly, setStakedOnly] = useState(false);
+  const [filter, setFilter] = useState<string>('');
 
   usePollFarmsData(isArchived);
 
@@ -62,22 +79,29 @@ const Farms: React.FC = () => {
   // Connected users should see loading indicator until first userData has loaded
   const userDataReady = !account || (!!account && userDataLoaded);
 
-  const [stakedOnly] = useUserFarmStakedOnly(isActive);
-
   // const activeFarms = farmsLP.filter(
   //   (farm) => farm.pid !== KACO_LP_PID && farm.multiplier !== '0X' && !isArchivedPid(farm.pid),
   // );
+  const filtedFarmsLP = farmsLP.filter(
+    (farm) =>
+      farm.token.symbol.toLowerCase().includes(filter.toLowerCase()) ||
+      farm.quoteToken.symbol.toLowerCase().includes(filter.toLowerCase()),
+  );
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== KACO_LP_PID && !isArchivedPid(farm.pid));
-  const inactiveFarms = farmsLP.filter(
+  const activeFarms = farmsLP.filter(
+    (farm) => farm.pid !== KACO_LP_PID && farm.multiplier !== '0X' && !isArchivedPid(farm.pid),
+  );
+  const inactiveFarms = filtedFarmsLP.filter(
     (farm) => farm.pid !== KACO_LP_PID && farm.multiplier === '0X' && !isArchivedPid(farm.pid),
   );
-  const archivedFarms = farmsLP.filter((farm) => isArchivedPid(farm.pid));
+  const archivedFarms = filtedFarmsLP.filter((farm) => isArchivedPid(farm.pid));
 
   const stakedOnlyFarms = activeFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   );
-
+  const stakedInactiveFarms = inactiveFarms.filter(
+    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
+  );
   const stakedArchivedFarms = archivedFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   );
@@ -88,8 +112,9 @@ const Farms: React.FC = () => {
         if (!farm.lpTotalInQuoteToken || !farm.quoteToken.busdPrice) {
           return farm;
         }
+
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteToken.busdPrice);
-        const { cakeRewardsApr, lpRewardsApr } = isActive
+        const { kacRewardsApr, lpRewardsApr, kacRewardApy } = isActive
           ? getFarmApr(
               kacPerBlock,
               new BigNumber(farm.poolWeight),
@@ -97,10 +122,22 @@ const Farms: React.FC = () => {
               totalLiquidity,
               farm.lpAddresses[ChainId.MAINNET],
             )
-          : { cakeRewardsApr: 0, lpRewardsApr: 0 };
+          : { kacRewardsApr: 0, lpRewardsApr: 0, kacRewardApy: 0 };
 
-        console.log('farm.lpTotalInQuoteToken', farm, farm.lpTotalInQuoteToken, farm.quoteToken.busdPrice);
-        return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity };
+        // console.log(
+        //   `${farm.token.symbol}-${farm.quoteToken.symbol}`,
+        //   'kacPerBlock',
+        //   kacPerBlock.toFixed(5),
+        //   'cakePrice',
+        //   cakePrice.toFixed(5),
+        //   'totalLiquidity',
+        //   totalLiquidity.toFixed(5),
+        //   'apr',
+        //   cakeRewardsApr,
+        //   'lpRewardsApr',
+        //   lpRewardsApr,
+        // );
+        return { ...farm, apr: kacRewardsApr, lpRewardsApr, liquidity: totalLiquidity, apy: kacRewardApy };
       });
 
       if (query) {
@@ -149,7 +186,7 @@ const Farms: React.FC = () => {
       chosenFarms = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms);
     }
     if (isInactive) {
-      chosenFarms = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(inactiveFarms);
+      chosenFarms = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms);
     }
     if (isArchived) {
       chosenFarms = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms);
@@ -166,6 +203,7 @@ const Farms: React.FC = () => {
     isInactive,
     isArchived,
     stakedArchivedFarms,
+    stakedInactiveFarms,
     stakedOnly,
     stakedOnlyFarms,
     numberOfFarmsVisible,
@@ -196,7 +234,6 @@ const Farms: React.FC = () => {
     }
   }, [chosenFarmsMemoized, observerIsSet]);
 
-  // console.log('chosenFarmsMemoized', chosenFarmsMemoized);
   const rowData = chosenFarmsMemoized.map((farm) => {
     const { token, quoteToken } = farm;
     const tokenAddress = token.address;
@@ -206,13 +243,14 @@ const Farms: React.FC = () => {
 
     const row: RowProps = {
       apr: {
-        value: getDisplayApr(farm.apr, farm.lpRewardsApr),
+        apy: getDisplayApy(farm.apy),
+        apr: getDisplayApr(farm.apr, farm.lpRewardsApr),
         multiplier: farm.multiplier,
         lpLabel,
         tokenAddress,
         quoteTokenAddress,
         cakePrice,
-        originalValue: farm.apr,
+        originalValue: farm.apy,
       },
       farm: {
         label: lpLabel,
@@ -249,8 +287,8 @@ const Farms: React.FC = () => {
             case 'farm':
               return b.id - a.id;
             case 'apr':
-              if (a.original.apr.value && b.original.apr.value) {
-                return Number(a.original.apr.value) - Number(b.original.apr.value);
+              if (a.original.apr.apr && b.original.apr.apr) {
+                return Number(a.original.apr.apr) - Number(b.original.apr.apr);
               }
 
               return 0;
@@ -311,7 +349,12 @@ const Farms: React.FC = () => {
   return (
     <div style={{ background: 'rgba(0,0,0,0)' }}>
       <Page>
-        <FarmHeader />
+        <FarmHeader
+          stakedOnly={stakedOnly}
+          filter={filter}
+          onFilterChange={setFilter}
+          onStakedOnlyChange={setStakedOnly}
+        />
         {renderContent()}
         {account && !userDataLoaded && stakedOnly && (
           <Flex justifyContent="center">

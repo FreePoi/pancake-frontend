@@ -1,10 +1,9 @@
-import { ChainId } from '@kaco/sdk';
+import { ChainId } from 'config/constants/tokens';
 import addresses from 'config/constants/contracts';
-import tokens from 'config/constants/tokens';
+import tokens, { chainId } from 'config/constants/tokens';
 import { Address } from 'config/constants/types';
 
 export const getAddress = (address: Address): string => {
-  const chainId = process.env.REACT_APP_CHAIN_ID;
   return address[chainId] ? address[chainId] : address[ChainId.MAINNET];
 };
 
@@ -64,4 +63,11 @@ export const getBunnySpecialPredictionAddress = () => {
 };
 export const getFarmAuctionAddress = () => {
   return getAddress(addresses.farmAuction);
+};
+export const getMerkleAddress = () => {
+  return getAddress(addresses.merkle);
+};
+
+export const getKarsierAddress = () => {
+  return getAddress(addresses.karsier);
 };

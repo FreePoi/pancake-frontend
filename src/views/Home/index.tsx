@@ -6,13 +6,13 @@ import KacoInfoPng from './components/kaco-info-bg.png';
 import { useTranslation } from 'contexts/Localization';
 import { Text, Flex } from '@kaco/uikit';
 import { useMatchBreakpoints } from '@kaco/uikit';
-import { usePriceCakeBusd } from 'state/farms/hooks';
 import { useBurnedBalance, useTotalSupply } from 'hooks/useTokenBalance';
 import formatLocalisedCompactNumber, { getBalanceNumber } from 'utils/formatBalance';
 import { getCakeAddress } from 'utils/addressHelpers';
 import useCap from './hooks/useCap';
 import useTotalLiquidity from './hooks/useTotalLiquidity';
 import Balance from 'components/Balance';
+import { useKacoPrice } from 'hooks/useKacoPrice';
 
 const Home: React.FC<{ className?: string }> = ({ className }) => {
   const { t } = useTranslation();
@@ -20,8 +20,9 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
   const totalSupply = useTotalSupply();
   const burnedBalance = getBalanceNumber(useBurnedBalance(getCakeAddress()));
   const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0;
-  const cakePriceBusd = usePriceCakeBusd();
-  const mcap = cakePriceBusd.times(cakeSupply);
+  const kacoPrice = useKacoPrice();
+  const mcap = kacoPrice.times(cakeSupply);
+
   const mcapString = formatLocalisedCompactNumber(mcap.isNaN() ? 0 : mcap.toNumber());
 
   const cap = useCap();
@@ -47,13 +48,13 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
           {[isXs, isSm].some(Boolean) ? (
             <>
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                KAC PRICE： ${cakePriceBusd.isNaN() ? '0' : cakePriceBusd.toFixed(4)}
+                KAC Price： ${kacoPrice.isNaN() ? '0' : kacoPrice.toFixed(4)}
               </Text>
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
                 KAC Total：{cap}
               </Text>
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                KAC Circulation：{cakeSupply}
+                KAC Circulation：{cakeSupply.toFixed()}
               </Text>
 
               <Text mb="20px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
@@ -67,13 +68,13 @@ const Home: React.FC<{ className?: string }> = ({ className }) => {
             <>
               <Flex flexWrap="wrap">
                 <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                  KAC PRICE： ${cakePriceBusd.isNaN() ? '0' : cakePriceBusd.toFixed(2)}
+                  KAC Price： ${kacoPrice.isNaN() ? '0' : kacoPrice.toFixed(2)}
                 </Text>
                 <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
                   KAC Total：{cap}
                 </Text>
                 <Text mb="35px" style={{ whiteSpace: 'nowrap', minWidth: '230px' }} color="">
-                  KAC Circulation：{cakeSupply}
+                  KAC Circulation：{cakeSupply.toFixed()}
                 </Text>
               </Flex>
               <Flex>
